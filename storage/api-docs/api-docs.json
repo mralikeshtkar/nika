@@ -1,0 +1,2983 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Nika Web Services",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000/api/v1"
+        }
+    ],
+    "paths": {
+        "/addresses": {
+            "get": {
+                "tags": [
+                    "آدرس"
+                ],
+                "summary": "لیست آدرس ها بصورت صفحه بندی",
+                "description": "",
+                "operationId": "9f2baf910ef29838b3ca9503a3ca6232",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "شناسه صاحب آدرس. فقط کاربری که مدیر و دسترسی مجاز را دارد میتواند بر اساس این فیلد جستجو کند",
+                        "required": false,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "نام صاحب آدرس. فقط کاربری که مدیر و دسترسی مجاز را دارد میتواند بر اساس این فیلد جستجو کند",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "phone_number",
+                        "in": "query",
+                        "description": "شماره تلفن آدرس",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "نوع. Home:خانه Office:دفتر",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "Home",
+                                "Office"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "چیدمان. oldest:قدیمی ترین latest:جدیدترین",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "latest",
+                            "enum": [
+                                "oldest",
+                                "latest"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "آدرس"
+                ],
+                "summary": "ثبت آدرس",
+                "description": "کاربری که  مجوز مدیریت آدرس ها یا ایجاد آدرس را دارد میتواند با ارسال user_id برای دیگران هم آدرس ثبت کند.",
+                "operationId": "8f39f6321e2b382380b373355045c670",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "address",
+                                    "city_id",
+                                    "postal_code",
+                                    "phone_number",
+                                    "type"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "description": "شناسه کاربر",
+                                        "type": "number"
+                                    },
+                                    "city_id": {
+                                        "description": "شناسه شهر",
+                                        "type": "number"
+                                    },
+                                    "address": {
+                                        "description": "آدرس",
+                                        "type": "string"
+                                    },
+                                    "postal_code": {
+                                        "description": "کد پستی. بدون خط تیره مثال: 5717858731",
+                                        "type": "number"
+                                    },
+                                    "phone_number": {
+                                        "description": "شماره تلفن یا شماره موبایل. تفلن ثابت باید با کد شهر وارد شود بدون خط تیره مثال: 02162999977",
+                                        "type": "number"
+                                    },
+                                    "type": {
+                                        "description": "Home: خانه - Office: دفتر",
+                                        "type": "string",
+                                        "enum": [
+                                            "Home",
+                                            "Office"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/addresses/{id}": {
+            "post": {
+                "tags": [
+                    "آدرس"
+                ],
+                "summary": "بروزرسانی آدرس",
+                "description": "",
+                "operationId": "ca1b5b8d45ba8f732d9592785944f460",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه آدرس",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "_method",
+                                    "address",
+                                    "city_id",
+                                    "postal_code",
+                                    "phone_number",
+                                    "type"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "description": "این مقدار باید بصورت ثابت شود",
+                                        "type": "string",
+                                        "default": "put",
+                                        "enum": [
+                                            "put"
+                                        ]
+                                    },
+                                    "city_id": {
+                                        "description": "شناسه شهر",
+                                        "type": "number"
+                                    },
+                                    "address": {
+                                        "description": "آدرس",
+                                        "type": "string"
+                                    },
+                                    "postal_code": {
+                                        "description": "کد پستی. بدون خط تیره مثال: 5717858731",
+                                        "type": "number"
+                                    },
+                                    "phone_number": {
+                                        "description": "شماره تلفن یا شماره موبایل. تفلن ثابت باید با کد شهر وارد شود بدون خط تیره مثال: 02162999977",
+                                        "type": "number"
+                                    },
+                                    "type": {
+                                        "description": "Home: خانه - Office: دفتر",
+                                        "type": "string",
+                                        "enum": [
+                                            "Home",
+                                            "Office"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "آدرس"
+                ],
+                "summary": "حذف آدرس",
+                "description": "",
+                "operationId": "88b5a2bf3ca4f7bb44c84127a6e4c119",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه آدرس",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/cities": {
+            "get": {
+                "tags": [
+                    "شهر"
+                ],
+                "summary": "لیست شهر ها بصورت صفحه بندی",
+                "description": "",
+                "operationId": "a7ec9e1ae16c0e72817824b283c3cb6d",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "جستجوی نام",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "province",
+                        "in": "query",
+                        "description": "جستجوی نام استان",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "شهر"
+                ],
+                "summary": "ثبت شهر",
+                "description": "",
+                "operationId": "0e59a8b17ea4e77383a49e1a2418915b",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "province_id"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "نام",
+                                        "type": "string"
+                                    },
+                                    "province_id": {
+                                        "description": "شناسه استان",
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/cities/{id}": {
+            "post": {
+                "tags": [
+                    "شهر"
+                ],
+                "summary": "بروزرسانی شهر",
+                "description": "",
+                "operationId": "971b457e25297bdf6b19ec82f31e0eb0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه شهر",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "_method",
+                                    "name",
+                                    "province_id"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "description": "این مقدار باید بصورت ثابت شود",
+                                        "type": "string",
+                                        "default": "put",
+                                        "enum": [
+                                            "put"
+                                        ]
+                                    },
+                                    "name": {
+                                        "description": "نام",
+                                        "type": "string"
+                                    },
+                                    "province_id": {
+                                        "description": "شناسه استان",
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "شهر"
+                ],
+                "summary": "حذف شهر",
+                "description": "",
+                "operationId": "6bdf73c70d6ef45540ae8c9b54c5372b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه شهر",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/grades": {
+            "get": {
+                "tags": [
+                    "مقاطع تحصیلی"
+                ],
+                "summary": "لیست مقاطع تحصیلی بصورت صفحه بندی",
+                "description": "",
+                "operationId": "939d5b2cfb66bc732c2fac28dced4706",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "جستجوی نام",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "مقاطع تحصیلی"
+                ],
+                "summary": "ثبت مقطع تحصیلی",
+                "description": "",
+                "operationId": "9e03a90e491c68ed9f15e99e3ea7ba0b",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "نام",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/grades/{id}": {
+            "post": {
+                "tags": [
+                    "مقاطع تحصیلی"
+                ],
+                "summary": "بروزرسانی مقطع تحصیلی",
+                "description": "",
+                "operationId": "e758c15e90d9b71c3da2fedc1e87b7ef",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه مقطع تحصیلی",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "_method",
+                                    "name"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "description": "این مقدار باید بصورت ثابت شود",
+                                        "type": "string",
+                                        "default": "put",
+                                        "enum": [
+                                            "put"
+                                        ]
+                                    },
+                                    "name": {
+                                        "description": "نام",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "مقاطع تحصیلی"
+                ],
+                "summary": "حذف مقطع تحصیلی",
+                "description": "",
+                "operationId": "f51ba9123b9db6c4cb06436b6fc8d767",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه مقطع تحصیلی",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/jobs": {
+            "get": {
+                "tags": [
+                    "شغل"
+                ],
+                "summary": "لیست شغل ها بصورت صفحه بندی",
+                "description": "",
+                "operationId": "c1eae3e152628c02f4c43fece442416a",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "جستجوی نام",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "شغل"
+                ],
+                "summary": "ثبت شغل",
+                "description": "",
+                "operationId": "8c8639cf9c3f070a17a01c8b2fb81206",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "نام",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/jobs/all": {
+            "get": {
+                "tags": [
+                    "شغل"
+                ],
+                "summary": "دریافت لیست شغل ها",
+                "description": "",
+                "operationId": "a5b6b7278df85e7cd09c30a37480b7c3",
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/jobs/{id}": {
+            "post": {
+                "tags": [
+                    "شغل"
+                ],
+                "summary": "بروزرسانی شغل",
+                "description": "",
+                "operationId": "68fe042f3ec6eac3b5a920b548225332",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه شغل",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "_method",
+                                    "name"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "description": "این مقدار باید بصورت ثابت شود",
+                                        "type": "string",
+                                        "default": "put",
+                                        "enum": [
+                                            "put"
+                                        ]
+                                    },
+                                    "name": {
+                                        "description": "نام",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "شغل"
+                ],
+                "summary": "حذف شغل",
+                "description": "",
+                "operationId": "9355651cf45f726b35a776d76a6a66c4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه شغل",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/majors": {
+            "get": {
+                "tags": [
+                    "رشته تحصیلی"
+                ],
+                "summary": "لیست رشته های تحصیلی بصورت صفحه بندی",
+                "description": "",
+                "operationId": "7404c341ce6355ae1ba68ad3b8c6cffd",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "جستجوی نام",
+                        "required": false,
+                        "schema": {
+                            "type": "srting"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "رشته تحصیلی"
+                ],
+                "summary": "ثبت رشته تحصیلی",
+                "description": "",
+                "operationId": "16f01c54607847665c9bc6f773663c5b",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "نام",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/majors/all": {
+            "get": {
+                "tags": [
+                    "رشته تحصیلی"
+                ],
+                "summary": "دریافت لیست رشته های تحصیلی",
+                "description": "",
+                "operationId": "a4bf8968def780c55e6765b39d693c88",
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/majors/{id}": {
+            "post": {
+                "tags": [
+                    "رشته تحصیلی"
+                ],
+                "summary": "بروزرسانی رشته تحصیلی",
+                "description": "",
+                "operationId": "4026d43aa7215fdbeba8d6e394fd7750",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه رشته تحصیلی",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "_method",
+                                    "name"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "description": "این مقدار باید بصورت ثابت شود",
+                                        "type": "string",
+                                        "default": "put",
+                                        "enum": [
+                                            "put"
+                                        ]
+                                    },
+                                    "name": {
+                                        "description": "نام",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "رشته تحصیلی"
+                ],
+                "summary": "حذف رشته تحصیلی",
+                "description": "",
+                "operationId": "b56117afaf99a289558e54e3d52105f1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه رشته تحصیلی",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/packages": {
+            "get": {
+                "tags": [
+                    "پکیج"
+                ],
+                "summary": "لیست پکیج ها بصورت صفحه بندی",
+                "description": "",
+                "operationId": "753372c28cb73b97aee344102ef4a873",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    },
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "description": "جستجوی عنوان",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "پکیج"
+                ],
+                "summary": "ثبت پکیج",
+                "description": "",
+                "operationId": "f7453aeadb2094b208e4e073c9207210",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "age",
+                                    "price"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "description": "عنوان",
+                                        "type": "string"
+                                    },
+                                    "age": {
+                                        "description": "سن",
+                                        "type": "number"
+                                    },
+                                    "price": {
+                                        "description": "قیمت",
+                                        "type": "number"
+                                    },
+                                    "is_completed": {
+                                        "description": "وضعیت تکمیل - بصورت boolean باید باشد",
+                                        "type": "string",
+                                        "enum": [
+                                            1,
+                                            0
+                                        ]
+                                    },
+                                    "video": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "status": {
+                                        "description": "وضعیت Active:فعال Inactive:غیرفعال",
+                                        "type": "string",
+                                        "enum": [
+                                            "Active",
+                                            "Inactive"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/packages/{id}": {
+            "get": {
+                "tags": [
+                    "پکیج"
+                ],
+                "summary": "نمایش اطلاعات پکیج",
+                "description": "",
+                "operationId": "fb1e928dec538b75507809f04938790c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه پکیج",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "پکیج"
+                ],
+                "summary": "بروزرسانی پکیج",
+                "description": "",
+                "operationId": "336f10131c4c998df62d5ae774ea6740",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه پکیج",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "_method",
+                                    "title",
+                                    "age",
+                                    "price"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "description": "این مقدار باید بصورت ثابت شود",
+                                        "type": "string",
+                                        "default": "put",
+                                        "enum": [
+                                            "put"
+                                        ]
+                                    },
+                                    "title": {
+                                        "description": "عنوان",
+                                        "type": "string"
+                                    },
+                                    "age": {
+                                        "description": "سن",
+                                        "type": "number"
+                                    },
+                                    "price": {
+                                        "description": "قیمت",
+                                        "type": "number"
+                                    },
+                                    "is_completed": {
+                                        "description": "وضعیت تکمیل - بصورت boolean باید باشد",
+                                        "type": "string",
+                                        "enum": [
+                                            1,
+                                            0
+                                        ]
+                                    },
+                                    "status": {
+                                        "description": "وضعیت Active:فعال Inactive:غیرفعال",
+                                        "type": "string",
+                                        "enum": [
+                                            "Active",
+                                            "Inactive"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "پکیج"
+                ],
+                "summary": "حذف پکیج",
+                "description": "",
+                "operationId": "c533535e347ef0e2d5756f6079db950c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه پکیج",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/permissions": {
+            "get": {
+                "tags": [
+                    "مجوزها"
+                ],
+                "summary": "لیست مجوزها",
+                "description": "",
+                "operationId": "2210bea3217f325114c9249ffc59a087",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "شما مجوز لازم برای اجرای این مسیر رو ندارید",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "حساب کاربر مسدود میباشد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/personnels": {
+            "get": {
+                "tags": [
+                    "پرسنل"
+                ],
+                "summary": "لیست پرسنل ها همراه با اطلاعات کاربری بصورت صفحه بندی",
+                "description": "",
+                "operationId": "ee55526a527c138c27374433beb1b566",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/personnels/{user_id}": {
+            "get": {
+                "tags": [
+                    "پرسنل"
+                ],
+                "summary": "دریافت کاربر همراه با اطلاعات پرسنلی",
+                "description": "",
+                "operationId": "69129262c67d942fb8744c1dc3426b97",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "شناسه کاربر",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "پرسنل"
+                ],
+                "summary": "ثبت پرسنل",
+                "description": "",
+                "operationId": "ddc4edef669ec77ce0c9e6e453c65b09",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "شناسه کاربر",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "major_id": {
+                                        "description": "شناسه رشته تحصیلی",
+                                        "type": "number"
+                                    },
+                                    "job_id": {
+                                        "description": "شناسه شغل",
+                                        "type": "number"
+                                    },
+                                    "birth_certificate_place_id": {
+                                        "description": "شناسه شهر محل تولد",
+                                        "type": "number"
+                                    },
+                                    "is_married": {
+                                        "description": "وضعیت تاهل - 1: ازدواج کرده - 0: ازدواج نکرده",
+                                        "type": "number",
+                                        "enum": [
+                                            0,
+                                            1
+                                        ]
+                                    },
+                                    "email": {
+                                        "description": "ایمیل",
+                                        "type": "string"
+                                    },
+                                    "birth_certificate_number": {
+                                        "description": "شماره شناسنامه",
+                                        "type": "number"
+                                    },
+                                    "language_level": {
+                                        "description": "سطح زبان",
+                                        "type": "string",
+                                        "enum": [
+                                            "low",
+                                            "mid",
+                                            "high"
+                                        ]
+                                    },
+                                    "computer_level": {
+                                        "description": "سطح کامپیوتر",
+                                        "type": "string",
+                                        "enum": [
+                                            "low",
+                                            "mid",
+                                            "high"
+                                        ]
+                                    },
+                                    "research_history": {
+                                        "description": "تاریخچه پژوهش",
+                                        "type": "string"
+                                    },
+                                    "is_working": {
+                                        "description": "آیا مشغول به کار است؟ - true: بله - false: خیر",
+                                        "type": "boolean"
+                                    },
+                                    "work_description": {
+                                        "description": "توضیحات کار",
+                                        "type": "boolean"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "پرسنل"
+                ],
+                "summary": "حذف پرسنل",
+                "description": "",
+                "operationId": "5f592e3ceaafac2ef0856c9d3aad153a",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "شناسه کاربر",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/provinces": {
+            "get": {
+                "tags": [
+                    "استان"
+                ],
+                "summary": "لیست استان ها بصورت صفحه بندی",
+                "description": "",
+                "operationId": "1e589cd40c70c94399bc848ed599f2e0",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "جستجوی نام",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "استان"
+                ],
+                "summary": "ثبت استان",
+                "description": "",
+                "operationId": "676e0dba7e98242d6db1cb8eb4c64934",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "نام",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/provinces/all": {
+            "get": {
+                "tags": [
+                    "استان"
+                ],
+                "summary": "استان‌ها",
+                "description": "دریافت لیست همه استان‌ها",
+                "operationId": "b5d7d68cb7229571c0dc6cd2916e85cd",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/provinces/{id}": {
+            "get": {
+                "tags": [
+                    "استان"
+                ],
+                "summary": "استان به همراه شهرها",
+                "description": "دریافت استان به همراه شهرها",
+                "operationId": "b6a823cd5a1e64b30b2d64ba482d8cdc",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه استان",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "شناسه استان معتبر نمیباشد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "استان"
+                ],
+                "summary": "بروزرسانی استان",
+                "description": "",
+                "operationId": "e1691eb4e48a4f7e3527bcb2ffbc5de4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه استان",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "_method",
+                                    "name"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "description": "این مقدار باید بصورت ثابت شود",
+                                        "type": "string",
+                                        "default": "put",
+                                        "enum": [
+                                            "put"
+                                        ]
+                                    },
+                                    "name": {
+                                        "description": "نام",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "استان"
+                ],
+                "summary": "حذف استان",
+                "description": "",
+                "operationId": "077441940311806cfa6fab014ba005c7",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه استان",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/psychological-questions/{id}": {
+            "post": {
+                "tags": [
+                    "سوالات روانشناسی"
+                ],
+                "summary": "ثبت سوال روانشناسی",
+                "description": "",
+                "operationId": "8554c9982097aed93d9727c3cb38e00d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه رهجو",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "favourite_job_id": {
+                                        "description": "نام شغل مورد علاقه رهجو. کاربر بتواند نام هم خودش یا از لیست شغل ها انتخاب نماید",
+                                        "type": "string"
+                                    },
+                                    "parent_favourite_job_id": {
+                                        "description": "نام شغل مورد علاقه والدین رهجو. کاربر بتواند نام هم خودش یا از لیست شغل ها انتخاب نماید",
+                                        "type": "string"
+                                    },
+                                    "negative_positive_points": {
+                                        "description": "نقاط مثبت و منفی",
+                                        "type": "string"
+                                    },
+                                    "favourites": {
+                                        "description": "علاقه مندی ها",
+                                        "type": "string"
+                                    },
+                                    "skills[]": {
+                                        "description": "مهارت ها (شناسه مهارت)",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "number"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/rahjoo-courses": {
+            "get": {
+                "tags": [
+                    "دوره های رهجو"
+                ],
+                "summary": "لیست دوره های رهجو به همراه رهجو بصورت صفحه بندی",
+                "description": "",
+                "operationId": "c8d076cc236ddf5e2d31dc61553cbddf",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/rahjoo-courses/{id}": {
+            "post": {
+                "tags": [
+                    "دوره های رهجو"
+                ],
+                "summary": "ثبت دوره های رهجو",
+                "description": "",
+                "operationId": "0ea6874506c1f261e3eb65aa3d9f76df",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه رهجو",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "courses": {
+                                        "description": "دوره های رهجو - مدت زمان دوره باید بصورت دقیقه باشد",
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "duration": {
+                                                    "type": "number"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "دوره های رهجو"
+                ],
+                "summary": "حذف دوره های رهجو",
+                "description": "",
+                "operationId": "d0ae05c42e35591966ff600ee817763a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه دوره رهجو",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/rahjoo-parents": {
+            "get": {
+                "tags": [
+                    "والدین"
+                ],
+                "summary": "لیست رهجوهایی که والدین دارند بصورت صفحه بندی",
+                "description": "",
+                "operationId": "d9105c980dfd4a60f11fe4beea8a8212",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/rahjoo-parents/{rahjoo_id}": {
+            "post": {
+                "tags": [
+                    "والدین"
+                ],
+                "summary": "ثبت یا بروزرسانی والدین",
+                "description": "اگر جنسیت وجود داشته باشد بروزرسانی وگرنه ثبت میشود",
+                "operationId": "97f322f6709eecb4a6801811c3537d4b",
+                "parameters": [
+                    {
+                        "name": "rahjoo_id",
+                        "in": "path",
+                        "description": "شناسه رهجو",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "job_id": {
+                                        "description": "شناسه شغل",
+                                        "type": "number"
+                                    },
+                                    "grade_id": {
+                                        "description": "شناسه مقطع تحصیلی",
+                                        "type": "number"
+                                    },
+                                    "major_id": {
+                                        "description": "شناسه رشته تحصیلی",
+                                        "type": "number"
+                                    },
+                                    "name": {
+                                        "description": "نام",
+                                        "type": "string"
+                                    },
+                                    "mobile": {
+                                        "description": "شماره موبایل",
+                                        "type": "string"
+                                    },
+                                    "birthdate": {
+                                        "description": "تاریخ تولد - نمونه: 1401/08/30",
+                                        "type": "string"
+                                    },
+                                    "gender": {
+                                        "description": "جنسیت: Male: مرد Female: زن",
+                                        "type": "string",
+                                        "enum": [
+                                            "Male",
+                                            "Female"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/rahjoo-parents/{id}": {
+            "delete": {
+                "tags": [
+                    "والدین"
+                ],
+                "summary": "حذف والدین رهجو",
+                "description": "",
+                "operationId": "2cfe1e103998a0e6551b62c4494a6a06",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه والدین",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/rahjoos": {
+            "get": {
+                "tags": [
+                    "رهجو"
+                ],
+                "summary": "لیست رهجو ها بهمراه کاربر بصورت صفحه بندی",
+                "description": "",
+                "operationId": "73133db4eb8e66000aa94bb4671a74e8",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/rahjoos/{rahjoo_id}": {
+            "get": {
+                "tags": [
+                    "رهجو"
+                ],
+                "summary": "نمایش اطلاعات رهجو",
+                "description": "",
+                "operationId": "5ea6b47c8ffaf1eac9154d6aac240c5a",
+                "parameters": [
+                    {
+                        "name": "rahjoo_id",
+                        "in": "path",
+                        "description": "شناسه رهجو",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/rahjoos/{user_id}": {
+            "post": {
+                "tags": [
+                    "رهجو"
+                ],
+                "summary": "ثبت یا بروزرسانی رهجو",
+                "description": "",
+                "operationId": "e4bd574a426017890dc6800730824ccf",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "شناسه کاربر",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "agent_id": {
+                                        "description": "شناسه کاربر نماینده",
+                                        "type": "number"
+                                    },
+                                    "school": {
+                                        "description": "نام مدرسه",
+                                        "type": "number"
+                                    },
+                                    "which_child_of_family": {
+                                        "description": "فرزند چندم خانواده؟ حداقل 1",
+                                        "type": "number"
+                                    },
+                                    "disease_background": {
+                                        "description": "سابقه های بیماری",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/rahjoos/{id}": {
+            "delete": {
+                "tags": [
+                    "رهجو"
+                ],
+                "summary": "حذف رهجو",
+                "description": "",
+                "operationId": "b30f7b269e15787870dac67df1617a24",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه رهجو",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/roles": {
+            "get": {
+                "tags": [
+                    "نقش‌های کاربری"
+                ],
+                "summary": "لیست نقش‌های کاربری همراه مجوزهایشان بصورت صفحه بندی",
+                "description": "",
+                "operationId": "ce32414d6aa6fc86e1ed8a8cce347152",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "جستجوی نام انگلیسی و فارسی",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "نقش‌های کاربری"
+                ],
+                "summary": "ثبت نقش کاربری",
+                "description": "",
+                "operationId": "e498c068c0457de5174ea728d6fb03b3",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "name_fa"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "نام انگلیسی",
+                                        "type": "string"
+                                    },
+                                    "name_fa": {
+                                        "description": "نام فارسی",
+                                        "type": "string"
+                                    },
+                                    "permissions[]": {
+                                        "description": "مجوزها (نام مجوز)",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/roles/all": {
+            "get": {
+                "tags": [
+                    "نقش‌های کاربری"
+                ],
+                "summary": "لیست نقش‌های کاربری",
+                "description": "",
+                "operationId": "386e989142efc28f154f76c8f0c94054",
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/roles/{id}": {
+            "post": {
+                "tags": [
+                    "نقش‌های کاربری"
+                ],
+                "summary": "بروزرسانی نقش کاربری",
+                "description": "نام انگلیسی و فارسی نقش کاربری هایی که قفل هستند، قابل تغییر نمیباشند",
+                "operationId": "f1284214d9d3e387aabc5cd3e45cc585",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه نقش کاربری",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "_method"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "description": "این مقدار باید بصورت ثابت شود",
+                                        "type": "string",
+                                        "default": "put",
+                                        "enum": [
+                                            "put"
+                                        ]
+                                    },
+                                    "name": {
+                                        "description": "نام انگلیسی",
+                                        "type": "string"
+                                    },
+                                    "name_fa": {
+                                        "description": "نام فارسی",
+                                        "type": "string"
+                                    },
+                                    "permissions[]": {
+                                        "description": "مجوزها (نام مجوز)",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "نقش‌های کاربری"
+                ],
+                "summary": "حذف نقش کاربری",
+                "description": "نقش کاربری هایی که قفل هستند، قابل حذف نمیباشند",
+                "operationId": "7e347d12d97a404c4084d1d7cc641f42",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه نقش کاربری",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/skills": {
+            "get": {
+                "tags": [
+                    "مهارت"
+                ],
+                "summary": "لیست مهارت ها بصورت صفحه بندی",
+                "description": "",
+                "operationId": "14d6c9ed974dba957f7e8ec5c3dd0b4a",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    },
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "description": "جستجوی عنوان",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "مهارت"
+                ],
+                "summary": "ثبت مهارت",
+                "description": "",
+                "operationId": "605d226ad8fefb24d6099bb17552fd72",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "title"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "description": "عنوان",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/skills/all": {
+            "get": {
+                "tags": [
+                    "مهارت"
+                ],
+                "summary": "لیست تمام مهارت ها",
+                "description": "",
+                "operationId": "5d5ae824f35c746601fc9b3134338d46",
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/skills/{id}": {
+            "post": {
+                "tags": [
+                    "مهارت"
+                ],
+                "summary": "بروزرسانی مهارت",
+                "description": "",
+                "operationId": "dcd577d6baa3c8cc92e679bc6e55411a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه مهارت",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "_method",
+                                    "title"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "description": "این مقدار باید بصورت ثابت شود",
+                                        "type": "string",
+                                        "default": "put",
+                                        "enum": [
+                                            "put"
+                                        ]
+                                    },
+                                    "title": {
+                                        "description": "عنوان",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "مهارت"
+                ],
+                "summary": "حذف مهارت",
+                "description": "",
+                "operationId": "d8c84074797d8838d15f9299381e1a12",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه مهارت",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": [
+                    "کاربر"
+                ],
+                "summary": "درخواست ورود کاربر",
+                "description": "اگر hasPassword true باشد یعنی باید فرم ورود با کلمه عبور نمایش داده شود وگرنه کد فعالسازی به شماره کاربر ارسال خواهد شد",
+                "operationId": "2b6229d8a87d2e57d7fa1239a90ac0ce",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "mobile": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "mobile": "+989123456789"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "شماره موبایل معتبر نمیباشد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "حساب کاربر مسدود میباشد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login/password": {
+            "post": {
+                "tags": [
+                    "کاربر"
+                ],
+                "summary": "ورود به حساب کاربری با شماره موبایل و کلمه عبور",
+                "description": "",
+                "operationId": "29f212e835fbf66f680d1ea36a40846b",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "mobile": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "mobile": "+989123456789",
+                                    "password": "1234"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "شماره موبایل یا کلمه عبور معتبر نمیباشد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "حساب کاربر مسدود میباشد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login/confirm": {
+            "post": {
+                "tags": [
+                    "کاربر"
+                ],
+                "summary": "اعتبار سنجی کد فعالسازی",
+                "description": "",
+                "operationId": "69f1a8922d668c123f74b5e96c37192e",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "mobile": {
+                                        "type": "string"
+                                    },
+                                    "verification_code": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "mobile": "+989123456789",
+                                    "verification_code": "123456"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "شماره موبایل یا کلمه عبور معتبر نمیباشد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "حساب کاربر مسدود میباشد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login/otp/resend": {
+            "post": {
+                "tags": [
+                    "کاربر"
+                ],
+                "summary": "درخواست مجدد کد فعالسازی",
+                "description": "",
+                "operationId": "6d278037969bab97176ef78b349bbcae",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "mobile": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "mobile": "+989123456789"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "شماره موبایل معتبر نمیباشد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "حساب کاربر مسدود میباشد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "post": {
+                "tags": [
+                    "کاربر"
+                ],
+                "summary": "ثبت کاربر",
+                "description": "",
+                "operationId": "d1ba7a1c48b57092be74472855c5632b",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "mobile",
+                                    "status"
+                                ],
+                                "properties": {
+                                    "first_name": {
+                                        "description": "نام",
+                                        "type": "string"
+                                    },
+                                    "last_name": {
+                                        "description": "نام خانوادگی",
+                                        "type": "string"
+                                    },
+                                    "father_name": {
+                                        "description": "نام پدر",
+                                        "type": "string"
+                                    },
+                                    "mobile": {
+                                        "description": "شماره موبایل",
+                                        "type": "string"
+                                    },
+                                    "national_code": {
+                                        "description": "کد ملی",
+                                        "type": "number"
+                                    },
+                                    "birthdate": {
+                                        "description": "تاریخ تولد بصورت شمسی با فرمت Y/m/d - مثال:1401/05/10",
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "description": "کلمه عبور",
+                                        "type": "string"
+                                    },
+                                    "city_id": {
+                                        "description": "شناسه شهر کاربر",
+                                        "type": "number"
+                                    },
+                                    "grade_id": {
+                                        "description": "شناسه مقطع تحصیلی کاربر",
+                                        "type": "number"
+                                    },
+                                    "birth_place_id": {
+                                        "description": "شناسه شهر محل تولد کاربر",
+                                        "type": "number"
+                                    },
+                                    "status": {
+                                        "description": "Active: فعال - Inactive: غیرفعال",
+                                        "type": "string",
+                                        "enum": [
+                                            "Active",
+                                            "Inactive"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "توکن را به همراه Bearer وارد کنید.",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "security": [
+        {
+            "sanctum": []
+        }
+    ]
+}

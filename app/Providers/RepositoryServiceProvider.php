@@ -1,0 +1,89 @@
+<?php
+
+namespace App\Providers;
+
+use App\Repositories\V1\Address\Eloquent\AddressRepository;
+use App\Repositories\V1\Address\Interfaces\AddressRepositoryInterface;
+use App\Repositories\V1\BaseRepository;
+use App\Repositories\V1\City\Eloquent\CityRepository;
+use App\Repositories\V1\City\Interfaces\CityRepositoryInterface;
+use App\Repositories\V1\EloquentRepositoryInterface;
+use App\Repositories\V1\Grade\Eloquent\GradeRepository;
+use App\Repositories\V1\Grade\Interfaces\GradeRepositoryInterface;
+use App\Repositories\V1\Intelligence\Eloquent\IntelligenceRepository;
+use App\Repositories\V1\Intelligence\Interfaces\IntelligenceRepositoryInterface;
+use App\Repositories\V1\Job\Eloquent\JobRepository;
+use App\Repositories\V1\Job\Interfaces\JobRepositoryInterface;
+use App\Repositories\V1\Major\Eloquent\MajorRepository;
+use App\Repositories\V1\Major\Interfaces\MajorRepositoryInterface;
+use App\Repositories\V1\Package\Eloquent\PackageRepository;
+use App\Repositories\V1\Package\Interfaces\PackageRepositoryInterface;
+use App\Repositories\V1\Permission\Eloquent\PermissionRepository;
+use App\Repositories\V1\Permission\Interfaces\PermissionRepositoryInterface;
+use App\Repositories\V1\Personnel\Eloquent\PersonnelRepository;
+use App\Repositories\V1\Personnel\Interfaces\PersonnelRepositoryInterface;
+use App\Repositories\V1\Province\Eloquent\ProvinceRepository;
+use App\Repositories\V1\Province\Interfaces\ProvinceRepositoryInterface;
+use App\Repositories\V1\PsychologicalQuestion\Eloquent\PsychologicalQuestionRepository;
+use App\Repositories\V1\PsychologicalQuestion\Interfaces\PsychologicalQuestionRepositoryInterface;
+use App\Repositories\V1\Rahjoo\Eloquent\RahjooRepository;
+use App\Repositories\V1\Rahjoo\Interfaces\RahjooRepositoryInterface;
+use App\Repositories\V1\RahjooCourse\Eloquent\RahjooCourseRepository;
+use App\Repositories\V1\RahjooCourse\Interfaces\RahjooCourseRepositoryInterface;
+use App\Repositories\V1\RahjooParent\Eloquent\RahjooParentRepository;
+use App\Repositories\V1\RahjooParent\Interfaces\RahjooParentRepositoryInterface;
+use App\Repositories\V1\Role\Eloquent\RoleRepository;
+use App\Repositories\V1\Role\Interfaces\RoleRepositoryInterface;
+use App\Repositories\V1\Skill\Eloquent\SkillRepository;
+use App\Repositories\V1\Skill\Interfaces\SkillRepositoryInterface;
+use App\Repositories\V1\User\Eloquent\UserRepository;
+use App\Repositories\V1\User\Interfaces\UserRepositoryInterface;
+use Illuminate\Support\ServiceProvider;
+
+class RepositoryServiceProvider extends ServiceProvider
+{
+    /**
+     * Register services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->_registerRepositories();
+    }
+
+    /**
+     * Bootstrap services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        //
+    }
+
+    /**
+     * @return void
+     */
+    private function _registerRepositories(): void
+    {
+        $this->app->bind(EloquentRepositoryInterface::class, BaseRepository::class);
+        $this->app->bind(ProvinceRepositoryInterface::class, ProvinceRepository::class);
+        $this->app->bind(CityRepositoryInterface::class, CityRepository::class);
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+        $this->app->bind(RoleRepositoryInterface::class, RoleRepository::class);
+        $this->app->bind(PermissionRepositoryInterface::class, PermissionRepository::class);
+        $this->app->bind(GradeRepositoryInterface::class, GradeRepository::class);
+        $this->app->bind(AddressRepositoryInterface::class, AddressRepository::class);
+        $this->app->bind(MajorRepositoryInterface::class, MajorRepository::class);
+        $this->app->bind(JobRepositoryInterface::class, JobRepository::class);
+        $this->app->bind(PersonnelRepositoryInterface::class, PersonnelRepository::class);
+        $this->app->bind(RahjooRepositoryInterface::class, RahjooRepository::class);
+        $this->app->bind(RahjooParentRepositoryInterface::class, RahjooParentRepository::class);
+        $this->app->bind(RahjooCourseRepositoryInterface::class, RahjooCourseRepository::class);
+        $this->app->bind(PsychologicalQuestionRepositoryInterface::class, PsychologicalQuestionRepository::class);
+        $this->app->bind(SkillRepositoryInterface::class, SkillRepository::class);
+        $this->app->bind(IntelligenceRepositoryInterface::class, IntelligenceRepository::class);
+        $this->app->bind(PackageRepositoryInterface::class, PackageRepository::class);
+    }
+}
