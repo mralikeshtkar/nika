@@ -26,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->_URLForceScheme();
         $this->_jsonResources();
         $this->_requestMacros();
         $this->_URLForceScheme();
