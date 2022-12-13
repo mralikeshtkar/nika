@@ -131,6 +131,8 @@ class UserService extends BaseService
         $token = $user->generateToken();
         return ApiResponse::message(trans("Login was successful"))
             ->addData('token', $token)
+            ->addData('hasName', (bool)$user->name)
+            ->addData('isPersonnel', $user->isPersonnel())
             ->send();
     }
 
@@ -200,7 +202,7 @@ class UserService extends BaseService
             'birth_place_id' => $request->birth_place_id,
         ]);
         return ApiResponse::message(trans("The :attribute was successfully registered", ['attribute' => trans('User')]), Response::HTTP_CREATED)
-            ->addData('user',UserResource::make($user))
+            ->addData('user', UserResource::make($user))
             ->send();
     }
 
