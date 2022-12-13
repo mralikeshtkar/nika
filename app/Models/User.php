@@ -7,6 +7,7 @@ use App\Enums\UserStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -202,6 +203,14 @@ class User extends Authenticatable
     public function personnel(): HasOne
     {
         return $this->hasOne(Personnel::class);
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function intelligences(): BelongsToMany
+    {
+        return $this->belongsToMany(Intelligence::class);
     }
 
     #endregion

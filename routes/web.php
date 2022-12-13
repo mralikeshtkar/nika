@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function (\Illuminate\Http\Request $request) {
+    dd(\App\Models\User::first()->intelligences);
     return view('welcome');
     $user=\App\Models\User::first();
     $user->assignRole(\App\Enums\Role::SUPER_ADMIN['name']);

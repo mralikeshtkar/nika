@@ -2,6 +2,7 @@
 
 namespace App\Repositories\V1\Package\Eloquent;
 
+use App\Models\Media;
 use App\Models\Package;
 use App\Repositories\V1\BaseRepository;
 use App\Repositories\V1\Package\Interfaces\PackageRepositoryInterface;
@@ -16,16 +17,6 @@ class PackageRepository extends BaseRepository implements PackageRepositoryInter
         parent::__construct($model);
     }
 
-    /**
-     * @param $model
-     * @param array $attributes
-     * @return mixed|void
-     */
-    public function update($model, array $attributes)
-    {
-        parent::update($model, $attributes);
-        return $model->refresh();
-    }
 
     /**
      * Filter pagination.
@@ -39,6 +30,29 @@ class PackageRepository extends BaseRepository implements PackageRepositoryInter
             $builder->where('title', '%' . $request->title . '%');
         });
         return $this;
+    }
+
+    /**
+     * @param $package
+     * @param $video
+     * @return null
+     */
+    public function uploadVideo($package, $video)
+    {
+        return $video ? $package->setDisk(Media::MEDIA_PUBLIC_DISK)
+            ->setDirectory(Package::MEDIA_DIRECTORY_VIDEOS)
+            ->setCollection(Package::MEDIA_COLLECTION_VIDEO)
+            ->addMedia($video) : null;
+    }
+
+    /**
+     * @param $package
+     * @param $intelligences
+     * @return mixed
+     */
+    public function syncIntelligences($package, $intelligences): mixed
+    {
+        return $package->intelligences()->synce($intelligences);
     }
 
     /**

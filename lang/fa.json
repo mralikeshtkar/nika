@@ -21,7 +21,10 @@
     "RahjooCourse": "دوره رهجو",
     "Skill": "مهارت",
     "Package": "پکیج",
+    "Intelligence": "هوش",
+    "IntelligenceFeedback": "بازخورد هوش",
     "Skills": "مهارت\u200Cها",
+    "IntelligencePointName": "نام امتیاز هوش",
     "PsychologicalQuestion": "سوالات روان شناسی",
     "Brith certificate place": "محل تولد",
     "Marital status": "وضعیت تأهل",
@@ -44,5 +47,6 @@
     "The :attribute must contain numbers and English letters": ":attribute باید شامل اعداد و حروف انگلیسی باشد",
     "The :attribute format is invalid": "فرمت :attribute معتبر نمیباشد",
     "The :attribute isn't unique": ":attribute قبلا ثبت شده است",
-    "The :attribute is invalid": ":attribute معتبر نمیباشد"
+    "The :attribute is invalid": ":attribute معتبر نمیباشد",
+    "The video package has been uploaded successfully": "آپلود پکیج ویدیو با موفقیت انجام شد"
 }

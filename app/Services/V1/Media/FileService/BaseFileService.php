@@ -2,6 +2,7 @@
 
 namespace App\Services\V1\Media\FileService;
 
+use App\Models\Media;
 use Illuminate\Support\Facades\Storage;
 
 class BaseFileService
@@ -30,5 +31,14 @@ class BaseFileService
         return [
             'original' => $this->upload($file, $disk, $directory),
         ];
+    }
+
+    /**
+     * @param Media $media
+     * @return bool
+     */
+    public function delete(Media $media): bool
+    {
+        return Storage::disk($media->disk)->delete($media->files);
     }
 }

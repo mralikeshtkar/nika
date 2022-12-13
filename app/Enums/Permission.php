@@ -103,7 +103,15 @@ final class Permission extends Enum implements LocalizedEnum
     /* Packages */
     const MANAGE_PACKAGES = "manage packages";
     const VIEW_PACKAGES = "view packages";
+    const SHOW_PACKAGES = "show packages";
     const CREATE_PACKAGES = "create packages";
     const EDIT_PACKAGES = "edit packages";
     const DELETE_PACKAGES = "delete packages";
+
+    /* Intelligences */
+    const MANAGE_INTELLIGENCES = "manage intelligences";
+    const VIEW_INTELLIGENCES = "view intelligences";
+    const CREATE_INTELLIGENCES = "create intelligences";
+    const EDIT_INTELLIGENCES = "edit intelligences";
+    const DELETE_INTELLIGENCES = "delete intelligences";
 }

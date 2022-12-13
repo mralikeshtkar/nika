@@ -131,6 +131,7 @@ class ApiPackageController extends ApiBaseController
      *                  @OA\Property(
      *                      property="video",
      *                      type="string",
+     *                      description="ویدیو پکیج",
      *                      format="binary",
      *                  ),
      *                 @OA\Property(
@@ -139,6 +140,12 @@ class ApiPackageController extends ApiBaseController
      *                     enum={"Active","Inactive"},
      *                     description="وضعیت Active:فعال Inactive:غیرفعال",
      *                 ),
+     *                  @OA\Property(
+     *                     property="intelligences[]",
+     *                     type="array",
+     *                     @OA\Items(type="number"),
+     *                     description="هوش ها (شناسه هوش)"
+     *                 )
      *             )
      *         )
      *     ),
@@ -152,6 +159,47 @@ class ApiPackageController extends ApiBaseController
     public function store(Request $request)
     {
         return $this->packageService->store($request);
+    }
+
+    /**
+     * Store the video package.
+     *
+     * @OA\Post(
+     *     path="/packages/{id}/upload-video",
+     *     summary="اپلود ویدیو پکیج",
+     *     description="",
+     *     tags={"پکیج"},
+     *     @OA\Parameter(
+     *         description="شناسه پکیج",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"video"},
+     *                  @OA\Property(
+     *                      property="video",
+     *                      type="string",
+     *                      description="ویدیو پکیج",
+     *                      format="binary",
+     *                  ),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="ثبت با موفقیت انجام شد",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function uploadVideo(Request $request,$package)
+    {
+        return $this->packageService->uploadVideo($request,$package);
     }
 
     /**
@@ -202,12 +250,24 @@ class ApiPackageController extends ApiBaseController
      *                     enum={1,0},
      *                     description="وضعیت تکمیل - بصورت boolean باید باشد",
      *                 ),
+     *                  @OA\Property(
+     *                      property="video",
+     *                      type="string",
+     *                      description="ویدیو پکیج",
+     *                      format="binary",
+     *                  ),
      *                 @OA\Property(
      *                     property="status",
      *                     type="string",
      *                     enum={"Active","Inactive"},
      *                     description="وضعیت Active:فعال Inactive:غیرفعال",
      *                 ),
+     *                  @OA\Property(
+     *                     property="intelligences[]",
+     *                     type="array",
+     *                     @OA\Items(type="number"),
+     *                     description="هوش ها (شناسه هوش)"
+     *                 )
      *             )
      *         )
      *     ),

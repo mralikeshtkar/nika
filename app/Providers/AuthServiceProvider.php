@@ -4,6 +4,7 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 use App\Models\Grade;
+use App\Models\Intelligence;
 use App\Models\Job;
 use App\Models\Major;
 use App\Models\Package;
@@ -18,6 +19,7 @@ use App\Models\Role;
 use App\Models\Skill;
 use App\Models\User;
 use App\Policies\GradePolicy;
+use App\Policies\Intelligence\IntelligencePolicy;
 use App\Policies\JobPolicy;
 use App\Policies\MajorPolicy;
 use App\Policies\Package\PackagePolicy;
@@ -57,6 +59,7 @@ class AuthServiceProvider extends ServiceProvider
         PsychologicalQuestion::class => PsychologicalQuestionPolicy::class,
         Skill::class => SkillPolicy::class,
         Package::class => PackagePolicy::class,
+        Intelligence::class => IntelligencePolicy::class,
     ];
 
     /**

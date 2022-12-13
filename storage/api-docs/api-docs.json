@@ -7,6 +7,9 @@
     "servers": [
         {
             "url": "http://127.0.0.1:8000/api/v1"
+        },
+        {
+            "url": "https://rashtdev.ir/api/v1"
         }
     ],
     "paths": {
@@ -645,6 +648,235 @@
                 }
             }
         },
+        "/intelligence-point-names": {
+            "post": {
+                "tags": [
+                    "نام های امتیاز هوش"
+                ],
+                "summary": "ثبت نام های امتیاز هوش",
+                "description": "",
+                "operationId": "800f704a000af44d251fc9958e12aaee",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "نام",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/intelligences": {
+            "get": {
+                "tags": [
+                    "هوش"
+                ],
+                "summary": "لیست هوش ها بصورت صفحه بندی",
+                "description": "",
+                "operationId": "d8325db1cb24d8c36cec722899507d85",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    },
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "description": "جستجوی عنوان",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "هوش"
+                ],
+                "summary": "ثبت هوش",
+                "description": "",
+                "operationId": "17f32cfd5c6273a18b2e87377550ba0e",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "is_completed"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "description": "عنوان",
+                                        "type": "string"
+                                    },
+                                    "is_completed": {
+                                        "description": "وضعیت تکمیل - بصورت boolean باید باشد",
+                                        "type": "string",
+                                        "enum": [
+                                            1,
+                                            0
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/intelligences/{id}": {
+            "post": {
+                "tags": [
+                    "هوش"
+                ],
+                "summary": "ثبت هوش",
+                "description": "",
+                "operationId": "e34271308de85f6420dc4d416d2db8f4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه هوش",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "_method",
+                                    "title",
+                                    "is_completed"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "description": "این مقدار باید بصورت ثابت شود",
+                                        "type": "string",
+                                        "default": "put",
+                                        "enum": [
+                                            "put"
+                                        ]
+                                    },
+                                    "title": {
+                                        "description": "عنوان",
+                                        "type": "string"
+                                    },
+                                    "is_completed": {
+                                        "description": "وضعیت تکمیل - بصورت boolean باید باشد",
+                                        "type": "string",
+                                        "enum": [
+                                            1,
+                                            0
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "هوش"
+                ],
+                "summary": "حذف هوش",
+                "description": "",
+                "operationId": "500b23bf6d2977509dbd46d227caaee1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه هوش",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/jobs": {
             "get": {
                 "tags": [
@@ -1118,6 +1350,7 @@
                                         ]
                                     },
                                     "video": {
+                                        "description": "ویدیو پکیج",
                                         "type": "string",
                                         "format": "binary"
                                     },
@@ -1128,6 +1361,13 @@
                                             "Active",
                                             "Inactive"
                                         ]
+                                    },
+                                    "intelligences[]": {
+                                        "description": "هوش ها (شناسه هوش)",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "number"
+                                        }
                                     }
                                 },
                                 "type": "object"
@@ -1234,6 +1474,11 @@
                                             0
                                         ]
                                     },
+                                    "video": {
+                                        "description": "ویدیو پکیج",
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
                                     "status": {
                                         "description": "وضعیت Active:فعال Inactive:غیرفعال",
                                         "type": "string",
@@ -1241,6 +1486,13 @@
                                             "Active",
                                             "Inactive"
                                         ]
+                                    },
+                                    "intelligences[]": {
+                                        "description": "هوش ها (شناسه هوش)",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "number"
+                                        }
                                     }
                                 },
                                 "type": "object"
@@ -1280,6 +1532,56 @@
                 "responses": {
                     "200": {
                         "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/packages/{id}/upload-video": {
+            "post": {
+                "tags": [
+                    "پکیج"
+                ],
+                "summary": "اپلود ویدیو پکیج",
+                "description": "",
+                "operationId": "96eb29d9b2bb534a489aac09fcb1bd6d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه پکیج",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "video"
+                                ],
+                                "properties": {
+                                    "video": {
+                                        "description": "ویدیو پکیج",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ثبت با موفقیت انجام شد",
                         "content": {
                             "application/json": {
                                 "schema": {}

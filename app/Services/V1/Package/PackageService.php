@@ -6,8 +6,10 @@ use App\Enums\Media\MediaExtension;
 use App\Enums\Package\PackageStatus;
 use App\Http\Resources\V1\Package\PackageResource;
 use App\Http\Resources\V1\PaginationResource;
+use App\Models\Intelligence;
 use App\Models\Media;
 use App\Models\Package;
+use App\Repositories\V1\Media\Interfaces\MediaRepositoryInterface;
 use App\Repositories\V1\Package\Interfaces\PackageRepositoryInterface;
 use App\Responses\Api\ApiResponse;
 use App\Services\V1\BaseService;
@@ -48,6 +50,7 @@ class PackageService extends BaseService
      */
     public function index(Request $request): JsonResponse
     {
+        ApiResponse::authorize($request->user()->can('index', Package::class));
         $packages = $this->packageRepository->select(['id', 'title', 'status', 'age', 'price', 'is_completed', 'description'])
             ->filterPagination($request)
             ->paginate($request->get('perPage', 10));
@@ -64,7 +67,8 @@ class PackageService extends BaseService
      */
     public function show(Request $request, $package): JsonResponse
     {
-        $package = $this->packageRepository->findOrFailById($package);
+        ApiResponse::authorize($request->user()->can('show', Package::class));
+        $package = $this->packageRepository->with(['video'])->findOrFailById($package);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('package', new PackageResource($package))
             ->send();
@@ -86,7 +90,9 @@ class PackageService extends BaseService
             'price' => ['required', 'numeric'],//todo set minimum price from setting
             'is_completed' => ['nullable', 'boolean'],
             'description' => ['nullable', 'string'],
-            'video' => ['nullable', 'file', 'mimes:' . implode(",", MediaExtension::getExtensions(MediaExtension::Video))]
+            'video' => ['nullable', 'file', 'mimes:' . implode(",", MediaExtension::getExtensions(MediaExtension::Video))],
+            'intelligences' => ['nullable', 'array'],
+            'intelligences.*' => ['exists:' . Intelligence::class . ',id'],
         ]);
         $request->merge([
             'status' => $request->filled('status') ? PackageStatus::coerce($request->status) : null,
@@ -104,21 +110,36 @@ class PackageService extends BaseService
                 })->when($request->filled('is_completed'), function (Collection $collection) use ($request) {
                     $collection->put('is_completed', $request->is_completed);
                 })->toArray());
-                if ($request->hasFile('video')) {
-                    $package->setDisk(Media::MEDIA_PRIVATE_DISK)
-                        ->setDirectory(Package::MEDIA_DIRECTORY_VIDEOS)
-                        ->setCollection(Package::MEDIA_COLLECTION_VIDEO)
-                        ->addMedia($request->video);
-                }
+                $this->packageRepository->syncIntelligences($package, $request->get('intelligences', []));
+                $this->packageRepository->uploadVideo($package, $request->video);
                 $package = $this->packageRepository->with(['video'])->findOrFailById($package->id);
                 return ApiResponse::message(trans("The :attribute was successfully registered", ['attribute' => trans('Package')]), Response::HTTP_CREATED)
                     ->addData('package', new PackageResource($package))
                     ->send();
             });
         } catch (Throwable $e) {
-            dd($e);
             return ApiResponse::error(trans("Internal server error"))->send();
         }
+    }
+
+    /**
+     * @param Request $request
+     * @param $package
+     * @return JsonResponse
+     */
+    public function uploadVideo(Request $request, $package): JsonResponse
+    {
+        ApiResponse::authorize($request->user()->can('create', Package::class));
+        $package = $this->packageRepository->findOrFailById($package);
+        ApiResponse::validate($request->all(), [
+            'video' => ['required', 'file', 'mimes:' . implode(",", MediaExtension::getExtensions(MediaExtension::Video))]
+        ]);
+        resolve(MediaRepositoryInterface::class)->destroy($package->video);
+        $this->packageRepository->uploadVideo($package, $request->video);
+        $package = $this->packageRepository->with(['video', 'intelligence:id,title,is_completed'])->findOrFailById($package->id);
+        return ApiResponse::message(trans("The video package has been uploaded successfully"))
+            ->addData('package', new PackageResource($package))
+            ->send();
     }
 
     /**
@@ -131,21 +152,43 @@ class PackageService extends BaseService
     public function update(Request $request, $package): JsonResponse
     {
         ApiResponse::authorize($request->user()->can('edit', Package::class));
+        ApiResponse::validate($request->all(), [
+            'status' => ['nullable', new EnumKey(PackageStatus::class)],
+            'title' => ['required', 'string'],
+            'age' => ['required', 'numeric', 'min:1'],
+            'price' => ['required', 'numeric'],//todo set minimum price from setting
+            'is_completed' => ['nullable', 'boolean'],
+            'description' => ['nullable', 'string'],
+            'video' => ['nullable', 'file', 'mimes:' . implode(",", MediaExtension::getExtensions(MediaExtension::Video))],
+            'intelligences' => ['nullable', 'array'],
+            'intelligences.*' => ['exists:' . Intelligence::class . ',id'],
+        ]);
+        $request->merge([
+            'status' => $request->filled('status') ? PackageStatus::coerce($request->status) : null,
+        ]);
         $package = $this->packageRepository->findOrFailById($package);
-        $package = $this->packageRepository->update($package, collect([
-            'user_id' => $request->user()->id,
-            'title' => $request->title,
-            'age' => $request->age,
-            'price' => $request->price,
-            'description' => $request->description,
-        ])->when($request->filled('status'), function (Collection $collection) use ($request) {
-            $collection->put('status', $request->status->value);
-        })->when($request->filled('is_completed'), function (Collection $collection) use ($request) {
-            $collection->put('is_completed', $request->is_completed);
-        })->toArray());
-        return ApiResponse::message(trans("The :attribute was successfully updated", ['attribute' => trans('Package')]))
-            ->addData('package', new PackageResource($package))
-            ->send();
+        try {
+            $this->packageRepository->update($package, collect([
+                'user_id' => $request->user()->id,
+                'title' => $request->title,
+                'age' => $request->age,
+                'price' => $request->price,
+                'description' => $request->description,
+            ])->when($request->filled('status'), function (Collection $collection) use ($request) {
+                $collection->put('status', $request->status->value);
+            })->when($request->filled('is_completed'), function (Collection $collection) use ($request) {
+                $collection->put('is_completed', $request->is_completed);
+            })->toArray());
+            $this->packageRepository->syncIntelligences($package, $request->get('intelligences', []));
+            resolve(MediaRepositoryInterface::class)->destroy($package->video);
+            $this->packageRepository->uploadVideo($package, $request->video);
+            $package = $this->packageRepository->with(['video', 'intelligence:id,title,is_completed'])->findOrFailById($package->id);
+            return ApiResponse::message(trans("The :attribute was successfully updated", ['attribute' => trans('Package')]))
+                ->addData('package', new PackageResource($package))
+                ->send();
+        } catch (Throwable $e) {
+            return ApiResponse::error(trans("Internal server error"))->send();
+        }
     }
 
     /**

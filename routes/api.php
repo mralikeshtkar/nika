@@ -3,6 +3,8 @@
 use App\Http\Controllers\V1\Api\Address\ApiAddressController as V1ApiAddressController;
 use App\Http\Controllers\V1\Api\City\ApiCityController as V1ApiCityController;
 use App\Http\Controllers\V1\Api\Grade\ApiGradeController as V1ApiGradeController;
+use App\Http\Controllers\V1\Api\Intelligence\ApiIntelligenceController as V1ApiIntelligenceController;
+use App\Http\Controllers\V1\Api\IntelligencePointName\ApiIntelligencePointNameController as V1ApiIntelligencePointNameController;
 use App\Http\Controllers\V1\Api\Job\ApiJobController as V1ApiJobController;
 use App\Http\Controllers\V1\Api\Major\ApiMajorController as V1ApiMajorController;
 use App\Http\Controllers\V1\Api\Package\ApiPackageController as V1ApiPackageController;
@@ -167,7 +169,26 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->post('packages', [V1ApiPackageController::class, 'store']);
             $router->get('packages/{package}', [V1ApiPackageController::class, 'show']);
             $router->put('packages/{package}', [V1ApiPackageController::class, 'update']);
-            $router->delete('packages/{package}', [V1ApiPackageController::class, 'update']);
+            $router->delete('packages/{package}', [V1ApiPackageController::class, 'destroy']);
+            $router->post('packages/{package}/upload-video', [V1ApiPackageController::class, 'uploadVideo']);
+        });
+
+        /* Intelligences */
+        $router->group([], function (Router $router) {
+            $router->get('intelligences', [V1ApiIntelligenceController::class, 'index']);
+            $router->post('intelligences', [V1ApiIntelligenceController::class, 'store']);
+            $router->get('intelligences/{intelligence}', [V1ApiIntelligenceController::class, 'show']);
+            $router->put('intelligences/{intelligence}', [V1ApiIntelligenceController::class, 'update']);
+            $router->delete('intelligences/{intelligence}', [V1ApiIntelligenceController::class, 'destroy']);
+        });
+
+        /* Intelligence point names */
+        $router->group([], function (Router $router) {
+            $router->get('intelligence-point-names', [V1ApiIntelligencePointNameController::class, 'index']);
+            $router->post('intelligence-point-names', [V1ApiIntelligencePointNameController::class, 'store']);
+            $router->get('intelligence-point-names/{intelligence-point-name}', [V1ApiIntelligencePointNameController::class, 'show']);
+            $router->put('intelligence-point-names/{intelligence-point-name}', [V1ApiIntelligencePointNameController::class, 'update']);
+            $router->delete('intelligence-point-names/{intelligence-point-name}', [V1ApiIntelligencePointNameController::class, 'destroy']);
         });
 
     });

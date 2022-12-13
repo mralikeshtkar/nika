@@ -6,6 +6,7 @@ use App\Traits\Media\HasMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Package extends Model
@@ -53,6 +54,14 @@ class Package extends Model
     public function video(): MorphOne
     {
         return $this->singleMedia()->where('collection', self::MEDIA_COLLECTION_VIDEO);
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function intelligences(): BelongsToMany
+    {
+        return $this->belongsToMany(Intelligence::class);
     }
 
     #endregion

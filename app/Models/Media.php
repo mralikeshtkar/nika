@@ -37,4 +37,16 @@ class Media extends Model
     ];
 
     #endregion
+
+    #region Methods
+
+    /**
+     * @return bool
+     */
+    public function isDiskPrivate(): bool
+    {
+        return $this->disk == self::MEDIA_PRIVATE_DISK;
+    }
+
+    #endregion
 }

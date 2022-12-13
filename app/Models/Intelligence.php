@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Intelligence extends Model
 {
@@ -21,6 +22,10 @@ class Intelligence extends Model
         'is_completed',
     ];
 
+    protected $casts = [
+        'is_completed' => 'bool',
+    ];
+
     #endregion
 
     #region Relations
@@ -31,6 +36,14 @@ class Intelligence extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function packages(): BelongsToMany
+    {
+        return $this->belongsToMany(Package::class);
     }
 
     #endregion

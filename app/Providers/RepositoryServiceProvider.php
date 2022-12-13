@@ -12,10 +12,16 @@ use App\Repositories\V1\Grade\Eloquent\GradeRepository;
 use App\Repositories\V1\Grade\Interfaces\GradeRepositoryInterface;
 use App\Repositories\V1\Intelligence\Eloquent\IntelligenceRepository;
 use App\Repositories\V1\Intelligence\Interfaces\IntelligenceRepositoryInterface;
+use App\Repositories\V1\IntelligenceFeedback\Eloquent\IntelligenceFeedbackRepository;
+use App\Repositories\V1\IntelligenceFeedback\Interfaces\IntelligenceFeedbackRepositoryInterface;
+use App\Repositories\V1\IntelligencePointName\Eloquent\IntelligencePointNameRepository;
+use App\Repositories\V1\IntelligencePointName\Interfaces\IntelligencePointNameRepositoryInterface;
 use App\Repositories\V1\Job\Eloquent\JobRepository;
 use App\Repositories\V1\Job\Interfaces\JobRepositoryInterface;
 use App\Repositories\V1\Major\Eloquent\MajorRepository;
 use App\Repositories\V1\Major\Interfaces\MajorRepositoryInterface;
+use App\Repositories\V1\Media\Eloquent\MediaRepository;
+use App\Repositories\V1\Media\Interfaces\MediaRepositoryInterface;
 use App\Repositories\V1\Package\Eloquent\PackageRepository;
 use App\Repositories\V1\Package\Interfaces\PackageRepositoryInterface;
 use App\Repositories\V1\Permission\Eloquent\PermissionRepository;
@@ -85,5 +91,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(SkillRepositoryInterface::class, SkillRepository::class);
         $this->app->bind(IntelligenceRepositoryInterface::class, IntelligenceRepository::class);
         $this->app->bind(PackageRepositoryInterface::class, PackageRepository::class);
+        $this->app->bind(MediaRepositoryInterface::class, MediaRepository::class);
+        $this->app->bind(IntelligenceFeedbackRepositoryInterface::class, IntelligenceFeedbackRepository::class);
+        $this->app->bind(IntelligencePointNameRepositoryInterface::class, IntelligencePointNameRepository::class);
     }
 }

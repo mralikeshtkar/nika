@@ -23,6 +23,18 @@ class PackagePolicy
     }
 
     /**
+     * Check user can access to show.
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function show(User $user): bool
+    {
+        return $user->hasPermissionTo(Permission::SHOW_PACKAGES)
+            || $user->hasPermissionTo(Permission::MANAGE_PACKAGES);
+    }
+
+    /**
      * Check user can access to create.
      *
      * @param User $user
