@@ -55,34 +55,6 @@ class ApiIntelligencePointNameController extends ApiBaseController
         return $this->intelligencePointNameService->store($request);
     }
 
-    /**
-     * Store an intelligence point name.
-     *
-     * @OA\Post(
-     *     path="/intelligence-point-names",
-     *     summary="ثبت نام های امتیاز هوش",
-     *     description="",
-     *     tags={"نام های امتیاز هوش"},
-     *     @OA\RequestBody(
-     *         @OA\MediaType(
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema(
-     *                 required={"name"},
-     *                 @OA\Property(
-     *                     property="name",
-     *                     type="string",
-     *                     description="نام"
-     *                 ),
-     *             )
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="عملیات موفق",
-     *         @OA\JsonContent()
-     *     ),
-     * )
-     */
     public function update(Request $request, $intelligencePointName)
     {
         return $this->intelligencePointNameService->update($request,$intelligencePointName);
