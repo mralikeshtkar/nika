@@ -63,6 +63,15 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     }
 
     /**
+     * @param $user
+     * @return mixed
+     */
+    public function logout($user): mixed
+    {
+        return $user->tokens()->where('id', $user->currentAccessToken()->id)->delete();
+    }
+
+    /**
      * Check user has role.
      *
      * @param $user

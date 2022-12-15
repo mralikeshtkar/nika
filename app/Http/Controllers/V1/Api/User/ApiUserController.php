@@ -27,6 +27,56 @@ class ApiUserController extends ApiBaseController
     }
 
     /**
+     * Get current user.
+     *
+     * @OA\Get(
+     *     path="/user",
+     *     summary="دریافت اطلاعات کاربر لاگین شده",
+     *     description="",
+     *     tags={"کاربر"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent()
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="حساب کاربر مسدود میباشد",
+     *         @OA\JsonContent()
+     *     )
+     * )
+     */
+    public function currentUser(Request $request)
+    {
+        return $this->userService->currentUser($request);
+    }
+
+    /**
+     * Logout.
+     *
+     * @OA\Post(
+     *     path="/logout",
+     *     summary="خروج از حساب کاربر",
+     *     description="",
+     *     tags={"کاربر"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent()
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="حساب کاربر مسدود میباشد",
+     *         @OA\JsonContent()
+     *     )
+     * )
+     */
+    public function logout(Request $request)
+    {
+        return $this->userService->logout($request);
+    }
+
+    /**
      * Request login with mobile.
      *
      * @OA\Post(

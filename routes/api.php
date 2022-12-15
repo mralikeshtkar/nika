@@ -51,6 +51,12 @@ Route::prefix('v1')->group(function (Router $router) {
 
     $router->middleware('auth:sanctum')->group(function (Router $router) {
 
+        /* Users */
+        $router->group([], function (Router $router) {
+            $router->get('user', [V1UserController::class, 'currentUser']);
+            $router->post('logout', [V1UserController::class, 'logout']);
+        });
+
         /* Provinces */
         $router->group([], function (Router $router) {
             $router->get('provinces', [V1ProvinceController::class, 'index']);

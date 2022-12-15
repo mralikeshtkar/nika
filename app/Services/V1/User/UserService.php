@@ -46,6 +46,28 @@ class UserService extends BaseService
     #region Public methods
 
     /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function currentUser(Request $request): JsonResponse
+    {
+        $user = $request->user();
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('user', new UserResource($user))
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function logout(Request $request): JsonResponse
+    {
+        $this->userRepository->logout($request->user());
+        return ApiResponse::message(trans("Mission accomplished"))->send();
+    }
+
+    /**
      * Request to log in with mobile.
      *
      * @param Request $request
