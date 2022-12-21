@@ -56,6 +56,7 @@ Route::prefix('v1')->group(function (Router $router) {
         /* Users */
         $router->group([], function (Router $router) {
             $router->get('user', [V1UserController::class, 'currentUser']);
+            $router->put('user/information', [V1UserController::class, 'informationUser']);
             $router->post('logout', [V1UserController::class, 'logout']);
         });
 

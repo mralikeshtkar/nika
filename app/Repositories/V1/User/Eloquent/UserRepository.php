@@ -2,8 +2,10 @@
 
 namespace App\Repositories\V1\User\Eloquent;
 
+use App\Enums\Role;
 use App\Models\User;
 use App\Repositories\V1\BaseRepository;
+use App\Repositories\V1\RahjooCourse\Interfaces\RahjooCourseRepositoryInterface;
 use App\Repositories\V1\User\Interfaces\UserRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -62,6 +64,12 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         return $this->model->with('personnel')->findOrFail($id);
     }
 
+    public function update($model, array $attributes)
+    {
+        parent::update($model, $attributes);
+        return $model->refresh();
+    }
+
     /**
      * @param $user
      * @return mixed
@@ -69,6 +77,18 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     public function logout($user): mixed
     {
         return $user->tokens()->where('id', $user->currentAccessToken()->id)->delete();
+    }
+
+    public function assignCreateRole($user)
+    {
+        if ($user->wasRecentlyCreated) {
+            $user->syncRoles(Role::RAHJOO);
+            resolve(RahjooCourseRepositoryInterface::class)->updateOrCreate([
+                'user_id' => $user->id,
+            ], [
+                'user_id' => $user->id,
+            ]);
+        }
     }
 
     /**
@@ -80,7 +100,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
      */
     public function userHasRole($user, $roles): mixed
     {
-        return User::query()->where('id',$user)->role($roles)->exists();
+        return User::query()->where('id', $user)->role($roles)->exists();
     }
 
     /**

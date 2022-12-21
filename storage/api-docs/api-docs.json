@@ -6,10 +6,10 @@
     },
     "servers": [
         {
-            "url": "http://127.0.0.1:8000/api/v1"
+            "url": "https://api.rashtdev.ir/api/v1"
         },
         {
-            "url": "https://api.rashtdev.ir/api/v1"
+            "url": "http://127.0.0.1:8000/api/v1"
         }
     ],
     "paths": {
@@ -3498,6 +3498,63 @@
                     },
                     "400": {
                         "description": "حساب کاربر مسدود میباشد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/information": {
+            "post": {
+                "tags": [
+                    "کاربر"
+                ],
+                "summary": "بروزرسانی اطلاعات کاربر",
+                "description": "",
+                "operationId": "ed9a7bcbd86156d589f4513bdbb0f16a",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "_method",
+                                    "first_name",
+                                    "last_name",
+                                    "birthdate"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "description": "این مقدار باید بصورت ثابت شود",
+                                        "type": "string",
+                                        "default": "put",
+                                        "enum": [
+                                            "put"
+                                        ]
+                                    },
+                                    "first_name": {
+                                        "description": "نام",
+                                        "type": "string"
+                                    },
+                                    "last_name": {
+                                        "description": "نام خانوادگی",
+                                        "type": "string"
+                                    },
+                                    "birthdate": {
+                                        "description": "تاریخ تولد بصورت فرمت: Y/m/d مثال: 1401/06/20",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
                         "content": {
                             "application/json": {
                                 "schema": {}

@@ -1,6 +1,7 @@
 <?php
 
 use Hekmatinasser\Verta\Verta;
+use Illuminate\Support\Arr;
 
 if (!function_exists('to_valid_mobile_number')) {
     /**
@@ -31,5 +32,12 @@ if (!function_exists('jalaliFormat')) {
     function jalaliFormat($date, string $format = 'Y/m/d'): string
     {
         return verta($date)->format($format);
+    }
+}
+
+if (!function_exists('calculateAgeYear')) {
+    function calculateAgeYear($date): int
+    {
+        return today()->diffInYears($date);
     }
 }

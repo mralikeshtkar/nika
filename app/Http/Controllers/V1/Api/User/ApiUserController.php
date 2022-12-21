@@ -52,6 +52,56 @@ class ApiUserController extends ApiBaseController
     }
 
     /**
+     * Update a city.
+     *
+     * @OA\Post(
+     *     path="/user/information",
+     *     summary="بروزرسانی اطلاعات کاربر",
+     *     description="",
+     *     tags={"کاربر"},
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"_method","first_name","last_name","birthdate"},
+     *                 @OA\Property(
+     *                     property="_method",
+     *                     type="string",
+     *                     default="put",
+     *                     enum={"put"},
+     *                     description="این مقدار باید بصورت ثابت شود",
+     *                 ),
+     *                 @OA\Property(
+     *                     property="first_name",
+     *                     type="string",
+     *                     description="نام"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="last_name",
+     *                     type="string",
+     *                     description="نام خانوادگی"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="birthdate",
+     *                     type="string",
+     *                     description="تاریخ تولد بصورت فرمت: Y/m/d مثال: 1401/06/20"
+     *                 ),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function informationUser(Request $request)
+    {
+        return $this->userService->informationUser($request);
+    }
+
+    /**
      * Logout.
      *
      * @OA\Post(

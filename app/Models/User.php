@@ -206,6 +206,14 @@ class User extends Authenticatable
     }
 
     /**
+     * @return HasOne
+     */
+    public function rahjoo(): HasOne
+    {
+        return $this->hasOne(Rahjoo::class);
+    }
+
+    /**
      * @return BelongsToMany
      */
     public function intelligences(): BelongsToMany

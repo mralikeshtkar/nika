@@ -8,6 +8,7 @@ use App\Http\Resources\V1\User\SingleUserResource;
 use App\Http\Resources\V1\User\UserResource;
 use App\Models\City;
 use App\Models\Grade;
+use App\Models\RahjooParent;
 use App\Models\User;
 use App\Repositories\V1\User\Interfaces\UserRepositoryInterface;
 use App\Responses\Api\ApiResponse;
@@ -52,7 +53,30 @@ class UserService extends BaseService
      */
     public function currentUser(Request $request): JsonResponse
     {
-        $user = $request->user()->only(['id', 'first_name', 'last_name', 'father_name', 'mobile', 'national_code', 'ip', 'birthdate']);
+        $user = $request->user()->load('rahjoo')
+            ->only(['id', 'first_name', 'last_name', 'mobile', 'birthdate','rahjoo']);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('user', new SingleUserResource($user))
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function informationUser(Request $request): JsonResponse
+    {
+        ApiResponse::validate($request->all(), [
+            'first_name' => ['required', 'string'],
+            'last_name' => ['required', 'string'],
+            'birthdate' => ['required', 'jdate:' . User::BIRTHDATE_VALIDATION_FORMAT],
+        ]);
+        $user = $this->userRepository->update($request->user(), [
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'birthdate' => Verta::parseFormat(User::BIRTHDATE_VALIDATION_FORMAT, $request->birthdate)->datetime(),
+        ]);
+        $user = $user->only(['id', 'first_name', 'last_name', 'mobile', 'birthdate']);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('user', new SingleUserResource($user))
             ->send();
@@ -114,6 +138,7 @@ class UserService extends BaseService
         $this->_checkUserAccountIsNotInactive($user);
         if ($user && Hash::check($request->password, $user->password)) {
             $this->userRepository->markAsVerified($user);
+            $this->userRepository->assignCreateRole($user);
             $token = $user->generateToken();
             return ApiResponse::message(trans("Login was successful"))
                 ->addData('token', $token)
@@ -151,6 +176,7 @@ class UserService extends BaseService
                 ->send();
 
         $this->userRepository->markAsVerified($user);
+        $this->userRepository->assignCreateRole($user);
         $token = $user->generateToken();
         return ApiResponse::message(trans("Login was successful"))
             ->addData('token', $token)

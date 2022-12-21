@@ -16,6 +16,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function (\Illuminate\Http\Request $request) {
+//    $start=today()->subYears(10);
+    $start=today()->subDays(10);
+    $today=today();
+    dd($today->diffInYears($start));
     dd(\App\Models\User::first()->generateToken());
     return view('welcome');
     $user=\App\Models\User::first();
