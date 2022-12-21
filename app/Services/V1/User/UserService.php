@@ -53,7 +53,7 @@ class UserService extends BaseService
     {
         $user = $request->user()->only(['id', 'first_name', 'last_name', 'father_name', 'mobile', 'national_code', 'ip', 'birthdate']);
         return ApiResponse::message(trans("The information was received successfully"))
-            ->addData('user', new UserResource($user))
+            ->addData('user', $user)
             ->send();
     }
 

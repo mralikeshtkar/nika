@@ -18,19 +18,18 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
-        dd($this->resource);
-        return collect($this->resource)->when(collect($this->resource)->has('status'), function (Collection $collection) {
-            $status = UserStatus::coerce(intval($this->resource->status));
+        return collect($this->resource)->when($this->resource->originalIsEquivalent('status'), function (Collection $collection) {
+            $status = UserStatus::coerce($this->resource->status);
             $collection->put('status', $status->key)->put('status_translated', $status->description);
-        })->when(collect($this->resource)->has('birthdate'), function (Collection $collection) {
+        })->when($this->resource->originalIsEquivalent('birthdate'), function (Collection $collection) {
             $collection->put('birthdate', jalaliFormat($this->resource->birthdate, User::BIRTHDATE_VALIDATION_FORMAT));
-        })->when(collect($this->resource)->has('grade_name'), function (Collection $collection) {
+        })->when($this->resource->originalIsEquivalent('grade_name'), function (Collection $collection) {
             $collection->put('grade_name', $this->resource->grade_name);
-        })->when(collect($this->resource)->has('city_name'), function (Collection $collection) {
+        })->when($this->resource->originalIsEquivalent('city_name'), function (Collection $collection) {
             $collection->put('city_name', $this->resource->city_name);
         })->when($this->resource->relationLoaded('province'), function (Collection $collection) {
             $collection->put('province', $this->resource->province);
-        })->when(collect($this->resource)->has('birth_place_name'), function (Collection $collection) {
+        })->when($this->resource->originalIsEquivalent('birth_place_name'), function (Collection $collection) {
             $collection->put('birth_place_name', $this->resource->birth_place_name);
         })->when($this->resource->relationLoaded('birth_place_province'), function (Collection $collection) {
             $collection->put('birth_place_province', $this->resource->birth_place_province);
