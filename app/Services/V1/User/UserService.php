@@ -4,6 +4,7 @@ namespace App\Services\V1\User;
 
 use App\Enums\UserStatus;
 use App\Exceptions\User\UserAccountIsInactiveException;
+use App\Http\Resources\V1\User\SingleUserResource;
 use App\Http\Resources\V1\User\UserResource;
 use App\Models\City;
 use App\Models\Grade;
@@ -53,7 +54,7 @@ class UserService extends BaseService
     {
         $user = $request->user()->only(['id', 'first_name', 'last_name', 'father_name', 'mobile', 'national_code', 'ip', 'birthdate']);
         return ApiResponse::message(trans("The information was received successfully"))
-            ->addData('user', $user)
+            ->addData('user', new SingleUserResource($user))
             ->send();
     }
 
