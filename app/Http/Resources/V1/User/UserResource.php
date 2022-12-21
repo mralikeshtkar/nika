@@ -18,7 +18,7 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
-        return collect($this->resource)->when($this->resource->status && UserStatus::hasValue(intval($this->resource->status)), function (Collection $collection) {
+        return collect($this->resource)->when(!is_null($this->resource->status), function (Collection $collection) {
             $status = UserStatus::coerce(intval($this->resource->status));
             $collection->put('status', $status->key)->put('status_translated', $status->description);
         })->when($this->resource->originalIsEquivalent('birthdate'), function (Collection $collection) {
