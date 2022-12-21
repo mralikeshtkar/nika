@@ -27,8 +27,8 @@ class UserResource extends JsonResource
             $collection->put('grade_name', $this->resource->grade_name);
         })->when($this->resource->originalIsEquivalent('city_name'), function (Collection $collection) {
             $collection->put('city_name', $this->resource->city_name);
-        })->when($this->resource->originalIsEquivalent('birth_place_name'), function (Collection $collection) {
-            $collection->put('birth_place_name', $this->resource->birth_place_name);
+        })->when($this->resource->relationLoaded('province'), function (Collection $collection) {
+            $collection->put('province', $this->resource->province);
         })->when($this->resource->relationLoaded('birth_place_province'), function (Collection $collection) {
             $collection->put('birth_place_province', $this->resource->birth_place_province);
         })->when($this->resource->relationLoaded('personnel'), function (Collection $collection) {
