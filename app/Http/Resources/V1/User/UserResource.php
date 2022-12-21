@@ -18,6 +18,15 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
-        return collect($this->resource)->toArray();
+        return collect($this->resource)->when($this->resource->originalIsEquivalent('status'), function (Collection $collection) {
+            $status = UserStatus::coerce($this->resource->status);
+            $collection->put('status', $status->key)->put('status_translated', $status->description);
+        })->when($this->resource->originalIsEquivalent('birthdate'), function (Collection $collection) {
+            $collection->put('birthdate', jalaliFormat($this->resource->birthdate, User::BIRTHDATE_VALIDATION_FORMAT));
+        })->when($this->resource->originalIsEquivalent('grade_name'), function (Collection $collection) {
+            $collection->put('grade_name', $this->resource->grade_name);
+        })->when($this->resource->originalIsEquivalent('city_name'), function (Collection $collection) {
+            $collection->put('city_name', $this->resource->city_name);
+        })->toArray();
     }
 }
