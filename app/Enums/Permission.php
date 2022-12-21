@@ -114,4 +114,11 @@ final class Permission extends Enum implements LocalizedEnum
     const CREATE_INTELLIGENCES = "create intelligences";
     const EDIT_INTELLIGENCES = "edit intelligences";
     const DELETE_INTELLIGENCES = "delete intelligences";
+
+    /* Intelligence point name */
+    const MANAGE_INTELLIGENCE_POINT_NAME = "manage intelligence point name";
+    const VIEW_INTELLIGENCE_POINT_NAME = "view intelligence point name";
+    const CREATE_INTELLIGENCE_POINT_NAME = "create intelligence point name";
+    const EDIT_INTELLIGENCE_POINT_NAME = "edit intelligence point name";
+    const DELETE_INTELLIGENCE_POINT_NAME = "delete intelligence point name";
 }

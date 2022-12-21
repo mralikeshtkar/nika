@@ -52,7 +52,18 @@ class PackageRepository extends BaseRepository implements PackageRepositoryInter
      */
     public function syncIntelligences($package, $intelligences): mixed
     {
-        return $package->intelligences()->synce($intelligences);
+        return $package->intelligences()->sync($intelligences);
+    }
+
+    /**
+     * @param $package
+     * @return mixed
+     */
+    public function getPoints($package): mixed
+    {
+        return $package->points()
+            ->select(["id", "intelligence_id", "intelligence_point_name_id", "package_id", "max_point"])
+            ->get();
     }
 
     /**

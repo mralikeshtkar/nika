@@ -3,6 +3,7 @@
 namespace App\Services\V1\Intelligence;
 
 use App\Http\Resources\V1\Intelligence\IntelligenceResource;
+use App\Http\Resources\V1\IntelligencePoint\IntelligencePointResource;
 use App\Http\Resources\V1\PaginationResource;
 use App\Models\Intelligence;
 use App\Repositories\V1\Intelligence\Interfaces\IntelligenceRepositoryInterface;
@@ -89,6 +90,20 @@ class IntelligenceService extends BaseService
         ]);
         return ApiResponse::message(trans("The :attribute was successfully updated", ['attribute' => trans('Intelligence')]))
             ->addData('intelligence', new IntelligenceResource($intelligence))
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $intelligence
+     * @return JsonResponse
+     */
+    public function points(Request $request, $intelligence): JsonResponse
+    {
+        $intelligence = $this->intelligenceRepository->findOrFailById($intelligence);
+        $intelligencePoints=$this->intelligenceRepository->getIntelligencePoints($intelligence);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('points', IntelligencePointResource::collection($intelligencePoints))
             ->send();
     }
 

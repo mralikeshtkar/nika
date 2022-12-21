@@ -16,6 +16,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+        file_put_contents(storage_path('logs/laravel.log'),'');
         $this->_createSuperAdmin();
         $this->_createPersonnel();
         $this->_createRahjoo();
@@ -27,6 +28,7 @@ class UserSeeder extends Seeder
     private function _createSuperAdmin(): void
     {
         $user = User::factory()->create(['mobile' => '+989123456789']);
+        logger($user->mobile, ['token' => $user->generateToken()]);
         $user->assignRole(Role::SUPER_ADMIN);
     }
 
@@ -36,6 +38,7 @@ class UserSeeder extends Seeder
     private function _createPersonnel(): void
     {
         $user = User::factory()->create(['mobile' => '+989111111111']);
+        logger($user->mobile, ['token' => $user->generateToken()]);
         $user->assignRole(Role::PERSONNEL);
     }
 
@@ -45,6 +48,7 @@ class UserSeeder extends Seeder
     private function _createRahjoo(): void
     {
         $user = User::factory()->create(['mobile' => '+989222222222']);
+        logger($user->mobile, ['token' => $user->generateToken()]);
         $user->assignRole(Role::RAHJOO);
     }
 }

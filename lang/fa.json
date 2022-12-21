@@ -11,6 +11,8 @@
     "City": "شهر",
     "Address": "آدرس",
     "Job": "شغل",
+    "IntelligencePoint": "امتیاز هوش",
+    "DocumentGroup": "گروه مستندات",
     "Major": "رشته تحصیلی",
     "Grade": "مقطع تحصیلی",
     "Role": "نقش\u200Cکاربری",

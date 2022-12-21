@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\V1\Api\IntelligencePointName\ApiIntelligencePointNameController;
 use App\Responses\Api\ApiResponse;
 use Illuminate\Support\Facades\Route;
 
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function (\Illuminate\Http\Request $request) {
-    dd(\App\Models\User::first()->intelligences);
+    dd(\App\Models\User::first()->generateToken());
     return view('welcome');
     $user=\App\Models\User::first();
     $user->assignRole(\App\Enums\Role::SUPER_ADMIN['name']);

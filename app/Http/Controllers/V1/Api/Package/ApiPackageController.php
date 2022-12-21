@@ -95,6 +95,33 @@ class ApiPackageController extends ApiBaseController
     }
 
     /**
+     * Get package points.
+     *
+     * @OA\Get(
+     *     path="/packages/{id}/point",
+     *     summary="نمایش امتیاز های پکیج",
+     *     description="",
+     *     tags={"پکیج"},
+     *     @OA\Parameter(
+     *         description="شناسه پکیج",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function points(Request $request, $package)
+    {
+        return $this->packageService->points($request, $package);
+    }
+
+    /**
      * Store a package.
      *
      * @OA\Post(

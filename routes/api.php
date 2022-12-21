@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\V1\Api\Address\ApiAddressController as V1ApiAddressController;
 use App\Http\Controllers\V1\Api\City\ApiCityController as V1ApiCityController;
+use App\Http\Controllers\V1\Api\DocumentGroup\ApiDocumentGroupController as V1ApiDocumentGroupController;
 use App\Http\Controllers\V1\Api\Grade\ApiGradeController as V1ApiGradeController;
 use App\Http\Controllers\V1\Api\Intelligence\ApiIntelligenceController as V1ApiIntelligenceController;
+use App\Http\Controllers\V1\Api\IntelligencePoint\ApiIntelligencePointController as V1ApiIntelligencePointController;
 use App\Http\Controllers\V1\Api\IntelligencePointName\ApiIntelligencePointNameController as V1ApiIntelligencePointNameController;
 use App\Http\Controllers\V1\Api\Job\ApiJobController as V1ApiJobController;
 use App\Http\Controllers\V1\Api\Major\ApiMajorController as V1ApiMajorController;
@@ -176,6 +178,7 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->get('packages/{package}', [V1ApiPackageController::class, 'show']);
             $router->put('packages/{package}', [V1ApiPackageController::class, 'update']);
             $router->delete('packages/{package}', [V1ApiPackageController::class, 'destroy']);
+            $router->get('packages/{package}/points', [V1ApiPackageController::class, 'points']);
             $router->post('packages/{package}/upload-video', [V1ApiPackageController::class, 'uploadVideo']);
         });
 
@@ -183,7 +186,7 @@ Route::prefix('v1')->group(function (Router $router) {
         $router->group([], function (Router $router) {
             $router->get('intelligences', [V1ApiIntelligenceController::class, 'index']);
             $router->post('intelligences', [V1ApiIntelligenceController::class, 'store']);
-            $router->get('intelligences/{intelligence}', [V1ApiIntelligenceController::class, 'show']);
+            $router->get('intelligences/{intelligence}/points', [V1ApiIntelligenceController::class, 'points']);
             $router->put('intelligences/{intelligence}', [V1ApiIntelligenceController::class, 'update']);
             $router->delete('intelligences/{intelligence}', [V1ApiIntelligenceController::class, 'destroy']);
         });
@@ -191,10 +194,26 @@ Route::prefix('v1')->group(function (Router $router) {
         /* Intelligence point names */
         $router->group([], function (Router $router) {
             $router->get('intelligence-point-names', [V1ApiIntelligencePointNameController::class, 'index']);
+            $router->get('intelligence-point-names/all', [V1ApiIntelligencePointNameController::class, 'all']);
             $router->post('intelligence-point-names', [V1ApiIntelligencePointNameController::class, 'store']);
-            $router->get('intelligence-point-names/{intelligence-point-name}', [V1ApiIntelligencePointNameController::class, 'show']);
-            $router->put('intelligence-point-names/{intelligence-point-name}', [V1ApiIntelligencePointNameController::class, 'update']);
-            $router->delete('intelligence-point-names/{intelligence-point-name}', [V1ApiIntelligencePointNameController::class, 'destroy']);
+            $router->put('intelligence-point-names/{intelligencePointName}', [V1ApiIntelligencePointNameController::class, 'update']);
+            $router->delete('intelligence-point-names/{intelligencePointName}', [V1ApiIntelligencePointNameController::class, 'destroy']);
+        });
+
+        /* Intelligence point */
+        $router->group([], function (Router $router) {
+            $router->get('intelligence-points', [V1ApiIntelligencePointController::class, 'index']);
+            $router->post('intelligence-points', [V1ApiIntelligencePointController::class, 'store']);
+            $router->put('intelligence-points/{intelligencePoint}', [V1ApiIntelligencePointController::class, 'update']);
+            $router->delete('intelligence-points/{intelligencePoint}', [V1ApiIntelligencePointController::class, 'destroy']);
+        });
+
+        /* Document groups */
+        $router->group([], function (Router $router) {
+            $router->get('document-groups', [V1ApiDocumentGroupController::class, 'index']);
+            $router->post('document-groups', [V1ApiDocumentGroupController::class, 'store']);
+            $router->put('document-groups/{documentGroup}', [V1ApiDocumentGroupController::class, 'update']);
+            $router->delete('document-groups/{documentGroup}', [V1ApiDocumentGroupController::class, 'destroy']);
         });
 
     });
@@ -203,6 +222,3 @@ Route::prefix('v1')->group(function (Router $router) {
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('stream', function () {
-
-})->name('stream');

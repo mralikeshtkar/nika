@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Package extends Model
@@ -62,6 +63,14 @@ class Package extends Model
     public function intelligences(): BelongsToMany
     {
         return $this->belongsToMany(Intelligence::class);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function points(): HasMany
+    {
+        return $this->hasMany(IntelligencePoint::class);
     }
 
     #endregion

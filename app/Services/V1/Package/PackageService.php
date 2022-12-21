@@ -4,6 +4,7 @@ namespace App\Services\V1\Package;
 
 use App\Enums\Media\MediaExtension;
 use App\Enums\Package\PackageStatus;
+use App\Http\Resources\V1\IntelligencePoint\IntelligencePointResource;
 use App\Http\Resources\V1\Package\PackageResource;
 use App\Http\Resources\V1\PaginationResource;
 use App\Models\Intelligence;
@@ -75,6 +76,20 @@ class PackageService extends BaseService
     }
 
     /**
+     * @param Request $request
+     * @param $package
+     * @return JsonResponse
+     */
+    public function points(Request $request, $package): JsonResponse
+    {
+        $package = $this->packageRepository->findOrFailById($package);
+        $points=$this->packageRepository->getPoints($package);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('points', IntelligencePointResource::collection($points))
+            ->send();
+    }
+
+    /**
      * Store a package.
      *
      * @param Request $request
@@ -94,9 +109,7 @@ class PackageService extends BaseService
             'intelligences' => ['nullable', 'array'],
             'intelligences.*' => ['exists:' . Intelligence::class . ',id'],
         ]);
-        $request->merge([
-            'status' => $request->filled('status') ? PackageStatus::coerce($request->status) : null,
-        ]);
+        $request->merge(['status' => $request->filled('status') ? PackageStatus::coerce($request->status) : null,]);
         try {
             return DB::transaction(function () use ($request) {
                 $package = $this->packageRepository->create(collect([

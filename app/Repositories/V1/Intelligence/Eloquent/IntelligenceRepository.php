@@ -22,6 +22,17 @@ class IntelligenceRepository extends BaseRepository implements IntelligenceRepos
     }
 
     /**
+     * @param $intelligence
+     * @return mixed
+     */
+    public function getIntelligencePoints($intelligence): mixed
+    {
+        return $intelligence->points()
+            ->select(["id", "intelligence_id", "intelligence_point_name_id", "package_id", "max_point"])
+            ->get();
+    }
+
+    /**
      * @param Request $request
      * @return $this
      */

@@ -5,10 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Intelligence extends Model
+class IntelligencePoint extends Model
 {
     use HasFactory;
 
@@ -19,12 +17,10 @@ class Intelligence extends Model
      */
     protected $fillable = [
         'user_id',
-        'title',
-        'is_completed',
-    ];
-
-    protected $casts = [
-        'is_completed' => 'bool',
+        'package_id',
+        'intelligence_id',
+        'intelligence_point_name_id',
+        'max_point',
     ];
 
     #endregion
@@ -40,19 +36,27 @@ class Intelligence extends Model
     }
 
     /**
-     * @return BelongsToMany
+     * @return BelongsTo
      */
-    public function packages(): BelongsToMany
+    public function intelligence(): BelongsTo
     {
-        return $this->belongsToMany(Package::class);
+        return $this->belongsTo(Intelligence::class);
     }
 
     /**
-     * @return HasMany
+     * @return BelongsTo
      */
-    public function points(): HasMany
+    public function package(): BelongsTo
     {
-        return $this->hasMany(IntelligencePoint::class);
+        return $this->belongsTo(Package::class);
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function intelligencePointName(): BelongsTo
+    {
+        return $this->belongsTo(IntelligencePointName::class);
     }
 
     #endregion

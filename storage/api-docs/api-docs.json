@@ -9,7 +9,7 @@
             "url": "http://127.0.0.1:8000/api/v1"
         },
         {
-            "url": "https://rashtdev.ir/api/v1"
+            "url": "https://api.rashtdev.ir/api/v1"
         }
     ],
     "paths": {
@@ -475,6 +475,139 @@
                 }
             }
         },
+        "/document-groups": {
+            "post": {
+                "tags": [
+                    "گروه مستندات"
+                ],
+                "summary": "ثبت گروه مستندات",
+                "description": "",
+                "operationId": "217a7ef89e9f72469318aca41627dfb8",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "title"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "description": "عنوان",
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "description": "توضیحات",
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/document-groups/{id}": {
+            "post": {
+                "tags": [
+                    "گروه مستندات"
+                ],
+                "summary": "بروزرسانی گروه مستندات",
+                "description": "",
+                "operationId": "f7d0a07c3c98842fc84ce39eddfd8b29",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه گروه مستندات",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "_method",
+                                    "title"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "description": "این مقدار باید بصورت ثابت شود",
+                                        "type": "string",
+                                        "default": "put",
+                                        "enum": [
+                                            "put"
+                                        ]
+                                    },
+                                    "title": {
+                                        "description": "عنوان",
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "description": "توضیحات",
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "گروه مستندات"
+                ],
+                "summary": "حذف گروه مستندات",
+                "description": "",
+                "operationId": "a7237adfe13d7ed69ff3ef236ba4d44a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه گروه مستندات",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/grades": {
             "get": {
                 "tags": [
@@ -649,11 +782,59 @@
             }
         },
         "/intelligence-point-names": {
+            "get": {
+                "tags": [
+                    "نام های امتیاز هوش"
+                ],
+                "summary": "لیست نام های امتیاز هوش بصورت صفحه بندی",
+                "description": "",
+                "operationId": "48757172c3ba8b360f00c6760f6fd47b",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "نام",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "نام های امتیاز هوش"
                 ],
-                "summary": "ثبت نام های امتیاز هوش",
+                "summary": "ثبت، نام های امتیاز هوش",
                 "description": "",
                 "operationId": "800f704a000af44d251fc9958e12aaee",
                 "requestBody": {
@@ -677,6 +858,279 @@
                 "responses": {
                     "201": {
                         "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/intelligence-point-names/all": {
+            "get": {
+                "tags": [
+                    "نام های امتیاز هوش"
+                ],
+                "summary": "دریافت همه ی نام های امتیاز هوش",
+                "description": "",
+                "operationId": "1a1bba389505d88325d0c9790d9ef475",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "نام",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/intelligence-point-names/{id}": {
+            "post": {
+                "tags": [
+                    "نام های امتیاز هوش"
+                ],
+                "summary": "بروزرسانی، نام های امتیاز هوش",
+                "description": "",
+                "operationId": "48e1f53ddb60918b7d6150593a2b7b8f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه نام امتیاز هوش",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "_method",
+                                    "name"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "description": "این مقدار باید بصورت ثابت شود",
+                                        "type": "string",
+                                        "default": "put",
+                                        "enum": [
+                                            "put"
+                                        ]
+                                    },
+                                    "name": {
+                                        "description": "نام",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "نام های امتیاز هوش"
+                ],
+                "summary": "حذف، نام امتیاز هوش",
+                "description": "",
+                "operationId": "960eed2d6362a4d3d32dab1ab74fdcfa",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه نام امتیاز هوش",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/intelligence-points": {
+            "post": {
+                "tags": [
+                    "امتیاز هوش"
+                ],
+                "summary": "ثبت امتیاز هوش",
+                "description": "",
+                "operationId": "acceb51d5500115433f74913ebbd035a",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "intelligence_id",
+                                    "intelligence_point_name_id",
+                                    "package_id",
+                                    "max_point"
+                                ],
+                                "properties": {
+                                    "intelligence_id": {
+                                        "description": "شناسه هوش",
+                                        "type": "string"
+                                    },
+                                    "intelligence_point_name_id": {
+                                        "description": "شناسه نام امتیاز",
+                                        "type": "number"
+                                    },
+                                    "package_id": {
+                                        "description": "شناسه پکیج",
+                                        "type": "number"
+                                    },
+                                    "max_point": {
+                                        "description": "حداکثر نمره",
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/intelligence-points/{id}": {
+            "post": {
+                "tags": [
+                    "امتیاز هوش"
+                ],
+                "summary": "بروزرسانی امتیاز هوش",
+                "description": "",
+                "operationId": "8b375bafb00cf8cea424544dbb0af87e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه امتیاز هوش",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "_method",
+                                    "intelligence_id",
+                                    "intelligence_point_name_id",
+                                    "package_id",
+                                    "max_point"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "description": "این مقدار باید بصورت ثابت شود",
+                                        "type": "string",
+                                        "default": "put",
+                                        "enum": [
+                                            "put"
+                                        ]
+                                    },
+                                    "intelligence_id": {
+                                        "description": "شناسه هوش",
+                                        "type": "string"
+                                    },
+                                    "intelligence_point_name_id": {
+                                        "description": "شناسه نام امتیاز",
+                                        "type": "number"
+                                    },
+                                    "package_id": {
+                                        "description": "شناسه پکیج",
+                                        "type": "number"
+                                    },
+                                    "max_point": {
+                                        "description": "حداکثر نمره",
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "امتیاز هوش"
+                ],
+                "summary": "حذف امتیاز هوش",
+                "description": "",
+                "operationId": "7117978edaaeebb84fd02b5d1a9fb360",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه امتیاز هوش",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
                         "content": {
                             "application/json": {
                                 "schema": {}
@@ -854,6 +1308,37 @@
                 "summary": "حذف هوش",
                 "description": "",
                 "operationId": "500b23bf6d2977509dbd46d227caaee1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه هوش",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/intelligences/{id}/points": {
+            "get": {
+                "tags": [
+                    "هوش"
+                ],
+                "summary": "لیست امتیازهای هوش",
+                "description": "",
+                "operationId": "4191a83e2bcb2f9f3d86ba20964bb687",
                 "parameters": [
                     {
                         "name": "id",
@@ -1518,6 +2003,37 @@
                 "summary": "حذف پکیج",
                 "description": "",
                 "operationId": "c533535e347ef0e2d5756f6079db950c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه پکیج",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/packages/{id}/point": {
+            "get": {
+                "tags": [
+                    "پکیج"
+                ],
+                "summary": "نمایش امتیاز های پکیج",
+                "description": "",
+                "operationId": "033509155e25dc806bfd9ce73e3fa3ca",
                 "parameters": [
                     {
                         "name": "id",
@@ -2954,6 +3470,62 @@
                 "responses": {
                     "200": {
                         "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user": {
+            "get": {
+                "tags": [
+                    "کاربر"
+                ],
+                "summary": "دریافت اطلاعات کاربر لاگین شده",
+                "description": "",
+                "operationId": "76d8119dc96772d2f86438f1daa0d909",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "حساب کاربر مسدود میباشد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "post": {
+                "tags": [
+                    "کاربر"
+                ],
+                "summary": "خروج از حساب کاربر",
+                "description": "",
+                "operationId": "8aedce9d550968d3e135d7dc5d6c20f6",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "حساب کاربر مسدود میباشد",
                         "content": {
                             "application/json": {
                                 "schema": {}

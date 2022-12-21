@@ -18,21 +18,12 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
-        $status = UserStatus::coerce($this->resource->status);
-        return collect([
-            'id' => $this->resource->id,
-            'first_name' => $this->resource->first_name,
-            'last_name' => $this->resource->last_name,
-            'father_name' => $this->resource->father_name,
-            'mobile' => $this->resource->mobile,
-            'national_code' => $this->resource->national_code,
-            'birthdate' => jalaliFormat($this->resource->birthdate, User::BIRTHDATE_VALIDATION_FORMAT),
-            'status' => $status->key,
-            'status_translated' => $status->description,
-            'grade_id' => $this->resource->grade_id,
-            'city_id' => $this->resource->city_id,
-            'birth_place_id' => $this->resource->birth_place_id,
-        ])->when($this->resource->originalIsEquivalent('grade_name'), function (Collection $collection) {
+        return collect($this->resource)->when($this->resource->originalIsEquivalent('status'), function (Collection $collection) {
+            $status = UserStatus::coerce($this->resource->status);
+            $collection->put('status', $status->key)->put('status_translated', $status->description);
+        })->when($this->resource->originalIsEquivalent('birthdate'), function (Collection $collection) {
+            $collection->put('birthdate', jalaliFormat($this->resource->birthdate, User::BIRTHDATE_VALIDATION_FORMAT));
+        })->when($this->resource->originalIsEquivalent('grade_name'), function (Collection $collection) {
             $collection->put('grade_name', $this->resource->grade_name);
         })->when($this->resource->originalIsEquivalent('city_name'), function (Collection $collection) {
             $collection->put('city_name', $this->resource->city_name);
@@ -42,8 +33,8 @@ class UserResource extends JsonResource
             $collection->put('birth_place_name', $this->resource->birth_place_name);
         })->when($this->resource->relationLoaded('birth_place_province'), function (Collection $collection) {
             $collection->put('birth_place_province', $this->resource->birth_place_province);
-        })->when($this->resource->relationLoaded('personnel'),function (Collection $collection){
-            $collection->put('personnel',PersonnelResource::make($this->resource->personnel));
+        })->when($this->resource->relationLoaded('personnel'), function (Collection $collection) {
+            $collection->put('personnel', PersonnelResource::make($this->resource->personnel));
         })->toArray();
     }
 }
