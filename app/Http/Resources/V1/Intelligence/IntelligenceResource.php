@@ -2,7 +2,9 @@
 
 namespace App\Http\Resources\V1\Intelligence;
 
+use App\Models\Intelligence;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Collection;
 
 class IntelligenceResource extends JsonResource
 {
@@ -14,9 +16,8 @@ class IntelligenceResource extends JsonResource
      */
     public function toArray($request)
     {
-        return collect([
-            'id'=>$this->resource->id,
-            'title'=>$this->resource->title,
-        ]);
+        return collect($this->resource)->when($this->resource->pivot,function (Collection $collection){
+            $collection->put('pivot',$this->resource->pivot);
+        });
     }
 }

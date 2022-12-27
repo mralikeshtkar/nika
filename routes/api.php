@@ -5,6 +5,7 @@ use App\Http\Controllers\V1\Api\City\ApiCityController as V1ApiCityController;
 use App\Http\Controllers\V1\Api\DocumentGroup\ApiDocumentGroupController as V1ApiDocumentGroupController;
 use App\Http\Controllers\V1\Api\Grade\ApiGradeController as V1ApiGradeController;
 use App\Http\Controllers\V1\Api\Intelligence\ApiIntelligenceController as V1ApiIntelligenceController;
+use App\Http\Controllers\V1\Api\IntelligenceFeedback\ApiIntelligenceFeedbackController as V1ApiIntelligenceFeedbackController;
 use App\Http\Controllers\V1\Api\IntelligencePoint\ApiIntelligencePointController as V1ApiIntelligencePointController;
 use App\Http\Controllers\V1\Api\IntelligencePointName\ApiIntelligencePointNameController as V1ApiIntelligencePointNameController;
 use App\Http\Controllers\V1\Api\Job\ApiJobController as V1ApiJobController;
@@ -179,7 +180,9 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->get('packages/{package}', [V1ApiPackageController::class, 'show']);
             $router->put('packages/{package}', [V1ApiPackageController::class, 'update']);
             $router->delete('packages/{package}', [V1ApiPackageController::class, 'destroy']);
-            $router->get('packages/{package}/points', [V1ApiPackageController::class, 'points']);
+            $router->get('packages/{package}/intelligences', [V1ApiPackageController::class, 'intelligences']);
+            $router->put('packages/{package}/intelligences/{intelligence}/completed', [V1ApiPackageController::class, 'intelligenceCompleted']);
+            $router->put('packages/{package}/intelligences/{intelligence}/uncompleted', [V1ApiPackageController::class, 'intelligenceUncompleted']);
             $router->post('packages/{package}/upload-video', [V1ApiPackageController::class, 'uploadVideo']);
         });
 
@@ -188,6 +191,7 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->get('intelligences', [V1ApiIntelligenceController::class, 'index']);
             $router->post('intelligences', [V1ApiIntelligenceController::class, 'store']);
             $router->get('intelligences/{intelligence}/points', [V1ApiIntelligenceController::class, 'points']);
+            $router->get('intelligences/{intelligence}/feedbacks', [V1ApiIntelligenceController::class, 'feedbacks']);
             $router->get('intelligences/{intelligence}', [V1ApiIntelligenceController::class, 'show']);
             $router->put('intelligences/{intelligence}', [V1ApiIntelligenceController::class, 'update']);
             $router->delete('intelligences/{intelligence}', [V1ApiIntelligenceController::class, 'destroy']);
@@ -209,6 +213,14 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->post('intelligence-points/multiple', [V1ApiIntelligencePointController::class, 'storeMultiple']);
             $router->put('intelligence-points/{intelligencePoint}', [V1ApiIntelligencePointController::class, 'update']);
             $router->delete('intelligence-points/{intelligencePoint}', [V1ApiIntelligencePointController::class, 'destroy']);
+        });
+
+        /* Intelligence feedbacks */
+        $router->group([], function (Router $router) {
+            $router->post('intelligence-feedbacks', [V1ApiIntelligenceFeedbackController::class, 'store']);
+            $router->post('intelligence-feedbacks/multiple', [V1ApiIntelligenceFeedbackController::class, 'storeMultiple']);
+            $router->put('intelligence-feedbacks/{intelligenceFeedback}', [V1ApiIntelligenceFeedbackController::class, 'update']);
+            $router->delete('intelligence-feedbacks/{intelligenceFeedback}', [V1ApiIntelligenceFeedbackController::class, 'destroy']);
         });
 
         /* Document groups */

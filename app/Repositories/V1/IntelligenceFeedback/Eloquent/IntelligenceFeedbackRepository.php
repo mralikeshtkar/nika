@@ -13,4 +13,11 @@ class IntelligenceFeedbackRepository extends BaseRepository implements Intellige
     {
         parent::__construct($model);
     }
+
+    public function update($model, array $attributes)
+    {
+        parent::update($model, $attributes);
+        return $model->refresh();
+    }
+
 }

@@ -97,7 +97,7 @@ class IntelligencePointService extends BaseService
             'max_point' => $request->max_point,
         ]);
         return ApiResponse::message(trans("The :attribute was successfully updated", ['attribute' => trans('IntelligencePoint')]))
-            ->addData('city', new IntelligencePointResource($intelligencePoint))
+            ->addData('intelligencePoint', new IntelligencePointResource($intelligencePoint))
             ->send();
     }
 

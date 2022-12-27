@@ -23,7 +23,9 @@ return new class extends Migration {
                 ->on('intelligences')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
+            $table->boolean('is_completed')->default(false);
             $table->primary(['package_id', 'intelligence_id']);
+            $table->timestamps();
         });
     }
 

@@ -839,6 +839,199 @@
                 }
             }
         },
+        "/intelligence-feedbacks": {
+            "post": {
+                "tags": [
+                    "بازخورد هوش"
+                ],
+                "summary": "ثبت بازخورد هوش",
+                "description": "",
+                "operationId": "f22f0e33c676b855282f3011afc6be3a",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "intelligence_id",
+                                    "title",
+                                    "max_point"
+                                ],
+                                "properties": {
+                                    "intelligence_id": {
+                                        "description": "شناسه هوش",
+                                        "type": "string"
+                                    },
+                                    "title": {
+                                        "description": "عنوان",
+                                        "type": "number"
+                                    },
+                                    "max_point": {
+                                        "description": "حداکثر نمره",
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/intelligence-feedbacks/multiple": {
+            "post": {
+                "tags": [
+                    "بازخورد هوش"
+                ],
+                "summary": "ثبت چندتایی بازخورد هوش",
+                "description": "",
+                "operationId": "a8e80b593721f389baff89c384650b23",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "intelligence_id"
+                                ],
+                                "properties": {
+                                    "intelligence_id": {
+                                        "description": "شناسه هوش",
+                                        "type": "number"
+                                    },
+                                    "points": {
+                                        "description": "ارزش ها",
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "intelligence_point_name_id": {
+                                                    "type": "number"
+                                                },
+                                                "max_point": {
+                                                    "type": "number"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/intelligence-feedbacks/{id}": {
+            "post": {
+                "tags": [
+                    "بازخورد هوش"
+                ],
+                "summary": "بروزرسانی بازخورد هوش",
+                "description": "",
+                "operationId": "3d131a755610703cc3fba62539d41fae",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه بازخورد هوش",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "_method",
+                                    "title",
+                                    "max_point"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "description": "این مقدار باید بصورت ثابت شود",
+                                        "type": "string",
+                                        "default": "put",
+                                        "enum": [
+                                            "put"
+                                        ]
+                                    },
+                                    "title": {
+                                        "description": "عنوان",
+                                        "type": "string"
+                                    },
+                                    "max_point": {
+                                        "description": "امتیاز",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "بازخورد هوش"
+                ],
+                "summary": "حذف بازخورد هوش",
+                "description": "",
+                "operationId": "c10911d0b915e735b4aeb2854081335b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه بازخورد هوش",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/intelligence-point-names": {
             "get": {
                 "tags": [
@@ -1451,6 +1644,37 @@
                 "summary": "لیست امتیازهای هوش",
                 "description": "",
                 "operationId": "4191a83e2bcb2f9f3d86ba20964bb687",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه هوش",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/intelligences/{id}/feedbacks": {
+            "get": {
+                "tags": [
+                    "هوش"
+                ],
+                "summary": "لیست امتیازهای هوش",
+                "description": "",
+                "operationId": "310c89b01640aa2e8f4787c0f61dce4b",
                 "parameters": [
                     {
                         "name": "id",
@@ -2138,14 +2362,14 @@
                 }
             }
         },
-        "/packages/{id}/point": {
+        "/packages/{id}/intelligences": {
             "get": {
                 "tags": [
                     "پکیج"
                 ],
-                "summary": "نمایش امتیاز های پکیج",
+                "summary": "لیست هوش های پکیج بصورت صفحه بندی",
                 "description": "",
-                "operationId": "033509155e25dc806bfd9ce73e3fa3ca",
+                "operationId": "3f89fd2b8de2ed01951fb5b1dfb07fc0",
                 "parameters": [
                     {
                         "name": "id",
@@ -2155,6 +2379,25 @@
                         "schema": {
                             "type": "number"
                         }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
                     }
                 ],
                 "responses": {
@@ -2207,6 +2450,86 @@
                         }
                     }
                 },
+                "responses": {
+                    "200": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/packages/{id}/intelligences/{intelligence}/completed": {
+            "put": {
+                "tags": [
+                    "پکیج"
+                ],
+                "summary": "تغییر وضعیت هوش پکیج به تکمیل شده",
+                "description": "",
+                "operationId": "08587c0a0554a7d54e1f836365a3858b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه پکیج",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "intelligence",
+                        "in": "path",
+                        "description": "شناسه هوش",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/packages/{id}/intelligences/{intelligence}/uncompleted": {
+            "put": {
+                "tags": [
+                    "پکیج"
+                ],
+                "summary": "تغییر وضعیت هوش پکیج به تکمیل نشده",
+                "description": "",
+                "operationId": "be34e4ef35cc4f90a5f7f8694c1673ad",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه پکیج",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "intelligence",
+                        "in": "path",
+                        "description": "شناسه هوش",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "ثبت با موفقیت انجام شد",

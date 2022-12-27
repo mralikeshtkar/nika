@@ -199,6 +199,33 @@ class ApiIntelligenceController extends ApiBaseController
     }
 
     /**
+     * Get intelligence feedbacks.
+     *
+     * @OA\Get (
+     *     path="/intelligences/{id}/feedbacks",
+     *     summary="لیست امتیازهای هوش",
+     *     description="",
+     *     tags={"هوش"},
+     *     @OA\Parameter(
+     *         description="شناسه هوش",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function feedbacks(Request $request, $intelligence)
+    {
+        return $this->intelligenceService->feedbacks($request,$intelligence);
+    }
+
+    /**
      * Delete a intelligence.
      *
      * @OA\Delete(

@@ -4,6 +4,7 @@ namespace App\Services\V1\Package;
 
 use App\Enums\Media\MediaExtension;
 use App\Enums\Package\PackageStatus;
+use App\Http\Resources\V1\Intelligence\IntelligenceResource;
 use App\Http\Resources\V1\IntelligencePoint\IntelligencePointResource;
 use App\Http\Resources\V1\Package\PackageResource;
 use App\Http\Resources\V1\PaginationResource;
@@ -80,12 +81,13 @@ class PackageService extends BaseService
      * @param $package
      * @return JsonResponse
      */
-    public function points(Request $request, $package): JsonResponse
+    public function intelligences(Request $request, $package): JsonResponse
     {
-        $package = $this->packageRepository->findOrFailById($package);
-        $points=$this->packageRepository->getPoints($package);
+        $package = $this->packageRepository->select(['id'])->findOrFailById($package);
+        $intelligences = $this->packageRepository->getPackageIntelligences($package, $request);
+        $resource = PaginationResource::make($intelligences)->additional(['itemsResource' => IntelligenceResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
-            ->addData('points', IntelligencePointResource::collection($points))
+            ->addData('intelligences', $resource)
             ->send();
     }
 
@@ -123,9 +125,10 @@ class PackageService extends BaseService
                 })->when($request->filled('is_completed'), function (Collection $collection) use ($request) {
                     $collection->put('is_completed', $request->is_completed);
                 })->toArray());
-                $this->packageRepository->syncIntelligences($package, $request->get('intelligences', []));
                 $this->packageRepository->uploadVideo($package, $request->video);
                 $package = $this->packageRepository->with(['video'])->findOrFailById($package->id);
+                if ($request->filled('intelligences'))
+                    $this->packageRepository->syncIntelligences($package, $request->get('intelligences', []));
                 return ApiResponse::message(trans("The :attribute was successfully registered", ['attribute' => trans('Package')]), Response::HTTP_CREATED)
                     ->addData('package', new PackageResource($package))
                     ->send();
@@ -152,6 +155,40 @@ class PackageService extends BaseService
         $package = $this->packageRepository->with(['video', 'intelligence:id,title,is_completed'])->findOrFailById($package->id);
         return ApiResponse::message(trans("The video package has been uploaded successfully"))
             ->addData('package', new PackageResource($package))
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $package
+     * @param $intelligence
+     * @return JsonResponse
+     */
+    public function intelligenceCompleted(Request $request, $package, $intelligence): JsonResponse
+    {
+        $package = $this->packageRepository->select(['id'])->findOrFailById($package);
+        $intelligence = $this->packageRepository->findIntelligenceOrFailById($package, $intelligence, ['id']);
+        $this->packageRepository->intelligenceCompleted($package, $intelligence->id);
+        $intelligence = $this->packageRepository->findIntelligenceOrFailById($package, $intelligence->id, ['id']);
+        return ApiResponse::message(trans("Mission accomplished"))
+            ->addData('intelligence',new IntelligenceResource($intelligence))
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $package
+     * @param $intelligence
+     * @return JsonResponse
+     */
+    public function intelligenceUncompleted(Request $request, $package, $intelligence): JsonResponse
+    {
+        $package = $this->packageRepository->select(['id'])->findOrFailById($package);
+        $intelligence = $this->packageRepository->findIntelligenceOrFailById($package, $intelligence, ['id']);
+        $this->packageRepository->intelligenceUncompleted($package, $intelligence->id);
+        $intelligence = $this->packageRepository->findIntelligenceOrFailById($package, $intelligence->id, ['id']);
+        return ApiResponse::message(trans("Mission accomplished"))
+            ->addData('intelligence',new IntelligenceResource($intelligence))
             ->send();
     }
 
@@ -192,10 +229,11 @@ class PackageService extends BaseService
             })->when($request->filled('is_completed'), function (Collection $collection) use ($request) {
                 $collection->put('is_completed', $request->is_completed);
             })->toArray());
-            $this->packageRepository->syncIntelligences($package, $request->get('intelligences', []));
             resolve(MediaRepositoryInterface::class)->destroy($package->video);
             $this->packageRepository->uploadVideo($package, $request->video);
             $package = $this->packageRepository->with(['video', 'intelligence:id,title,is_completed'])->findOrFailById($package->id);
+            if ($request->filled('intelligences'))
+                $this->packageRepository->syncIntelligences($package, $request->get('intelligences', []));
             return ApiResponse::message(trans("The :attribute was successfully updated", ['attribute' => trans('Package')]))
                 ->addData('package', new PackageResource($package))
                 ->send();

@@ -95,11 +95,11 @@ class ApiPackageController extends ApiBaseController
     }
 
     /**
-     * Get package points.
+     * Get package intelligences as pagination.
      *
-     * @OA\Get(
-     *     path="/packages/{id}/point",
-     *     summary="نمایش امتیاز های پکیج",
+     * @OA\Get (
+     *     path="/packages/{id}/intelligences",
+     *     summary="لیست هوش های پکیج بصورت صفحه بندی",
      *     description="",
      *     tags={"پکیج"},
      *     @OA\Parameter(
@@ -109,6 +109,21 @@ class ApiPackageController extends ApiBaseController
      *         required=true,
      *         @OA\Schema(type="number"),
      *     ),
+     *     @OA\Parameter(
+     *         description="شماره صفحه",
+     *         in="query",
+     *         name="page",
+     *         required=true,
+     *         example=1,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="تعداد نمایش در هر صفحه",
+     *         in="query",
+     *         name="perPage",
+     *         example=10,
+     *         @OA\Schema(type="number"),
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="عملیات موفق",
@@ -116,9 +131,9 @@ class ApiPackageController extends ApiBaseController
      *     ),
      * )
      */
-    public function points(Request $request, $package)
+    public function intelligences(Request $request, $package)
     {
-        return $this->packageService->points($request, $package);
+        return $this->packageService->intelligences($request, $package);
     }
 
     /**
@@ -224,9 +239,77 @@ class ApiPackageController extends ApiBaseController
      *     ),
      * )
      */
-    public function uploadVideo(Request $request,$package)
+    public function uploadVideo(Request $request, $package)
     {
-        return $this->packageService->uploadVideo($request,$package);
+        return $this->packageService->uploadVideo($request, $package);
+    }
+
+    /**
+     * Change status is completed package intelligence to true
+     *
+     * @OA\Put(
+     *     path="/packages/{id}/intelligences/{intelligence}/completed",
+     *     summary="تغییر وضعیت هوش پکیج به تکمیل شده",
+     *     description="",
+     *     tags={"پکیج"},
+     *     @OA\Parameter(
+     *         description="شناسه پکیج",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه هوش",
+     *         in="path",
+     *         name="intelligence",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="ثبت با موفقیت انجام شد",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function intelligenceCompleted(Request $request, $package, $intelligence)
+    {
+        return $this->packageService->intelligenceCompleted($request, $package, $intelligence);
+    }
+
+    /**
+     * Change status is completed package intelligence to false
+     *
+     * @OA\Put(
+     *     path="/packages/{id}/intelligences/{intelligence}/uncompleted",
+     *     summary="تغییر وضعیت هوش پکیج به تکمیل نشده",
+     *     description="",
+     *     tags={"پکیج"},
+     *     @OA\Parameter(
+     *         description="شناسه پکیج",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه هوش",
+     *         in="path",
+     *         name="intelligence",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="ثبت با موفقیت انجام شد",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function intelligenceUncompleted(Request $request, $package, $intelligence)
+    {
+        return $this->packageService->intelligenceUncompleted($request, $package, $intelligence);
     }
 
     /**

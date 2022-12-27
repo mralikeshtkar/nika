@@ -62,15 +62,9 @@ class Package extends Model
      */
     public function intelligences(): BelongsToMany
     {
-        return $this->belongsToMany(Intelligence::class);
-    }
-
-    /**
-     * @return HasMany
-     */
-    public function points(): HasMany
-    {
-        return $this->hasMany(IntelligencePoint::class);
+        return $this->belongsToMany(Intelligence::class)
+            ->using(IntelligencePackage::class)
+            ->withPivot(['is_completed']);
     }
 
     #endregion

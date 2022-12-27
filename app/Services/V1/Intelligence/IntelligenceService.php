@@ -3,6 +3,7 @@
 namespace App\Services\V1\Intelligence;
 
 use App\Http\Resources\V1\Intelligence\IntelligenceResource;
+use App\Http\Resources\V1\IntelligenceFeedback\IntelligenceFeedbackResource;
 use App\Http\Resources\V1\IntelligencePoint\IntelligencePointResource;
 use App\Http\Resources\V1\PaginationResource;
 use App\Models\Intelligence;
@@ -115,6 +116,20 @@ class IntelligenceService extends BaseService
         $intelligencePoints=$this->intelligenceRepository->getIntelligencePoints($intelligence);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('points', IntelligencePointResource::collection($intelligencePoints))
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $intelligence
+     * @return JsonResponse
+     */
+    public function feedbacks(Request $request, $intelligence): JsonResponse
+    {
+        $intelligence = $this->intelligenceRepository->findOrFailById($intelligence);
+        $intelligenceFeedbacks=$this->intelligenceRepository->getIntelligenceFeedbacks($intelligence);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('feedbacks', IntelligenceFeedbackResource::collection($intelligenceFeedbacks))
             ->send();
     }
 

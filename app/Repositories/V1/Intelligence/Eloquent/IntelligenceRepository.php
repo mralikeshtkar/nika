@@ -28,7 +28,18 @@ class IntelligenceRepository extends BaseRepository implements IntelligenceRepos
     public function getIntelligencePoints($intelligence): mixed
     {
         return $intelligence->points()
-            ->select(["id", "intelligence_id", "intelligence_point_name_id", "package_id", "max_point"])
+            ->select(["id", "intelligence_id", "intelligence_point_name_id", "max_point"])
+            ->get();
+    }
+
+    /**
+     * @param $intelligence
+     * @return mixed
+     */
+    public function getIntelligenceFeedbacks($intelligence): mixed
+    {
+        return $intelligence->feedbacks()
+            ->select(["id", "intelligence_id", "title", "max_point"])
             ->get();
     }
 
@@ -41,7 +52,19 @@ class IntelligenceRepository extends BaseRepository implements IntelligenceRepos
     {
         return $intelligence->points()->createMany(array_map(function ($item) {
             return $item + ['user_id' => optional(auth())->id()];
-        },$points));
+        }, $points));
+    }
+
+    /**
+     * @param $intelligence
+     * @param $feedbacks
+     * @return mixed
+     */
+    public function createMultipleFeedbacks($intelligence, $feedbacks): mixed
+    {
+        return $intelligence->feedbacks()->createMany(array_map(function ($item) {
+            return $item + ['user_id' => optional(auth())->id()];
+        }, $feedbacks));
     }
 
     /**

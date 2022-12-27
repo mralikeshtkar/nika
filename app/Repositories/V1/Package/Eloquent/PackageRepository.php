@@ -52,18 +52,39 @@ class PackageRepository extends BaseRepository implements PackageRepositoryInter
      */
     public function syncIntelligences($package, $intelligences): mixed
     {
-        return $package->intelligences()->sync($intelligences);
+        return $package->intelligences()
+            ->withTimestamps()
+            ->sync($intelligences);
     }
 
-    /**
-     * @param $package
-     * @return mixed
-     */
-    public function getPoints($package): mixed
+    public function getPackageIntelligences($package, $request)
     {
-        return $package->points()
-            ->select(["id", "intelligence_id", "intelligence_point_name_id", "package_id", "max_point"])
-            ->get();
+        return $package->intelligences()
+            ->withTimestamps()
+            ->paginate($request->get('perPage', 10), ['id', 'title']);
+    }
+
+    public function findIntelligenceOrFailById($package, $intelligence, array $columns = ['*'])
+    {
+        return $package->intelligences()->select($columns)->findOrFail($intelligence);
+    }
+
+    public function intelligenceCompleted($package, $intelligence)
+    {
+        return $package->intelligences()
+            ->withTimestamps()
+            ->sync([
+                $intelligence => ['is_completed' => true],
+            ]);
+    }
+
+    public function intelligenceUncompleted($package, $intelligence)
+    {
+        return $package->intelligences()
+            ->withTimestamps()
+            ->sync([
+                $intelligence => ['is_completed' => false],
+            ]);
     }
 
     /**
