@@ -65,6 +65,33 @@ class ApiIntelligenceController extends ApiBaseController
     }
 
     /**
+     * Show intelligence.
+     *
+     * @OA\Get(
+     *     path="/intelligences/{id}",
+     *     summary="دریافت هوش",
+     *     description="",
+     *     tags={"هوش"},
+     *     @OA\Parameter(
+     *         description="شناسه هوش",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function show(Request $request, $intelligence)
+    {
+        return $this->intelligenceService->show($request,$intelligence);
+    }
+
+    /**
      * Store a intelligence.
      *
      * @OA\Post(
@@ -76,17 +103,11 @@ class ApiIntelligenceController extends ApiBaseController
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"title","is_completed"},
+     *                 required={"title"},
      *                 @OA\Property(
      *                     property="title",
      *                     type="string",
      *                     description="عنوان"
-     *                 ),
-     *                 @OA\Property(
-     *                     property="is_completed",
-     *                     type="string",
-     *                     enum={1,0},
-     *                     description="وضعیت تکمیل - بصورت boolean باید باشد",
      *                 ),
      *             )
      *         )
@@ -108,7 +129,7 @@ class ApiIntelligenceController extends ApiBaseController
      *
      * @OA\Post(
      *     path="/intelligences/{id}",
-     *     summary="ثبت هوش",
+     *     summary="بروزرسانی هوش",
      *     description="",
      *     tags={"هوش"},
      *     @OA\Parameter(
@@ -122,7 +143,7 @@ class ApiIntelligenceController extends ApiBaseController
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"_method","title","is_completed"},
+     *                 required={"_method","title"},
      *                 @OA\Property(
      *                     property="_method",
      *                     type="string",
@@ -134,13 +155,7 @@ class ApiIntelligenceController extends ApiBaseController
      *                     property="title",
      *                     type="string",
      *                     description="عنوان"
-     *                 ),
-     *                 @OA\Property(
-     *                     property="is_completed",
-     *                     type="string",
-     *                     enum={1,0},
-     *                     description="وضعیت تکمیل - بصورت boolean باید باشد",
-     *                 ),
+     *                 )
      *             )
      *         )
      *     ),

@@ -52,6 +52,21 @@ class IntelligenceService extends BaseService
 
     /**
      * @param Request $request
+     * @param $intelligence
+     * @return JsonResponse
+     */
+    public function show(Request $request, $intelligence): JsonResponse
+    {
+        ApiResponse::authorize($request->user()->can('show', Intelligence::class));
+        $intelligence = $this->intelligenceRepository->select(['id','title'])
+            ->findOrFailById($intelligence);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('intelligence', new IntelligenceResource($intelligence))
+            ->send();
+    }
+
+    /**
+     * @param Request $request
      * @return JsonResponse
      */
     public function store(Request $request): JsonResponse
@@ -59,12 +74,10 @@ class IntelligenceService extends BaseService
         ApiResponse::authorize($request->user()->can('create', Intelligence::class));
         ApiResponse::validate($request->all(), [
             'title' => ['required', 'string'],
-            'is_completed' => ['nullable', 'boolean'],
         ]);
         $intelligence = $this->intelligenceRepository->create([
             'user_id' => $request->user()->id,
             'title' => $request->title,
-            'is_completed' => $request->is_completed,
         ]);
         return ApiResponse::message(trans("The :attribute was successfully registered", ['attribute' => trans('Intelligence')]), Response::HTTP_CREATED)
             ->addData('intelligence', new IntelligenceResource($intelligence))
@@ -82,11 +95,9 @@ class IntelligenceService extends BaseService
         $intelligence = $this->intelligenceRepository->findOrFailById($intelligence);
         ApiResponse::validate($request->all(), [
             'title' => ['required', 'string'],
-            'is_completed' => ['required', 'boolean'],
         ]);
         $intelligence = $this->intelligenceRepository->update($intelligence, [
             'title' => $request->title,
-            'is_completed' => $request->is_completed,
         ]);
         return ApiResponse::message(trans("The :attribute was successfully updated", ['attribute' => trans('Intelligence')]))
             ->addData('intelligence', new IntelligenceResource($intelligence))

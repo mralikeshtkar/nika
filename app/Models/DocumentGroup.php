@@ -16,6 +16,7 @@ class DocumentGroup extends Model
         'user_id',
         'title',
         'description',
+        'format',
     ];
 
     #endregion

@@ -188,6 +188,7 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->get('intelligences', [V1ApiIntelligenceController::class, 'index']);
             $router->post('intelligences', [V1ApiIntelligenceController::class, 'store']);
             $router->get('intelligences/{intelligence}/points', [V1ApiIntelligenceController::class, 'points']);
+            $router->get('intelligences/{intelligence}', [V1ApiIntelligenceController::class, 'show']);
             $router->put('intelligences/{intelligence}', [V1ApiIntelligenceController::class, 'update']);
             $router->delete('intelligences/{intelligence}', [V1ApiIntelligenceController::class, 'destroy']);
         });

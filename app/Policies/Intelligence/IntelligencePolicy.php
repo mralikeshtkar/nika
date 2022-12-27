@@ -23,6 +23,18 @@ class IntelligencePolicy
     }
 
     /**
+     * Check user can access to show.
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function show(User $user): bool
+    {
+        return $user->hasPermissionTo(Permission::VIEW_INTELLIGENCES)
+            || $user->hasPermissionTo(Permission::MANAGE_INTELLIGENCES);
+    }
+
+    /**
      * Check user can access to create.
      *
      * @param User $user

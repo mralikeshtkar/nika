@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+use App\Models\DocumentGroup;
 use App\Models\Grade;
 use App\Models\Intelligence;
 use App\Models\IntelligencePointName;
@@ -19,6 +20,7 @@ use App\Models\RahjooParent;
 use App\Models\Role;
 use App\Models\Skill;
 use App\Models\User;
+use App\Policies\DocumentGroup\DocumentGroupPolicy;
 use App\Policies\GradePolicy;
 use App\Policies\Intelligence\IntelligencePolicy;
 use App\Policies\IntelligencePointName\IntelligencePointNamePolicy;
@@ -63,6 +65,7 @@ class AuthServiceProvider extends ServiceProvider
         Package::class => PackagePolicy::class,
         Intelligence::class => IntelligencePolicy::class,
         IntelligencePointName::class => IntelligencePointNamePolicy::class,
+        DocumentGroup::class => DocumentGroupPolicy::class,
     ];
 
     /**

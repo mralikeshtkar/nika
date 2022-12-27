@@ -17,7 +17,6 @@ class IntelligenceResource extends JsonResource
         return collect([
             'id'=>$this->resource->id,
             'title'=>$this->resource->title,
-            'is_completed'=>$this->resource->is_completed,
         ]);
     }
 }

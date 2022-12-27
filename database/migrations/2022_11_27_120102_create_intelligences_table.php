@@ -20,7 +20,6 @@ return new class extends Migration {
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->string('title');
-            $table->boolean('is_completed')->default(false);
             $table->timestamps();
         });
     }

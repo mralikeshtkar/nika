@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\Role as RoleEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Role extends \Spatie\Permission\Models\Role
 {
@@ -50,6 +51,18 @@ class Role extends \Spatie\Permission\Models\Role
     public function isLocked(): mixed
     {
         return $this->is_locked;
+    }
+
+    #endregion
+
+    #region Relations
+
+    /**
+     * @return BelongsToMany
+     */
+    public function documentGroups(): BelongsToMany
+    {
+        return $this->belongsToMany(DocumentGroup::class);
     }
 
     #endregion

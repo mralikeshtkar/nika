@@ -18,6 +18,7 @@ use App\Rules\NationalCodeRule;
 use App\Rules\PasswordRule;
 use App\Services\V1\BaseService;
 use BenSampo\Enum\Rules\EnumKey;
+use Exception;
 use Hekmatinasser\Verta\Verta;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -54,7 +55,7 @@ class UserService extends BaseService
     public function currentUser(Request $request): JsonResponse
     {
         $user = $request->user()->load('rahjoo')
-            ->only(['id', 'first_name', 'last_name', 'mobile', 'birthdate','rahjoo']);
+            ->only(['id', 'first_name', 'last_name', 'mobile', 'birthdate', 'rahjoo']);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('user', new SingleUserResource($user))
             ->send();
@@ -63,6 +64,7 @@ class UserService extends BaseService
     /**
      * @param Request $request
      * @return JsonResponse
+     * @throws Exception
      */
     public function informationUser(Request $request): JsonResponse
     {

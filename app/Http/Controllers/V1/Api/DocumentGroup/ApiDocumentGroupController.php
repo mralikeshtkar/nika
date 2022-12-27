@@ -23,6 +23,48 @@ class ApiDocumentGroupController extends ApiBaseController
     }
 
     /**
+     * Get document groups as pagination.
+     *
+     * @OA\Get (
+     *     path="/document-groups",
+     *     summary="لیست گروه های مستندات بصورت صفحه بندی",
+     *     description="",
+     *     tags={"گروه مستندات"},
+     *     @OA\Parameter(
+     *         description="شماره صفحه",
+     *         in="query",
+     *         name="page",
+     *         required=true,
+     *         example=1,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="تعداد نمایش در هر صفحه",
+     *         in="query",
+     *         name="perPage",
+     *         example=10,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="جستجوی عنوان",
+     *         in="query",
+     *         name="title",
+     *         required=false,
+     *         @OA\Schema(type="string"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function index(Request $request)
+    {
+        return $this->documentGroupService->index($request);
+    }
+
+    /**
      * Store a document group.
      *
      * @OA\Post(
@@ -34,7 +76,7 @@ class ApiDocumentGroupController extends ApiBaseController
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"title"},
+     *                 required={"title","format"},
      *                 @OA\Property(
      *                     property="title",
      *                     type="string",
@@ -44,6 +86,11 @@ class ApiDocumentGroupController extends ApiBaseController
      *                     property="description",
      *                     type="number",
      *                     description="توضیحات"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="format",
+     *                     type="number",
+     *                     description="فرمت فایل"
      *                 ),
      *             )
      *         )
@@ -79,7 +126,7 @@ class ApiDocumentGroupController extends ApiBaseController
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"_method","title"},
+     *                 required={"_method","title","format"},
      *                 @OA\Property(
      *                     property="_method",
      *                     type="string",
@@ -97,6 +144,11 @@ class ApiDocumentGroupController extends ApiBaseController
      *                     type="number",
      *                     description="توضیحات"
      *                 ),
+     *                 @OA\Property(
+     *                     property="format",
+     *                     type="number",
+     *                     description="فرمت فایل"
+     *                 ),
      *             )
      *         )
      *     ),
@@ -107,9 +159,9 @@ class ApiDocumentGroupController extends ApiBaseController
      *     ),
      * )
      */
-    public function update(Request $request,$documentGroup)
+    public function update(Request $request, $documentGroup)
     {
-        return $this->documentGroupService->update($request,$documentGroup);
+        return $this->documentGroupService->update($request, $documentGroup);
     }
 
     /**
@@ -134,8 +186,8 @@ class ApiDocumentGroupController extends ApiBaseController
      *     ),
      * )
      */
-    public function destroy(Request $request,$documentGroup)
+    public function destroy(Request $request, $documentGroup)
     {
-        return $this->documentGroupService->destroy($request,$documentGroup);
+        return $this->documentGroupService->destroy($request, $documentGroup);
     }
 }

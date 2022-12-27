@@ -476,6 +476,54 @@
             }
         },
         "/document-groups": {
+            "get": {
+                "tags": [
+                    "گروه مستندات"
+                ],
+                "summary": "لیست گروه های مستندات بصورت صفحه بندی",
+                "description": "",
+                "operationId": "a062a101a5b987c9f0e90203f54b028d",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    },
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "description": "جستجوی عنوان",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "گروه مستندات"
@@ -488,7 +536,8 @@
                         "multipart/form-data": {
                             "schema": {
                                 "required": [
-                                    "title"
+                                    "title",
+                                    "format"
                                 ],
                                 "properties": {
                                     "title": {
@@ -497,6 +546,10 @@
                                     },
                                     "description": {
                                         "description": "توضیحات",
+                                        "type": "number"
+                                    },
+                                    "format": {
+                                        "description": "فرمت فایل",
                                         "type": "number"
                                     }
                                 },
@@ -542,7 +595,8 @@
                             "schema": {
                                 "required": [
                                     "_method",
-                                    "title"
+                                    "title",
+                                    "format"
                                 ],
                                 "properties": {
                                     "_method": {
@@ -559,6 +613,10 @@
                                     },
                                     "description": {
                                         "description": "توضیحات",
+                                        "type": "number"
+                                    },
+                                    "format": {
+                                        "description": "فرمت فایل",
                                         "type": "number"
                                     }
                                 },
@@ -1236,11 +1294,40 @@
             }
         },
         "/intelligences/{id}": {
+            "get": {
+                "tags": [
+                    "هوش"
+                ],
+                "summary": "دریافت هوش",
+                "description": "",
+                "operationId": "89fe5304269719c6881cc8a46bf6ff24",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه هوش",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "هوش"
                 ],
-                "summary": "ثبت هوش",
+                "summary": "بروزرسانی هوش",
                 "description": "",
                 "operationId": "e34271308de85f6420dc4d416d2db8f4",
                 "parameters": [
