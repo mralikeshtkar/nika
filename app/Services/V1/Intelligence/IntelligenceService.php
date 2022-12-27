@@ -41,7 +41,7 @@ class IntelligenceService extends BaseService
     public function index(Request $request): JsonResponse
     {
         ApiResponse::authorize($request->user()->can('index', Intelligence::class));
-        $intelligences = $this->intelligenceRepository->select(['id', 'title', 'is_completed'])
+        $intelligences = $this->intelligenceRepository->select(['id', 'title'])
             ->filterPagination($request)
             ->paginate($request->get('perPage', 10));
         $resource = PaginationResource::make($intelligences)->additional(['itemsResource' => IntelligenceResource::class]);
