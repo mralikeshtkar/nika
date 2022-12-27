@@ -6,7 +6,7 @@
     },
     "servers": [
         {
-            "url": "https://api.rashtdev.ir/api/v1"
+            "url": "http://127.0.0.1:8000/api/v1"
         },
         {
             "url": "http://127.0.0.1:8000/api/v1"
@@ -1058,7 +1058,6 @@
                                 "required": [
                                     "intelligence_id",
                                     "intelligence_point_name_id",
-                                    "package_id",
                                     "max_point"
                                 ],
                                 "properties": {
@@ -1070,13 +1069,62 @@
                                         "description": "شناسه نام امتیاز",
                                         "type": "number"
                                     },
-                                    "package_id": {
-                                        "description": "شناسه پکیج",
-                                        "type": "number"
-                                    },
                                     "max_point": {
                                         "description": "حداکثر نمره",
                                         "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/intelligence-points/multiple": {
+            "post": {
+                "tags": [
+                    "امتیاز هوش"
+                ],
+                "summary": "ثبت چندتایی امتیاز هوش",
+                "description": "",
+                "operationId": "904eb11f9c9e63aa21a8e228efea38e3",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "intelligence_id"
+                                ],
+                                "properties": {
+                                    "intelligence_id": {
+                                        "description": "شناسه هوش",
+                                        "type": "number"
+                                    },
+                                    "points": {
+                                        "description": "ارزش ها",
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "intelligence_point_name_id": {
+                                                    "type": "number"
+                                                },
+                                                "max_point": {
+                                                    "type": "number"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
                                     }
                                 },
                                 "type": "object"
@@ -1123,7 +1171,6 @@
                                     "_method",
                                     "intelligence_id",
                                     "intelligence_point_name_id",
-                                    "package_id",
                                     "max_point"
                                 ],
                                 "properties": {
@@ -1141,10 +1188,6 @@
                                     },
                                     "intelligence_point_name_id": {
                                         "description": "شناسه نام امتیاز",
-                                        "type": "number"
-                                    },
-                                    "package_id": {
-                                        "description": "شناسه پکیج",
                                         "type": "number"
                                     },
                                     "max_point": {
@@ -1259,21 +1302,12 @@
                         "multipart/form-data": {
                             "schema": {
                                 "required": [
-                                    "title",
-                                    "is_completed"
+                                    "title"
                                 ],
                                 "properties": {
                                     "title": {
                                         "description": "عنوان",
                                         "type": "string"
-                                    },
-                                    "is_completed": {
-                                        "description": "وضعیت تکمیل - بصورت boolean باید باشد",
-                                        "type": "string",
-                                        "enum": [
-                                            1,
-                                            0
-                                        ]
                                     }
                                 },
                                 "type": "object"
@@ -1347,8 +1381,7 @@
                             "schema": {
                                 "required": [
                                     "_method",
-                                    "title",
-                                    "is_completed"
+                                    "title"
                                 ],
                                 "properties": {
                                     "_method": {
@@ -1362,14 +1395,6 @@
                                     "title": {
                                         "description": "عنوان",
                                         "type": "string"
-                                    },
-                                    "is_completed": {
-                                        "description": "وضعیت تکمیل - بصورت boolean باید باشد",
-                                        "type": "string",
-                                        "enum": [
-                                            1,
-                                            0
-                                        ]
                                     }
                                 },
                                 "type": "object"

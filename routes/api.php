@@ -206,6 +206,7 @@ Route::prefix('v1')->group(function (Router $router) {
         $router->group([], function (Router $router) {
             $router->get('intelligence-points', [V1ApiIntelligencePointController::class, 'index']);
             $router->post('intelligence-points', [V1ApiIntelligencePointController::class, 'store']);
+            $router->post('intelligence-points/multiple', [V1ApiIntelligencePointController::class, 'storeMultiple']);
             $router->put('intelligence-points/{intelligencePoint}', [V1ApiIntelligencePointController::class, 'update']);
             $router->delete('intelligence-points/{intelligencePoint}', [V1ApiIntelligencePointController::class, 'destroy']);
         });

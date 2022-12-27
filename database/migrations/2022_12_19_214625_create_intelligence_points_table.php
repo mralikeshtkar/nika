@@ -19,11 +19,6 @@ return new class extends Migration {
                 ->on('users')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->foreignId('package_id')
-                ->references('id')
-                ->on('packages')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
             $table->foreignId('intelligence_id')
                 ->references('id')
                 ->on('intelligences')

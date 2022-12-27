@@ -34,7 +34,7 @@ class ApiIntelligencePointController extends ApiBaseController
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"intelligence_id","intelligence_point_name_id","package_id","max_point"},
+     *                 required={"intelligence_id","intelligence_point_name_id","max_point"},
      *                 @OA\Property(
      *                     property="intelligence_id",
      *                     type="string",
@@ -44,11 +44,6 @@ class ApiIntelligencePointController extends ApiBaseController
      *                     property="intelligence_point_name_id",
      *                     type="number",
      *                     description="شناسه نام امتیاز"
-     *                 ),
-     *                 @OA\Property(
-     *                     property="package_id",
-     *                     type="number",
-     *                     description="شناسه پکیج"
      *                 ),
      *                 @OA\Property(
      *                     property="max_point",
@@ -71,6 +66,49 @@ class ApiIntelligencePointController extends ApiBaseController
     }
 
     /**
+     * Store multiple intelligence point.
+     *
+     * @OA\Post(
+     *     path="/intelligence-points/multiple",
+     *     summary="ثبت چندتایی امتیاز هوش",
+     *     description="",
+     *     tags={"امتیاز هوش"},
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 required={"intelligence_id"},
+     *                 @OA\Property(
+     *                     property="intelligence_id",
+     *                     type="number",
+     *                     description="شناسه هوش"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="points",
+     *                     type="array",
+     *                     description="ارزش ها",
+     *                     @OA\Items(
+     *                        type="object",
+     *                        @OA\Property(property="intelligence_point_name_id", type="number"),
+     *                        @OA\Property(property="max_point", type="number")
+     *                     )
+     *                 ),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="ثبت با موفقیت انجام شد",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function storeMultiple(Request $request)
+    {
+        return $this->intelligencePointService->storeMultiple($request);
+    }
+
+    /**
      * Update a intelligence point.
      *
      * @OA\Post(
@@ -89,7 +127,7 @@ class ApiIntelligencePointController extends ApiBaseController
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"_method","intelligence_id","intelligence_point_name_id","package_id","max_point"},
+     *                 required={"_method","intelligence_id","intelligence_point_name_id","max_point"},
      *                 @OA\Property(
      *                     property="_method",
      *                     type="string",
@@ -108,11 +146,6 @@ class ApiIntelligencePointController extends ApiBaseController
      *                     description="شناسه نام امتیاز"
      *                 ),
      *                 @OA\Property(
-     *                     property="package_id",
-     *                     type="number",
-     *                     description="شناسه پکیج"
-     *                 ),
-     *                 @OA\Property(
      *                     property="max_point",
      *                     type="number",
      *                     description="حداکثر نمره"
@@ -127,9 +160,9 @@ class ApiIntelligencePointController extends ApiBaseController
      *     ),
      * )
      */
-    public function update(Request $request,$intelligencePoint)
+    public function update(Request $request, $intelligencePoint)
     {
-        return $this->intelligencePointService->update($request,$intelligencePoint);
+        return $this->intelligencePointService->update($request, $intelligencePoint);
     }
 
     /**
@@ -156,6 +189,6 @@ class ApiIntelligencePointController extends ApiBaseController
      */
     public function destroy(Request $request, $intelligencePoint)
     {
-        return $this->intelligencePointService->destroy($request,$intelligencePoint);
+        return $this->intelligencePointService->destroy($request, $intelligencePoint);
     }
 }

@@ -33,6 +33,18 @@ class IntelligenceRepository extends BaseRepository implements IntelligenceRepos
     }
 
     /**
+     * @param $intelligence
+     * @param $points
+     * @return mixed
+     */
+    public function createMultiplePoints($intelligence, $points): mixed
+    {
+        return $intelligence->points()->createMany(array_map(function ($item) {
+            return $item + ['user_id' => optional(auth())->id()];
+        },$points));
+    }
+
+    /**
      * @param Request $request
      * @return $this
      */
