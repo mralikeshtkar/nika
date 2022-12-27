@@ -17,17 +17,19 @@ class UserSeeder extends Seeder
     public function run()
     {
         file_put_contents(storage_path('logs/laravel.log'),'');
-        $this->_createSuperAdmin();
+        $this->_createSuperAdmin('+989123456789');
         $this->_createPersonnel();
         $this->_createRahjoo();
+        $this->_createSuperAdmin('+989112352382');
     }
 
     /**
+     * @param $mobile
      * @return void
      */
-    private function _createSuperAdmin(): void
+    private function _createSuperAdmin($mobile): void
     {
-        $user = User::factory()->create(['mobile' => '+989123456789']);
+        $user = User::factory()->create(['mobile' => $mobile]);
         logger($user->mobile, ['token' => $user->generateToken()]);
         $user->assignRole(Role::SUPER_ADMIN);
     }
