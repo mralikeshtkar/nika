@@ -18,15 +18,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Schema::disableForeignKeyConstraints();
-        Intelligence::query()->truncate();
-        Package::query()->truncate();
-        Schema::enableForeignKeyConstraints();
         $this->call([
-//            ProvinceSeeder::class,
-//            PermissionSeeder::class,
-//            GradeSeeder::class,
-//            UserSeeder::class,
+            ProvinceSeeder::class,
+            PermissionSeeder::class,
+            GradeSeeder::class,
+            UserSeeder::class,
             IntelligenceSeeder::class,
             PackageSeeder::class,
         ]);
