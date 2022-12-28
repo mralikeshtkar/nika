@@ -95,8 +95,10 @@ class IntelligencePointNameService extends BaseService
             'name' => ['required', 'string', 'unique:' . IntelligencePointName::class . ',name,' . $intelligencePointName->id],
         ]);
         $intelligencePointName = $this->intelligencePointNameRepository->update($intelligencePointName, [
-            'title' => $request->title,
+            'name' => $request->name,
         ]);
+        $intelligencePointName = $this->intelligencePointNameRepository->select(['id','name'])
+            ->findOrFailById($intelligencePointName);
         return ApiResponse::message(trans("The :attribute was successfully updated", ['attribute' => trans('IntelligencePointName')]))
             ->addData('intelligencePointName', new IntelligencePointNameResource($intelligencePointName))
             ->send();

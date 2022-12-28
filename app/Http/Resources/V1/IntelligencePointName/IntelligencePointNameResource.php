@@ -14,10 +14,7 @@ class IntelligencePointNameResource extends JsonResource
      */
     public function toArray($request)
     {
-        return collect([
-            'id' => $this->resource->id,
-            'name' => $this->resource->name,
-        ]);
+        return collect($this->resource);
     }
 
 }
