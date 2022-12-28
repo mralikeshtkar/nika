@@ -6,7 +6,7 @@
     },
     "servers": [
         {
-            "url": "http://127.0.0.1:8000/api/v1"
+            "url": "https://api.rashtdev.ir/api/v1"
         },
         {
             "url": "http://127.0.0.1:8000/api/v1"
@@ -840,6 +840,54 @@
             }
         },
         "/intelligence-feedbacks": {
+            "get": {
+                "tags": [
+                    "بازخورد هوش"
+                ],
+                "summary": "لیست بازخوردهای هوش بصورت صفحه بندی",
+                "description": "",
+                "operationId": "1090e302b1584de7959bc7ca0082d4a8",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    },
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "description": "عنوان",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "بازخورد هوش"
@@ -961,7 +1009,7 @@
                 ],
                 "requestBody": {
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "required": [
                                     "_method",
@@ -1237,6 +1285,54 @@
             }
         },
         "/intelligence-points": {
+            "get": {
+                "tags": [
+                    "امتیاز هوش"
+                ],
+                "summary": "لیست امتیاز های هوش بصورت صفحه بندی",
+                "description": "",
+                "operationId": "bfa34c48874f3a6f4a15ddb8ce0c24c1",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "نام",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "امتیاز هوش"
@@ -1511,6 +1607,37 @@
                 "responses": {
                     "201": {
                         "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/intelligences/all": {
+            "get": {
+                "tags": [
+                    "هوش"
+                ],
+                "summary": "دریافت همه هوش ها",
+                "description": "",
+                "operationId": "52bdc2ccc47e6b7ad5043f0c9550e94d",
+                "parameters": [
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "description": "جستجوی عنوان",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
                         "content": {
                             "application/json": {
                                 "schema": {}
@@ -2362,56 +2489,6 @@
                 }
             }
         },
-        "/packages/{id}/intelligences": {
-            "get": {
-                "tags": [
-                    "پکیج"
-                ],
-                "summary": "لیست هوش های پکیج بصورت صفحه بندی",
-                "description": "",
-                "operationId": "3f89fd2b8de2ed01951fb5b1dfb07fc0",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "شناسه پکیج",
-                        "required": true,
-                        "schema": {
-                            "type": "number"
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "شماره صفحه",
-                        "required": true,
-                        "schema": {
-                            "type": "number"
-                        },
-                        "example": 1
-                    },
-                    {
-                        "name": "perPage",
-                        "in": "query",
-                        "description": "تعداد نمایش در هر صفحه",
-                        "schema": {
-                            "type": "number"
-                        },
-                        "example": 10
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "عملیات موفق",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/packages/{id}/upload-video": {
             "post": {
                 "tags": [
@@ -2462,6 +2539,183 @@
                 }
             }
         },
+        "/packages/{id}/completed": {
+            "put": {
+                "tags": [
+                    "پکیج"
+                ],
+                "summary": "تغییر وضعیت پکیج به تکمیل شده",
+                "description": "",
+                "operationId": "75377986deb892091e7a8ea3140e6406",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه پکیج",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "intelligence",
+                        "in": "path",
+                        "description": "شناسه هوش",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/packages/{id}/uncompleted": {
+            "put": {
+                "tags": [
+                    "پکیج"
+                ],
+                "summary": "تغییر وضعیت پکیج به تکمیل نشده",
+                "description": "",
+                "operationId": "4ed809c0da91d3107711ebc55d50d088",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه پکیج",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "intelligence",
+                        "in": "path",
+                        "description": "شناسه هوش",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/packages/{id}/intelligences": {
+            "get": {
+                "tags": [
+                    "پکیج"
+                ],
+                "summary": "لیست هوش های پکیج بصورت صفحه بندی",
+                "description": "",
+                "operationId": "264f554e2983487e3a000083c4a43cb3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه پکیج",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "پکیج"
+                ],
+                "summary": "ثبت هوش برای پکیج",
+                "description": "",
+                "operationId": "8303ae7e19a78c028d13e4c582b26da4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه پکیج",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "intelligence_id"
+                                ],
+                                "properties": {
+                                    "intelligence_id": {
+                                        "description": "شناسه هوش",
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/packages/{id}/intelligences/{intelligence}/completed": {
             "put": {
                 "tags": [
@@ -2469,7 +2723,7 @@
                 ],
                 "summary": "تغییر وضعیت هوش پکیج به تکمیل شده",
                 "description": "",
-                "operationId": "08587c0a0554a7d54e1f836365a3858b",
+                "operationId": "01ea08875cea30b248fed5b3de42ddee",
                 "parameters": [
                     {
                         "name": "id",
@@ -2509,7 +2763,7 @@
                 ],
                 "summary": "تغییر وضعیت هوش پکیج به تکمیل نشده",
                 "description": "",
-                "operationId": "be34e4ef35cc4f90a5f7f8694c1673ad",
+                "operationId": "0af69a071b4658006a5ca0640fda92f2",
                 "parameters": [
                     {
                         "name": "id",

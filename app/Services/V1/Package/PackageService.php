@@ -4,12 +4,9 @@ namespace App\Services\V1\Package;
 
 use App\Enums\Media\MediaExtension;
 use App\Enums\Package\PackageStatus;
-use App\Http\Resources\V1\Intelligence\IntelligenceResource;
-use App\Http\Resources\V1\IntelligencePoint\IntelligencePointResource;
 use App\Http\Resources\V1\Package\PackageResource;
 use App\Http\Resources\V1\PaginationResource;
 use App\Models\Intelligence;
-use App\Models\Media;
 use App\Models\Package;
 use App\Repositories\V1\Media\Interfaces\MediaRepositoryInterface;
 use App\Repositories\V1\Package\Interfaces\PackageRepositoryInterface;
@@ -73,21 +70,6 @@ class PackageService extends BaseService
         $package = $this->packageRepository->with(['video'])->findOrFailById($package);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('package', new PackageResource($package))
-            ->send();
-    }
-
-    /**
-     * @param Request $request
-     * @param $package
-     * @return JsonResponse
-     */
-    public function intelligences(Request $request, $package): JsonResponse
-    {
-        $package = $this->packageRepository->select(['id'])->findOrFailById($package);
-        $intelligences = $this->packageRepository->getPackageIntelligences($package, $request);
-        $resource = PaginationResource::make($intelligences)->additional(['itemsResource' => IntelligenceResource::class]);
-        return ApiResponse::message(trans("The information was received successfully"))
-            ->addData('intelligences', $resource)
             ->send();
     }
 
@@ -159,40 +141,6 @@ class PackageService extends BaseService
     }
 
     /**
-     * @param Request $request
-     * @param $package
-     * @param $intelligence
-     * @return JsonResponse
-     */
-    public function intelligenceCompleted(Request $request, $package, $intelligence): JsonResponse
-    {
-        $package = $this->packageRepository->select(['id'])->findOrFailById($package);
-        $intelligence = $this->packageRepository->findIntelligenceOrFailById($package, $intelligence, ['id']);
-        $this->packageRepository->intelligenceCompleted($package, $intelligence->id);
-        $intelligence = $this->packageRepository->findIntelligenceOrFailById($package, $intelligence->id, ['id']);
-        return ApiResponse::message(trans("Mission accomplished"))
-            ->addData('intelligence',new IntelligenceResource($intelligence))
-            ->send();
-    }
-
-    /**
-     * @param Request $request
-     * @param $package
-     * @param $intelligence
-     * @return JsonResponse
-     */
-    public function intelligenceUncompleted(Request $request, $package, $intelligence): JsonResponse
-    {
-        $package = $this->packageRepository->select(['id'])->findOrFailById($package);
-        $intelligence = $this->packageRepository->findIntelligenceOrFailById($package, $intelligence, ['id']);
-        $this->packageRepository->intelligenceUncompleted($package, $intelligence->id);
-        $intelligence = $this->packageRepository->findIntelligenceOrFailById($package, $intelligence->id, ['id']);
-        return ApiResponse::message(trans("Mission accomplished"))
-            ->addData('intelligence',new IntelligenceResource($intelligence))
-            ->send();
-    }
-
-    /**
      * Update a package.
      *
      * @param Request $request
@@ -240,6 +188,38 @@ class PackageService extends BaseService
         } catch (Throwable $e) {
             return ApiResponse::error(trans("Internal server error"))->send();
         }
+    }
+
+    /**
+     * @param Request $request
+     * @param $package
+     * @return JsonResponse
+     */
+    public function completed(Request $request, $package): JsonResponse
+    {
+        ApiResponse::authorize($request->user()->can('complete', Package::class));
+        $package = $this->packageRepository->select(['id'])->findOrFailById($package);
+        $this->packageRepository->completed($package);
+        $package = $this->packageRepository->select(['id', 'is_completed'])->findOrFailById($package->id);
+        return ApiResponse::message(trans("Mission accomplished"))
+            ->addData('package', new PackageResource($package))
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $package
+     * @return JsonResponse
+     */
+    public function uncompleted(Request $request, $package): JsonResponse
+    {
+        ApiResponse::authorize($request->user()->can('complete', Package::class));
+        $package = $this->packageRepository->select(['id'])->findOrFailById($package);
+        $this->packageRepository->uncompleted($package);
+        $package = $this->packageRepository->select(['id', 'is_completed'])->findOrFailById($package->id);
+        return ApiResponse::message(trans("Mission accomplished"))
+            ->addData('package', new PackageResource($package))
+            ->send();
     }
 
     /**

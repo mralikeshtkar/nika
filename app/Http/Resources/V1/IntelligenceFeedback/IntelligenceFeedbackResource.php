@@ -13,12 +13,6 @@ class IntelligenceFeedbackResource extends JsonResource
      */
     public function toArray($request)
     {
-        return collect([
-            'id' => $this->resource->id,
-            'package_id' => $this->resource->package_id,
-            'intelligence_id' => $this->resource->intelligence_id,
-            'title' => $this->resource->title,
-            'max_point' => $this->resource->max_point,
-        ]);
+        return collect($this->resource);
     }
 }

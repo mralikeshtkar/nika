@@ -23,6 +23,48 @@ class ApiIntelligenceFeedbackController extends ApiBaseController
     }
 
     /**
+     * Get intelligence feedbacks as pagination.
+     *
+     * @OA\Get (
+     *     path="/intelligence-feedbacks",
+     *     summary="لیست بازخوردهای هوش بصورت صفحه بندی",
+     *     description="",
+     *     tags={"بازخورد هوش"},
+     *     @OA\Parameter(
+     *         description="شماره صفحه",
+     *         in="query",
+     *         name="page",
+     *         required=true,
+     *         example=1,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="تعداد نمایش در هر صفحه",
+     *         in="query",
+     *         name="perPage",
+     *         example=10,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="عنوان",
+     *         in="query",
+     *         name="title",
+     *         required=false,
+     *         @OA\Schema(type="string"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function index(Request $request)
+    {
+        return $this->intelligenceFeedbackService->index($request);
+    }
+
+    /**
      * Store a intelligence feedback.
      *
      * @OA\Post(
@@ -125,7 +167,7 @@ class ApiIntelligenceFeedbackController extends ApiBaseController
      *     ),
      *     @OA\RequestBody(
      *         @OA\MediaType(
-     *             mediaType="application/json",
+     *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 required={"_method","title","max_point"},
      *                 @OA\Property(

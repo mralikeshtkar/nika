@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             IntelligenceSeeder::class,
             PackageSeeder::class,
+            ExerciseSeeder::class,
         ]);
     }
 }

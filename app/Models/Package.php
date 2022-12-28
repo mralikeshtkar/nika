@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use AjCastro\EagerLoadPivotRelations\EagerLoadPivotTrait;
 use App\Traits\Media\HasMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Package extends Model
 {
-    use HasFactory, HasMedia;
+    use HasFactory, HasMedia,EagerLoadPivotTrait;
 
     #region Constance
 
@@ -64,7 +65,7 @@ class Package extends Model
     {
         return $this->belongsToMany(Intelligence::class)
             ->using(IntelligencePackage::class)
-            ->withPivot(['is_completed']);
+            ->withPivot(['id','is_completed']);
     }
 
     #endregion

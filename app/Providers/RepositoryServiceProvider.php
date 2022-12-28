@@ -10,6 +10,8 @@ use App\Repositories\V1\City\Interfaces\CityRepositoryInterface;
 use App\Repositories\V1\DocumentGroup\Eloquent\DocumentGroupRepository;
 use App\Repositories\V1\DocumentGroup\Interfaces\DocumentGroupRepositoryInterface;
 use App\Repositories\V1\EloquentRepositoryInterface;
+use App\Repositories\V1\Exercise\Eloquent\ExerciseRepository;
+use App\Repositories\V1\Exercise\Interfaces\ExerciseRepositoryInterfaces;
 use App\Repositories\V1\Grade\Eloquent\GradeRepository;
 use App\Repositories\V1\Grade\Interfaces\GradeRepositoryInterface;
 use App\Repositories\V1\Intelligence\Eloquent\IntelligenceRepository;
@@ -100,5 +102,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(IntelligencePointRepositoryInterface::class, IntelligencePointRepository::class);
         $this->app->bind(IntelligencePointNameRepositoryInterface::class, IntelligencePointNameRepository::class);
         $this->app->bind(DocumentGroupRepositoryInterface::class, DocumentGroupRepository::class);
+        $this->app->bind(ExerciseRepositoryInterfaces::class, ExerciseRepository::class);
     }
 }

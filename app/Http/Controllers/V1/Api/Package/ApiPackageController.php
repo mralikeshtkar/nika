@@ -95,48 +95,6 @@ class ApiPackageController extends ApiBaseController
     }
 
     /**
-     * Get package intelligences as pagination.
-     *
-     * @OA\Get (
-     *     path="/packages/{id}/intelligences",
-     *     summary="لیست هوش های پکیج بصورت صفحه بندی",
-     *     description="",
-     *     tags={"پکیج"},
-     *     @OA\Parameter(
-     *         description="شناسه پکیج",
-     *         in="path",
-     *         name="id",
-     *         required=true,
-     *         @OA\Schema(type="number"),
-     *     ),
-     *     @OA\Parameter(
-     *         description="شماره صفحه",
-     *         in="query",
-     *         name="page",
-     *         required=true,
-     *         example=1,
-     *         @OA\Schema(type="number"),
-     *     ),
-     *     @OA\Parameter(
-     *         description="تعداد نمایش در هر صفحه",
-     *         in="query",
-     *         name="perPage",
-     *         example=10,
-     *         @OA\Schema(type="number"),
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="عملیات موفق",
-     *         @OA\JsonContent()
-     *     ),
-     * )
-     */
-    public function intelligences(Request $request, $package)
-    {
-        return $this->packageService->intelligences($request, $package);
-    }
-
-    /**
      * Store a package.
      *
      * @OA\Post(
@@ -245,74 +203,6 @@ class ApiPackageController extends ApiBaseController
     }
 
     /**
-     * Change status is completed package intelligence to true
-     *
-     * @OA\Put(
-     *     path="/packages/{id}/intelligences/{intelligence}/completed",
-     *     summary="تغییر وضعیت هوش پکیج به تکمیل شده",
-     *     description="",
-     *     tags={"پکیج"},
-     *     @OA\Parameter(
-     *         description="شناسه پکیج",
-     *         in="path",
-     *         name="id",
-     *         required=true,
-     *         @OA\Schema(type="number"),
-     *     ),
-     *     @OA\Parameter(
-     *         description="شناسه هوش",
-     *         in="path",
-     *         name="intelligence",
-     *         required=true,
-     *         @OA\Schema(type="number"),
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="ثبت با موفقیت انجام شد",
-     *         @OA\JsonContent()
-     *     ),
-     * )
-     */
-    public function intelligenceCompleted(Request $request, $package, $intelligence)
-    {
-        return $this->packageService->intelligenceCompleted($request, $package, $intelligence);
-    }
-
-    /**
-     * Change status is completed package intelligence to false
-     *
-     * @OA\Put(
-     *     path="/packages/{id}/intelligences/{intelligence}/uncompleted",
-     *     summary="تغییر وضعیت هوش پکیج به تکمیل نشده",
-     *     description="",
-     *     tags={"پکیج"},
-     *     @OA\Parameter(
-     *         description="شناسه پکیج",
-     *         in="path",
-     *         name="id",
-     *         required=true,
-     *         @OA\Schema(type="number"),
-     *     ),
-     *     @OA\Parameter(
-     *         description="شناسه هوش",
-     *         in="path",
-     *         name="intelligence",
-     *         required=true,
-     *         @OA\Schema(type="number"),
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="ثبت با موفقیت انجام شد",
-     *         @OA\JsonContent()
-     *     ),
-     * )
-     */
-    public function intelligenceUncompleted(Request $request, $package, $intelligence)
-    {
-        return $this->packageService->intelligenceUncompleted($request, $package, $intelligence);
-    }
-
-    /**
      * Update a package.
      *
      * @OA\Post(
@@ -391,6 +281,74 @@ class ApiPackageController extends ApiBaseController
     public function update(Request $request, $package)
     {
         return $this->packageService->update($request, $package);
+    }
+
+    /**
+     * Change status is completed package to true
+     *
+     * @OA\Put(
+     *     path="/packages/{id}/completed",
+     *     summary="تغییر وضعیت پکیج به تکمیل شده",
+     *     description="",
+     *     tags={"پکیج"},
+     *     @OA\Parameter(
+     *         description="شناسه پکیج",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه هوش",
+     *         in="path",
+     *         name="intelligence",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="ثبت با موفقیت انجام شد",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function completed(Request $request, $package)
+    {
+        return $this->packageService->completed($request, $package);
+    }
+
+    /**
+     * Change status is completed package to false
+     *
+     * @OA\Put(
+     *     path="/packages/{id}/uncompleted",
+     *     summary="تغییر وضعیت پکیج به تکمیل نشده",
+     *     description="",
+     *     tags={"پکیج"},
+     *     @OA\Parameter(
+     *         description="شناسه پکیج",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه هوش",
+     *         in="path",
+     *         name="intelligence",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="ثبت با موفقیت انجام شد",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function uncompleted(Request $request, $package)
+    {
+        return $this->packageService->uncompleted($request, $package);
     }
 
     /**

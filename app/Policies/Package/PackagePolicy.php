@@ -23,6 +23,18 @@ class PackagePolicy
     }
 
     /**
+     * Check user can access to index.
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function intelligence(User $user): bool
+    {
+        return $user->hasPermissionTo(Permission::MANAGE_PACKAGES_INTELLIGENCES)
+            || $user->hasPermissionTo(Permission::MANAGE_PACKAGES);
+    }
+
+    /**
      * Check user can access to show.
      *
      * @param User $user
@@ -67,6 +79,18 @@ class PackagePolicy
     public function delete(User $user): bool
     {
         return $user->hasPermissionTo(Permission::DELETE_PACKAGES)
+            || $user->hasPermissionTo(Permission::MANAGE_PACKAGES);
+    }
+
+    /**
+     * Check user can access to delete.
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function complete(User $user): bool
+    {
+        return $user->hasPermissionTo(Permission::MANAGE_COMPLETE_STATUS_PACKAGES)
             || $user->hasPermissionTo(Permission::MANAGE_PACKAGES);
     }
 }

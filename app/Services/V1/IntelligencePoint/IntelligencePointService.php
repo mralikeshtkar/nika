@@ -3,9 +3,10 @@
 namespace App\Services\V1\IntelligencePoint;
 
 use App\Http\Resources\V1\IntelligencePoint\IntelligencePointResource;
+use App\Http\Resources\V1\PaginationResource;
 use App\Models\Intelligence;
+use App\Models\IntelligencePoint;
 use App\Models\IntelligencePointName;
-use App\Models\Package;
 use App\Repositories\V1\Intelligence\Interfaces\IntelligenceRepositoryInterface;
 use App\Repositories\V1\IntelligencePoint\Interfaces\IntelligencePointRepositoryInterface;
 use App\Responses\Api\ApiResponse;
@@ -39,8 +40,26 @@ class IntelligencePointService extends BaseService
      * @param Request $request
      * @return JsonResponse
      */
+    public function index(Request $request): JsonResponse
+    {
+        ApiResponse::authorize($request->user()->can('index', IntelligencePoint::class));
+        $intelligencePointNames = $this->intelligencePointRepository
+            ->select(['id', 'intelligence_id', 'intelligence_point_name_id', 'max_point'])
+            ->filterPagination($request)
+            ->paginate($request->get('perPage', 10));
+        $resource = PaginationResource::make($intelligencePointNames)->additional(['itemsResource' => IntelligencePointResource::class]);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('intelligencePoints', $resource)
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function store(Request $request): JsonResponse
     {
+        ApiResponse::authorize($request->user()->can('create', IntelligencePoint::class));
         ApiResponse::validate($request->all(), [
             'intelligence_id' => ['required', 'exists:' . Intelligence::class . ',id'],
             'intelligence_point_name_id' => ['required', 'exists:' . IntelligencePointName::class . ',id'],
@@ -63,6 +82,7 @@ class IntelligencePointService extends BaseService
      */
     public function storeMultiple(Request $request): JsonResponse
     {
+        ApiResponse::authorize($request->user()->can('create', IntelligencePoint::class));
         ApiResponse::validate($request->all(), [
             'intelligence_id' => ['required', 'exists:' . Intelligence::class . ',id'],
             'points' => ['required', 'array', 'min:1'],
@@ -83,6 +103,7 @@ class IntelligencePointService extends BaseService
      */
     public function update(Request $request, $intelligencePoint): JsonResponse
     {
+        ApiResponse::authorize($request->user()->can('edit', IntelligencePoint::class));
         $intelligencePoint = $this->intelligencePointRepository
             ->select(['id', 'user_id', 'intelligence_id', 'intelligence_point_name_id', 'package_id', 'max_point',])
             ->findOrFailById($intelligencePoint);
@@ -108,6 +129,7 @@ class IntelligencePointService extends BaseService
      */
     public function destroy(Request $request, $intelligencePoint): JsonResponse
     {
+        ApiResponse::authorize($request->user()->can('delete', IntelligencePoint::class));
         $intelligencePoint = $this->intelligencePointRepository
             ->select(['id', 'user_id', 'intelligence_id', 'intelligence_point_name_id', 'package_id', 'max_point',])
             ->findOrFailById($intelligencePoint);

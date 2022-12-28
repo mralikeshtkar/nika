@@ -40,10 +40,10 @@ class DocumentGroupService extends BaseService
     public function index(Request $request): JsonResponse
     {
         ApiResponse::authorize($request->user()->can('index', DocumentGroup::class));
-        $cities = $this->documentGroupRepository->select(['id', 'title', 'description'])
+        $documentGroups = $this->documentGroupRepository->select(['id', 'title', 'description'])
             ->filterPagination($request)
             ->paginate($request->get('perPage', 10));
-        $resource = PaginationResource::make($cities)->additional(['itemsResource' => DocumentGroupResource::class]);
+        $resource = PaginationResource::make($documentGroups)->additional(['itemsResource' => DocumentGroupResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('documentGroups', $resource)
             ->send();

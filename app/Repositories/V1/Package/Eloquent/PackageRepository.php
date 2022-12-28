@@ -87,6 +87,16 @@ class PackageRepository extends BaseRepository implements PackageRepositoryInter
             ]);
     }
 
+    public function completed($package)
+    {
+        return $package->update(['is_completed'=>true]);
+    }
+
+    public function uncompleted($package)
+    {
+        return $package->update(['is_completed'=>false]);
+    }
+
     /**
      * @param $package
      * @return void

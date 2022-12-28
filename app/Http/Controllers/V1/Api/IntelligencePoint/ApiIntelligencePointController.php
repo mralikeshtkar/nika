@@ -23,6 +23,48 @@ class ApiIntelligencePointController extends ApiBaseController
     }
 
     /**
+     * Get intelligence points as pagination.
+     *
+     * @OA\Get (
+     *     path="/intelligence-points",
+     *     summary="لیست امتیاز های هوش بصورت صفحه بندی",
+     *     description="",
+     *     tags={"امتیاز هوش"},
+     *     @OA\Parameter(
+     *         description="شماره صفحه",
+     *         in="query",
+     *         name="page",
+     *         required=true,
+     *         example=1,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="تعداد نمایش در هر صفحه",
+     *         in="query",
+     *         name="perPage",
+     *         example=10,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="نام",
+     *         in="query",
+     *         name="name",
+     *         required=false,
+     *         @OA\Schema(type="string"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function index(Request $request)
+    {
+        return $this->intelligencePointService->index($request);
+    }
+
+    /**
      * Store a intelligence point.
      *
      * @OA\Post(

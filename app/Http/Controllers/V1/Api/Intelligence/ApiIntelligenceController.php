@@ -65,6 +65,33 @@ class ApiIntelligenceController extends ApiBaseController
     }
 
     /**
+     * Get intelligences as pagination.
+     *
+     * @OA\Get (
+     *     path="/intelligences/all",
+     *     summary="دریافت همه هوش ها",
+     *     description="",
+     *     tags={"هوش"},
+     *     @OA\Parameter(
+     *         description="جستجوی عنوان",
+     *         in="query",
+     *         name="title",
+     *         required=false,
+     *         @OA\Schema(type="string"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function all(Request $request)
+    {
+        return $this->intelligenceService->all($request);
+    }
+
+    /**
      * Show intelligence.
      *
      * @OA\Get(

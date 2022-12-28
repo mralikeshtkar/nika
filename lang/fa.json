@@ -11,6 +11,7 @@
     "City": "شهر",
     "Address": "آدرس",
     "Job": "شغل",
+    "Exercise": "تمرین",
     "IntelligencePoint": "امتیاز هوش",
     "DocumentGroup": "گروه مستندات",
     "Major": "رشته تحصیلی",
@@ -51,5 +52,6 @@
     "The :attribute format is invalid": "فرمت :attribute معتبر نمیباشد",
     "The :attribute isn't unique": ":attribute قبلا ثبت شده است",
     "The :attribute is invalid": ":attribute معتبر نمیباشد",
-    "The video package has been uploaded successfully": "آپلود پکیج ویدیو با موفقیت انجام شد"
+    "The video package has been uploaded successfully": "آپلود پکیج ویدیو با موفقیت انجام شد",
+    "Selective intelligence is registered for this package": "هوش انتخابی برای این پکیج ثبت شده است"
 }

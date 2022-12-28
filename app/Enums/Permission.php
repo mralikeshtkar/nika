@@ -102,11 +102,13 @@ final class Permission extends Enum implements LocalizedEnum
 
     /* Packages */
     const MANAGE_PACKAGES = "manage packages";
+    const MANAGE_PACKAGES_INTELLIGENCES = "manage package intelligences";
     const VIEW_PACKAGES = "view packages";
     const SHOW_PACKAGES = "show packages";
     const CREATE_PACKAGES = "create packages";
     const EDIT_PACKAGES = "edit packages";
     const DELETE_PACKAGES = "delete packages";
+    const MANAGE_COMPLETE_STATUS_PACKAGES = "manage complete status packages";
 
     /* Intelligences */
     const MANAGE_INTELLIGENCES = "manage intelligences";
@@ -121,6 +123,20 @@ final class Permission extends Enum implements LocalizedEnum
     const CREATE_INTELLIGENCE_POINT_NAME = "create intelligence point name";
     const EDIT_INTELLIGENCE_POINT_NAME = "edit intelligence point name";
     const DELETE_INTELLIGENCE_POINT_NAME = "delete intelligence point name";
+
+    /* Intelligence point */
+    const MANAGE_INTELLIGENCE_POINT = "manage intelligence point";
+    const VIEW_INTELLIGENCE_POINT = "view intelligence point";
+    const CREATE_INTELLIGENCE_POINT = "create intelligence point";
+    const EDIT_INTELLIGENCE_POINT = "edit intelligence point";
+    const DELETE_INTELLIGENCE_POINT = "delete intelligence point";
+
+    /* Intelligence feedback */
+    const MANAGE_INTELLIGENCE_FEEDBACK = "manage intelligence feedback";
+    const VIEW_INTELLIGENCE_FEEDBACK = "view intelligence feedback";
+    const CREATE_INTELLIGENCE_FEEDBACK = "create intelligence feedback";
+    const EDIT_INTELLIGENCE_FEEDBACK = "edit intelligence feedback";
+    const DELETE_INTELLIGENCE_FEEDBACK = "delete intelligence feedback";
 
     /* Document group */
     const MANAGE_DOCUMENT_GROUPS = "manage document groups";

@@ -6,6 +6,8 @@ namespace App\Providers;
 use App\Models\DocumentGroup;
 use App\Models\Grade;
 use App\Models\Intelligence;
+use App\Models\IntelligenceFeedback;
+use App\Models\IntelligencePoint;
 use App\Models\IntelligencePointName;
 use App\Models\Job;
 use App\Models\Major;
@@ -23,6 +25,8 @@ use App\Models\User;
 use App\Policies\DocumentGroup\DocumentGroupPolicy;
 use App\Policies\GradePolicy;
 use App\Policies\Intelligence\IntelligencePolicy;
+use App\Policies\IntelligenceFeedback\IntelligenceFeedbackPolicy;
+use App\Policies\IntelligencePoint\IntelligencePointPolicy;
 use App\Policies\IntelligencePointName\IntelligencePointNamePolicy;
 use App\Policies\JobPolicy;
 use App\Policies\MajorPolicy;
@@ -64,7 +68,9 @@ class AuthServiceProvider extends ServiceProvider
         Skill::class => SkillPolicy::class,
         Package::class => PackagePolicy::class,
         Intelligence::class => IntelligencePolicy::class,
+        IntelligencePoint::class => IntelligencePointPolicy::class,
         IntelligencePointName::class => IntelligencePointNamePolicy::class,
+        IntelligenceFeedback::class => IntelligenceFeedbackPolicy::class,
         DocumentGroup::class => DocumentGroupPolicy::class,
     ];
 

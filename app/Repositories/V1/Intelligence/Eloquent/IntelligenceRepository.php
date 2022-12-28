@@ -6,6 +6,7 @@ use App\Models\Intelligence;
 use App\Repositories\V1\BaseRepository;
 use App\Repositories\V1\Intelligence\Interfaces\IntelligenceRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 class IntelligenceRepository extends BaseRepository implements IntelligenceRepositoryInterface
@@ -41,6 +42,23 @@ class IntelligenceRepository extends BaseRepository implements IntelligenceRepos
         return $intelligence->feedbacks()
             ->select(["id", "intelligence_id", "title", "max_point"])
             ->get();
+    }
+
+    public function get(): array|Collection
+    {
+        return $this->model->get();
+    }
+
+    /**
+     * @param Request $request
+     * @return $this
+     */
+    public function searchTitle(Request $request): static
+    {
+        $this->model = $this->model->when($request->filled('title'), function (Builder $builder) use ($request) {
+            $builder->where('title', 'LIKE', '%' . $request->title . '%');
+        });
+        return $this;
     }
 
     /**

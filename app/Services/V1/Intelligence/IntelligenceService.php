@@ -53,6 +53,21 @@ class IntelligenceService extends BaseService
 
     /**
      * @param Request $request
+     * @return JsonResponse
+     */
+    public function all(Request $request): JsonResponse
+    {
+        $intelligences = $this->intelligenceRepository
+            ->select(['id','title'])
+            ->searchTitle($request)
+            ->get();
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('intelligences', IntelligenceResource::collection($intelligences))
+            ->send();
+    }
+
+    /**
+     * @param Request $request
      * @param $intelligence
      * @return JsonResponse
      */
