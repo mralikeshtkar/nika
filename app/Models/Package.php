@@ -65,7 +65,7 @@ class Package extends Model
     {
         return $this->belongsToMany(Intelligence::class)
             ->using(IntelligencePackage::class)
-            ->withPivot(['id','is_completed']);
+            ->withPivot(['is_completed']);
     }
 
     #endregion
