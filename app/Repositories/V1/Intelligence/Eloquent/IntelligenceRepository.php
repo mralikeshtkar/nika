@@ -31,6 +31,7 @@ class IntelligenceRepository extends BaseRepository implements IntelligenceRepos
     {
         return $intelligence->points()
             ->select(["id", "intelligence_id", "intelligence_point_name_id", "max_point"])
+            ->withPointName()
             ->get();
     }
 
