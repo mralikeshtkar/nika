@@ -171,13 +171,13 @@ trait HasMedia
         return $this->morphOne(Media::class, 'model');
     }
 
-    public function addMedia(UploadedFile $file)
+    public function addMedia(UploadedFile $file): Model
     {
         $extension = strtolower($file->extension());
         $this->setType($this->getFileType($extension))
             ->setExtension($extension)
             ->setBaseUrl(url('/'));
-        $this->storeModel(resolve(MediaFileService::class)->store($file, $this->getType(), $this->getDisk(), $this->getDirectory()));
+        return $this->storeModel(resolve(MediaFileService::class)->store($file, $this->getType(), $this->getDisk(), $this->getDirectory()));
     }
 
     /**

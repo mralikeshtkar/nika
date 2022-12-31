@@ -12,6 +12,8 @@
     "Address": "آدرس",
     "Job": "شغل",
     "Exercise": "تمرین",
+    "Question": "سوال",
+    "QuestionAnswerType": "نوع جواب سوال",
     "IntelligencePoint": "امتیاز هوش",
     "DocumentGroup": "گروه مستندات",
     "Major": "رشته تحصیلی",
@@ -53,5 +55,6 @@
     "The :attribute isn't unique": ":attribute قبلا ثبت شده است",
     "The :attribute is invalid": ":attribute معتبر نمیباشد",
     "The video package has been uploaded successfully": "آپلود پکیج ویدیو با موفقیت انجام شد",
-    "Selective intelligence is registered for this package": "هوش انتخابی برای این پکیج ثبت شده است"
+    "Selective intelligence is registered for this package": "هوش انتخابی برای این پکیج ثبت شده است",
+    "The point has already been recorded for this question": "ارزش قبلا برای این سوال ثبت شده است"
 }

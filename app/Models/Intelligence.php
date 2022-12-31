@@ -47,6 +47,14 @@ class Intelligence extends Model
     /**
      * @return HasMany
      */
+    public function pivotPackages(): HasMany
+    {
+        return $this->hasMany(IntelligencePackage::class);
+    }
+
+    /**
+     * @return HasMany
+     */
     public function points(): HasMany
     {
         return $this->hasMany(IntelligencePoint::class);

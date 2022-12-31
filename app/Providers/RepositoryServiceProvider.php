@@ -38,6 +38,10 @@ use App\Repositories\V1\Province\Eloquent\ProvinceRepository;
 use App\Repositories\V1\Province\Interfaces\ProvinceRepositoryInterface;
 use App\Repositories\V1\PsychologicalQuestion\Eloquent\PsychologicalQuestionRepository;
 use App\Repositories\V1\PsychologicalQuestion\Interfaces\PsychologicalQuestionRepositoryInterface;
+use App\Repositories\V1\Question\Eloquent\QuestionAnswerTypeServiceRepository;
+use App\Repositories\V1\Question\Eloquent\QuestionRepository;
+use App\Repositories\V1\Question\Interfaces\QuestionAnswerTypeServiceRepositoryInterface;
+use App\Repositories\V1\Question\Interfaces\QuestionRepositoryInterface;
 use App\Repositories\V1\Rahjoo\Eloquent\RahjooRepository;
 use App\Repositories\V1\Rahjoo\Interfaces\RahjooRepositoryInterface;
 use App\Repositories\V1\RahjooCourse\Eloquent\RahjooCourseRepository;
@@ -103,5 +107,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(IntelligencePointNameRepositoryInterface::class, IntelligencePointNameRepository::class);
         $this->app->bind(DocumentGroupRepositoryInterface::class, DocumentGroupRepository::class);
         $this->app->bind(ExerciseRepositoryInterfaces::class, ExerciseRepository::class);
+        $this->app->bind(QuestionRepositoryInterface::class, QuestionRepository::class);
+        $this->app->bind(QuestionAnswerTypeServiceRepositoryInterface::class, QuestionAnswerTypeServiceRepository::class);
     }
 }

@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -13,25 +12,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('exercises', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')
+        Schema::create('media_question', function (Blueprint $table) {
+            $table->foreignId('question_id')
                 ->references('id')
-                ->on('users')
+                ->on('questions')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->foreignId('package_id')
+            $table->foreignId('media_id')
                 ->references('id')
-                ->on('packages')
+                ->on('media')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->foreignId('intelligence_id')
-                ->references('id')
-                ->on('intelligences')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-            $table->string('title');
-            $table->boolean('is_locked')->default(false);
+            $table->primary(['question_id', 'media_id']);
+            $table->unsignedSmallInteger('priority');
             $table->timestamps();
         });
     }
@@ -43,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('exercises');
+        Schema::dropIfExists('media_question');
     }
 };

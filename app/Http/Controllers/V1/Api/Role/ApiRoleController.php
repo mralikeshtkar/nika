@@ -96,7 +96,7 @@ class ApiRoleController extends ApiBaseController
      *     tags={"نقش‌های کاربری"},
      *     @OA\RequestBody(
      *         @OA\MediaType(
-     *             mediaType="multipart/form-data",
+     *             mediaType="application/json",
      *             @OA\Schema(
      *                 required={"name","name_fa"},
      *                 @OA\Property(

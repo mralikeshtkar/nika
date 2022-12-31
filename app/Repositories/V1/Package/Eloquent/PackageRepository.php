@@ -17,6 +17,10 @@ class PackageRepository extends BaseRepository implements PackageRepositoryInter
         parent::__construct($model);
     }
 
+    public function findOrFailIntelligenceByIntelligences($package, $intelligence,$columns = ['*'])
+    {
+        return $package->intelligences()->select($columns)->findOrFail($intelligence);
+    }
 
     /**
      * Filter pagination.

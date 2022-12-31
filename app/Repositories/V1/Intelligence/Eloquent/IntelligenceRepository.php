@@ -3,6 +3,7 @@
 namespace App\Repositories\V1\Intelligence\Eloquent;
 
 use App\Models\Intelligence;
+use App\Models\IntelligencePackage;
 use App\Repositories\V1\BaseRepository;
 use App\Repositories\V1\Intelligence\Interfaces\IntelligenceRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;

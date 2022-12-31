@@ -10,8 +10,6 @@ class IntelligencePackage extends Pivot
 {
     use Compoships;
 
-    protected $with = ['exercises'];
-
     /**
      * @var string[]
      */

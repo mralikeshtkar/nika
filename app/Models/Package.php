@@ -68,5 +68,13 @@ class Package extends Model
             ->withPivot(['is_completed']);
     }
 
+    /**
+     * @return HasMany
+     */
+    public function pivotIntelligences(): HasMany
+    {
+        return $this->hasMany(IntelligencePackage::class);
+    }
+
     #endregion
 }

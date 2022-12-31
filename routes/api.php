@@ -6,6 +6,7 @@ use App\Http\Controllers\V1\Api\DocumentGroup\ApiDocumentGroupController as V1Ap
 use App\Http\Controllers\V1\Api\Exercise\ApiExerciseController as V1ApiExerciseController;
 use App\Http\Controllers\V1\Api\Grade\ApiGradeController as V1ApiGradeController;
 use App\Http\Controllers\V1\Api\Intelligence\ApiIntelligenceController as V1ApiIntelligenceController;
+use App\Http\Controllers\V1\Api\Intelligence\ApiIntelligenceExerciseController as V1ApiIntelligenceExerciseController;
 use App\Http\Controllers\V1\Api\IntelligenceFeedback\ApiIntelligenceFeedbackController as V1ApiIntelligenceFeedbackController;
 use App\Http\Controllers\V1\Api\IntelligencePoint\ApiIntelligencePointController as V1ApiIntelligencePointController;
 use App\Http\Controllers\V1\Api\IntelligencePointName\ApiIntelligencePointNameController as V1ApiIntelligencePointNameController;
@@ -17,6 +18,9 @@ use App\Http\Controllers\V1\Api\Permission\ApiPermissionController as V1ApiPermi
 use App\Http\Controllers\V1\Api\Personnel\ApiPersonnelController as V1ApiPersonnelController;
 use App\Http\Controllers\V1\Api\Province\ApiProvinceController as V1ProvinceController;
 use App\Http\Controllers\V1\Api\PsychologicalQuestion\ApiPsychologicalQuestionController as V1ApiPsychologicalQuestionController;
+use App\Http\Controllers\V1\Api\Question\ApiQuestionAnswerTypeController as V1ApiQuestionAnswerTypeController;
+use App\Http\Controllers\V1\Api\Question\ApiQuestionController as V1ApiQuestionController;
+use App\Http\Controllers\V1\Api\Question\ApiQuestionPointController as V1ApiQuestionPointController;
 use App\Http\Controllers\V1\Api\Rahjoo\ApiRahjooController as V1ApiRahjooController;
 use App\Http\Controllers\V1\Api\RahjooCourse\ApiRahjooCourseController as V1ApiRahjooCourseController;
 use App\Http\Controllers\V1\Api\RahjooParent\ApiRahjooParentController as V1ApiRahjooParentController;
@@ -198,13 +202,39 @@ Route::prefix('v1')->group(function (Router $router) {
         /* Exercises */
         $router->group([], function (Router $router) {
             $router->get('exercises', [V1ApiExerciseController::class, 'index']);
-//            $router->post('intelligences', [V1ApiIntelligenceController::class, 'store']);
-//            $router->get('intelligences/all', [V1ApiIntelligenceController::class, 'all']);
-//            $router->get('intelligences/{intelligence}/points', [V1ApiIntelligenceController::class, 'points']);
-//            $router->get('intelligences/{intelligence}/feedbacks', [V1ApiIntelligenceController::class, 'feedbacks']);
-//            $router->get('intelligences/{intelligence}', [V1ApiIntelligenceController::class, 'show']);
-//            $router->put('intelligences/{intelligence}', [V1ApiIntelligenceController::class, 'update']);
-//            $router->delete('intelligences/{intelligence}', [V1ApiIntelligenceController::class, 'destroy']);
+            $router->post('exercises', [V1ApiExerciseController::class, 'store']);
+            $router->put('exercises/{exercise}', [V1ApiExerciseController::class, 'update']);
+            $router->delete('exercises/{exercise}', [V1ApiExerciseController::class, 'destroy']);
+            $router->get('exercises/{exercise}/questions', [V1ApiExerciseController::class, 'questions']);
+
+            /* Exercise questions */
+            $router->group([], function (Router $router) {
+                $router->post('exercises/{exercise}/questions', [V1ApiQuestionController::class, 'store']);
+                $router->post('questions/{question}/upload-file', [V1ApiQuestionController::class, 'uploadFile']);
+                $router->delete('questions/{question}/remove-file', [V1ApiQuestionController::class, 'removeFile']);
+            });
+        });
+
+        /* Questions */
+        $router->group([], function (Router $router) {
+            $router->get('questions/{question}', [V1ApiQuestionController::class, 'show']);
+            $router->put('questions/{question}', [V1ApiQuestionController::class, 'update']);
+            $router->delete('questions/{question}', [V1ApiQuestionController::class, 'destroy']);
+            $router->put('questions/{question}/change-file-priority', [V1ApiQuestionController::class, 'changeFilePriority']);
+            $router->get('questions/{question}/answer-types', [V1ApiQuestionController::class, 'answerTypes']);
+
+            /* Question answer types */
+            $router->group([], function (Router $router) {
+                $router->post('questions/{question}/answer-types', [V1ApiQuestionAnswerTypeController::class, 'store']);
+                $router->put('questions/{question}/answer-types/change-priority', [V1ApiQuestionAnswerTypeController::class, 'changePriority']);
+                $router->put('question-answer-types/{questionAnswerTypes}', [V1ApiQuestionAnswerTypeController::class, 'update']);
+                $router->delete('question-answer-types/{questionAnswerTypes}', [V1ApiQuestionAnswerTypeController::class, 'destroy']);
+            });
+
+            /* Question points */
+            $router->group([], function (Router $router) {
+                $router->post('questions/{question}/points', [V1ApiQuestionPointController::class, 'store']);
+            });
         });
 
         /* Intelligences */
@@ -217,6 +247,11 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->get('intelligences/{intelligence}', [V1ApiIntelligenceController::class, 'show']);
             $router->put('intelligences/{intelligence}', [V1ApiIntelligenceController::class, 'update']);
             $router->delete('intelligences/{intelligence}', [V1ApiIntelligenceController::class, 'destroy']);
+
+            /* Intelligence exercises */
+            $router->group([], function (Router $router) {
+                $router->get('intelligences/{package}/{intelligence}/exercises', [V1ApiIntelligenceExerciseController::class, 'index']);
+            });
         });
 
         /* Intelligence point names */

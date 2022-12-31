@@ -6,7 +6,7 @@
     },
     "servers": [
         {
-            "url": "https://api.rashtdev.ir/api/v1"
+            "url": "http://127.0.0.1:8000/api/v1"
         },
         {
             "url": "http://127.0.0.1:8000/api/v1"
@@ -657,6 +657,311 @@
                 "responses": {
                     "200": {
                         "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/exercises": {
+            "get": {
+                "tags": [
+                    "تمرینات"
+                ],
+                "summary": "لیست تمرینات بصورت صفحه بندی",
+                "description": "",
+                "operationId": "40162bab41a8516dbe628ebea0c38013",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    },
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "description": "عنوان",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "تمرینات"
+                ],
+                "summary": "ثبت تمرین",
+                "description": "",
+                "operationId": "c85ba63824eab8b66372a4a25f214d3c",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "package_id",
+                                    "intelligence_id",
+                                    "title"
+                                ],
+                                "properties": {
+                                    "package_id": {
+                                        "description": "شناسه پکیج",
+                                        "type": "number"
+                                    },
+                                    "intelligence_id": {
+                                        "description": "شناسه هوش",
+                                        "type": "number"
+                                    },
+                                    "title": {
+                                        "description": "عنوان",
+                                        "type": "string"
+                                    },
+                                    "is_locked": {
+                                        "description": "آیا تمرین قفل است ؟ 1بله 0خیر",
+                                        "type": "number",
+                                        "enum": [
+                                            1,
+                                            0
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/exercises/{id}": {
+            "post": {
+                "tags": [
+                    "تمرینات"
+                ],
+                "summary": "بروزرسانی تمرین",
+                "description": "",
+                "operationId": "1d281b597aeb22a718bf2e19cabfbdbb",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه تمرین",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "_method",
+                                    "is_locked",
+                                    "title"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "description": "این مقدار باید بصورت ثابت شود",
+                                        "type": "string",
+                                        "default": "put",
+                                        "enum": [
+                                            "put"
+                                        ]
+                                    },
+                                    "package_id": {
+                                        "description": "شناسه پکیج",
+                                        "type": "number"
+                                    },
+                                    "intelligence_id": {
+                                        "description": "شناسه هوش",
+                                        "type": "number"
+                                    },
+                                    "title": {
+                                        "description": "عنوان",
+                                        "type": "string"
+                                    },
+                                    "is_locked": {
+                                        "description": "آیا تمرین قفل است ؟ 1بله 0خیر",
+                                        "type": "number",
+                                        "enum": [
+                                            1,
+                                            0
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "تمرینات"
+                ],
+                "summary": "حذف تمرین",
+                "description": "",
+                "operationId": "65d6a726a2386fd4b4d5609b7b70ed34",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه تمرین",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/exercises/{id}/questions": {
+            "get": {
+                "tags": [
+                    "تمرینات"
+                ],
+                "summary": "لیست سوال های تمرین بصورت صفحه بندی",
+                "description": "",
+                "operationId": "302ac8a3e83c201d7bb4293c7a84ca34",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه تمرین",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "سوال"
+                ],
+                "summary": "ثبت سوال",
+                "description": "",
+                "operationId": "2f887d5c23ea301a20adfbc847717225",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه تمرین",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "title"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "description": "عنوان",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ثبت با موفقیت انجام شد",
                         "content": {
                             "application/json": {
                                 "schema": {}
@@ -1810,6 +2115,74 @@
                         "required": true,
                         "schema": {
                             "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/intelligences/{package}/{intelligence}/exercises": {
+            "get": {
+                "tags": [
+                    "هوش"
+                ],
+                "summary": "لیست تمرینات هوش بصورت صفحه بندی",
+                "description": "",
+                "operationId": "8d32f190a234dcd45543a66819e7e9b8",
+                "parameters": [
+                    {
+                        "name": "package",
+                        "in": "path",
+                        "description": "شناسه پکیج",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "intelligence",
+                        "in": "path",
+                        "description": "شناسه هوش",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    },
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "description": "جستجوی عنوان",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 ],
@@ -3326,6 +3699,530 @@
                 }
             }
         },
+        "/questions/{id}/answer-types": {
+            "get": {
+                "tags": [
+                    "سوال"
+                ],
+                "summary": "لیست نوع های پاسخ سوال",
+                "description": "",
+                "operationId": "b52fd38d000d18500a010e21188e0fe0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه سوال",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "انواع جواب سوال"
+                ],
+                "summary": "ثبت نوع جواب سوال",
+                "description": "",
+                "operationId": "c0906a248fce7c86f66570a89c0e0fd0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه سوال",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "type"
+                                ],
+                                "properties": {
+                                    "type": {
+                                        "description": "نوع",
+                                        "type": "string",
+                                        "enum": [
+                                            "audio",
+                                            "text",
+                                            "video",
+                                            "image"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/question-answer-types/{id}": {
+            "post": {
+                "tags": [
+                    "انواع جواب سوال"
+                ],
+                "summary": "بروزرسانی نوع جواب سوال",
+                "description": "",
+                "operationId": "4c85c896f04ae8027bc920f76b8ebae0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه نوع جواب سوال",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "_method",
+                                    "type"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "description": "این مقدار باید بصورت ثابت شود",
+                                        "type": "string",
+                                        "default": "put",
+                                        "enum": [
+                                            "put"
+                                        ]
+                                    },
+                                    "type": {
+                                        "description": "نوع",
+                                        "type": "string",
+                                        "enum": [
+                                            "audio",
+                                            "text",
+                                            "video",
+                                            "image"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "انواع جواب سوال"
+                ],
+                "summary": "حدف نوع جواب سوال",
+                "description": "",
+                "operationId": "5d97e04b867db379d6595e4bc338faa1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه نوع جواب سوال",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/questions/{id}/answer-types/change-priority": {
+            "post": {
+                "tags": [
+                    "انواع جواب سوال"
+                ],
+                "summary": "بروزرسانی چیدمان نوع جواب سوال",
+                "description": "باید تمام شناسه های نوع جواب سوال بصورت ارایه ارسال شود",
+                "operationId": "610aa723f55ed18c08ce14130b0c30f7",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه سوال",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "_method",
+                                    "answer_type_ids"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "description": "این مقدار باید بصورت ثابت شود",
+                                        "type": "string",
+                                        "default": "put",
+                                        "enum": [
+                                            "put"
+                                        ]
+                                    },
+                                    "answer_type_ids": {
+                                        "description": "شناسه های نوع جواب سوال",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "number"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/questions/{id}": {
+            "get": {
+                "tags": [
+                    "سوال"
+                ],
+                "summary": "دریافت اطلاعات سوال",
+                "description": "",
+                "operationId": "b7416745d4fa6efdbfa3e072448bb009",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه سوال",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "سوال"
+                ],
+                "summary": "بروزرسانی سوال",
+                "description": "",
+                "operationId": "1c4fc1547fcb0d1a042a323345f80a2a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه سوال",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "_method",
+                                    "title"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "description": "این مقدار باید بصورت ثابت شود",
+                                        "type": "string",
+                                        "default": "put",
+                                        "enum": [
+                                            "put"
+                                        ]
+                                    },
+                                    "title": {
+                                        "description": "عنوان",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "سوال"
+                ],
+                "summary": "بروزرسانی سوال",
+                "description": "",
+                "operationId": "94ad0a2a6f98403fa9304a2b26f28b74",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه سوال",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/questions/{id}/upload-file": {
+            "post": {
+                "tags": [
+                    "سوال"
+                ],
+                "summary": "اپلود فایل سوال",
+                "description": "",
+                "operationId": "52c33bc9139e18a294bf63e103e01c09",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه سوال",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "file"
+                                ],
+                                "properties": {
+                                    "file": {
+                                        "description": "فایل",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/questions/{id}/remove-file": {
+            "post": {
+                "tags": [
+                    "سوال"
+                ],
+                "summary": "حذف فایل سوال",
+                "description": "",
+                "operationId": "c6546bdc6e508d7c22f4b4c6a708cf65",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه سوال",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "_method",
+                                    "media_id"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "description": "این مقدار باید بصورت ثابت شود",
+                                        "type": "string",
+                                        "default": "delete",
+                                        "enum": [
+                                            "delete"
+                                        ]
+                                    },
+                                    "media_id": {
+                                        "description": "شناسه مدیا (فایل)",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/questions/{id}/change-file-priority": {
+            "post": {
+                "tags": [
+                    "سوال"
+                ],
+                "summary": "بروزرسانی چیدمان فایل های سوال",
+                "description": "باید تمام شناسه های فایل سوال بصورت ارایه ارسال شود",
+                "operationId": "ba3cdc297f257dcb94e1b9acfa07fd9c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه سوال",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": "1"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "_method",
+                                    "media_ids"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "description": "این مقدار باید بصورت ثابت شود",
+                                        "type": "string",
+                                        "default": "put",
+                                        "enum": [
+                                            "put"
+                                        ]
+                                    },
+                                    "media_ids": {
+                                        "description": "شناسه های فایل سوال",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "number"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/rahjoo-courses": {
             "get": {
                 "tags": [
@@ -3818,7 +4715,7 @@
                 "operationId": "e498c068c0457de5174ea728d6fb03b3",
                 "requestBody": {
                     "content": {
-                        "multipart/form-data": {
+                        "application/json": {
                             "schema": {
                                 "required": [
                                     "name",

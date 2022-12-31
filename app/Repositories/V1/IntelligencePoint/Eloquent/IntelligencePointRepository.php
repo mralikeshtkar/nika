@@ -17,6 +17,15 @@ class IntelligencePointRepository extends BaseRepository implements Intelligence
     }
 
     /**
+     * @return $this
+     */
+    public function withPointName(): static
+    {
+        $this->model = $this->model->withPointName();
+        return $this;
+    }
+
+    /**
      * @param Request $request
      * @return $this
      */
