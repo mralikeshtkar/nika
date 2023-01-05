@@ -17,8 +17,10 @@ class PackageResource extends JsonResource
     public function toArray($request)
     {
         return collect($this->resource->getAttributes())
-            ->when($this->resource->originalIsEquivalent('description'), function (Collection $collection) {
+            ->when($this->whenAppended('description'), function (Collection $collection) {
                 $collection->put('description', $this->resource->description);
+            })->when($this->whenAppended('created_at'), function (Collection $collection) {
+                $collection->put('created_at', verta($this->resource->created_at)->format("j F Y"));
             })->when($this->resource->relationLoaded('video'), function (Collection $collection) {
                 $collection->put('video', new MediaVideoResource($this->resource->video));
             });

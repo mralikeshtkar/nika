@@ -3,13 +3,16 @@
 namespace App\Services\V1\Question;
 
 use App\Http\Resources\V1\Intelligence\IntelligenceResource;
+use App\Http\Resources\V1\IntelligencePoint\IntelligencePointResource;
 use App\Http\Resources\V1\PaginationResource;
 use App\Http\Resources\V1\Question\QuestionAnswerTypeResource;
 use App\Http\Resources\V1\Question\QuestionResource;
 use App\Models\Exercise;
+use App\Models\IntelligencePoint;
 use App\Models\MediaQuestion;
 use App\Models\Question;
 use App\Repositories\V1\Exercise\Interfaces\ExerciseRepositoryInterfaces;
+use App\Repositories\V1\Intelligence\Interfaces\IntelligenceRepositoryInterface;
 use App\Repositories\V1\Media\Interfaces\MediaRepositoryInterface;
 use App\Repositories\V1\Question\Interfaces\QuestionRepositoryInterface;
 use App\Responses\Api\ApiResponse;
@@ -49,19 +52,20 @@ class QuestionService extends BaseService
     public function show(Request $request, $question): JsonResponse
     {
         $question = $this->questionRepository->with([
-            'intelligence:intelligences.id,intelligences.title',
-            'points',
-            'exercise' => function (BelongsTo $belongsTo) {
-                $belongsTo->select(['id','title'])->with('points');
+            'pivotPoints' => function (HasMany $hasMany) {
+                $hasMany->withGroupIntelligencePointId();
             },
-            'intelligence.points' => function (HasMany $hasMany) {
-                $hasMany->select(['id', 'intelligence_id', 'intelligence_point_name_id', 'max_point'])
-                    ->withPointName();
+            'intelligence:intelligences.id,intelligences.title',
+            'exercise' => function (BelongsTo $belongsTo) {
+                $belongsTo->select(['id', 'title'])
+                    ->with('pivotPoints');
             },
         ])->select(['id', 'exercise_id', 'title'])
             ->findOrFailById($question);
+        $intelligencePoints = resolve(IntelligenceRepositoryInterface::class)->getIntelligencePoints($question->intelligence);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('question', new QuestionResource($question))
+            ->addData('intelligencePoints', IntelligencePointResource::collection($intelligencePoints, ['withRemind' => $question->pivotPoints]))
             ->send();
     }
 

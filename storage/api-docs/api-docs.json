@@ -2638,11 +2638,11 @@
                     "پکیج"
                 ],
                 "summary": "ثبت پکیج",
-                "description": "",
+                "description": "[وضعیت تکمیل - بصورت boolean باید باشد][وضعیت Active:فعال Inactive:غیرفعال]",
                 "operationId": "f7453aeadb2094b208e4e073c9207210",
                 "requestBody": {
                     "content": {
-                        "multipart/form-data": {
+                        "application/json": {
                             "schema": {
                                 "required": [
                                     "title",
@@ -2682,6 +2682,10 @@
                                             "Active",
                                             "Inactive"
                                         ]
+                                    },
+                                    "description": {
+                                        "description": "توضیحات",
+                                        "type": "string"
                                     },
                                     "intelligences[]": {
                                         "description": "هوش ها (شناسه هوش)",
@@ -2758,7 +2762,7 @@
                 ],
                 "requestBody": {
                     "content": {
-                        "multipart/form-data": {
+                        "application/json": {
                             "schema": {
                                 "required": [
                                     "_method",
@@ -2807,6 +2811,10 @@
                                             "Active",
                                             "Inactive"
                                         ]
+                                    },
+                                    "description": {
+                                        "description": "توضیحات",
+                                        "type": "string"
                                     },
                                     "intelligences[]": {
                                         "description": "هوش ها (شناسه هوش)",
@@ -3137,6 +3145,46 @@
                 "summary": "تغییر وضعیت هوش پکیج به تکمیل نشده",
                 "description": "",
                 "operationId": "0af69a071b4658006a5ca0640fda92f2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه پکیج",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "intelligence",
+                        "in": "path",
+                        "description": "شناسه هوش",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/packages/{id}/intelligences/{intelligence}": {
+            "delete": {
+                "tags": [
+                    "پکیج"
+                ],
+                "summary": "حذف هوش پکیج",
+                "description": "",
+                "operationId": "f2fada4eedf095adb0c3dd5d8bcca40a",
                 "parameters": [
                     {
                         "name": "id",
@@ -4204,6 +4252,189 @@
                                         "items": {
                                             "type": "number"
                                         }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/questions/{id}/points": {
+            "post": {
+                "tags": [
+                    "سوال"
+                ],
+                "summary": "ثبت ارزش برای سوال",
+                "description": "",
+                "operationId": "ed93961568d50d4cda180e27356566e4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه سوال",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "intelligence_point_id",
+                                    "max_point"
+                                ],
+                                "properties": {
+                                    "intelligence_point_id": {
+                                        "description": "شناسه ارزش",
+                                        "type": "number"
+                                    },
+                                    "max_point": {
+                                        "description": "میزان ارزش",
+                                        "type": "number"
+                                    },
+                                    "description": {
+                                        "description": "توضیحات",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/questions/{id}/update-points": {
+            "post": {
+                "tags": [
+                    "سوال"
+                ],
+                "summary": "بروزرسانی ارزش برای سوال",
+                "description": "",
+                "operationId": "0a2c9da1c8ba81cd6ad05f6c53d710b6",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه سوال",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "_method",
+                                    "intelligence_point_id",
+                                    "max_point"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "description": "این مقدار باید بصورت ثابت شود",
+                                        "type": "string",
+                                        "default": "put",
+                                        "enum": [
+                                            "put"
+                                        ]
+                                    },
+                                    "intelligence_point_id": {
+                                        "description": "شناسه ارزش",
+                                        "type": "number"
+                                    },
+                                    "max_point": {
+                                        "description": "میزان ارزش",
+                                        "type": "number"
+                                    },
+                                    "description": {
+                                        "description": "توضیحات",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/questions/{id}/destroy-points": {
+            "post": {
+                "tags": [
+                    "سوال"
+                ],
+                "summary": "جذف ارزش سوال",
+                "description": "",
+                "operationId": "e1770e623fd03ef5055597b2af422140",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "سوال",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "_method",
+                                    "intelligence_point_id"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "description": "این مقدار باید بصورت ثابت شود",
+                                        "type": "string",
+                                        "default": "delete",
+                                        "enum": [
+                                            "delete"
+                                        ]
+                                    },
+                                    "intelligence_point_id": {
+                                        "description": "شناسه ارزش",
+                                        "type": "number"
                                     }
                                 },
                                 "type": "object"

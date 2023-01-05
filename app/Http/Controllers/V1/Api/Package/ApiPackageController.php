@@ -100,11 +100,11 @@ class ApiPackageController extends ApiBaseController
      * @OA\Post(
      *     path="/packages",
      *     summary="ثبت پکیج",
-     *     description="",
+     *     description="[وضعیت تکمیل - بصورت boolean باید باشد][وضعیت Active:فعال Inactive:غیرفعال]",
      *     tags={"پکیج"},
      *     @OA\RequestBody(
      *         @OA\MediaType(
-     *             mediaType="multipart/form-data",
+     *             mediaType="application/json",
      *             @OA\Schema(
      *                 required={"title","age","price"},
      *                 @OA\Property(
@@ -139,6 +139,11 @@ class ApiPackageController extends ApiBaseController
      *                     type="string",
      *                     enum={"Active","Inactive"},
      *                     description="وضعیت Active:فعال Inactive:غیرفعال",
+     *                 ),
+     *                 @OA\Property(
+     *                     property="description",
+     *                     type="string",
+     *                     description="توضیحات"
      *                 ),
      *                  @OA\Property(
      *                     property="intelligences[]",
@@ -219,7 +224,7 @@ class ApiPackageController extends ApiBaseController
      *     ),
      *     @OA\RequestBody(
      *         @OA\MediaType(
-     *             mediaType="multipart/form-data",
+     *             mediaType="application/json",
      *             @OA\Schema(
      *                 required={"_method","title","age","price"},
      *                 @OA\Property(
@@ -261,6 +266,11 @@ class ApiPackageController extends ApiBaseController
      *                     type="string",
      *                     enum={"Active","Inactive"},
      *                     description="وضعیت Active:فعال Inactive:غیرفعال",
+     *                 ),
+     *                 @OA\Property(
+     *                     property="description",
+     *                     type="string",
+     *                     description="توضیحات"
      *                 ),
      *                  @OA\Property(
      *                     property="intelligences[]",

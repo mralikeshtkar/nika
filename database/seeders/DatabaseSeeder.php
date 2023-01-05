@@ -4,7 +4,10 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Enums\Personnel\PersonnelComputerLevel;
+use App\Models\Exercise;
 use App\Models\Intelligence;
+use App\Models\IntelligencePoint;
+use App\Models\IntelligencePointName;
 use App\Models\Package;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Schema;

@@ -100,5 +100,20 @@ class PackageIntelligenceService extends BaseService
             ->send();
     }
 
+    /**
+     * @param Request $request
+     * @param $package
+     * @param $intelligence
+     * @return JsonResponse
+     */
+    public function destroy(Request $request, $package, $intelligence): JsonResponse
+    {
+        ApiResponse::authorize($request->user()->can('intelligence', Package::class));
+        $package = $this->packageRepository->select(['id'])->findOrFailById($package);
+        $intelligence = $this->packageRepository->findIntelligenceOrFailById($package, $intelligence, ['id']);
+        $this->packageRepository->detachIntelligences($package,[$intelligence->id]);
+        return ApiResponse::message(trans("Mission accomplished"))->send();
+    }
+
     #endregion
 }

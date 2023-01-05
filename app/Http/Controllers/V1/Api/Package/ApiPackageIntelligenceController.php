@@ -171,4 +171,38 @@ class ApiPackageIntelligenceController extends ApiBaseController
     {
         return $this->packageIntelligenceService->uncompleted($request, $package, $intelligence);
     }
+
+    /**
+     * Destroy package intelligence
+     *
+     * @OA\Delete(
+     *     path="/packages/{id}/intelligences/{intelligence}",
+     *     summary="حذف هوش پکیج",
+     *     description="",
+     *     tags={"پکیج"},
+     *     @OA\Parameter(
+     *         description="شناسه پکیج",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه هوش",
+     *         in="path",
+     *         name="intelligence",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="ثبت با موفقیت انجام شد",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function destroy(Request $request, $package, $intelligence)
+    {
+        return $this->packageIntelligenceService->destroy($request, $package, $intelligence);
+    }
 }

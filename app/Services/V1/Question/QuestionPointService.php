@@ -6,6 +6,7 @@ use App\Models\IntelligencePoint;
 use App\Repositories\V1\Question\Interfaces\QuestionRepositoryInterface;
 use App\Responses\Api\ApiResponse;
 use App\Services\V1\BaseService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -33,7 +34,12 @@ class QuestionPointService extends BaseService
 
     #region Public methods
 
-    public function store(Request $request, $question)
+    /**
+     * @param Request $request
+     * @param $question
+     * @return JsonResponse
+     */
+    public function store(Request $request, $question): JsonResponse
     {
         $question = $this->questionRepository->select(['id', 'exercise_id'])
             ->with(['pivotPoints:question_id,intelligence_point_id'])
@@ -56,6 +62,50 @@ class QuestionPointService extends BaseService
             $request->intelligence_point_id => ['max_point' => $request->max_point, 'description' => $request->description],
         ]);
         return ApiResponse::message(trans("The information was register successfully"), Response::HTTP_CREATED)->send();
+    }
+
+    public function update(Request $request, $question)
+    {
+        $question = $this->questionRepository->select(['id', 'exercise_id'])
+            ->with(['pivotPoints:question_id,intelligence_point_id'])
+            ->withOrderExercisePointsSum()
+            ->withIntelligencePoints()
+            ->findOrFailById($question);
+        if (!$question->pivotPoints->contains('intelligence_point_id', $request->intelligence_point_id))
+            return ApiResponse::message(trans("No point has been recorded for this question"), Response::HTTP_BAD_REQUEST)->send();
+        $intelligencePoint = $question->intelligencePoints->firstWhere('id', $request->intelligence_point_id);
+        $exercisePivotPoint = $question->exercisePivotPoints->firstWhere('intelligence_point_id', optional($intelligencePoint)->id);
+        ApiResponse::validate($request->all(), [
+            'intelligence_point_id' => ['required', Rule::in($question->intelligencePoints->pluck('id')->toArray())],
+            'max_point' => collect(['required', 'numeric', 'min:1'])->when($intelligencePoint, function (Collection $collection) use ($intelligencePoint, $exercisePivotPoint) {
+                $collection->push('max:' . optional($intelligencePoint)->max_point - intval(optional($exercisePivotPoint)->max_point_sum));
+            }),
+            'description' => ['nullable', 'string'],
+        ]);
+        $this->questionRepository->updatePoint($question, $request->intelligence_point_id, [
+            'max_point' => $request->max_point,
+            'description' => $request->description,
+        ]);
+        return ApiResponse::message(trans("Mission accomplished"))->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $question
+     * @return JsonResponse
+     */
+    public function destroy(Request $request, $question): JsonResponse
+    {
+        ApiResponse::validate($request->all(), [
+            'intelligence_point_id' => ['required', 'exists:' . IntelligencePoint::class . ',id']
+        ]);
+        $question = $this->questionRepository->select(['id', 'exercise_id'])
+            ->with(['pivotPoints:question_id,intelligence_point_id'])
+            ->findOrFailById($question);
+        if (!$question->pivotPoints->contains('intelligence_point_id', $request->intelligence_point_id))
+            return ApiResponse::message(trans("No point has been recorded for this question"), Response::HTTP_BAD_REQUEST)->send();
+        $this->questionRepository->detachPoints($question, [$request->intelligence_point_id]);
+        return ApiResponse::message(trans("Mission accomplished"))->send();
     }
 
     #endregion

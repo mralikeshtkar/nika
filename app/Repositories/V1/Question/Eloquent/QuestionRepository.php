@@ -82,6 +82,16 @@ class QuestionRepository extends BaseRepository implements QuestionRepositoryInt
         return $question->points()->attach($points);
     }
 
+    public function detachPoints($question, $points)
+    {
+        return $question->points()->detach($points);
+    }
+
+    public function updatePoint($question, $point,$attributes=[])
+    {
+        return $question->points()->updateExistingPivot($point,$attributes);
+    }
+
     /**
      * @param $question
      * @return int

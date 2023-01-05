@@ -91,6 +91,11 @@ class PackageRepository extends BaseRepository implements PackageRepositoryInter
             ]);
     }
 
+    public function detachIntelligences($package, $intelligences)
+    {
+        return $package->intelligences()->detach($intelligences);
+    }
+
     public function completed($package)
     {
         return $package->update(['is_completed'=>true]);

@@ -50,7 +50,7 @@ class PackageService extends BaseService
     public function index(Request $request): JsonResponse
     {
         ApiResponse::authorize($request->user()->can('index', Package::class));
-        $packages = $this->packageRepository->select(['id', 'title', 'status', 'age', 'price', 'is_completed', 'description'])
+        $packages = $this->packageRepository->select(['id', 'title', 'status', 'age', 'price', 'is_completed', 'description','created_at'])
             ->filterPagination($request)
             ->paginate($request->get('perPage', 10));
         $resource = PaginationResource::make($packages)->additional(['itemsResource' => PackageResource::class]);
@@ -134,7 +134,7 @@ class PackageService extends BaseService
         ]);
         resolve(MediaRepositoryInterface::class)->destroy($package->video);
         $this->packageRepository->uploadVideo($package, $request->video);
-        $package = $this->packageRepository->with(['video', 'intelligence:id,title,is_completed'])->findOrFailById($package->id);
+        $package = $this->packageRepository->with(['video'])->findOrFailById($package->id);
         return ApiResponse::message(trans("The video package has been uploaded successfully"))
             ->addData('package', new PackageResource($package))
             ->send();
@@ -179,7 +179,7 @@ class PackageService extends BaseService
             })->toArray());
             resolve(MediaRepositoryInterface::class)->destroy($package->video);
             $this->packageRepository->uploadVideo($package, $request->video);
-            $package = $this->packageRepository->with(['video', 'intelligence:id,title,is_completed'])->findOrFailById($package->id);
+            $package = $this->packageRepository->with(['video'])->findOrFailById($package->id);
             if ($request->filled('intelligences'))
                 $this->packageRepository->syncIntelligences($package, $request->get('intelligences', []));
             return ApiResponse::message(trans("The :attribute was successfully updated", ['attribute' => trans('Package')]))

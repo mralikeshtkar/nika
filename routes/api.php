@@ -194,6 +194,7 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->group([], function (Router $router) {
                 $router->get('packages/{package}/intelligences', [V1ApiPackageIntelligenceController::class, 'index']);
                 $router->post('packages/{package}/intelligences', [V1ApiPackageIntelligenceController::class, 'store']);
+                $router->delete('packages/{package}/intelligences/{intelligence}', [V1ApiPackageIntelligenceController::class, 'destroy']);
                 $router->put('packages/{package}/intelligences/{intelligence}/completed', [V1ApiPackageIntelligenceController::class, 'completed']);
                 $router->put('packages/{package}/intelligences/{intelligence}/uncompleted', [V1ApiPackageIntelligenceController::class, 'uncompleted']);
             });
@@ -234,6 +235,8 @@ Route::prefix('v1')->group(function (Router $router) {
             /* Question points */
             $router->group([], function (Router $router) {
                 $router->post('questions/{question}/points', [V1ApiQuestionPointController::class, 'store']);
+                $router->put('questions/{question}/update-points', [V1ApiQuestionPointController::class, 'update']);
+                $router->delete('questions/{question}/destroy-points', [V1ApiQuestionPointController::class, 'destroy']);
             });
         });
 

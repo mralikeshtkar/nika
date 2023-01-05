@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class BaseRepository implements EloquentRepositoryInterface
 {
+    protected array $scopes = [];
+
     /**
      * @var Model|Builder
      */
@@ -92,5 +94,23 @@ class BaseRepository implements EloquentRepositoryInterface
     public function paginate(int $perPage): LengthAwarePaginator
     {
         return $this->model->paginate($perPage);
+    }
+
+    /**
+     * @return array
+     */
+    public function getScopes(): array
+    {
+        return $this->scopes;
+    }
+
+    /**
+     * @param array $scopes
+     * @return $this
+     */
+    public function withScopes(array $scopes): static
+    {
+        $this->scopes = $scopes;
+        return $this;
     }
 }
