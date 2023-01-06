@@ -16,6 +16,17 @@ class PackagePolicy
      * @param User $user
      * @return bool
      */
+    public function manage(User $user): bool
+    {
+        return $user->hasPermissionTo(Permission::MANAGE_PACKAGES);
+    }
+
+    /**
+     * Check user can access to index.
+     *
+     * @param User $user
+     * @return bool
+     */
     public function index(User $user): bool
     {
         return $user->hasPermissionTo(Permission::VIEW_PACKAGES)

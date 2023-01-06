@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use AjCastro\EagerLoadPivotRelations\EagerLoadPivotTrait;
+use App\Enums\Package\PackageStatus;
 use App\Traits\Media\HasMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -37,6 +38,18 @@ class Package extends Model
     protected $casts = [
         'is_completed' => 'bool',
     ];
+
+    #endregion
+
+    #region Methods
+
+    /**
+     * @return string
+     */
+    public function getTranslatedStatus(): string
+    {
+        return PackageStatus::getDescription($this->status);
+    }
 
     #endregion
 

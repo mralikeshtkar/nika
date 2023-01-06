@@ -50,7 +50,7 @@ class PackageService extends BaseService
     public function index(Request $request): JsonResponse
     {
         ApiResponse::authorize($request->user()->can('index', Package::class));
-        $packages = $this->packageRepository->select(['id', 'title', 'status', 'age', 'price', 'is_completed', 'description','created_at'])
+        $packages = $this->packageRepository->select(['id', 'title', 'status', 'age', 'price', 'is_completed', 'description', 'created_at'])
             ->filterPagination($request)
             ->paginate($request->get('perPage', 10));
         $resource = PaginationResource::make($packages)->additional(['itemsResource' => PackageResource::class]);
@@ -217,6 +217,38 @@ class PackageService extends BaseService
         $package = $this->packageRepository->select(['id'])->findOrFailById($package);
         $this->packageRepository->uncompleted($package);
         $package = $this->packageRepository->select(['id', 'is_completed'])->findOrFailById($package->id);
+        return ApiResponse::message(trans("Mission accomplished"))
+            ->addData('package', new PackageResource($package))
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $package
+     * @return JsonResponse
+     */
+    public function activeStatus(Request $request, $package): JsonResponse
+    {
+        ApiResponse::authorize($request->user()->can('manage', Package::class));
+        $package = $this->packageRepository->select(['id'])->findOrFailById($package);
+        $this->packageRepository->changeStatus($package, PackageStatus::Active);
+        $package = $this->packageRepository->select(['id', 'status'])->findOrFailById($package->id);
+        return ApiResponse::message(trans("Mission accomplished"))
+            ->addData('package', new PackageResource($package))
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $package
+     * @return JsonResponse
+     */
+    public function inactiveStatus(Request $request, $package): JsonResponse
+    {
+        ApiResponse::authorize($request->user()->can('manage', Package::class));
+        $package = $this->packageRepository->select(['id'])->findOrFailById($package);
+        $this->packageRepository->changeStatus($package, PackageStatus::Inactive);
+        $package = $this->packageRepository->select(['id', 'status'])->findOrFailById($package->id);
         return ApiResponse::message(trans("Mission accomplished"))
             ->addData('package', new PackageResource($package))
             ->send();

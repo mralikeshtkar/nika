@@ -308,13 +308,6 @@ class ApiPackageController extends ApiBaseController
      *         required=true,
      *         @OA\Schema(type="number"),
      *     ),
-     *     @OA\Parameter(
-     *         description="شناسه هوش",
-     *         in="path",
-     *         name="intelligence",
-     *         required=true,
-     *         @OA\Schema(type="number"),
-     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="ثبت با موفقیت انجام شد",
@@ -342,13 +335,6 @@ class ApiPackageController extends ApiBaseController
      *         required=true,
      *         @OA\Schema(type="number"),
      *     ),
-     *     @OA\Parameter(
-     *         description="شناسه هوش",
-     *         in="path",
-     *         name="intelligence",
-     *         required=true,
-     *         @OA\Schema(type="number"),
-     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="ثبت با موفقیت انجام شد",
@@ -359,6 +345,60 @@ class ApiPackageController extends ApiBaseController
     public function uncompleted(Request $request, $package)
     {
         return $this->packageService->uncompleted($request, $package);
+    }
+
+    /**
+     * Change status package to active
+     *
+     * @OA\Put(
+     *     path="/packages/{id}/active-status",
+     *     summary="تغییر وضعیت پکیج به فعال",
+     *     description="",
+     *     tags={"پکیج"},
+     *     @OA\Parameter(
+     *         description="شناسه پکیج",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="ثبت با موفقیت انجام شد",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function activeStatus(Request $request, $package)
+    {
+        return $this->packageService->activeStatus($request, $package);
+    }
+
+    /**
+     * Change status package to active
+     *
+     * @OA\Put(
+     *     path="/packages/{id}/inactive-status",
+     *     summary="تغییر وضعیت پکیج به فعال",
+     *     description="",
+     *     tags={"پکیج"},
+     *     @OA\Parameter(
+     *         description="شناسه پکیج",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="ثبت با موفقیت انجام شد",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function inactiveStatus(Request $request, $package)
+    {
+        return $this->packageService->inactiveStatus($request, $package);
     }
 
     /**

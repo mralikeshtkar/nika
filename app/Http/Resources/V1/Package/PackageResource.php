@@ -21,6 +21,8 @@ class PackageResource extends JsonResource
                 $collection->put('description', $this->resource->description);
             })->when($this->whenAppended('created_at'), function (Collection $collection) {
                 $collection->put('created_at', verta($this->resource->created_at)->format("j F Y"));
+            })->when($this->whenAppended('status'), function (Collection $collection) {
+                $collection->put('translated_status', $this->resource->getTranslatedStatus());
             })->when($this->resource->relationLoaded('video'), function (Collection $collection) {
                 $collection->put('video', new MediaVideoResource($this->resource->video));
             });

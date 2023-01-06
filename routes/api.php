@@ -189,6 +189,8 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->post('packages/{package}/upload-video', [V1ApiPackageController::class, 'uploadVideo']);
             $router->put('packages/{package}/completed', [V1ApiPackageController::class, 'completed']);
             $router->put('packages/{package}/uncompleted', [V1ApiPackageController::class, 'uncompleted']);
+            $router->put('packages/{package}/active-status', [V1ApiPackageController::class, 'activeStatus']);
+            $router->put('packages/{package}/inactive-status', [V1ApiPackageController::class, 'inactiveStatus']);
 
             /* Package intelligences */
             $router->group([], function (Router $router) {

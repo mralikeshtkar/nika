@@ -2937,15 +2937,6 @@
                         "schema": {
                             "type": "number"
                         }
-                    },
-                    {
-                        "name": "intelligence",
-                        "in": "path",
-                        "description": "شناسه هوش",
-                        "required": true,
-                        "schema": {
-                            "type": "number"
-                        }
                     }
                 ],
                 "responses": {
@@ -2977,11 +2968,64 @@
                         "schema": {
                             "type": "number"
                         }
-                    },
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/packages/{id}/active-status": {
+            "put": {
+                "tags": [
+                    "پکیج"
+                ],
+                "summary": "تغییر وضعیت پکیج به فعال",
+                "description": "",
+                "operationId": "bf33c393e338624c0510538b924774c8",
+                "parameters": [
                     {
-                        "name": "intelligence",
+                        "name": "id",
                         "in": "path",
-                        "description": "شناسه هوش",
+                        "description": "شناسه پکیج",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/packages/{id}/inactive-status": {
+            "put": {
+                "tags": [
+                    "پکیج"
+                ],
+                "summary": "تغییر وضعیت پکیج به فعال",
+                "description": "",
+                "operationId": "da6ba72fd32e715d447eb8a1b8b1d1a8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه پکیج",
                         "required": true,
                         "schema": {
                             "type": "number"

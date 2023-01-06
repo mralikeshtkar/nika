@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\AddressType;
+use App\Enums\Package\PackageStatus;
 use App\Enums\Permission;
 use App\Enums\RahjooParent\RahjooParentGender;
 use App\Enums\Role;
@@ -30,5 +31,9 @@ return [
     RahjooParentGender::class => [
         RahjooParentGender::Male => "Male",
         RahjooParentGender::Female => "Female",
+    ],
+    PackageStatus::class => [
+        PackageStatus::Active => "Active",
+        PackageStatus::Inactive => "Inactive",
     ],
 ];

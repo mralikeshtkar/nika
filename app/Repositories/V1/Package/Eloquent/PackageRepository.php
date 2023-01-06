@@ -17,7 +17,7 @@ class PackageRepository extends BaseRepository implements PackageRepositoryInter
         parent::__construct($model);
     }
 
-    public function findOrFailIntelligenceByIntelligences($package, $intelligence,$columns = ['*'])
+    public function findOrFailIntelligenceByIntelligences($package, $intelligence, $columns = ['*'])
     {
         return $package->intelligences()->select($columns)->findOrFail($intelligence);
     }
@@ -98,12 +98,17 @@ class PackageRepository extends BaseRepository implements PackageRepositoryInter
 
     public function completed($package)
     {
-        return $package->update(['is_completed'=>true]);
+        return $package->update(['is_completed' => true]);
     }
 
     public function uncompleted($package)
     {
-        return $package->update(['is_completed'=>false]);
+        return $package->update(['is_completed' => false]);
+    }
+
+    public function changeStatus($package, $status)
+    {
+        return $package->update(['status' => $status]);
     }
 
     /**
