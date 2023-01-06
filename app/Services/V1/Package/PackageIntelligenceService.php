@@ -61,7 +61,9 @@ class PackageIntelligenceService extends BaseService
         if ($package->intelligences->contains($request->intelligence_id))
             return ApiResponse::error(trans("Selective intelligence is registered for this package"), Response::HTTP_BAD_REQUEST)->send();
         $this->packageRepository->syncIntelligences($package, [$request->intelligence_id]);
-        return ApiResponse::message(trans("The information was register successfully"))->send();
+        return ApiResponse::message(trans("The information was register successfully"))
+            ->addData('intelligence_id',$request->intelligence_id)
+            ->send();
     }
 
     /**
