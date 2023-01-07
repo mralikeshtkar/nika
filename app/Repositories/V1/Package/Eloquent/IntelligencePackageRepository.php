@@ -44,8 +44,15 @@ class IntelligencePackageRepository extends BaseRepository implements Intelligen
     public function getPoints($intelligencePackage)
     {
         return $intelligencePackage->points()
-            ->select(['id','intelligence_package_id','intelligence_point_name_id','max_point',])
+            ->select(['id', 'intelligence_package_id', 'intelligence_point_name_id', 'max_point',])
             ->withPointName()
+            ->get();
+    }
+
+    public function getFeedbacks($intelligencePackage)
+    {
+        return $intelligencePackage->feedbacks()
+            ->select(['id', 'intelligence_package_id', 'title', 'max_point'])
             ->get();
     }
 

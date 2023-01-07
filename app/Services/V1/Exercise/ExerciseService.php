@@ -42,7 +42,7 @@ class ExerciseService extends BaseService
      */
     public function index(Request $request): JsonResponse
     {
-        $exercises=$this->exerciseRepository->select(['id', 'package_id', 'intelligence_id', 'title', 'is_locked','created_at'])
+        $exercises = $this->exerciseRepository->select(['id', 'intelligence_package_id', 'title', 'is_locked', 'created_at'])
             ->filterPagination($request)
             ->paginate($request->get('perPage', 10));
         $resource = PaginationResource::make($exercises)->additional(['itemsResource' => ExerciseResource::class]);
@@ -84,21 +84,18 @@ class ExerciseService extends BaseService
     {
         $exercise = $this->exerciseRepository->select(['id'])->findOrFailById($exercise);
         ApiResponse::validate($request->all(), [
-            'package_id' => ['nullable', Rule::exists(IntelligencePackage::class, 'package_id')->where('intelligence_id', $request->intelligence_id)],
-            'intelligence_id' => ['nullable', Rule::exists(IntelligencePackage::class, 'intelligence_id')->where('package_id', $request->package_id)],
+            'intelligence_package_id' => ['nullable', 'exists:' . IntelligencePackage::class . ',pivot_id'],
             'title' => ['required', 'string'],
             'is_locked' => ['required', 'boolean'],
         ]);
         $data = collect([
             'title' => $request->title,
             'is_locked' => $request->get('is_locked', false),
-        ])->when($request->filled('package_id'), function (Collection $collection) use ($request) {
-            $collection->put('package_id', $request->package_id);
-        })->when($request->filled('intelligence_id'), function (Collection $collection) use ($request) {
-            $collection->put('intelligence_id', $request->intelligence_id);
+        ])->when($request->filled('intelligence_package_id'), function (Collection $collection) use ($request) {
+            $collection->put('intelligence_package_id', $request->intelligence_package_id);
         })->toArray();
         $this->exerciseRepository->update($exercise, $data);
-        $exercise = $this->exerciseRepository->select(['id', 'package_id', 'intelligence_id', 'title', 'is_locked'])
+        $exercise = $this->exerciseRepository->select(['id', 'intelligence_package_id', 'title', 'is_locked'])
             ->findOrFailById($exercise->id);
         return ApiResponse::message(trans("The :attribute was successfully updated", ['attribute' => trans('Exercise')]))
             ->addData('exercise', new ExerciseResource($exercise))
@@ -112,8 +109,8 @@ class ExerciseService extends BaseService
      */
     public function questions(Request $request, $exercise): JsonResponse
     {
-        $exercise=$this->exerciseRepository->select(['id'])->findOrFailById($exercise);
-        $questions=$this->exerciseRepository->paginateQuestions($request,$exercise);
+        $exercise = $this->exerciseRepository->select(['id'])->findOrFailById($exercise);
+        $questions = $this->exerciseRepository->paginateQuestions($request, $exercise);
         $resource = PaginationResource::make($questions)->additional(['itemsResource' => ExerciseResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('exercises', $resource)

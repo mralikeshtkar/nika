@@ -6,6 +6,7 @@ use App\Http\Resources\V1\IntelligenceFeedback\IntelligenceFeedbackResource;
 use App\Http\Resources\V1\PaginationResource;
 use App\Models\Intelligence;
 use App\Models\IntelligenceFeedback;
+use App\Models\IntelligencePackage;
 use App\Repositories\V1\Intelligence\Interfaces\IntelligenceRepositoryInterface;
 use App\Repositories\V1\IntelligenceFeedback\Interfaces\IntelligenceFeedbackRepositoryInterface;
 use App\Responses\Api\ApiResponse;
@@ -42,7 +43,7 @@ class IntelligenceFeedbackService extends BaseService
     public function index(Request $request): JsonResponse
     {
         ApiResponse::authorize($request->user()->can('index', IntelligenceFeedback::class));
-        $intelligenceFeedbacks = $this->intelligenceFeedbackRepository->select(['id', 'intelligence_id', 'title', 'max_point',])
+        $intelligenceFeedbacks = $this->intelligenceFeedbackRepository->select(['id', 'intelligence_package_id', 'title', 'max_point',])
             ->filterPagination($request)
             ->paginate($request->get('perPage', 10));
         $resource = PaginationResource::make($intelligenceFeedbacks)->additional(['itemsResource' => IntelligenceFeedbackResource::class]);
@@ -59,13 +60,13 @@ class IntelligenceFeedbackService extends BaseService
     {
         ApiResponse::authorize($request->user()->can('create', IntelligenceFeedback::class));
         ApiResponse::validate($request->all(), [
-            'intelligence_id' => ['required', 'exists:' . Intelligence::class . ',id'],
+            'intelligence_package_id' => ['required', 'exists:' . IntelligencePackage::class . ',pivot_id'],
             'title' => ['required', 'string'],
             'max_point' => ['required', 'numeric'],
         ]);
         $intelligenceFeedback = $this->intelligenceFeedbackRepository->create([
             'user_id' => $request->user()->id,
-            'intelligence_id' => $request->intelligence_id,
+            'intelligence_package_id' => $request->intelligence_package_id,
             'title' => $request->title,
             'max_point' => $request->max_point,
         ]);
@@ -82,7 +83,7 @@ class IntelligenceFeedbackService extends BaseService
     {
         ApiResponse::authorize($request->user()->can('create', IntelligenceFeedback::class));
         ApiResponse::validate($request->all(), [
-            'intelligence_id' => ['required', 'exists:' . Intelligence::class . ',id'],
+            'intelligence_package_id' => ['required', 'exists:' . IntelligencePackage::class . ',pivot_id'],
             'feedbacks' => ['required', 'array', 'min:1'],
             'feedbacks.*.title' => ['string'],
             'feedbacks.*.max_point' => ['numeric', 'min:0'],

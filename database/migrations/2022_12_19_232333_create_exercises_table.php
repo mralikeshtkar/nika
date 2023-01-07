@@ -20,14 +20,9 @@ return new class extends Migration
                 ->on('users')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->foreignId('package_id')
-                ->references('id')
-                ->on('packages')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-            $table->foreignId('intelligence_id')
-                ->references('id')
-                ->on('intelligences')
+            $table->foreignId('intelligence_package_id')
+                ->references('pivot_id')
+                ->on('intelligence_package')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->string('title');

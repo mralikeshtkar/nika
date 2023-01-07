@@ -18,8 +18,7 @@ class Exercise extends Model
 
     protected $fillable = [
         'user_id',
-        'package_id',
-        'intelligence_id',
+        'intelligence_package_id',
         'title',
         'is_locked',
     ];
@@ -35,9 +34,9 @@ class Exercise extends Model
     /**
      * @return BelongsTo
      */
-    public function intelligence(): BelongsTo
+    public function intelligencePackage(): BelongsTo
     {
-        return $this->belongsTo(Intelligence::class);
+        return $this->belongsTo(IntelligencePackage::class,'intelligence_package_id','pivot_id');
     }
 
     /**

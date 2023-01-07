@@ -3,6 +3,7 @@
 namespace App\Services\V1\Package;
 
 use App\Http\Resources\V1\Intelligence\IntelligenceResource;
+use App\Http\Resources\V1\IntelligenceFeedback\IntelligenceFeedbackResource;
 use App\Http\Resources\V1\IntelligencePoint\IntelligencePointResource;
 use App\Http\Resources\V1\Package\PackageIntelligenceResource;
 use App\Http\Resources\V1\PaginationResource;
@@ -85,6 +86,23 @@ class IntelligencePackageService extends BaseService
         $points = $this->intelligencePackageRepository->getPoints($intelligencePackage);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('points', IntelligencePointResource::collection($points))
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $intelligencePackage
+     * @return JsonResponse
+     */
+    public function feedbacks(Request $request, $intelligencePackage): JsonResponse
+    {
+        ApiResponse::authorize($request->user()->can('intelligence', Package::class));
+        $intelligencePackage = $this->intelligencePackageRepository
+            ->select(['pivot_id'])
+            ->findOrFailByPivotId($intelligencePackage);
+        $feedbacks = $this->intelligencePackageRepository->getFeedbacks($intelligencePackage);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('feedbacks', IntelligenceFeedbackResource::collection($feedbacks))
             ->send();
     }
 

@@ -125,20 +125,6 @@ class IntelligenceService extends BaseService
      * @param $intelligence
      * @return JsonResponse
      */
-    public function feedbacks(Request $request, $intelligence): JsonResponse
-    {
-        $intelligence = $this->intelligenceRepository->findOrFailById($intelligence);
-        $intelligenceFeedbacks=$this->intelligenceRepository->getIntelligenceFeedbacks($intelligence);
-        return ApiResponse::message(trans("The information was received successfully"))
-            ->addData('feedbacks', IntelligenceFeedbackResource::collection($intelligenceFeedbacks))
-            ->send();
-    }
-
-    /**
-     * @param Request $request
-     * @param $intelligence
-     * @return JsonResponse
-     */
     public function destroy(Request $request, $intelligence): JsonResponse
     {
         ApiResponse::authorize($request->user()->can('delete', Intelligence::class));

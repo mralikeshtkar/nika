@@ -54,21 +54,5 @@ class Intelligence extends Model
         return $this->hasMany(IntelligencePackage::class);
     }
 
-    /**
-     * @return HasMany
-     */
-    public function points(): HasMany
-    {
-        return $this->hasMany(IntelligencePoint::class);
-    }
-
-    /**
-     * @return HasMany
-     */
-    public function feedbacks(): HasMany
-    {
-        return $this->hasMany(IntelligenceFeedback::class);
-    }
-
     #endregion
 }

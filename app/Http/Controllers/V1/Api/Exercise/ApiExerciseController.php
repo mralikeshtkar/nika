@@ -78,16 +78,11 @@ class ApiExerciseController extends ApiBaseController
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"package_id","intelligence_id","title"},
+     *                 required={"intelligence_package_id","title"},
      *                 @OA\Property(
-     *                     property="package_id",
+     *                     property="intelligence_package_id",
      *                     type="number",
-     *                     description="شناسه پکیج"
-     *                 ),
-     *                 @OA\Property(
-     *                     property="intelligence_id",
-     *                     type="number",
-     *                     description="شناسه هوش"
+     *                     description="شناسه جدول میانی هوش پکیج"
      *                 ),
      *                 @OA\Property(
      *                     property="title",
@@ -143,14 +138,9 @@ class ApiExerciseController extends ApiBaseController
      *                     description="این مقدار باید بصورت ثابت شود",
      *                 ),
      *                 @OA\Property(
-     *                     property="package_id",
+     *                     property="intelligence_package_id",
      *                     type="number",
-     *                     description="شناسه پکیج"
-     *                 ),
-     *                 @OA\Property(
-     *                     property="intelligence_id",
-     *                     type="number",
-     *                     description="شناسه هوش"
+     *                     description="شناسه جدول میانی هوش پکیج"
      *                 ),
      *                 @OA\Property(
      *                     property="title",

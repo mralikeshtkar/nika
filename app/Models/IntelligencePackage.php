@@ -32,4 +32,12 @@ class IntelligencePackage extends Pivot
     {
         return $this->hasMany(IntelligencePoint::class,'intelligence_package_id','pivot_id');
     }
+
+    /**
+     * @return HasMany
+     */
+    public function feedbacks(): HasMany
+    {
+        return $this->hasMany(IntelligenceFeedback::class,'intelligence_package_id','pivot_id');
+    }
 }

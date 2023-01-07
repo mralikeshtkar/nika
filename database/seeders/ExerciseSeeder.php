@@ -17,11 +17,10 @@ class ExerciseSeeder extends Seeder
     public function run()
     {
         foreach (Package::with('intelligences')->get() as $package) {
-            foreach ($package->intelligences->pluck('id') as $intelligence) {
+            foreach ($package->intelligences as $intelligence) {
                 foreach (range(1, rand(5,10)) as $i) {
                     Exercise::factory()->create([
-                        'package_id' => $package->id,
-                        'intelligence_id' => $intelligence,
+                        'intelligence_package_id' => $intelligence->pivot->pivot_id,
                         'title' => trans("Exercise") . " " . $i,
                     ]);
                 }

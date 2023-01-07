@@ -1205,14 +1205,14 @@
                         "multipart/form-data": {
                             "schema": {
                                 "required": [
-                                    "intelligence_id",
+                                    "intelligence_package_id",
                                     "title",
                                     "max_point"
                                 ],
                                 "properties": {
-                                    "intelligence_id": {
-                                        "description": "شناسه هوش",
-                                        "type": "string"
+                                    "intelligence_package_id": {
+                                        "description": "شناسه جدول میانی هوش پکیج",
+                                        "type": "number"
                                     },
                                     "title": {
                                         "description": "عنوان",
@@ -1253,11 +1253,11 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "intelligence_id"
+                                    "intelligence_package_id"
                                 ],
                                 "properties": {
-                                    "intelligence_id": {
-                                        "description": "شناسه هوش",
+                                    "intelligence_package_id": {
+                                        "description": "شناسه جدول میانی هوش پکیج",
                                         "type": "number"
                                     },
                                     "points": {
@@ -1265,8 +1265,8 @@
                                         "type": "array",
                                         "items": {
                                             "properties": {
-                                                "intelligence_point_name_id": {
-                                                    "type": "number"
+                                                "title": {
+                                                    "type": "string"
                                                 },
                                                 "max_point": {
                                                     "type": "number"
@@ -2068,37 +2068,6 @@
                 }
             }
         },
-        "/intelligences/{id}/feedbacks": {
-            "get": {
-                "tags": [
-                    "هوش"
-                ],
-                "summary": "لیست امتیازهای هوش",
-                "description": "",
-                "operationId": "310c89b01640aa2e8f4787c0f61dce4b",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "شناسه هوش",
-                        "required": true,
-                        "schema": {
-                            "type": "number"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "عملیات موفق",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/intelligences/{package}/{intelligence}/exercises": {
             "get": {
                 "tags": [
@@ -2718,6 +2687,37 @@
                 "summary": "دریافت ارزش های یک هوش پکیج بصورت صفحه بندی",
                 "description": "",
                 "operationId": "963769f8562aa460d5f74f99b03cd8d5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه جدول میانی",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/intelligence-packages/{id}/feedbacks": {
+            "get": {
+                "tags": [
+                    "پکیج"
+                ],
+                "summary": "دریافت بازخورد های یک هوش پکیج بصورت صفحه بندی",
+                "description": "",
+                "operationId": "5d7d9e6b7072384c4a3239859ab5ec84",
                 "parameters": [
                     {
                         "name": "id",

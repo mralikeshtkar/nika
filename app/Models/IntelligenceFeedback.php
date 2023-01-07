@@ -17,7 +17,7 @@ class IntelligenceFeedback extends Model
      */
     protected $fillable = [
         'user_id',
-        'intelligence_id',
+        'intelligence_package_id',
         'title',
         'max_point',
     ];
@@ -37,9 +37,9 @@ class IntelligenceFeedback extends Model
     /**
      * @return BelongsTo
      */
-    public function intelligence(): BelongsTo
+    public function intelligencePackage(): BelongsTo
     {
-        return $this->belongsTo(Intelligence::class);
+        return $this->belongsTo(IntelligencePackage::class, 'intelligence_package_id', 'pivot_id');
     }
 
     #endregion

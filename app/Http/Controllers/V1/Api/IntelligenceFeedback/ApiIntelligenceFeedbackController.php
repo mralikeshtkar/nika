@@ -76,11 +76,11 @@ class ApiIntelligenceFeedbackController extends ApiBaseController
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"intelligence_id","title","max_point"},
+     *                 required={"intelligence_package_id","title","max_point"},
      *                 @OA\Property(
-     *                     property="intelligence_id",
-     *                     type="string",
-     *                     description="شناسه هوش"
+     *                     property="intelligence_package_id",
+     *                     type="number",
+     *                     description="شناسه جدول میانی هوش پکیج"
      *                 ),
      *                 @OA\Property(
      *                     property="title",
@@ -119,11 +119,11 @@ class ApiIntelligenceFeedbackController extends ApiBaseController
      *         @OA\MediaType(
      *             mediaType="application/json",
      *             @OA\Schema(
-     *                 required={"intelligence_id"},
+     *                 required={"intelligence_package_id"},
      *                 @OA\Property(
-     *                     property="intelligence_id",
+     *                     property="intelligence_package_id",
      *                     type="number",
-     *                     description="شناسه هوش"
+     *                     description="شناسه جدول میانی هوش پکیج"
      *                 ),
      *                 @OA\Property(
      *                     property="points",
@@ -131,7 +131,7 @@ class ApiIntelligenceFeedbackController extends ApiBaseController
      *                     description="ارزش ها",
      *                     @OA\Items(
      *                        type="object",
-     *                        @OA\Property(property="intelligence_point_name_id", type="number"),
+     *                        @OA\Property(property="title", type="string"),
      *                        @OA\Property(property="max_point", type="number")
      *                     )
      *                 ),

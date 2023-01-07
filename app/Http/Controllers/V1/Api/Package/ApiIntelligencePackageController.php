@@ -117,6 +117,31 @@ class ApiIntelligencePackageController extends ApiBaseController
     }
 
     /**
+     * @OA\Get (
+     *     path="/intelligence-packages/{id}/feedbacks",
+     *     summary="دریافت بازخورد های یک هوش پکیج بصورت صفحه بندی",
+     *     description="",
+     *     tags={"پکیج"},
+     *     @OA\Parameter(
+     *         description="شناسه جدول میانی",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function feedbacks(Request $request, $intelligencePackage)
+    {
+        return $this->intelligencePackageService->feedbacks($request, $intelligencePackage);
+    }
+
+    /**
      * Store a package intelligence.
      *
      * @OA\Post(
