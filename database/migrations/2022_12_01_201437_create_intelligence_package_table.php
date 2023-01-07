@@ -13,6 +13,7 @@ return new class extends Migration {
     public function up()
     {
         Schema::create('intelligence_package', function (Blueprint $table) {
+            $table->id('pivot_id');
             $table->foreignId('package_id')
                 ->references('id')
                 ->on('packages')
@@ -24,7 +25,6 @@ return new class extends Migration {
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->boolean('is_completed')->default(false);
-            $table->primary(['package_id', 'intelligence_id']);
             $table->timestamps();
         });
     }

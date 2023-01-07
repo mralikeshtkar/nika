@@ -125,20 +125,6 @@ class IntelligenceService extends BaseService
      * @param $intelligence
      * @return JsonResponse
      */
-    public function points(Request $request, $intelligence): JsonResponse
-    {
-        $intelligence = $this->intelligenceRepository->findOrFailById($intelligence);
-        $intelligencePoints=$this->intelligenceRepository->getIntelligencePoints($intelligence);
-        return ApiResponse::message(trans("The information was received successfully"))
-            ->addData('points', IntelligencePointResource::collection($intelligencePoints))
-            ->send();
-    }
-
-    /**
-     * @param Request $request
-     * @param $intelligence
-     * @return JsonResponse
-     */
     public function feedbacks(Request $request, $intelligence): JsonResponse
     {
         $intelligence = $this->intelligenceRepository->findOrFailById($intelligence);

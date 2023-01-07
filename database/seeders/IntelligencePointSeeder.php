@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Intelligence;
+use App\Models\IntelligencePackage;
 use App\Models\IntelligencePoint;
 use App\Models\IntelligencePointName;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -17,10 +18,10 @@ class IntelligencePointSeeder extends Seeder
      */
     public function run()
     {
-        foreach (Intelligence::query()->pluck('id') as $intelligence) {
+        foreach (IntelligencePackage::query()->pluck('pivot_id') as $intelligence_package) {
             foreach (IntelligencePointName::query()->limit(rand(5, 8))->pluck('id') as $intelligencePointName) {
                 IntelligencePoint::factory()->create([
-                    'intelligence_id' => $intelligence,
+                    'intelligence_package_id' => $intelligence_package,
                     'intelligence_point_name_id' => $intelligencePointName,
                 ]);
             }

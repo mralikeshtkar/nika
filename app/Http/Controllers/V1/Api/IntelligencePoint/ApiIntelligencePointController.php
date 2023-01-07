@@ -76,11 +76,11 @@ class ApiIntelligencePointController extends ApiBaseController
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"intelligence_id","intelligence_point_name_id","max_point"},
+     *                 required={"intelligence_package_id","intelligence_point_name_id","max_point"},
      *                 @OA\Property(
-     *                     property="intelligence_id",
+     *                     property="intelligence_package_id",
      *                     type="string",
-     *                     description="شناسه هوش"
+     *                     description="شناسه جدول میانی هوش پکیج"
      *                 ),
      *                 @OA\Property(
      *                     property="intelligence_point_name_id",
@@ -119,11 +119,11 @@ class ApiIntelligencePointController extends ApiBaseController
      *         @OA\MediaType(
      *             mediaType="application/json",
      *             @OA\Schema(
-     *                 required={"intelligence_id"},
+     *                 required={"intelligence_package_id"},
      *                 @OA\Property(
-     *                     property="intelligence_id",
+     *                     property="intelligence_package_id",
      *                     type="number",
-     *                     description="شناسه هوش"
+     *                     description="شناسه جدول میانی هوش پکیج"
      *                 ),
      *                 @OA\Property(
      *                     property="points",
@@ -178,9 +178,9 @@ class ApiIntelligencePointController extends ApiBaseController
      *                     description="این مقدار باید بصورت ثابت شود",
      *                 ),
      *                 @OA\Property(
-     *                     property="intelligence_id",
+     *                     property="intelligence_package_id",
      *                     type="string",
-     *                     description="شناسه هوش"
+     *                     description="شناسه جدول میانی هوش پکیج"
      *                 ),
      *                 @OA\Property(
      *                     property="intelligence_point_name_id",

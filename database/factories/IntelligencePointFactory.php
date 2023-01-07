@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Intelligence;
+use App\Models\IntelligencePackage;
 use App\Models\IntelligencePointName;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -21,7 +22,7 @@ class IntelligencePointFactory extends Factory
     {
         return [
             'user_id' => User::query()->inRandomOrder()->first()->id,
-            'intelligence_id' => Intelligence::query()->inRandomOrder()->first()->id,
+            'intelligence_package_id' => IntelligencePackage::query()->inRandomOrder()->first()->pivot_id,
             'intelligence_point_name_id' => IntelligencePointName::query()->inRandomOrder()->first()->id,
             'max_point' => $this->faker->numberBetween(20, 100),
         ];

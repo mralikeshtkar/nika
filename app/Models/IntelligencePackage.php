@@ -24,4 +24,12 @@ class IntelligencePackage extends Pivot
     {
         return $this->hasMany(Exercise::class, ['intelligence_id', 'package_id'], ['intelligence_id', 'package_id']);
     }
+
+    /**
+     * @return HasMany
+     */
+    public function points(): HasMany
+    {
+        return $this->hasMany(IntelligencePoint::class,'intelligence_package_id','pivot_id');
+    }
 }

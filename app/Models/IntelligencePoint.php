@@ -18,7 +18,7 @@ class IntelligencePoint extends Model
      */
     protected $fillable = [
         'user_id',
-        'intelligence_id',
+        'intelligence_package_id',
         'intelligence_point_name_id',
         'max_point',
     ];
@@ -38,9 +38,9 @@ class IntelligencePoint extends Model
     /**
      * @return BelongsTo
      */
-    public function intelligence(): BelongsTo
+    public function packageIntelligence(): BelongsTo
     {
-        return $this->belongsTo(Intelligence::class);
+        return $this->belongsTo(IntelligencePackage::class, 'intelligence_package_id', 'pivot_id');
     }
 
     /**

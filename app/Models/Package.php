@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Package extends Model
 {
-    use HasFactory, HasMedia,EagerLoadPivotTrait;
+    use HasFactory, HasMedia, EagerLoadPivotTrait;
 
     #region Constance
 
@@ -78,7 +78,7 @@ class Package extends Model
     {
         return $this->belongsToMany(Intelligence::class)
             ->using(IntelligencePackage::class)
-            ->withPivot(['is_completed']);
+            ->withPivot(['pivot_id', 'is_completed']);
     }
 
     /**

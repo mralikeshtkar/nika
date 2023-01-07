@@ -5,6 +5,7 @@ namespace App\Services\V1\IntelligencePoint;
 use App\Http\Resources\V1\IntelligencePoint\IntelligencePointResource;
 use App\Http\Resources\V1\PaginationResource;
 use App\Models\Intelligence;
+use App\Models\IntelligencePackage;
 use App\Models\IntelligencePoint;
 use App\Models\IntelligencePointName;
 use App\Repositories\V1\Intelligence\Interfaces\IntelligenceRepositoryInterface;
@@ -44,7 +45,7 @@ class IntelligencePointService extends BaseService
     {
         ApiResponse::authorize($request->user()->can('index', IntelligencePoint::class));
         $intelligencePointNames = $this->intelligencePointRepository
-            ->select(['id', 'intelligence_id', 'intelligence_point_name_id', 'max_point'])
+            ->select(['id', 'intelligence_package_id', 'intelligence_point_name_id', 'max_point'])
             ->withPointName()
             ->filterPagination($request)
             ->paginate($request->get('perPage', 10));
@@ -62,13 +63,13 @@ class IntelligencePointService extends BaseService
     {
         ApiResponse::authorize($request->user()->can('create', IntelligencePoint::class));
         ApiResponse::validate($request->all(), [
-            'intelligence_id' => ['required', 'exists:' . Intelligence::class . ',id'],
+            'intelligence_package_id' => ['required', 'exists:' . IntelligencePackage::class . ',pivot_id'],
             'intelligence_point_name_id' => ['required', 'exists:' . IntelligencePointName::class . ',id'],
             'max_point' => ['required', 'numeric', 'min:0'],
         ]);
         $intelligencePoint = $this->intelligencePointRepository->create([
             'user_id' => $request->user()->id,
-            'intelligence_id' => $request->intelligence_id,
+            'intelligence_package_id' => $request->intelligence_package_id,
             'intelligence_point_name_id' => $request->intelligence_point_name_id,
             'max_point' => $request->max_point,
         ]);
@@ -85,7 +86,7 @@ class IntelligencePointService extends BaseService
     {
         ApiResponse::authorize($request->user()->can('create', IntelligencePoint::class));
         ApiResponse::validate($request->all(), [
-            'intelligence_id' => ['required', 'exists:' . Intelligence::class . ',id'],
+            'intelligence_package_id' => ['required', 'exists:' . IntelligencePackage::class . ',pivot_id'],
             'points' => ['required', 'array', 'min:1'],
             'points.*.intelligence_point_name_id' => ['exists:' . IntelligencePointName::class . ',id'],
             'points.*.max_point' => ['numeric', 'min:0'],
@@ -107,17 +108,17 @@ class IntelligencePointService extends BaseService
         ApiResponse::authorize($request->user()->can('edit', IntelligencePoint::class));
         $intelligencePoint = $this->intelligencePointRepository->select(['id'])->findOrFailById($intelligencePoint);
         ApiResponse::validate($request->all(), [
-            'intelligence_id' => ['required', 'exists:' . Intelligence::class . ',id'],
+            'intelligence_package_id' => ['required', 'exists:' . IntelligencePackage::class . ',pivot_id'],
             'intelligence_point_name_id' => ['required', 'exists:' . IntelligencePointName::class . ',id'],
             'max_point' => ['required', 'numeric', 'min:0'],
         ]);
         $this->intelligencePointRepository->update($intelligencePoint, [
-            'intelligence_id' => $request->intelligence_id,
+            'intelligence_package_id' => $request->intelligence_package_id,
             'intelligence_point_name_id' => $request->intelligence_point_name_id,
             'max_point' => $request->max_point,
         ]);
         $intelligencePoint = $this->intelligencePointRepository
-            ->select(['id', 'user_id', 'intelligence_id', 'intelligence_point_name_id', 'max_point',])
+            ->select(['id', 'user_id', 'intelligence_package_id', 'intelligence_point_name_id', 'max_point',])
             ->withPointName()
             ->findOrFailById($intelligencePoint->id);
         return ApiResponse::message(trans("The :attribute was successfully updated", ['attribute' => trans('IntelligencePoint')]))

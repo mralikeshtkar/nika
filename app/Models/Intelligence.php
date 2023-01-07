@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Intelligence extends Model
 {
-    use HasFactory, Compoships,EagerLoadPivotTrait;
+    use HasFactory, Compoships, EagerLoadPivotTrait;
 
     #region Constance
 
@@ -41,7 +41,9 @@ class Intelligence extends Model
      */
     public function packages(): BelongsToMany
     {
-        return $this->belongsToMany(Package::class)->using(IntelligencePackage::class);
+        return $this->belongsToMany(Package::class)
+            ->using(IntelligencePackage::class)
+            ->withPivot(['pivot_id', 'is_completed']);
     }
 
     /**
