@@ -61,6 +61,18 @@ class PackageRepository extends BaseRepository implements PackageRepositoryInter
             ->sync($intelligences);
     }
 
+    /**
+     * @param $package
+     * @param $intelligences
+     * @return mixed
+     */
+    public function attachIntelligences($package, $intelligences): mixed
+    {
+        return $package->intelligences()
+            ->withTimestamps()
+            ->attach($intelligences);
+    }
+
     public function getPackageIntelligences($package, $request)
     {
         return $package->intelligences()
