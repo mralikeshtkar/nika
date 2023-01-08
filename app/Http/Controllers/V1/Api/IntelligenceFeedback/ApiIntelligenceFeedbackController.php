@@ -84,7 +84,7 @@ class ApiIntelligenceFeedbackController extends ApiBaseController
      *                 ),
      *                 @OA\Property(
      *                     property="title",
-     *                     type="number",
+     *                     type="string",
      *                     description="عنوان"
      *                 ),
      *                 @OA\Property(
