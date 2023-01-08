@@ -71,7 +71,7 @@ class IntelligenceFeedbackService extends BaseService
             'title' => $request->title,
             'max_point' => $request->max_point,
         ]);
-        return ApiResponse::message(trans("The :attribute was successfully updated", ['attribute' => trans('IntelligenceFeedback')]))
+        return ApiResponse::message(trans("The :attribute was successfully registered", ['attribute' => trans('IntelligenceFeedback')]), Response::HTTP_CREATED)
             ->addData('intelligenceFeedback', new IntelligenceFeedbackResource($intelligenceFeedback))
             ->send();
     }
@@ -93,7 +93,9 @@ class IntelligenceFeedbackService extends BaseService
         $intelligence = $intelligenceRepository->select(['id'])
             ->findOrFailById($request->intelligence_id);
         $intelligenceRepository->createMultipleFeedbacks($intelligence, $request->feedbacks);
-        return ApiResponse::message(trans("The :attribute was successfully registered", ['attribute' => trans('IntelligenceFeedback')]), Response::HTTP_CREATED)->send();
+        return ApiResponse::message(trans("The :attribute was successfully updated", ['attribute' => trans('IntelligenceFeedback')]))
+            ->addData('intelligenceFeedback', new IntelligenceFeedbackResource($intelligenceFeedback))
+            ->send();
     }
 
     /**
