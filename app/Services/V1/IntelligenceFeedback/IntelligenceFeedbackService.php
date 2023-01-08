@@ -14,6 +14,7 @@ use App\Services\V1\BaseService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Symfony\Component\HttpFoundation\Response;
 
 class IntelligenceFeedbackService extends BaseService
 {
@@ -92,7 +93,7 @@ class IntelligenceFeedbackService extends BaseService
         $intelligence = $intelligenceRepository->select(['id'])
             ->findOrFailById($request->intelligence_id);
         $intelligenceRepository->createMultipleFeedbacks($intelligence, $request->feedbacks);
-        return ApiResponse::message(trans("The :attribute was successfully updated", ['attribute' => trans('IntelligenceFeedback')]))->send();
+        return ApiResponse::message(trans("The :attribute was successfully registered", ['attribute' => trans('IntelligenceFeedback')]), Response::HTTP_CREATED)->send();
     }
 
     /**
