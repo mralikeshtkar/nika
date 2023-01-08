@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Awobaz\Compoships\Compoships;
+use Awobaz\Compoships\Database\Eloquent\Relations\BelongsTo;
 use Awobaz\Compoships\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
@@ -25,12 +26,17 @@ class IntelligencePackage extends Pivot
         return $this->hasMany(Exercise::class, ['intelligence_id', 'package_id'], ['intelligence_id', 'package_id']);
     }
 
+    public function intelligence(): BelongsTo
+    {
+        return $this->belongsTo(IntelligencePackage::class);
+    }
+
     /**
      * @return HasMany
      */
     public function points(): HasMany
     {
-        return $this->hasMany(IntelligencePoint::class,'intelligence_package_id','pivot_id');
+        return $this->hasMany(IntelligencePoint::class, 'intelligence_package_id', 'pivot_id');
     }
 
     /**
@@ -38,6 +44,6 @@ class IntelligencePackage extends Pivot
      */
     public function feedbacks(): HasMany
     {
-        return $this->hasMany(IntelligenceFeedback::class,'intelligence_package_id','pivot_id');
+        return $this->hasMany(IntelligenceFeedback::class, 'intelligence_package_id', 'pivot_id');
     }
 }

@@ -42,14 +42,6 @@ class Question extends Model
     }
 
     /**
-     * @return HasManyDeep
-     */
-    public function intelligencePoints(): HasManyDeep
-    {
-        return $this->hasManyDeepFromRelations($this->intelligence(),(new Intelligence)->points());
-    }
-
-    /**
      * @return BelongsToMany
      */
     public function files(): BelongsToMany
@@ -100,7 +92,15 @@ class Question extends Model
      */
     public function intelligence(): HasOneDeep
     {
-        return $this->hasOneDeepFromRelations($this->exercise(), (new Exercise())->intelligence());
+        return $this->hasOneDeep(Intelligence::class, [Exercise::class, IntelligencePackage::class], ['id', 'pivot_id', 'id'], ['exercise_id', 'intelligence_package_id', 'intelligence_id']);
+    }
+
+    /**
+     * @return HasOneDeep
+     */
+    public function intelligencePackage(): HasOneDeep
+    {
+        return $this->hasOneDeep(IntelligencePackage::class, [Exercise::class], ['id', 'pivot_id'], ['exercise_id', 'intelligence_package_id']);
     }
 
     /**

@@ -2,18 +2,13 @@
 
 namespace App\Services\V1\Question;
 
-use App\Http\Resources\V1\Intelligence\IntelligenceResource;
 use App\Http\Resources\V1\IntelligencePoint\IntelligencePointResource;
-use App\Http\Resources\V1\PaginationResource;
 use App\Http\Resources\V1\Question\QuestionAnswerTypeResource;
 use App\Http\Resources\V1\Question\QuestionResource;
-use App\Models\Exercise;
-use App\Models\IntelligencePoint;
 use App\Models\MediaQuestion;
-use App\Models\Question;
 use App\Repositories\V1\Exercise\Interfaces\ExerciseRepositoryInterfaces;
-use App\Repositories\V1\Intelligence\Interfaces\IntelligenceRepositoryInterface;
 use App\Repositories\V1\Media\Interfaces\MediaRepositoryInterface;
+use App\Repositories\V1\Package\Interfaces\IntelligencePackageRepositoryInterface;
 use App\Repositories\V1\Question\Interfaces\QuestionRepositoryInterface;
 use App\Responses\Api\ApiResponse;
 use App\Services\V1\BaseService;
@@ -55,17 +50,17 @@ class QuestionService extends BaseService
             'pivotPoints' => function (HasMany $hasMany) {
                 $hasMany->withGroupIntelligencePointId();
             },
-            'intelligence:intelligences.id,intelligences.title',
+            'intelligencePackage',
             'exercise' => function (BelongsTo $belongsTo) {
                 $belongsTo->select(['id', 'title'])
                     ->with('pivotPoints');
             },
         ])->select(['id', 'exercise_id', 'title'])
             ->findOrFailById($question);
-        $intelligencePoints = resolve(IntelligenceRepositoryInterface::class)->getIntelligencePoints($question->intelligence);
+        $points = resolve(IntelligencePackageRepositoryInterface::class)->getPoints($question->intelligencePackage);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('question', new QuestionResource($question))
-            ->addData('intelligencePoints', IntelligencePointResource::collection($intelligencePoints, ['withRemind' => $question->pivotPoints]))
+            ->addData('intelligencePoints', IntelligencePointResource::collection($points, ['withRemind' => $question->pivotPoints]))
             ->send();
     }
 
