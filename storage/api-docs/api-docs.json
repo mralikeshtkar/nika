@@ -6,7 +6,7 @@
     },
     "servers": [
         {
-            "url": "http://127.0.0.1:8000/api/v1"
+            "url": "https://api.rashtdev.ir/api/v1"
         },
         {
             "url": "http://127.0.0.1:8000/api/v1"
@@ -727,17 +727,12 @@
                         "multipart/form-data": {
                             "schema": {
                                 "required": [
-                                    "package_id",
-                                    "intelligence_id",
+                                    "intelligence_package_id",
                                     "title"
                                 ],
                                 "properties": {
-                                    "package_id": {
-                                        "description": "شناسه پکیج",
-                                        "type": "number"
-                                    },
-                                    "intelligence_id": {
-                                        "description": "شناسه هوش",
+                                    "intelligence_package_id": {
+                                        "description": "شناسه جدول میانی هوش پکیج",
                                         "type": "number"
                                     },
                                     "title": {
@@ -807,12 +802,8 @@
                                             "put"
                                         ]
                                     },
-                                    "package_id": {
-                                        "description": "شناسه پکیج",
-                                        "type": "number"
-                                    },
-                                    "intelligence_id": {
-                                        "description": "شناسه هوش",
+                                    "intelligence_package_id": {
+                                        "description": "شناسه جدول میانی هوش پکیج",
                                         "type": "number"
                                     },
                                     "title": {
@@ -1763,7 +1754,7 @@
                             "schema": {
                                 "required": [
                                     "_method",
-                                    "intelligence_id",
+                                    "intelligence_package_id",
                                     "intelligence_point_name_id",
                                     "max_point"
                                 ],

@@ -169,7 +169,7 @@ class ApiIntelligencePointController extends ApiBaseController
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"_method","intelligence_id","intelligence_point_name_id","max_point"},
+     *                 required={"_method","intelligence_package_id","intelligence_point_name_id","max_point"},
      *                 @OA\Property(
      *                     property="_method",
      *                     type="string",
