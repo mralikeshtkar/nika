@@ -298,8 +298,8 @@ Route::prefix('v1')->group(function (Router $router) {
 
     });
 
+    $router->get('upload/{media}', [ApiUploadFileController::class, 'show']);
     $router->post('upload', [ApiUploadFileController::class, 'file']);
-    $router->post('upload/{media}', [ApiUploadFileController::class, 'show']);
 
 });
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
