@@ -44,7 +44,7 @@ class ApiUploadFileController extends ApiBaseController
 
     /**
      * @OA\Post(
-     *     path="/upload/file",
+     *     path="/upload",
      *     summary="اپلود فایل",
      *     description="",
      *     tags={"آپلود فایل"},

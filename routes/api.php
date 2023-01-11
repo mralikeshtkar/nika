@@ -298,7 +298,7 @@ Route::prefix('v1')->group(function (Router $router) {
 
     });
 
-    $router->post('upload/file', [ApiUploadFileController::class, 'file']);
+    $router->post('upload', [ApiUploadFileController::class, 'file']);
     $router->post('upload/{media}', [ApiUploadFileController::class, 'show']);
 
 });
