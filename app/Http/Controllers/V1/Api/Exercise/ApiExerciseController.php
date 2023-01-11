@@ -88,7 +88,7 @@ class ApiExerciseController extends ApiBaseController
      */
     public function show(Request $request, $exercise)
     {
-        return $this->exerciseService->show($exercise);
+        return $this->exerciseService->show($request,$exercise);
     }
 
     /**

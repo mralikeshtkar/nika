@@ -2,18 +2,26 @@
 
 namespace App\Http\Resources\V1\Package;
 
+use App\Http\Resources\V1\Intelligence\IntelligenceResource;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Collection;
 
 class PackageIntelligenceResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     public function toArray($request)
     {
-        return collect($this->resource);
+        return collect($this->resource)->when(array_key_exists('created_at', $this->resource->getAttributes()), function (Collection $collection) {
+            $collection->put('created_at', jalaliFormat($this->resource->created_at, 'j F Y'));
+        })->when(array_key_exists('updated_at', $this->resource->getAttributes()), function (Collection $collection) {
+            $collection->put('updated_at', jalaliFormat($this->resource->updated_at, 'j F Y'));
+        })->when($this->resource->relationLoaded('intelligence'), function (Collection $collection) {
+            $collection->put('intelligence', new IntelligenceResource($this->resource->intelligence));
+        });
     }
 }

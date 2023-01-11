@@ -56,4 +56,9 @@ class IntelligencePackageRepository extends BaseRepository implements Intelligen
             ->get();
     }
 
+    public function touch($intelligencePackage)
+    {
+        return $intelligencePackage->update(['updated_at' => now()]);
+    }
+
 }

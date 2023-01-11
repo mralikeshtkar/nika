@@ -2,8 +2,14 @@
 
 namespace App\Providers;
 
+use App\Models\Exercise;
+use App\Models\IntelligenceFeedback;
+use App\Models\IntelligencePoint;
 use App\Models\Media;
 use App\Models\Package;
+use App\Observers\V1\Exercise\ExerciseObserver;
+use App\Observers\V1\IntelligenceFeedback\IntelligenceFeedbackObserver;
+use App\Observers\V1\IntelligencePoint\IntelligencePointObserver;
 use App\Observers\V1\Media\MediaObserver;
 use App\Observers\V1\Package\PackageObserver;
 use Illuminate\Auth\Events\Registered;
@@ -51,5 +57,8 @@ class EventServiceProvider extends ServiceProvider
     {
         Media::observe(MediaObserver::class);
         Package::observe(PackageObserver::class);
+        IntelligencePoint::observe(IntelligencePointObserver::class);
+        IntelligenceFeedback::observe(IntelligenceFeedbackObserver::class);
+        Exercise::observe(ExerciseObserver::class);
     }
 }

@@ -314,14 +314,14 @@
                 }
             }
         },
-        "/upload/file": {
+        "/upload": {
             "post": {
                 "tags": [
                     "آپلود فایل"
                 ],
                 "summary": "اپلود فایل",
                 "description": "",
-                "operationId": "5e991578a3b13d22a6698a2f659c9cbd",
+                "operationId": "ca22809b53b90de63f9f4cfd33bcbb12",
                 "requestBody": {
                     "content": {
                         "multipart/form-data": {
@@ -836,6 +836,35 @@
             }
         },
         "/exercises/{id}": {
+            "get": {
+                "tags": [
+                    "تمرینات"
+                ],
+                "summary": "دریافت یک تمرین",
+                "description": "",
+                "operationId": "4f3bce9d8bf767b5428fe693a777126e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه تمرین",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "تمرینات"

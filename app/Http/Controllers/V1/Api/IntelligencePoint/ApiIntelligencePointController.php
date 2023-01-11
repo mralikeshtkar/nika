@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V1\Api\IntelligencePoint;
 
 use App\Http\Controllers\V1\Api\ApiBaseController;
+use App\Models\IntelligencePoint;
 use App\Services\V1\IntelligencePoint\IntelligencePointService;
 use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;

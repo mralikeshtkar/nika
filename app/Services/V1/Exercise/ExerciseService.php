@@ -72,15 +72,13 @@ class ExerciseService extends BaseService
     public function store(Request $request): JsonResponse
     {
         ApiResponse::validate($request->all(), [
-            'package_id' => ['required', Rule::exists(IntelligencePackage::class, 'package_id')->where('intelligence_id', $request->intelligence_id)],
-            'intelligence_id' => ['required', Rule::exists(IntelligencePackage::class, 'intelligence_id')->where('package_id', $request->package_id)],
+            'intelligence_package_id' => ['nullable', 'exists:' . IntelligencePackage::class . ',pivot_id'],
             'title' => ['required', 'string'],
             'is_locked' => ['nullable', 'boolean'],
         ]);
         $exercise = $this->exerciseRepository->create([
             'user_id' => $request->user()->id,
-            'package_id' => $request->package_id,
-            'intelligence_id' => $request->intelligence_id,
+            'intelligence_package_id' => $request->intelligence_package_id,
             'title' => $request->title,
             'is_locked' => $request->get('is_locked', false),
         ]);

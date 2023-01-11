@@ -28,7 +28,7 @@ class IntelligencePackage extends Pivot
 
     public function intelligence(): BelongsTo
     {
-        return $this->belongsTo(IntelligencePackage::class);
+        return $this->belongsTo(Intelligence::class);
     }
 
     /**

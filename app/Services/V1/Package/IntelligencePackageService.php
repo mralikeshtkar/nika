@@ -65,7 +65,8 @@ class IntelligencePackageService extends BaseService
     {
         ApiResponse::authorize($request->user()->can('intelligence', Package::class));
         $intelligencePackage = $this->intelligencePackageRepository
-            ->select(['pivot_id', 'package_id', 'intelligence_id', 'is_completed'])
+            ->select(['pivot_id', 'package_id', 'intelligence_id', 'is_completed','created_at','updated_at'])
+            ->with(['intelligence:id,title,created_at,updated_at'])
             ->findOrFailByPivotId($intelligencePackage);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('packageIntelligence', new PackageIntelligenceResource($intelligencePackage))

@@ -16,7 +16,11 @@ class IntelligenceResource extends JsonResource
      */
     public function toArray($request)
     {
-        return collect($this->resource)->when($this->resource->pivot, function (Collection $collection) {
+        return collect($this->resource)->when(array_key_exists('created_at', $this->resource->getAttributes()), function (Collection $collection) {
+            $collection->put('created_at', jalaliFormat($this->resource->created_at, 'j F Y'));
+        })->when(array_key_exists('updated_at', $this->resource->getAttributes()), function (Collection $collection) {
+            $collection->put('updated_at', jalaliFormat($this->resource->updated_at, 'j F Y'));
+        })->when($this->resource->pivot, function (Collection $collection) {
             $pivot = collect($this->resource->pivot)->when(array_key_exists('created_at', $this->resource->pivot->getAttributes()), function (Collection $collection) {
                 $collection->put('created_at', jalaliFormat($this->resource->pivot->created_at, 'j F Y'));
             })->when(array_key_exists('updated_at', $this->resource->pivot->getAttributes()), function (Collection $collection) {
