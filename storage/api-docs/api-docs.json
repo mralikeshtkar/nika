@@ -6,7 +6,7 @@
     },
     "servers": [
         {
-            "url": "http://127.0.0.1:8000/api/v1"
+            "url": "https://api.rashtdev.ir/api/v1"
         },
         {
             "url": "http://127.0.0.1:8000/api/v1"
@@ -274,6 +274,76 @@
                 "responses": {
                     "200": {
                         "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/upload/{id}": {
+            "get": {
+                "tags": [
+                    "آپلود فایل"
+                ],
+                "summary": "دریافت فایل اپلود شده",
+                "description": "",
+                "operationId": "a921152c2cf9b0b317172841ef413fdf",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه مدیا",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/upload/file": {
+            "post": {
+                "tags": [
+                    "آپلود فایل"
+                ],
+                "summary": "اپلود فایل",
+                "description": "",
+                "operationId": "5e991578a3b13d22a6698a2f659c9cbd",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "file"
+                                ],
+                                "properties": {
+                                    "file": {
+                                        "description": "فایل",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ثبت با موفقیت انجام شد",
                         "content": {
                             "application/json": {
                                 "schema": {}
@@ -1207,7 +1277,7 @@
                                     },
                                     "title": {
                                         "description": "عنوان",
-                                        "type": "number"
+                                        "type": "string"
                                     },
                                     "max_point": {
                                         "description": "حداکثر نمره",
@@ -2059,28 +2129,19 @@
                 }
             }
         },
-        "/intelligences/{package}/{intelligence}/exercises": {
+        "/intelligence-packages/{id}/exercises": {
             "get": {
                 "tags": [
                     "هوش"
                 ],
                 "summary": "لیست تمرینات هوش بصورت صفحه بندی",
                 "description": "",
-                "operationId": "8d32f190a234dcd45543a66819e7e9b8",
+                "operationId": "46d2d9fdf356e6cf6abc37e2ab71ced6",
                 "parameters": [
                     {
-                        "name": "package",
+                        "name": "id",
                         "in": "path",
-                        "description": "شناسه پکیج",
-                        "required": true,
-                        "schema": {
-                            "type": "number"
-                        }
-                    },
-                    {
-                        "name": "intelligence",
-                        "in": "path",
-                        "description": "شناسه هوش",
+                        "description": "شناسه جدول میانی",
                         "required": true,
                         "schema": {
                             "type": "number"

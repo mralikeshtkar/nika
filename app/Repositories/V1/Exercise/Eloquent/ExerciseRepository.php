@@ -28,14 +28,12 @@ class ExerciseRepository extends BaseRepository implements ExerciseRepositoryInt
     }
 
     /**
-     * @param $intelligence
-     * @param $package
+     * @param $ids
      * @return $this
      */
-    public function getIntelligenceExercises($intelligence, $package): static
+    public function whereIntelligencePackageId(... $ids): static
     {
-        $this->model = $this->model->where('intelligence_id', $intelligence)
-            ->where('package_id', $package);
+        $this->model = $this->model->whereIn('intelligence_package_id', func_get_args());
         return $this;
     }
 
@@ -54,7 +52,7 @@ class ExerciseRepository extends BaseRepository implements ExerciseRepositoryInt
     public function paginateQuestions(Request $request, $exercise)
     {
         return $exercise->questions()
-            ->select(['id','exercise_id','title'])
+            ->select(['id', 'exercise_id', 'title'])
             ->with('files')
             ->paginate($request->get('perPage', 10));
     }

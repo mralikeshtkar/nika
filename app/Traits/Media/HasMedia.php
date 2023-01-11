@@ -177,7 +177,7 @@ trait HasMedia
         $this->setType($this->getFileType($extension))
             ->setExtension($extension)
             ->setBaseUrl(url('/'));
-        return $this->storeModel(resolve(MediaFileService::class)->store($file, $this->getType(), $this->getDisk(), $this->getDirectory()));
+        return $this->storeModel($this->storeFile($file));
     }
 
     /**
@@ -208,5 +208,14 @@ trait HasMedia
         return collect(MediaExtension::asArray())->first(function ($item) use ($extension) {
             return in_array($extension, MediaExtension::getExtensions($item));
         }, MediaExtension::Default);
+    }
+
+    /**
+     * @param UploadedFile $file
+     * @return mixed
+     */
+    private function storeFile(UploadedFile $file): mixed
+    {
+        return resolve(MediaFileService::class)->store($file, $this->getType(), $this->getDisk(), $this->getDirectory());
     }
 }

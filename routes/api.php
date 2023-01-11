@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\V1\Api\Address\ApiAddressController as V1ApiAddressController;
+use App\Http\Controllers\V1\Api\ApiUploadFileController;
 use App\Http\Controllers\V1\Api\City\ApiCityController as V1ApiCityController;
 use App\Http\Controllers\V1\Api\DocumentGroup\ApiDocumentGroupController as V1ApiDocumentGroupController;
 use App\Http\Controllers\V1\Api\Exercise\ApiExerciseController as V1ApiExerciseController;
@@ -256,7 +257,7 @@ Route::prefix('v1')->group(function (Router $router) {
 
             /* Intelligence exercises */
             $router->group([], function (Router $router) {
-                $router->get('intelligences/{package}/{intelligence}/exercises', [V1ApiIntelligenceExerciseController::class, 'index']);
+                $router->get('intelligence-packages/{intelligencePackage}/exercises', [V1ApiIntelligenceExerciseController::class, 'index']);
             });
         });
 
@@ -296,6 +297,9 @@ Route::prefix('v1')->group(function (Router $router) {
         });
 
     });
+
+    $router->post('upload/file', [ApiUploadFileController::class, 'file']);
+    $router->post('upload/{media}', [ApiUploadFileController::class, 'show']);
 
 });
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

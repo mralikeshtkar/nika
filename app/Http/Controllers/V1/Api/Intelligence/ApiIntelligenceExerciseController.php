@@ -23,21 +23,14 @@ class ApiIntelligenceExerciseController extends ApiBaseController
      * Get intelligence exercises as pagination.
      *
      * @OA\Get (
-     *     path="/intelligences/{package}/{intelligence}/exercises",
+     *     path="/intelligence-packages/{id}/exercises",
      *     summary="لیست تمرینات هوش بصورت صفحه بندی",
      *     description="",
      *     tags={"هوش"},
      *     @OA\Parameter(
-     *         description="شناسه پکیج",
+     *         description="شناسه جدول میانی",
      *         in="path",
-     *         name="package",
-     *         required=true,
-     *         @OA\Schema(type="number"),
-     *     ),
-     *     @OA\Parameter(
-     *         description="شناسه هوش",
-     *         in="path",
-     *         name="intelligence",
+     *         name="id",
      *         required=true,
      *         @OA\Schema(type="number"),
      *     ),
@@ -70,8 +63,8 @@ class ApiIntelligenceExerciseController extends ApiBaseController
      *     ),
      * )
      */
-    public function index(Request $request,$package,$intelligence)
+    public function index(Request $request,$intelligencePackage)
     {
-        return $this->intelligenceExerciseService->index($request,$package,$intelligence);
+        return $this->intelligenceExerciseService->index($request,$intelligencePackage);
     }
 }
