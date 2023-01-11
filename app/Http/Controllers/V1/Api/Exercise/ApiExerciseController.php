@@ -67,6 +67,31 @@ class ApiExerciseController extends ApiBaseController
     }
 
     /**
+     * @OA\Get(
+     *     path="/exercises/{id}",
+     *     summary="دریافت یک تمرین",
+     *     description="",
+     *     tags={"تمرینات"},
+     *     @OA\Parameter(
+     *         description="شناسه تمرین",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function show(Request $request, $exercise)
+    {
+        return $this->exerciseService->show($exercise);
+    }
+
+    /**
      * Store an exercise.
      *
      * @OA\Post(

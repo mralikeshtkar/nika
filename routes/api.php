@@ -209,6 +209,7 @@ Route::prefix('v1')->group(function (Router $router) {
         /* Exercises */
         $router->group([], function (Router $router) {
             $router->get('exercises', [V1ApiExerciseController::class, 'index']);
+            $router->get('exercises/{exercise}', [V1ApiExerciseController::class, 'show']);
             $router->post('exercises', [V1ApiExerciseController::class, 'store']);
             $router->put('exercises/{exercise}', [V1ApiExerciseController::class, 'update']);
             $router->delete('exercises/{exercise}', [V1ApiExerciseController::class, 'destroy']);

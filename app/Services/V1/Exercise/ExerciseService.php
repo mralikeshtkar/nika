@@ -53,6 +53,20 @@ class ExerciseService extends BaseService
 
     /**
      * @param Request $request
+     * @param $exercise
+     * @return JsonResponse
+     */
+    public function show(Request $request, $exercise): JsonResponse
+    {
+        $exercise=$this->exerciseRepository->select(['id', 'intelligence_package_id', 'title', 'is_locked', 'created_at'])
+            ->findOrFailById($exercise);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('exercises', new ExerciseResource($exercise))
+            ->send();
+    }
+
+    /**
+     * @param Request $request
      * @return JsonResponse
      */
     public function store(Request $request): JsonResponse
