@@ -299,6 +299,7 @@ Route::prefix('v1')->group(function (Router $router) {
 
     });
 
+    $router->get('upload/list', [ApiUploadFileController::class, 'index']);
     $router->get('upload/{media}', [ApiUploadFileController::class, 'show']);
     $router->post('upload', [ApiUploadFileController::class, 'file']);
 
