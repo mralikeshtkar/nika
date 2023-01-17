@@ -48,7 +48,7 @@ class ApiUploadFileController extends ApiBaseController
     public function index(Request $request)
     {
         $media = Media::query()->where('collection', self::UPLOAD_FILE_COLLECTION_MEDIA)->paginate($request->get('perPage', 10));
-        $resource = PaginationResource::collection($media)->additional(['itemsResource' => MediaResource::class]);
+        $resource = PaginationResource::make($media)->additional(['itemsResource' => MediaResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('media', $resource)
             ->send();
