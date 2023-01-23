@@ -6,9 +6,6 @@
     },
     "servers": [
         {
-            "url": "https://api.rashtdev.ir/api/v1"
-        },
-        {
             "url": "http://127.0.0.1:8000/api/v1"
         }
     ],
@@ -269,6 +266,47 @@
                         "schema": {
                             "type": "number"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/upload/list": {
+            "get": {
+                "tags": [
+                    "آپلود فایل"
+                ],
+                "summary": "دریافت فایل های اپلود شده",
+                "description": "",
+                "operationId": "478422bddbae92133696441dee5d2dca",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
                     }
                 ],
                 "responses": {
@@ -889,7 +927,7 @@
                             "schema": {
                                 "required": [
                                     "_method",
-                                    "is_locked",
+                                    "intelligence_package_id",
                                     "title"
                                 ],
                                 "properties": {
@@ -908,14 +946,6 @@
                                     "title": {
                                         "description": "عنوان",
                                         "type": "string"
-                                    },
-                                    "is_locked": {
-                                        "description": "آیا تمرین قفل است ؟ 1بله 0خیر",
-                                        "type": "number",
-                                        "enum": [
-                                            1,
-                                            0
-                                        ]
                                     }
                                 },
                                 "type": "object"
@@ -1052,6 +1082,68 @@
                 "responses": {
                     "201": {
                         "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/exercises/{id}/lock": {
+            "put": {
+                "tags": [
+                    "تمرینات"
+                ],
+                "summary": "قفل کردن تمرین",
+                "description": "",
+                "operationId": "a8007e03bc7591c22174a40d96a5db39",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه تمرین",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/exercises/{id}/unlock": {
+            "put": {
+                "tags": [
+                    "تمرینات"
+                ],
+                "summary": "باز کردن قفل تمرین",
+                "description": "",
+                "operationId": "863b9491a07b6cc195c943b6373d3458",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه تمرین",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
                         "content": {
                             "application/json": {
                                 "schema": {}

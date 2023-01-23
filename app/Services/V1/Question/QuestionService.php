@@ -156,7 +156,7 @@ class QuestionService extends BaseService
         $this->questionRepository->update($question, [
             'title' => $request->title,
         ]);
-        $question = $this->questionRepository->select(['id', 'title'])->findOrFailById($question);
+        $question = $this->questionRepository->select(['id', 'title'])->findOrFailById($question->id);
         return ApiResponse::message(trans("The :attribute was successfully updated", ['attribute' => trans('Question')]))
             ->addData('question', new QuestionResource($question))
             ->send();

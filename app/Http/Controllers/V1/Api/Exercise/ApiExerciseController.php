@@ -154,7 +154,7 @@ class ApiExerciseController extends ApiBaseController
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"_method","is_locked","title"},
+     *                 required={"_method","intelligence_package_id","title"},
      *                 @OA\Property(
      *                     property="_method",
      *                     type="string",
@@ -171,12 +171,6 @@ class ApiExerciseController extends ApiBaseController
      *                     property="title",
      *                     type="string",
      *                     description="عنوان"
-     *                 ),
-     *                 @OA\Property(
-     *                     property="is_locked",
-     *                     type="number",
-     *                     enum={1,0},
-     *                     description="آیا تمرین قفل است ؟ 1بله 0خیر",
      *                 ),
      *             )
      *         )
@@ -233,6 +227,60 @@ class ApiExerciseController extends ApiBaseController
     public function questions(Request $request, $exercise)
     {
         return $this->exerciseService->questions($request,$exercise);
+    }
+
+    /**
+     * Destroy an exercise.
+     *
+     * @OA\Put(
+     *     path="/exercises/{id}/lock",
+     *     summary="قفل کردن تمرین",
+     *     description="",
+     *     tags={"تمرینات"},
+     *     @OA\Parameter(
+     *         description="شناسه تمرین",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function lock(Request $request,$exercise)
+    {
+        return $this->exerciseService->lock($request,$exercise);
+    }
+
+    /**
+     * Destroy an exercise.
+     *
+     * @OA\Put(
+     *     path="/exercises/{id}/unlock",
+     *     summary="باز کردن قفل تمرین",
+     *     description="",
+     *     tags={"تمرینات"},
+     *     @OA\Parameter(
+     *         description="شناسه تمرین",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function unlock(Request $request,$exercise)
+    {
+        return $this->exerciseService->unlock($request,$exercise);
     }
 
     /**

@@ -214,6 +214,8 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->put('exercises/{exercise}', [V1ApiExerciseController::class, 'update']);
             $router->delete('exercises/{exercise}', [V1ApiExerciseController::class, 'destroy']);
             $router->get('exercises/{exercise}/questions', [V1ApiExerciseController::class, 'questions']);
+            $router->put('exercises/{exercise}/lock', [V1ApiExerciseController::class, 'lock']);
+            $router->put('exercises/{exercise}/unlock', [V1ApiExerciseController::class, 'unlock']);
 
             /* Exercise questions */
             $router->group([], function (Router $router) {

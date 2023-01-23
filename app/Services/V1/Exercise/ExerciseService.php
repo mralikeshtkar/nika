@@ -98,11 +98,9 @@ class ExerciseService extends BaseService
         ApiResponse::validate($request->all(), [
             'intelligence_package_id' => ['nullable', 'exists:' . IntelligencePackage::class . ',pivot_id'],
             'title' => ['required', 'string'],
-            'is_locked' => ['required', 'boolean'],
         ]);
         $data = collect([
             'title' => $request->title,
-            'is_locked' => $request->get('is_locked', false),
         ])->when($request->filled('intelligence_package_id'), function (Collection $collection) use ($request) {
             $collection->put('intelligence_package_id', $request->intelligence_package_id);
         })->toArray();
@@ -126,6 +124,36 @@ class ExerciseService extends BaseService
         $resource = PaginationResource::make($questions)->additional(['itemsResource' => ExerciseResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('exercises', $resource)
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $exercise
+     * @return JsonResponse
+     */
+    public function lock(Request $request, $exercise): JsonResponse
+    {
+        $exercise = $this->exerciseRepository->select(['id'])->findOrFailById($exercise);
+        $this->exerciseRepository->lock($exercise);
+        $exercise = $this->exerciseRepository->select(['id','is_locked'])->findOrFailById($exercise->id);
+        return ApiResponse::message(trans("Mission accomplished"))
+            ->addData('exercises', new ExerciseResource($exercise))
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $exercise
+     * @return JsonResponse
+     */
+    public function unlock(Request $request, $exercise): JsonResponse
+    {
+        $exercise = $this->exerciseRepository->select(['id'])->findOrFailById($exercise);
+        $this->exerciseRepository->unlock($exercise);
+        $exercise = $this->exerciseRepository->select(['id','is_locked'])->findOrFailById($exercise->id);
+        return ApiResponse::message(trans("Mission accomplished"))
+            ->addData('exercises', new ExerciseResource($exercise))
             ->send();
     }
 
