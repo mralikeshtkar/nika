@@ -23,7 +23,7 @@ class IntelligencePackage extends Pivot
      */
     public function exercises(): HasMany
     {
-        return $this->hasMany(Exercise::class, ['intelligence_id', 'package_id'], ['intelligence_id', 'package_id']);
+        return $this->hasMany(Exercise::class, 'intelligence_package_id','pivot_id');
     }
 
     public function intelligence(): BelongsTo

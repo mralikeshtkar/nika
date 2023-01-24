@@ -6,17 +6,22 @@ use App\Enums\Media\MediaExtension;
 use App\Enums\Package\PackageStatus;
 use App\Http\Resources\V1\Package\PackageResource;
 use App\Http\Resources\V1\PaginationResource;
+use App\Models\Exercise;
+use App\Models\ExercisePriorityPackage;
 use App\Models\Intelligence;
 use App\Models\Package;
 use App\Repositories\V1\Media\Interfaces\MediaRepositoryInterface;
 use App\Repositories\V1\Package\Interfaces\PackageRepositoryInterface;
 use App\Responses\Api\ApiResponse;
 use App\Services\V1\BaseService;
+use Awobaz\Compoships\Database\Eloquent\Relations\HasMany;
 use BenSampo\Enum\Rules\EnumKey;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
@@ -249,6 +254,97 @@ class PackageService extends BaseService
         $package = $this->packageRepository->select(['id'])->findOrFailById($package);
         $this->packageRepository->changeStatus($package, PackageStatus::Inactive);
         $package = $this->packageRepository->select(['id', 'status'])->findOrFailById($package->id);
+        return ApiResponse::message(trans("Mission accomplished"))
+            ->addData('package', new PackageResource($package))
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $package
+     * @return JsonResponse
+     */
+    public function packageExercisesDontHavePriority(Request $request, $package): JsonResponse
+    {
+        $package = $this->packageRepository->select(['id'])
+            ->with(['pivotExercisePriority'])
+            ->findOrFailById($package);
+        $package->load([
+            'pivotIntelligencePackage:pivot_id,package_id,intelligence_id',
+            'pivotIntelligencePackage.intelligence:id,title',
+            'pivotIntelligencePackage.exercises' => function ($q) use ($package, $request) {
+                $q->select(['id', 'intelligence_package_id', 'title'])
+                    ->whereNotIn('id', $package->pivotExercisePriority->pluck('exercise_id')->toArray())
+                    ->when($request->filled('exercise'), function (Builder $builder) use ($request) {
+                        $builder->where('title', 'LIKE', '%' . $request->exercise . '%');
+                    })->limit(1);
+            },
+        ]);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('package', new PackageResource($package))
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $package
+     * @return JsonResponse
+     */
+    public function exercisePriority(Request $request, $package): JsonResponse
+    {
+        $package = $this->packageRepository->select(['id'])
+            ->with(['pivotExercisePriority', 'pivotExercisePriority.exercise:id,title,is_locked', 'pivotExercisePriority.intelligence:id,title'])
+            ->findOrFailById($package);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('package', new PackageResource($package))
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $package
+     * @return JsonResponse
+     */
+    public function storeExercisePriority(Request $request, $package): JsonResponse
+    {
+        $package = $this->packageRepository->select(['id'])
+            ->findOrFailById($package);
+        ApiResponse::validate($request->all(), [
+            'intelligence_id' => ['required', 'exists:' . Intelligence::class . ',id'],
+            'exercise_id' => [
+                'required',
+                Rule::unique(ExercisePriorityPackage::class, 'exercise_id')
+                    ->where('package_id', $package->id)
+                    ->where('intelligence_id', $request->intelligence_id)
+            ],
+        ]);
+        $this->packageRepository->storeExercisePriority($package, [
+            ['intelligence_id' => $request->intelligence_id, 'exercise_id' => $request->exercise_id,]
+        ]);
+        return ApiResponse::message(trans("The information was register successfully"))
+            ->addData('package', new PackageResource($package))
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $package
+     * @return JsonResponse
+     */
+    public function destroyExercisePriority(Request $request, $package): JsonResponse
+    {
+        $package = $this->packageRepository->select(['id'])
+            ->findOrFailById($package);
+        ApiResponse::validate($request->all(), [
+            'intelligence_id' => ['required', 'exists:' . Intelligence::class . ',id'],
+            'exercise_id' => [
+                'required',
+                Rule::exists(ExercisePriorityPackage::class, 'exercise_id')
+                    ->where('package_id', $package->id)
+                    ->where('intelligence_id', $request->intelligence_id)
+            ],
+        ]);
+        $this->packageRepository->destroyExercisePriority($package, [$request->exercise_id]);
         return ApiResponse::message(trans("Mission accomplished"))
             ->addData('package', new PackageResource($package))
             ->send();

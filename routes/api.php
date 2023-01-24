@@ -192,6 +192,10 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->put('packages/{package}/uncompleted', [V1ApiPackageController::class, 'uncompleted']);
             $router->put('packages/{package}/active-status', [V1ApiPackageController::class, 'activeStatus']);
             $router->put('packages/{package}/inactive-status', [V1ApiPackageController::class, 'inactiveStatus']);
+            $router->get('packages/{package}/package-exercises-dont-have-priority', [V1ApiPackageController::class, 'packageExercisesDontHavePriority']);
+            $router->get('packages/{package}/exercise-priority-list', [V1ApiPackageController::class, 'exercisePriority']);
+            $router->post('packages/{package}/exercise-priority-detach', [V1ApiPackageController::class, 'storeExercisePriority']);
+            $router->delete('packages/{package}/exercise-priority-detach', [V1ApiPackageController::class, 'destroyExercisePriority']);
 
             /* Package intelligences */
             $router->group([], function (Router $router) {

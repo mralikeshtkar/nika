@@ -402,6 +402,148 @@ class ApiPackageController extends ApiBaseController
     }
 
     /**
+     * @OA\Get(
+     *     path="/packages/{id}/package-exercises-dont-have-priority",
+     *     summary="لیست انتخاب هوش و تمرینات برای اولویت",
+     *     description="",
+     *     tags={"پکیج"},
+     *     @OA\Parameter(
+     *         description="شناسه پکیج",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="عنوان تمرین",
+     *         in="query",
+     *         name="exercise",
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function packageExercisesDontHavePriority(Request $request, $package)
+    {
+        return $this->packageService->packageExercisesDontHavePriority($request, $package);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/packages/{id}/exercise-priority-list",
+     *     summary="لیست اولویت های تمرینات",
+     *     description="",
+     *     tags={"پکیج"},
+     *     @OA\Parameter(
+     *         description="شناسه پکیج",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function exercisePriority(Request $request, $intelligencePackage)
+    {
+        return $this->packageService->exercisePriority($request, $intelligencePackage);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/packages/{id}/exercise-priority-detach",
+     *     summary="ثبت اولویت تمرین",
+     *     description="",
+     *     tags={"پکیج"},
+     *     @OA\Parameter(
+     *         description="شناسه پکیج",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 required={"intelligence_id","exercise_id"},
+     *                 @OA\Property(
+     *                     property="intelligence_id",
+     *                     type="string",
+     *                     description="شناسه هوش"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="exercise_id",
+     *                     type="number",
+     *                     description="شناسه تمرین"
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="ثبت با موفقیت انجام شد",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function storeExercisePriority(Request $request, $intelligencePackage)
+    {
+        return $this->packageService->storeExercisePriority($request, $intelligencePackage);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/packages/{id}/exercise-prioraity-detach",
+     *     summary="بروزرسانی اولویت تمرین",
+     *     description="",
+     *     tags={"پکیج"},
+     *     @OA\Parameter(
+     *         description="شناسه پکیج",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 required={"intelligence_id","exercise_id"},
+     *                 @OA\Property(
+     *                     property="intelligence_id",
+     *                     type="string",
+     *                     description="شناسه هوش"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="exercise_id",
+     *                     type="number",
+     *                     description="شناسه تمرین"
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function destroyExercisePriority(Request $request, $intelligencePackage)
+    {
+        return $this->packageService->destroyExercisePriority($request, $intelligencePackage);
+    }
+
+    /**
      * Delete a package.
      *
      * @OA\Delete(

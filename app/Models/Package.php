@@ -11,10 +11,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Package extends Model
 {
-    use HasFactory, HasMedia, EagerLoadPivotTrait;
+    use HasFactory, HasMedia, EagerLoadPivotTrait,HasRelationships;
 
     #region Constance
 
@@ -87,6 +89,37 @@ class Package extends Model
     public function pivotIntelligences(): HasMany
     {
         return $this->hasMany(IntelligencePackage::class);
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function exercisePriority(): BelongsToMany
+    {
+        return $this->belongsToMany(Exercise::class,'exercise_priority_package')
+            ->orderBy('priority');
+    }
+
+    public function pivotExercisePriority(): HasMany
+    {
+        return $this->hasMany(ExercisePriorityPackage::class)
+            ->orderBy('priority');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function pivotIntelligencePackage(): HasMany
+    {
+        return $this->hasMany(IntelligencePackage::class);
+    }
+
+    /**
+     * @return HasManyDeep
+     */
+    public function IntelligencePackageExercises(): HasManyDeep
+    {
+        return $this->hasManyDeepFromRelations($this->pivotIntelligencePackage(),(new IntelligencePackage)->exercises());
     }
 
     #endregion

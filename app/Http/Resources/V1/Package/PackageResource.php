@@ -16,7 +16,7 @@ class PackageResource extends JsonResource
      */
     public function toArray($request)
     {
-        return collect($this->resource->getAttributes())
+        return collect($this->resource)
             ->when(array_key_exists('description',$this->resource->getAttributes()), function (Collection $collection) {
                 $collection->put('description', $this->resource->description);
             })->when(array_key_exists('created_at',$this->resource->getAttributes()), function (Collection $collection) {

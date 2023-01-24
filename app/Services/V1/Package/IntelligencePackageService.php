@@ -6,6 +6,7 @@ use App\Http\Resources\V1\Intelligence\IntelligenceResource;
 use App\Http\Resources\V1\IntelligenceFeedback\IntelligenceFeedbackResource;
 use App\Http\Resources\V1\IntelligencePoint\IntelligencePointResource;
 use App\Http\Resources\V1\Package\PackageIntelligenceResource;
+use App\Http\Resources\V1\Package\PackageResource;
 use App\Http\Resources\V1\PaginationResource;
 use App\Models\Intelligence;
 use App\Models\Package;

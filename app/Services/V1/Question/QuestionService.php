@@ -56,7 +56,7 @@ class QuestionService extends BaseService
                 $belongsTo->select(['id', 'title'])
                     ->with('pivotPoints');
             },
-        ])->select(['id', 'exercise_id', 'title'])
+        ])->select(['id', 'exercise_id', 'title','created_at','updated_at'])
             ->findOrFailById($question);
         $points = resolve(IntelligencePackageRepositoryInterface::class)->getPoints($question->intelligencePackage);
         return ApiResponse::message(trans("The information was received successfully"))

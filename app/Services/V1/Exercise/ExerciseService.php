@@ -58,7 +58,7 @@ class ExerciseService extends BaseService
      */
     public function show(Request $request, $exercise): JsonResponse
     {
-        $exercise=$this->exerciseRepository->select(['id', 'intelligence_package_id', 'title', 'is_locked', 'created_at'])
+        $exercise=$this->exerciseRepository->select(['id', 'intelligence_package_id', 'title', 'is_locked', 'created_at','updated_at'])
             ->findOrFailById($exercise);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('exercises', new ExerciseResource($exercise))

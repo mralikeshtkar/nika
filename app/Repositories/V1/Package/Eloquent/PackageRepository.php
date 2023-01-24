@@ -9,6 +9,7 @@ use App\Repositories\V1\Package\Interfaces\PackageRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class PackageRepository extends BaseRepository implements PackageRepositoryInterface
 {
@@ -130,6 +131,23 @@ class PackageRepository extends BaseRepository implements PackageRepositoryInter
     public function destroyVideo($package)
     {
         if ($video = $package->video) $video->delete();
+    }
+
+    public function storeExercisePriority($package, $data)
+    {
+        return $package->exercisePriority()->attach(collect($data)->mapWithKeys(function ($item, $key) use ($package) {
+            return [
+                $item['exercise_id'] => [
+                    'intelligence_id' => $item['intelligence_id'],
+                    'priority' => intval($package->pivotExercisePriority()->max('priority')) + 1,
+                ],
+            ];
+        })->toArray());
+    }
+
+    public function destroyExercisePriority($package, $ids)
+    {
+        return $package->exercisePriority()->detach($ids);
     }
 
 }

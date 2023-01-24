@@ -3436,6 +3436,176 @@
                 }
             }
         },
+        "/packages/{id}/package-exercises-dont-have-priority": {
+            "get": {
+                "tags": [
+                    "پکیج"
+                ],
+                "summary": "لیست انتخاب هوش و تمرینات برای اولویت",
+                "description": "",
+                "operationId": "a21bd128456a4a33479df9885ad54866",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه پکیج",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/packages/{id}/exercise-priority-list": {
+            "get": {
+                "tags": [
+                    "پکیج"
+                ],
+                "summary": "لیست اولویت های تمرینات",
+                "description": "",
+                "operationId": "11c11b9b2e580820576737c7cf50f305",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه پکیج",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/packages/{id}/exercise-priority-detach": {
+            "post": {
+                "tags": [
+                    "پکیج"
+                ],
+                "summary": "ثبت اولویت تمرین",
+                "description": "",
+                "operationId": "3242fb8157d0c1b32ebd2a43635dd03a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه پکیج",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "intelligence_id",
+                                    "exercise_id"
+                                ],
+                                "properties": {
+                                    "intelligence_id": {
+                                        "description": "شناسه هوش",
+                                        "type": "string"
+                                    },
+                                    "exercise_id": {
+                                        "description": "شناسه تمرین",
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/packages/{id}/exercise-prioraity-detach": {
+            "post": {
+                "tags": [
+                    "پکیج"
+                ],
+                "summary": "بروزرسانی اولویت تمرین",
+                "description": "",
+                "operationId": "dc7efd2a751670f45dc9146bd839eec0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه پکیج",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "intelligence_id",
+                                    "exercise_id"
+                                ],
+                                "properties": {
+                                    "intelligence_id": {
+                                        "description": "شناسه هوش",
+                                        "type": "string"
+                                    },
+                                    "exercise_id": {
+                                        "description": "شناسه تمرین",
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/permissions": {
             "get": {
                 "tags": [
