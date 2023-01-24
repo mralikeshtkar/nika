@@ -47,10 +47,11 @@ class QuestionService extends BaseService
     public function show(Request $request, $question): JsonResponse
     {
         $question = $this->questionRepository->with([
+            'files',
+            'intelligencePackage',
             'pivotPoints' => function (HasMany $hasMany) {
                 $hasMany->withGroupIntelligencePointId();
             },
-            'intelligencePackage',
             'exercise' => function (BelongsTo $belongsTo) {
                 $belongsTo->select(['id', 'title'])
                     ->with('pivotPoints');
@@ -82,6 +83,21 @@ class QuestionService extends BaseService
             'title' => $request->title,
         ]);
         return ApiResponse::message(trans("The :attribute was successfully registered", ['attribute' => trans('Question')]), Response::HTTP_CREATED)
+            ->addData('question', new QuestionResource($question))
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $question
+     * @return JsonResponse
+     */
+    public function files(Request $request, $question): JsonResponse
+    {
+        $question = $this->questionRepository->select(['id'])
+            ->with(['files'])
+            ->findOrFailById($question);
+        return ApiResponse::message(trans('The information was received successfully'))
             ->addData('question', new QuestionResource($question))
             ->send();
     }

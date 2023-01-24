@@ -221,6 +221,7 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->group([], function (Router $router) {
                 $router->post('exercises/{exercise}/questions', [V1ApiQuestionController::class, 'store']);
                 $router->post('questions/{question}/upload-file', [V1ApiQuestionController::class, 'uploadFile']);
+                $router->get('questions/{question}/files', [V1ApiQuestionController::class, 'files']);
                 $router->delete('questions/{question}/remove-file', [V1ApiQuestionController::class, 'removeFile']);
             });
         });

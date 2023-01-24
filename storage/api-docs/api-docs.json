@@ -4320,6 +4320,37 @@
                 }
             }
         },
+        "/questions/{id}/files": {
+            "get": {
+                "tags": [
+                    "سوال"
+                ],
+                "summary": "دریافت فایل های سوال",
+                "description": "",
+                "operationId": "df1d2a800a3add6199372a463084c521",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه سوال",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/questions/{id}/upload-file": {
             "post": {
                 "tags": [

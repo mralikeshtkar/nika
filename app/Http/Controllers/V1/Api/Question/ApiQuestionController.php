@@ -90,6 +90,33 @@ class ApiQuestionController extends ApiBaseController
     }
 
     /**
+     * Show question.
+     *
+     * @OA\Get (
+     *     path="/questions/{id}/files",
+     *     summary="دریافت فایل های سوال",
+     *     description="",
+     *     tags={"سوال"},
+     *     @OA\Parameter(
+     *         description="شناسه سوال",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function files(Request $request, $question)
+    {
+        return $this->questionService->files($request, $question);
+    }
+
+    /**
      * Store question file.
      *
      * @OA\Post(
