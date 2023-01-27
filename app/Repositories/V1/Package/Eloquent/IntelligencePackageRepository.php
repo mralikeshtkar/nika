@@ -41,11 +41,16 @@ class IntelligencePackageRepository extends BaseRepository implements Intelligen
         return $model->where('pivot_id', $model->pivot_id)->update($attributes);
     }
 
-    public function getPoints($intelligencePackage)
+    public function getPoints(Request $request, $intelligencePackage)
     {
         return $intelligencePackage->points()
             ->select(['id', 'intelligence_package_id', 'intelligence_point_name_id', 'max_point',])
             ->withPointName()
+            ->when($request->filled('name'), function ($q) use ($request) {
+                $q->whereHas('intelligencePointName', function ($q) use ($request) {
+                    $q->where('name', 'LIKE', '%' . $request->name . '%');
+                });
+            })
             ->get();
     }
 

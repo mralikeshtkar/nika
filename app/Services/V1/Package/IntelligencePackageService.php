@@ -85,7 +85,7 @@ class IntelligencePackageService extends BaseService
         $intelligencePackage = $this->intelligencePackageRepository
             ->select(['pivot_id'])
             ->findOrFailByPivotId($intelligencePackage);
-        $points = $this->intelligencePackageRepository->getPoints($intelligencePackage);
+        $points = $this->intelligencePackageRepository->getPoints($request,$intelligencePackage);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('points', IntelligencePointResource::collection($points))
             ->send();

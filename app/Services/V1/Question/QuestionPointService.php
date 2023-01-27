@@ -64,7 +64,12 @@ class QuestionPointService extends BaseService
         return ApiResponse::message(trans("The information was register successfully"), Response::HTTP_CREATED)->send();
     }
 
-    public function update(Request $request, $question)
+    /**
+     * @param Request $request
+     * @param $question
+     * @return JsonResponse
+     */
+    public function update(Request $request, $question): JsonResponse
     {
         $question = $this->questionRepository->select(['id', 'exercise_id'])
             ->with(['pivotPoints:question_id,intelligence_point_id'])
