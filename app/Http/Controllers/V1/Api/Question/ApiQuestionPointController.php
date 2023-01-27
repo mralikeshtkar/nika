@@ -23,6 +23,31 @@ class ApiQuestionPointController extends ApiBaseController
     }
 
     /**
+     * @OA\Get (
+     *     path="/questions/{id}/points",
+     *     summary="دریافت ارزش های یک سوال",
+     *     description="",
+     *     tags={"سوال"},
+     *     @OA\Parameter(
+     *         description="شناسه سوال",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function index(Request $request, $question)
+    {
+        return $this->questionPointService->index($request, $question);
+    }
+
+    /**
      * @OA\Post(
      *     path="/questions/{id}/points",
      *     summary="ثبت ارزش برای سوال",

@@ -6,6 +6,7 @@ use App\Models\IntelligencePoint;
 use App\Repositories\V1\BaseRepository;
 use App\Repositories\V1\IntelligencePoint\Interfaces\IntelligencePointRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
@@ -37,5 +38,14 @@ class IntelligencePointRepository extends BaseRepository implements Intelligence
             });
         });
         return $this;
+    }
+
+    /**
+     * @param $id
+     * @return array|Model|Collection|Builder|null
+     */
+    public function findById($id): array|Model|Collection|Builder|null
+    {
+        return $this->model->find($id);
     }
 }

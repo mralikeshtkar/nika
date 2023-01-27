@@ -248,6 +248,7 @@ Route::prefix('v1')->group(function (Router $router) {
 
             /* Question points */
             $router->group([], function (Router $router) {
+                $router->get('questions/{question}/points', [V1ApiQuestionPointController::class, 'index']);
                 $router->post('questions/{question}/points', [V1ApiQuestionPointController::class, 'store']);
                 $router->put('questions/{question}/update-points', [V1ApiQuestionPointController::class, 'update']);
                 $router->delete('questions/{question}/destroy-points', [V1ApiQuestionPointController::class, 'destroy']);
