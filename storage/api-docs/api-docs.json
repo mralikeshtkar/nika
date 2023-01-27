@@ -3453,6 +3453,14 @@
                         "schema": {
                             "type": "number"
                         }
+                    },
+                    {
+                        "name": "exercise",
+                        "in": "query",
+                        "description": "عنوان تمرین",
+                        "schema": {
+                            "type": "number"
+                        }
                     }
                 ],
                 "responses": {

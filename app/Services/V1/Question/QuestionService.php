@@ -58,7 +58,7 @@ class QuestionService extends BaseService
             },
         ])->select(['id', 'exercise_id', 'title','created_at','updated_at'])
             ->findOrFailById($question);
-        $points = resolve(IntelligencePackageRepositoryInterface::class)->getPoints($question->intelligencePackage);
+        $points = resolve(IntelligencePackageRepositoryInterface::class)->getPoints($request,$question->intelligencePackage);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('question', new QuestionResource($question))
             ->addData('intelligencePoints', IntelligencePointResource::collection($points, ['withRemind' => $question->pivotPoints]))
