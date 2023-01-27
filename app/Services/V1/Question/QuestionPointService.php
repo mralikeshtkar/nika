@@ -44,15 +44,11 @@ class QuestionPointService extends BaseService
      */
     public function index(Request $request, $question): JsonResponse
     {
-        $question = $this->questionRepository->with([
-            'intelligencePackage',
-            'pivotPoints' => function ($hasMany) {
-                $hasMany->withGroupIntelligencePointId();
-            },
-        ])->select(['id', 'exercise_id'])->findOrFailById($question);
-        $points = resolve(IntelligencePackageRepositoryInterface::class)->getPoints($request,$question->intelligencePackage);
+        $question = $this->questionRepository->with(['points'=>function($q){
+            $q->select(['id','user_id','intelligence_package_id','intelligence_point_name_id','intelligence_points.max_point'])->withPointName();
+        }])->select(['id', 'user_id'])->findOrFailById($question);
         return ApiResponse::message(trans("The information was received successfully"))
-            ->addData('intelligencePoints', IntelligencePointResource::collection($points, ['withRemind' => $question->pivotPoints]))
+            ->addData('points', IntelligencePointResource::collection($question->points))
             ->send();
     }
 
