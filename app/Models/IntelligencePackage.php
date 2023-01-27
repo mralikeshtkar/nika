@@ -6,10 +6,11 @@ use Awobaz\Compoships\Compoships;
 use Awobaz\Compoships\Database\Eloquent\Relations\BelongsTo;
 use Awobaz\Compoships\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class IntelligencePackage extends Pivot
 {
-    use Compoships;
+    use Compoships,HasRelationships;
 
     /**
      * @var string[]
@@ -24,6 +25,11 @@ class IntelligencePackage extends Pivot
     public function exercises(): HasMany
     {
         return $this->hasMany(Exercise::class, 'intelligence_package_id','pivot_id');
+    }
+
+    public function exerciseQuestionPivotPoints()
+    {
+        return $this->hasManyDeepFromRelations($this->exercises(),(new Exercise())->questions(),(new Question())->pivotPoints());
     }
 
     public function intelligence(): BelongsTo

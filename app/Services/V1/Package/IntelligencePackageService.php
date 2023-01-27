@@ -84,10 +84,12 @@ class IntelligencePackageService extends BaseService
         ApiResponse::authorize($request->user()->can('intelligence', Package::class));
         $intelligencePackage = $this->intelligencePackageRepository
             ->select(['pivot_id'])
-            ->findOrFailByPivotId($intelligencePackage);
+            ->with(['exerciseQuestionPivotPoints'=>function($q){
+                $q->withGroupIntelligencePointId();
+            }])->findOrFailByPivotId($intelligencePackage);
         $points = $this->intelligencePackageRepository->getPoints($request,$intelligencePackage);
         return ApiResponse::message(trans("The information was received successfully"))
-            ->addData('points', IntelligencePointResource::collection($points))
+            ->addData('points', IntelligencePointResource::collection($points,['withRemind' => $intelligencePackage->exerciseQuestionPivotPoints]))
             ->send();
     }
 
