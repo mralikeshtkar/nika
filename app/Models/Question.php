@@ -30,6 +30,7 @@ class Question extends Model
         'user_id',
         'exercise_id',
         'title',
+        'priority',
     ];
 
     #endregion

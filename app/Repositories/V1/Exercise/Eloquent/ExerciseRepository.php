@@ -49,6 +49,24 @@ class ExerciseRepository extends BaseRepository implements ExerciseRepositoryInt
         return $this;
     }
 
+    /**
+     * @param $exercise
+     * @return int
+     */
+    public function getMaximumQuestionsPriority($exercise): int
+    {
+        return intval($exercise->questions()->max('priority'));
+    }
+
+    public function resetQuestionPriorities($exercise,$ids)
+    {
+        $priority=1;
+        foreach ($ids as $id) {
+            $exercise->questions()->where('id',$id)->update(['update'=>$id]);
+            $priority++;
+        }
+    }
+
     public function paginateQuestions(Request $request, $exercise)
     {
         return $exercise->questions()

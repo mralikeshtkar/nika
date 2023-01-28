@@ -25,6 +25,7 @@ return new class extends Migration {
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->string('title');
+            $table->unsignedInteger('priority');
             $table->timestamps();
         });
     }

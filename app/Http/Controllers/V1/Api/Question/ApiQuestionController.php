@@ -90,6 +90,53 @@ class ApiQuestionController extends ApiBaseController
     }
 
     /**
+     * @OA\Post(
+     *     path="/questions/{id}/change-priority-question",
+     *     summary="بروزرسانی چیدمان سوالات",
+     *     description="",
+     *     tags={"سوال"},
+     *     @OA\Parameter(
+     *         description="شناسه تمرین",
+     *         in="path",
+     *         name="id",
+     *         example="1",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 required={"_method","ids"},
+     *                 @OA\Property(
+     *                     property="_method",
+     *                     type="string",
+     *                     default="put",
+     *                     enum={"put"},
+     *                     description="این مقدار باید بصورت ثابت شود",
+     *                 ),
+     *                  @OA\Property(
+     *                     property="ids",
+     *                     type="array",
+     *                     @OA\Items(type="number"),
+     *                     description="شناسه های سوال"
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function changePriorityQuestion(Request $request, $exercise)
+    {
+        return $this->questionService->changePriorityQuestion($request, $exercise);
+    }
+
+    /**
      * Show question.
      *
      * @OA\Get (

@@ -72,7 +72,8 @@ class QuestionService extends BaseService
      */
     public function store(Request $request, $exercise): JsonResponse
     {
-        $exercise = resolve(ExerciseRepositoryInterfaces::class)->select(['id'])
+        $exerciseRepository = resolve(ExerciseRepositoryInterfaces::class);
+        $exercise = $exerciseRepository->select(['id'])
             ->findOrFailById($exercise);
         ApiResponse::validate($request->all(), [
             'title' => ['required', 'string'],
@@ -81,10 +82,36 @@ class QuestionService extends BaseService
             'user_id' => $request->user()->id,
             'exercise_id' => $exercise->id,
             'title' => $request->title,
+            'priority' => $exerciseRepository->getMaximumQuestionsPriority($exercise) + 1
         ]);
         return ApiResponse::message(trans("The :attribute was successfully registered", ['attribute' => trans('Question')]), Response::HTTP_CREATED)
             ->addData('question', new QuestionResource($question))
             ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $exercise
+     * @return JsonResponse|mixed
+     */
+    public function changePriorityQuestion(Request $request, $exercise)
+    {
+        $exerciseRepository = resolve(ExerciseRepositoryInterfaces::class);
+        $exercise = $exerciseRepository->select(['id'])
+            ->with(['questions:id,exercise_id'])
+            ->findOrFailById($exercise);
+        $questions = $exercise->questions->pluck('id');
+        ApiResponse::validate($request->all(), [
+            'ids' => ['required', 'array', 'size:' . $questions->count(), Rule::in($questions->toArray())],
+        ]);
+        try {
+            return DB::transaction(function () use ($exerciseRepository, $exercise, $request) {
+                $exerciseRepository->resetQuestionPriorities($exercise, $request->ids);
+                return ApiResponse::message(trans("Mission accomplished"))->send();
+            });
+        } catch (Throwable $e) {
+            return ApiResponse::error(trans("Internal server error"))->send();
+        }
     }
 
     /**
