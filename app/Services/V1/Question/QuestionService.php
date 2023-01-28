@@ -94,7 +94,7 @@ class QuestionService extends BaseService
      * @param $exercise
      * @return JsonResponse|mixed
      */
-    public function changePriorityQuestion(Request $request, $exercise)
+    public function changePriorityQuestion(Request $request, $exercise): mixed
     {
         $exerciseRepository = resolve(ExerciseRepositoryInterfaces::class);
         $exercise = $exerciseRepository->select(['id'])
