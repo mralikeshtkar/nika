@@ -42,14 +42,12 @@ class Question extends Model
     }
 
     /**
-     * @return BelongsToMany
+     * @return HasMany
      */
-    public function files(): BelongsToMany
+    public function files(): HasMany
     {
-        return $this->belongsToMany(Media::class)
-            ->using(MediaQuestion::class)
-            ->withPivot(['priority'])
-            ->orderByPivot('priority');
+        return $this->hasMany(MediaQuestion::class, 'question_id')
+            ->orderBy('priority');
     }
 
     /**

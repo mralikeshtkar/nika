@@ -135,13 +135,17 @@ class ApiQuestionController extends ApiBaseController
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"file"},
      *                  @OA\Property(
      *                      property="file",
      *                      type="string",
      *                      description="فایل",
      *                      format="binary",
      *                  ),
+     *                 @OA\Property(
+     *                     property="text",
+     *                     type="string",
+     *                     description="متن"
+     *                 ),
      *             )
      *         )
      *     ),
@@ -176,7 +180,7 @@ class ApiQuestionController extends ApiBaseController
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"_method","media_id"},
+     *                 required={"_method","id"},
      *                 @OA\Property(
      *                     property="_method",
      *                     type="string",
@@ -185,9 +189,9 @@ class ApiQuestionController extends ApiBaseController
      *                     description="این مقدار باید بصورت ثابت شود",
      *                 ),
      *                 @OA\Property(
-     *                     property="media_id",
+     *                     property="id",
      *                     type="string",
-     *                     description="شناسه مدیا (فایل)"
+     *                     description="شناسه فایل "
      *                 ),
      *             )
      *         )
@@ -271,7 +275,7 @@ class ApiQuestionController extends ApiBaseController
      *         @OA\MediaType(
      *             mediaType="application/json",
      *             @OA\Schema(
-     *                 required={"_method","media_ids"},
+     *                 required={"_method","ids"},
      *                 @OA\Property(
      *                     property="_method",
      *                     type="string",
@@ -280,10 +284,10 @@ class ApiQuestionController extends ApiBaseController
      *                     description="این مقدار باید بصورت ثابت شود",
      *                 ),
      *                  @OA\Property(
-     *                     property="media_ids",
+     *                     property="ids",
      *                     type="array",
      *                     @OA\Items(type="number"),
-     *                     description="شناسه های فایل سوال"
+     *                     description="شناسه های فایل های سوال"
      *                 )
      *             )
      *         )

@@ -12,18 +12,20 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('media_question', function (Blueprint $table) {
+        Schema::create('media_questions', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('question_id')
                 ->references('id')
                 ->on('questions')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->foreignId('media_id')
+                ->nullable()
                 ->references('id')
                 ->on('media')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->primary(['question_id', 'media_id']);
+            $table->text('text')->nullable();
             $table->unsignedSmallInteger('priority');
             $table->timestamps();
         });

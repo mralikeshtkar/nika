@@ -22,15 +22,15 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            ProvinceSeeder::class,
-            PermissionSeeder::class,
-            GradeSeeder::class,
+//            ProvinceSeeder::class,
+//            PermissionSeeder::class,
+//            GradeSeeder::class,
             UserSeeder::class,
-            IntelligenceSeeder::class,
-            PackageSeeder::class,
-            ExerciseSeeder::class,
-            IntelligencePointNameSeeder::class,
-            IntelligencePointSeeder::class,
+//            IntelligenceSeeder::class,
+//            PackageSeeder::class,
+//            ExerciseSeeder::class,
+//            IntelligencePointNameSeeder::class,
+//            IntelligencePointSeeder::class,
         ]);
     }
 }

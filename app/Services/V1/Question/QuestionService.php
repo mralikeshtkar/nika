@@ -56,9 +56,9 @@ class QuestionService extends BaseService
                 $belongsTo->select(['id', 'title'])
                     ->with('pivotPoints');
             },
-        ])->select(['id', 'exercise_id', 'title','created_at','updated_at'])
+        ])->select(['id', 'exercise_id', 'title', 'created_at', 'updated_at'])
             ->findOrFailById($question);
-        $points = resolve(IntelligencePackageRepositoryInterface::class)->getPoints($request,$question->intelligencePackage);
+        $points = resolve(IntelligencePackageRepositoryInterface::class)->getPoints($request, $question->intelligencePackage);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('question', new QuestionResource($question))
             ->addData('intelligencePoints', IntelligencePointResource::collection($points, ['withRemind' => $question->pivotPoints]))
@@ -113,13 +113,15 @@ class QuestionService extends BaseService
             ->withMaximum('pivotMedia', 'priority')
             ->findOrFailById($question);
         ApiResponse::validate($request->all(), [
-            'file' => ['required', 'file'], //todo set maximum size file
+            'file' => ['nullable', 'file'], //todo set maximum size file
+            'text' => ['required_without:file', 'string'],
         ]);
         try {
             return DB::transaction(function () use ($request, $question) {
-                $media = $this->questionRepository->uploadFile($question, $request->file);
-                $this->questionRepository->attachFiles($question, [
-                    $media->id => ['priority' => intval($question->pivot_media_max_priority) + 1],
+                $this->questionRepository->storeFiles($question, [
+                    'media_id' => $request->hasFile('file') ? $this->questionRepository->uploadFile($question, $request->file)->id : null,
+                    'text' => $request->filled('text') ? $request->text : null,
+                    'priority' => intval($question->pivot_media_max_priority) + 1,
                 ]);
                 $question = $this->questionRepository->with(['files'])
                     ->select(['id', 'title'])
@@ -143,14 +145,13 @@ class QuestionService extends BaseService
         $question = $this->questionRepository->select(['id'])
             ->findOrFailById($question);
         ApiResponse::validate($request->all(), [
-            'media_id' => ['required', Rule::exists(MediaQuestion::class, 'media_id')
+            'id' => ['required', Rule::exists(MediaQuestion::class, 'id')
                 ->where('question_id', $question->id)]
         ]);
         try {
-            return DB::transaction(function () use ($request) {
-                $mediaRepository = resolve(MediaRepositoryInterface::class);
-                $media = $mediaRepository->findOrFailById($request->media_id);
-                $mediaRepository->destroy($media);
+            return DB::transaction(function () use ($request, $question) {
+                $mediaQuestion = $this->questionRepository->findOrFailFilesById($request->id);
+                $this->questionRepository->destroyFile($question, $mediaQuestion->id);
                 return ApiResponse::message(trans("Mission accomplished"))->send();
             });
         } catch (Throwable $e) {
@@ -185,16 +186,16 @@ class QuestionService extends BaseService
      */
     public function changeFilePriority(Request $request, $question): mixed
     {
-        $question = $this->questionRepository->with(['files:id'])
+        $question = $this->questionRepository->with(['files:id,question_id'])
             ->select(['id'])
             ->findOrFailById($question);
         $files = $question->files->pluck('id');
         ApiResponse::validate($request->all(), [
-            'media_ids' => ['bail', 'required', 'array', 'size:' . $files->count(), Rule::in($files)],
+            'ids' => ['bail', 'required', 'array', 'size:' . $files->count(), Rule::in($files)],
         ]);
         try {
             return DB::transaction(function () use ($request, $question) {
-                $this->questionRepository->resetFilesPriority($question, $request->media_ids);
+                $this->questionRepository->resetFilesPriority($question, $request->ids);
                 return ApiResponse::message(trans("Mission accomplished"))->send();
             });
         } catch (Throwable $e) {

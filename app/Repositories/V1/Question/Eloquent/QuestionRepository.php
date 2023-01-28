@@ -38,18 +38,26 @@ class QuestionRepository extends BaseRepository implements QuestionRepositoryInt
         return $this;
     }
 
-    public function attachFiles($question, $data)
+    public function storeFiles($question, $data)
     {
-        return $question->files()
-            ->withTimeStamps()
-            ->attach($data);
+        return $question->files()->create($data);
+    }
+
+    public function findOrFailFilesById($question, $id)
+    {
+        return $question->files()->findOrFail($id);
+    }
+
+    public function destroyFile($question, $mediaQuestion)
+    {
+        return $question->files()->where('id',$mediaQuestion)->delete();
     }
 
     public function resetFilesPriority($question, $ids)
     {
         $priority = 1;
         foreach ($ids as $id) {
-            $question->files()->updateExistingPivot($id, ['priority' => $priority]);
+            $question->files()->where('id',$id)->update(['priority' => $priority]);
             $priority++;
         }
     }
