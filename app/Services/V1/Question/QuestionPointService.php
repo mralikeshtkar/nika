@@ -101,7 +101,7 @@ class QuestionPointService extends BaseService
         ApiResponse::validate($request->all(), [
             'intelligence_point_id' => ['required', 'exists:'.IntelligencePoint::class.',id'],
             'max_point' => collect(['required', 'numeric', 'min:1'])->when($intelligencePoint, function (Collection $collection) use ($intelligencePoint, $exercisePivotPoint) {
-                $collection->push('max:' . optional($intelligencePoint)->max_point - intval(optional($exercisePivotPoint)->max_point_sum));
+                $collection->push('max:' . optional($intelligencePoint)->max_point + intval(optional($exercisePivotPoint)->max_point_sum));
             }),
             'description' => ['nullable', 'string'],
         ]);

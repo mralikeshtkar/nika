@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class MediaQuestion extends Model
 {
@@ -24,6 +25,18 @@ class MediaQuestion extends Model
         static::deleted(function () {
             dd(func_get_args());
         });
+    }
+
+    #endregion
+
+    #region Relations
+
+    /**
+     * @return BelongsTo
+     */
+    public function media(): BelongsTo
+    {
+        return $this->belongsTo(Media::class,'media_id');
     }
 
     #endregion

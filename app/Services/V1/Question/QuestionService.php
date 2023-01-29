@@ -122,7 +122,7 @@ class QuestionService extends BaseService
     public function files(Request $request, $question): JsonResponse
     {
         $question = $this->questionRepository->select(['id'])
-            ->with(['files'])
+            ->with(['files','files.media'])
             ->findOrFailById($question);
         return ApiResponse::message(trans('The information was received successfully'))
             ->addData('question', new QuestionResource($question))

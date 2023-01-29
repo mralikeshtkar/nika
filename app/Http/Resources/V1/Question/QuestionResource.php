@@ -16,11 +16,15 @@ class QuestionResource extends JsonResource
      */
     public function toArray($request)
     {
-        return collect($this->resource)/*->when($this->resource->relationLoaded('files'), function (Collection $collection) {
-            $collection->put('files', MediaResource::collection($this->resource->files));
-        })*/->when(array_key_exists('created_at',$this->resource->getAttributes()), function (Collection $collection) {
+        return collect($this->resource)->when($this->resource->relationLoaded('files'), function (Collection $collection) {
+            $collection->put('files', collect($this->resource->files)->map(function ($item) {
+                return collect($item)->when($item->relationLoaded('media'), function (Collection $collection) use ($item) {
+                    $collection->put('media', new MediaResource($item->media));
+                });
+            }));
+        })->when(array_key_exists('created_at', $this->resource->getAttributes()), function (Collection $collection) {
             $collection->put('created_at', jalaliFormat($this->resource->created_at, 'j F Y'));
-        })->when(array_key_exists('updated_at',$this->resource->getAttributes()), function (Collection $collection) {
+        })->when(array_key_exists('updated_at', $this->resource->getAttributes()), function (Collection $collection) {
             $collection->put('updated_at', jalaliFormat($this->resource->updated_at, 'j F Y'));
         });
     }
