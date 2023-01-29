@@ -172,12 +172,12 @@ class QuestionService extends BaseService
         $question = $this->questionRepository->select(['id'])
             ->findOrFailById($question);
         ApiResponse::validate($request->all(), [
-            'id' => ['required', Rule::exists(MediaQuestion::class, 'id')
+            'item_id' => ['required', Rule::exists(MediaQuestion::class, 'id')
                 ->where('question_id', $question->id)]
         ]);
         try {
             return DB::transaction(function () use ($request, $question) {
-                $mediaQuestion = $this->questionRepository->findOrFailFilesById($request->id);
+                $mediaQuestion = $this->questionRepository->findOrFailFilesById($question,$request->item_id);
                 $this->questionRepository->destroyFile($question, $mediaQuestion->id);
                 return ApiResponse::message(trans("Mission accomplished"))->send();
             });

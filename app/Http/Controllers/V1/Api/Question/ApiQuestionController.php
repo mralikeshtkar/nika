@@ -227,7 +227,7 @@ class ApiQuestionController extends ApiBaseController
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"_method","id"},
+     *                 required={"_method","item_id"},
      *                 @OA\Property(
      *                     property="_method",
      *                     type="string",
@@ -236,7 +236,7 @@ class ApiQuestionController extends ApiBaseController
      *                     description="این مقدار باید بصورت ثابت شود",
      *                 ),
      *                 @OA\Property(
-     *                     property="id",
+     *                     property="item_id",
      *                     type="string",
      *                     description="شناسه فایل "
      *                 ),
