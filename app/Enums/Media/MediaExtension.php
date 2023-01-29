@@ -17,6 +17,7 @@ final class MediaExtension extends Enum
     const Image = "image";
     const Video = "video";
     const Document = "document";
+    const Audio = "audio";
     const Default = "default";
 
     /**
