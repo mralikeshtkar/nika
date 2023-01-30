@@ -5,6 +5,7 @@ namespace App\Models;
 use Awobaz\Compoships\Compoships;
 use Awobaz\Compoships\Database\Eloquent\Relations\BelongsTo;
 use Awobaz\Compoships\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
@@ -25,6 +26,14 @@ class IntelligencePackage extends Pivot
     public function exercises(): HasMany
     {
         return $this->hasMany(Exercise::class, 'intelligence_package_id','pivot_id');
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function exercise(): HasOne
+    {
+        return $this->hasOne(Exercise::class, 'intelligence_package_id','pivot_id');
     }
 
     public function exerciseQuestionPivotPoints()
