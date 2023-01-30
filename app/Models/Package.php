@@ -53,6 +53,22 @@ class Package extends Model
         return PackageStatus::getDescription($this->status);
     }
 
+    /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return PackageStatus::fromValue($this->staus)->is(PackageStatus::Active);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInactive(): bool
+    {
+        return PackageStatus::fromValue($this->staus)->is(PackageStatus::Inactive);
+    }
+
     #endregion
 
     #region Relations

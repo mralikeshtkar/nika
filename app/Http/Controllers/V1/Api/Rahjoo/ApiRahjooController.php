@@ -136,6 +136,51 @@ class ApiRahjooController extends ApiBaseController
     }
 
     /**
+     * @OA\Post(
+     *     path="/rahjoos/{id}/assign-package",
+     *     summary="بروزرسانی مهارت",
+     *     description="",
+     *     tags={"رهجو"},
+     *     @OA\Parameter(
+     *         description="شناسه رهجو",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"_method","package_id"},
+     *                 @OA\Property(
+     *                     property="_method",
+     *                     type="string",
+     *                     default="patch",
+     *                     enum={"patch"},
+     *                     description="این مقدار باید بصورت ثابت شود",
+     *                 ),
+     *                 @OA\Property(
+     *                     property="package_id",
+     *                     type="number",
+     *                     description="شناسه پکیج"
+     *                 ),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function assignPackage(Request $request, $rahjoo)
+    {
+        return $this->rahjooService->assignPackage($request, $rahjoo);
+    }
+
+    /**
      * Delete a city.
      *
      * @OA\Delete(

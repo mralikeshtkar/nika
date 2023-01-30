@@ -185,9 +185,9 @@ class ApiPackageController extends ApiBaseController
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"video"},
+     *                 required={"file"},
      *                  @OA\Property(
-     *                      property="video",
+     *                      property="file",
      *                      type="string",
      *                      description="ویدیو پکیج",
      *                      format="binary",

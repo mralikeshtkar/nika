@@ -49,4 +49,9 @@ class RahjooRepository extends BaseRepository implements RahjooRepositoryInterfa
         });
         return $this;
     }
+
+    public function updatePackage($rahjoo, $package)
+    {
+        return $rahjoo->update(['package_id'=>$package]);
+    }
 }

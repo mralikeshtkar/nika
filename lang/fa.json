@@ -57,5 +57,6 @@
     "The video package has been uploaded successfully": "آپلود پکیج ویدیو با موفقیت انجام شد",
     "Selective intelligence is registered for this package": "هوش انتخابی برای این پکیج ثبت شده است",
     "The point has already been recorded for this question": "ارزش قبلا برای این سوال ثبت شده است",
-    "No point has been recorded for this question": "ارزش برای این سوال ثبت نشده است"
+    "No point has been recorded for this question": "ارزش برای این سوال ثبت نشده است",
+    "Package is inactive": "پکیج غیرفعال است"
 }

@@ -148,6 +148,7 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->get('rahjoos/{rahjoo}', [V1ApiRahjooController::class, 'show']);
             $router->post('rahjoos/{user}', [V1ApiRahjooController::class, 'store']);
             $router->delete('rahjoos/{rahjoo}', [V1ApiRahjooController::class, 'destroy']);
+            $router->patch('rahjoos/{rahjoo}/assign-package', [V1ApiRahjooController::class, 'assignPackage']);
         });
 
         /* Rahjoo parents */

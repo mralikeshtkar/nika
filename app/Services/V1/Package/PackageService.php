@@ -135,10 +135,10 @@ class PackageService extends BaseService
         ApiResponse::authorize($request->user()->can('create', Package::class));
         $package = $this->packageRepository->findOrFailById($package);
         ApiResponse::validate($request->all(), [
-            'video' => ['required', 'file', 'mimes:' . implode(",", MediaExtension::getExtensions(MediaExtension::Video))]
+            'file' => ['required', 'file', 'mimes:' . implode(",", MediaExtension::getExtensions(MediaExtension::Video))]
         ]);
         resolve(MediaRepositoryInterface::class)->destroy($package->video);
-        $this->packageRepository->uploadVideo($package, $request->video);
+        $this->packageRepository->uploadVideo($package, $request->file);
         $package = $this->packageRepository->with(['video'])->findOrFailById($package->id);
         return ApiResponse::message(trans("The video package has been uploaded successfully"))
             ->addData('package', new PackageResource($package))
@@ -273,7 +273,6 @@ class PackageService extends BaseService
             'pivotIntelligencePackage:pivot_id,package_id,intelligence_id',
             'pivotIntelligencePackage.intelligence:id,title',
             'pivotIntelligencePackage.exercise' => function ($q) use ($package, $request) {
-                /** @var HasMany $q */
                 $q->select(['id', 'intelligence_package_id', 'title'])
                     ->whereNotIn('id', $package->pivotExercisePriority->pluck('exercise_id')->toArray())
                     ->when($request->filled('exercise'), function (Builder $builder) use ($request) {

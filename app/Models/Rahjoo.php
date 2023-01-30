@@ -21,6 +21,7 @@ class Rahjoo extends Model
     protected $fillable = [
         'user_id',
         'agent_id',
+        'package_id',
         'school',
         'which_child_of_family',
         'disease_background',
