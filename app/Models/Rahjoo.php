@@ -79,5 +79,13 @@ class Rahjoo extends Model
         return $this->hasMany(RahjooCourse::class);
     }
 
+    /**
+     * @return BelongsTo
+     */
+    public function package(): BelongsTo
+    {
+        return $this->belongsTo(Package::class);
+    }
+
     #endregion
 }

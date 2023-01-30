@@ -15,14 +15,9 @@ class RahjooResource extends JsonResource
      */
     public function toArray($request)
     {
-        return collect([
-            'id' => $this->resource->id,
-            'user_id' => $this->resource->user_id,
-            'school' => $this->resource->school,
-            'which_child_of_family' => $this->resource->which_child_of_family,
-            'disease_background' => $this->resource->disease_background,
-            'created_at' => jalaliFormat($this->resource->created_at),
-        ])->when($this->resource->relationLoaded('user'), function (Collection $collection) {
+        return collect($this->resource)->when(array_key_exists('created_at',$this->resource->toArray()), function (Collection $collection) {
+            $collection->put('created_at', jalaliFormat($this->resource->created_at));
+        })->when($this->resource->relationLoaded('user'), function (Collection $collection) {
             $collection->put('user', UserResource::make($this->resource->user));
         })->when($this->resource->relationLoaded('father'), function (Collection $collection) {
             $collection->put('father', RahjooParentResource::make($this->resource->father));

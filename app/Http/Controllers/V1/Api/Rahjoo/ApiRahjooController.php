@@ -78,7 +78,7 @@ class ApiRahjooController extends ApiBaseController
      */
     public function show(Request $request, $rahjoo)
     {
-        return $this->rahjooService->show($request,$rahjoo);
+        return $this->rahjooService->show($request, $rahjoo);
     }
 
     /**
@@ -138,7 +138,7 @@ class ApiRahjooController extends ApiBaseController
     /**
      * @OA\Post(
      *     path="/rahjoos/{id}/assign-package",
-     *     summary="بروزرسانی مهارت",
+     *     summary="ثبت پکیج برای رهجو",
      *     description="",
      *     tags={"رهجو"},
      *     @OA\Parameter(
@@ -178,6 +178,109 @@ class ApiRahjooController extends ApiBaseController
     public function assignPackage(Request $request, $rahjoo)
     {
         return $this->rahjooService->assignPackage($request, $rahjoo);
+    }
+
+    /**
+     * @OA\Get (
+     *     path="/rahjoos/{id}/package-exercises",
+     *     summary="لیست تمرین های رهجو بصورت صفحه بندی",
+     *     description="",
+     *     tags={"رهجو"},
+     *     @OA\Parameter(
+     *         description="شناسه رهجو",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شماره صفحه",
+     *         in="query",
+     *         name="page",
+     *         required=true,
+     *         example=1,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="تعداد نمایش در هر صفحه",
+     *         in="query",
+     *         name="perPage",
+     *         example=10,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="وضعیت قفل",
+     *         in="query",
+     *         description="locked - notlocked",
+     *         name="lock",
+     *         required=false,
+     *         @OA\Schema(type="string"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function packageExercises(Request $request, $rahjoo)
+    {
+        return $this->rahjooService->packageExercises($request, $rahjoo);
+    }
+
+    /**
+     * @OA\Get (
+     *     path="/rahjoos/{id}/exercises/{exercise}/questions",
+     *     summary="لیست سوالات تمرین رهجو",
+     *     description="",
+     *     tags={"رهجو"},
+     *     @OA\Parameter(
+     *         description="شناسه رهجو",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه تمرین",
+     *         in="path",
+     *         name="exercise",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شماره صفحه",
+     *         in="query",
+     *         name="page",
+     *         required=true,
+     *         example=1,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="تعداد نمایش در هر صفحه",
+     *         in="query",
+     *         name="perPage",
+     *         example=10,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="وضعیت قفل",
+     *         in="query",
+     *         description="locked - notlocked",
+     *         name="lock",
+     *         required=false,
+     *         @OA\Schema(type="string"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function exerciseQuestions(Request $request, $rahjoo, $exercise)
+    {
+        return $this->rahjooService->packageQuestions($request, $rahjoo, $exercise);
     }
 
     /**

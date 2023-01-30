@@ -75,6 +75,14 @@ class ExerciseRepository extends BaseRepository implements ExerciseRepositoryInt
             ->paginate($request->get('perPage', 10));
     }
 
+    public function findExerciseQuestionById(Request $request, $exercise,$question)
+    {
+        return $exercise->questions()
+            ->select(['id', 'exercise_id', 'title','created_at','updated_at'])
+            ->with('files')
+            ->findOrFail($question);
+    }
+
     public function lock($exercise)
     {
         return $exercise->update(['is_locked'=>true]);

@@ -255,12 +255,6 @@ class ApiPackageController extends ApiBaseController
      *                     enum={1,0},
      *                     description="وضعیت تکمیل - بصورت boolean باید باشد",
      *                 ),
-     *                  @OA\Property(
-     *                      property="video",
-     *                      type="string",
-     *                      description="ویدیو پکیج",
-     *                      format="binary",
-     *                  ),
      *                 @OA\Property(
      *                     property="status",
      *                     type="string",

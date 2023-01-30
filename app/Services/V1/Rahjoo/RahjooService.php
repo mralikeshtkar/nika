@@ -4,10 +4,12 @@ namespace App\Services\V1\Rahjoo;
 
 use App\Enums\Role;
 use App\Http\Resources\V1\PaginationResource;
+use App\Http\Resources\V1\Question\QuestionResource;
 use App\Http\Resources\V1\Rahjoo\RahjooResource;
 use App\Models\Package;
 use App\Models\Rahjoo;
 use App\Models\User;
+use App\Repositories\V1\Exercise\Interfaces\ExerciseRepositoryInterfaces;
 use App\Repositories\V1\Package\Interfaces\PackageRepositoryInterface;
 use App\Repositories\V1\Rahjoo\Interfaces\RahjooRepositoryInterface;
 use App\Repositories\V1\User\Interfaces\UserRepositoryInterface;
@@ -66,7 +68,9 @@ class RahjooService extends BaseService
     public function show(Request $request, $rahjoo): JsonResponse
     {
         ApiResponse::authorize($request->user()->can('show', Rahjoo::class));
-        $rahjoo = $this->rahjooRepository->with(['user', 'father', 'mother'])->findorFailById($rahjoo);
+        $rahjoo = $this->rahjooRepository->select([
+            'id', 'user_id', 'agent_id', 'package_id', 'school', 'which_child_of_family', 'disease_background',
+        ])->with(['user', 'father', 'mother', 'package:id,title,is_completed,price,description'])->findorFailById($rahjoo);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('rahjoos', RahjooResource::make($rahjoo))
             ->send();
@@ -112,7 +116,7 @@ class RahjooService extends BaseService
      */
     public function assignPackage(Request $request, $rahjoo): JsonResponse
     {
-        $rahjoo = $this->rahjooRepository->with(['user', 'father', 'mother'])->findorFailById($rahjoo);
+        $rahjoo = $this->rahjooRepository->select(['id'])->findorFailById($rahjoo);
         ApiResponse::validate($request->all(), [
             'package_id' => ['required', 'exists:' . Package::class . ',id'],
         ]);
@@ -121,8 +125,44 @@ class RahjooService extends BaseService
             ->select(['id', 'status'])
             ->findOrFailById($request->package_id);
         abort_if($package->isInactive(), ApiResponse::error(trans("Package is inactive"), Response::HTTP_BAD_REQUEST)->send());
-        $this->rahjooRepository->updatePackage($rahjoo,$package->id);
+        $this->rahjooRepository->updatePackage($rahjoo, $package->id);
         return ApiResponse::message(trans("Mission accomplished"))->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $rahjoo
+     * @return JsonResponse
+     */
+    public function packageExercises(Request $request, $rahjoo): JsonResponse
+    {
+        $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])
+            ->with(['package:id', 'package.pivotExercisePriority'])
+            ->findorFailById($rahjoo);
+        $exercises = resolve(PackageRepositoryInterface::class)->getPaginateExercises($request, $rahjoo->package, $rahjoo);
+        $resource = PaginationResource::make($exercises)->additional(['itemsResource' => QuestionResource::class]);
+        return ApiResponse::message(trans("The information was register successfully"))
+            ->addData('questions', $resource)
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $rahjoo
+     * @param $exercise
+     * @return JsonResponse
+     */
+    public function packageQuestions(Request $request, $rahjoo, $exercise): JsonResponse
+    {
+        $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])
+            ->with(['package:id'])
+            ->findorFailById($rahjoo);
+        $exercise = resolve(PackageRepositoryInterface::class)->findPackageExerciseById($request, $rahjoo->package, $exercise);
+        $questions = resolve(ExerciseRepositoryInterfaces::class)->paginateQuestions($request, $exercise);
+        $resource = PaginationResource::make($questions)->additional(['itemsResource' => QuestionResource::class]);
+        return ApiResponse::message(trans("The information was register successfully"))
+            ->addData('questions', $resource)
+            ->send();
     }
 
     /**

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class PackageRepository extends BaseRepository implements PackageRepositoryInterface
 {
@@ -148,6 +149,30 @@ class PackageRepository extends BaseRepository implements PackageRepositoryInter
     public function destroyExercisePriority($package, $ids)
     {
         return $package->exercisePriority()->detach($ids);
+    }
+
+    public function getPaginateQuestions(Request $request, $package)
+    {
+        return $package->questions()->paginate($request->get('perPage'));
+    }
+
+    public function getPaginateExercises(Request $request, $package, $rahjoo)
+    {
+        $ids = $rahjoo->package->pivotExercisePriority->pluck('exercise_id')->reverse();
+        return $package->exercises()
+            ->orderByRaw(DB::raw("FIELD(id, " . $ids->implode(', ') . ") DESC"))
+            ->when($request->filled('lock'), function (Builder $builder) use ($request) {
+                $builder->when($request->lock == "locked", function (Builder $builder) use ($request) {
+                    $builder->locked();
+                })->when($request->lock == "notlocked", function (Builder $builder) use ($request) {
+                    $builder->notLocked();
+                });
+            })->paginate($request->get('perPage'));
+    }
+
+    public function findPackageExerciseById(Request $request, $package, $exercise)
+    {
+        return $package->exercises()->findOrFail($exercise);
     }
 
 }

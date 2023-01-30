@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Awobaz\Compoships\Compoships;
 use Awobaz\Compoships\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -71,6 +72,28 @@ class Exercise extends Model
     public function pivotPoints(): HasManyDeep
     {
         return $this->hasManyDeepFromRelations($this->questions(), (new Question())->pivotPoints());
+    }
+
+    #endregion
+
+    #region Scopes
+
+    /**
+     * @param Builder $builder
+     * @return void
+     */
+    public function scopeLocked(Builder $builder)
+    {
+        $builder->where('is_locked',true);
+    }
+
+    /**
+     * @param Builder $builder
+     * @return void
+     */
+    public function scopeNotLocked(Builder $builder)
+    {
+        $builder->where('is_locked',false);
     }
 
     #endregion

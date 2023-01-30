@@ -3191,11 +3191,6 @@
                                             0
                                         ]
                                     },
-                                    "video": {
-                                        "description": "ویدیو پکیج",
-                                        "type": "string",
-                                        "format": "binary"
-                                    },
                                     "status": {
                                         "description": "وضعیت Active:فعال Inactive:غیرفعال",
                                         "type": "string",
@@ -3286,10 +3281,10 @@
                         "multipart/form-data": {
                             "schema": {
                                 "required": [
-                                    "video"
+                                    "file"
                                 ],
                                 "properties": {
-                                    "video": {
+                                    "file": {
                                         "description": "ویدیو پکیج",
                                         "type": "string",
                                         "format": "binary"
@@ -4498,6 +4493,68 @@
                 }
             }
         },
+        "/questions/{id}/change-priority-question": {
+            "post": {
+                "tags": [
+                    "سوال"
+                ],
+                "summary": "بروزرسانی چیدمان سوالات",
+                "description": "",
+                "operationId": "e59f62b7dd8fe2a81e2518157f3c2bfb",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه تمرین",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": "1"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "_method",
+                                    "ids"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "description": "این مقدار باید بصورت ثابت شود",
+                                        "type": "string",
+                                        "default": "put",
+                                        "enum": [
+                                            "put"
+                                        ]
+                                    },
+                                    "ids": {
+                                        "description": "شناسه های سوال",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "number"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/questions/{id}/files": {
             "get": {
                 "tags": [
@@ -4552,14 +4609,15 @@
                     "content": {
                         "multipart/form-data": {
                             "schema": {
-                                "required": [
-                                    "file"
-                                ],
                                 "properties": {
                                     "file": {
                                         "description": "فایل",
                                         "type": "string",
                                         "format": "binary"
+                                    },
+                                    "text": {
+                                        "description": "متن",
+                                        "type": "string"
                                     }
                                 },
                                 "type": "object"
@@ -4604,7 +4662,7 @@
                             "schema": {
                                 "required": [
                                     "_method",
-                                    "media_id"
+                                    "item_id"
                                 ],
                                 "properties": {
                                     "_method": {
@@ -4615,8 +4673,8 @@
                                             "delete"
                                         ]
                                     },
-                                    "media_id": {
-                                        "description": "شناسه مدیا (فایل)",
+                                    "item_id": {
+                                        "description": "شناسه فایل ",
                                         "type": "string"
                                     }
                                 },
@@ -4663,7 +4721,7 @@
                             "schema": {
                                 "required": [
                                     "_method",
-                                    "media_ids"
+                                    "ids"
                                 ],
                                 "properties": {
                                     "_method": {
@@ -4674,8 +4732,8 @@
                                             "put"
                                         ]
                                     },
-                                    "media_ids": {
-                                        "description": "شناسه های فایل سوال",
+                                    "ids": {
+                                        "description": "شناسه های فایل های سوال",
                                         "type": "array",
                                         "items": {
                                             "type": "number"
@@ -5302,6 +5360,191 @@
                         }
                     }
                 },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/rahjoos/{id}/assign-package": {
+            "post": {
+                "tags": [
+                    "رهجو"
+                ],
+                "summary": "ثبت پکیج برای رهجو",
+                "description": "",
+                "operationId": "ec9b5aafe2ab8505da51173b11b85cf9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه رهجو",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "_method",
+                                    "package_id"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "description": "این مقدار باید بصورت ثابت شود",
+                                        "type": "string",
+                                        "default": "patch",
+                                        "enum": [
+                                            "patch"
+                                        ]
+                                    },
+                                    "package_id": {
+                                        "description": "شناسه پکیج",
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/rahjoos/{id}/package-exercises": {
+            "get": {
+                "tags": [
+                    "رهجو"
+                ],
+                "summary": "لیست تمرین های رهجو بصورت صفحه بندی",
+                "description": "",
+                "operationId": "0efa41109dd2bb7d46017eb19bb4ece2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه رهجو",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    },
+                    {
+                        "name": "lock",
+                        "in": "query",
+                        "description": "locked - notlocked",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/rahjoos/{id}/exercises/{exercise}/questions": {
+            "get": {
+                "tags": [
+                    "رهجو"
+                ],
+                "summary": "لیست سوالات تمرین رهجو",
+                "description": "",
+                "operationId": "c8e2ffb99faf39d65c191723542e2c9a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه رهجو",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "exercise",
+                        "in": "path",
+                        "description": "شناسه تمرین",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    },
+                    {
+                        "name": "lock",
+                        "in": "query",
+                        "description": "locked - notlocked",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "عملیات موفق",

@@ -162,7 +162,6 @@ class PackageService extends BaseService
             'price' => ['required', 'numeric'],//todo set minimum price from setting
             'is_completed' => ['nullable', 'boolean'],
             'description' => ['nullable', 'string'],
-            'video' => ['nullable', 'file', 'mimes:' . implode(",", MediaExtension::getExtensions(MediaExtension::Video))],
             'intelligences' => ['nullable', 'array'],
             'intelligences.*' => ['exists:' . Intelligence::class . ',id'],
         ]);
@@ -182,8 +181,6 @@ class PackageService extends BaseService
             })->when($request->filled('is_completed'), function (Collection $collection) use ($request) {
                 $collection->put('is_completed', $request->is_completed);
             })->toArray());
-            resolve(MediaRepositoryInterface::class)->destroy($package->video);
-            $this->packageRepository->uploadVideo($package, $request->video);
             $package = $this->packageRepository->with(['video'])->findOrFailById($package->id);
             if ($request->filled('intelligences'))
                 $this->packageRepository->syncIntelligences($package, $request->get('intelligences', []));
