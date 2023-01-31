@@ -26,6 +26,8 @@ class QuestionResource extends JsonResource
             $collection->put('created_at', jalaliFormat($this->resource->created_at, 'j F Y'));
         })->when(array_key_exists('updated_at', $this->resource->getAttributes()), function (Collection $collection) {
             $collection->put('updated_at', jalaliFormat($this->resource->updated_at, 'j F Y'));
+        })->when($this->resource->relationLoaded('answers'), function (Collection $collection) {
+            $collection->put('answers', QuestionAnswerResource::collection($this->resource->answers));
         });
     }
 }

@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\V1\Api\IntelligencePointName\ApiIntelligencePointNameController;
+use App\Http\Controllers\V1\Api\Media\ApiMediaController as V1ApiMediaController;
 use App\Responses\Api\ApiResponse;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +16,14 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::prefix('v1')->group(function (Router $router){
+
+    $router->get('media/{media}/{file?}', [V1ApiMediaController::class, 'download'])
+        ->middleware('signed')
+        ->name('media.download');
+
+});
 
 Route::get('/', function (\Illuminate\Http\Request $request) {
 //    $start=today()->subYears(10);

@@ -13,6 +13,7 @@
     "Job": "شغل",
     "Exercise": "تمرین",
     "Question": "سوال",
+    "QuestionAnswer": "جواب سوال",
     "QuestionAnswerType": "نوع جواب سوال",
     "IntelligencePoint": "امتیاز هوش",
     "DocumentGroup": "گروه مستندات",
@@ -58,5 +59,7 @@
     "Selective intelligence is registered for this package": "هوش انتخابی برای این پکیج ثبت شده است",
     "The point has already been recorded for this question": "ارزش قبلا برای این سوال ثبت شده است",
     "No point has been recorded for this question": "ارزش برای این سوال ثبت نشده است",
+    "You have already answered this question": "شما قبلا برای این سوال پاسخ ثبت کرده اید",
+    "Route is expired": "مسیر منقضی شده است",
     "Package is inactive": "پکیج غیرفعال است"
 }

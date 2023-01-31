@@ -7,6 +7,7 @@ use App\Responses\Api\ApiResponse;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Routing\Exceptions\InvalidSignatureException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -61,6 +62,8 @@ class Handler extends ExceptionHandler
         if ($request->wantsJson()) {
             if ($e instanceof ModelNotFoundException)
                 return ApiResponse::error(trans(":attribute not found", ['attribute' => trans(class_basename($e->getModel()))]), Response::HTTP_NOT_FOUND)->send();
+            else if ($e instanceof InvalidSignatureException)
+                return ApiResponse::error(trans("Route is expired"), Response::HTTP_FORBIDDEN)->send();
             else if ($e instanceof AuthenticationException)
                 return ApiResponse::error(trans("Login to your account first"), Response::HTTP_UNAUTHORIZED)->send();
             else if ($e instanceof UserAccountIsInactiveException)

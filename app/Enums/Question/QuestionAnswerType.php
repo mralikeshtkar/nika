@@ -16,4 +16,9 @@ final class QuestionAnswerType extends Enum
     const Text = "text";
     const Image = "image";
     const Audio = "audio";
+
+    public function getRules()
+    {
+        return trans("enum_rules.".self::class.".".$this->value);
+    }
 }

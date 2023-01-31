@@ -69,6 +69,14 @@ class Question extends Model
     }
 
     /**
+     * @return HasMany
+     */
+    public function answers(): HasMany
+    {
+        return $this->hasMany(QuestionAnswer::class);
+    }
+
+    /**
      * @return BelongsToMany
      */
     public function points(): BelongsToMany

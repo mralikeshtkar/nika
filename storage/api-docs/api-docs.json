@@ -4139,6 +4139,64 @@
                 }
             }
         },
+        "/rahjoos/{rahjoo}/exercise/{exercise}/questions": {
+            "post": {
+                "tags": [
+                    "پاسخ سوال"
+                ],
+                "summary": "پاسخ سوال",
+                "description": "",
+                "operationId": "2edd82353d93d99be968a186619dce0c",
+                "parameters": [
+                    {
+                        "name": "rahjoo",
+                        "in": "path",
+                        "description": "شناسه رهجو",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "exercise",
+                        "in": "path",
+                        "description": "شناسه تمرین",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "answers": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/questions/{id}/answer-types": {
             "get": {
                 "tags": [

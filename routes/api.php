@@ -13,12 +13,14 @@ use App\Http\Controllers\V1\Api\IntelligencePoint\ApiIntelligencePointController
 use App\Http\Controllers\V1\Api\IntelligencePointName\ApiIntelligencePointNameController as V1ApiIntelligencePointNameController;
 use App\Http\Controllers\V1\Api\Job\ApiJobController as V1ApiJobController;
 use App\Http\Controllers\V1\Api\Major\ApiMajorController as V1ApiMajorController;
+use App\Http\Controllers\V1\Api\Media\ApiMediaController as V1ApiMediaController;
 use App\Http\Controllers\V1\Api\Package\ApiPackageController as V1ApiPackageController;
 use App\Http\Controllers\V1\Api\Package\ApiIntelligencePackageController as V1ApiIntelligencePackageController;
 use App\Http\Controllers\V1\Api\Permission\ApiPermissionController as V1ApiPermissionController;
 use App\Http\Controllers\V1\Api\Personnel\ApiPersonnelController as V1ApiPersonnelController;
 use App\Http\Controllers\V1\Api\Province\ApiProvinceController as V1ProvinceController;
 use App\Http\Controllers\V1\Api\PsychologicalQuestion\ApiPsychologicalQuestionController as V1ApiPsychologicalQuestionController;
+use App\Http\Controllers\V1\Api\Question\ApiQuestionAnswerController as V1ApiQuestionAnswerController;
 use App\Http\Controllers\V1\Api\Question\ApiQuestionAnswerTypeController as V1ApiQuestionAnswerTypeController;
 use App\Http\Controllers\V1\Api\Question\ApiQuestionController as V1ApiQuestionController;
 use App\Http\Controllers\V1\Api\Question\ApiQuestionPointController as V1ApiQuestionPointController;
@@ -150,6 +152,8 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->delete('rahjoos/{rahjoo}', [V1ApiRahjooController::class, 'destroy']);
             $router->patch('rahjoos/{rahjoo}/assign-package', [V1ApiRahjooController::class, 'assignPackage']);
             $router->get('rahjoos/{rahjoo}/package-exercises', [V1ApiRahjooController::class, 'packageExercises']);
+            $router->post('rahjoos/{rahjoo}/exercise/{exercise}/questions', [V1ApiQuestionAnswerController::class, 'store']);
+            $router->get('rahjoos/{rahjoo}/exercise/{exercise}/questions/{question}', [V1ApiQuestionAnswerController::class, 'showQuestionWithAnswers']);
             $router->get('rahjoos/{rahjoo}/exercise/{exercise}/questions', [V1ApiRahjooController::class, 'exerciseQuestions']);
         });
 

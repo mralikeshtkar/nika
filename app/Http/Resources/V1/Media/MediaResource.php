@@ -5,6 +5,7 @@ namespace App\Http\Resources\V1\Media;
 use App\Models\Media;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\URL;
 
 class MediaResource extends JsonResource
 {
@@ -24,7 +25,11 @@ class MediaResource extends JsonResource
             'extension' => $this->resource->extension,
             'type' => $this->resource->type,
             'is_private' => $this->resource->isDiskPrivate(),
-            'files' => $this->resource->isDiskPrivate() ? [] : $this->_publicURLFiles(),
+            'files' => $this->resource->isDiskPrivate() ?
+                collect($this->resource->files)->mapWithKeys(function ($item, $key) {
+                    return [$key=>URL::temporarySignedRoute('media.download', now()->addHours(), ['media' => $this->resource->id, 'file' => $key])];
+                })->toArray()
+                : $this->_publicURLFiles(),
         ])->when($this->resource->pivot, function (Collection $collection) {
             $collection->put('pivot', $this->resource->pivot);
         });
