@@ -33,7 +33,7 @@ class MediaService extends BaseService
      */
     public function download(Request $request, $media,$file): StreamedResponse
     {
-        $media = resolve(MediaRepositoryInterface::class)->findOrFailById($media);
+        $media = $this->mediaRepository->select(['id','disk','files'])->findOrFailById($media);
         $filePath = Storage::disk($media->disk)->path($media->files[$file]);
         return MediaStream::stream($filePath, File::name($filePath) . "." . File::extension($filePath));
     }
