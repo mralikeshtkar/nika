@@ -166,15 +166,12 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
     public function assignRahjooRole($user)
     {
-        if ($user->wasRecentlyCreated) {
-            dd("حم");
-            $user->syncRoles(Role::RAHJOO);
-            resolve(RahjooRepositoryInterface::class)->updateOrCreate([
-                'user_id' => $user->id,
-            ], [
-                'user_id' => $user->id,
-            ]);
-        }
+        $user->syncRoles(Role::RAHJOO);
+        resolve(RahjooRepositoryInterface::class)->updateOrCreate([
+            'user_id' => $user->id,
+        ], [
+            'user_id' => $user->id,
+        ]);
     }
 
     /**
