@@ -497,7 +497,7 @@ class ApiPackageController extends ApiBaseController
     /**
      * @OA\Post(
      *     path="/packages/{id}/exercise-prioraity-detach",
-     *     summary="بروزرسانی اولویت تمرین",
+     *     summary="حذف اولویت تمرین",
      *     description="",
      *     tags={"پکیج"},
      *     @OA\Parameter(
@@ -509,12 +509,12 @@ class ApiPackageController extends ApiBaseController
      *     ),
      *     @OA\RequestBody(
      *         @OA\MediaType(
-     *             mediaType="application/json",
+     *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 required={"intelligence_id","exercise_id"},
      *                 @OA\Property(
      *                     property="intelligence_id",
-     *                     type="string",
+     *                     type="number",
      *                     description="شناسه هوش"
      *                 ),
      *                 @OA\Property(
