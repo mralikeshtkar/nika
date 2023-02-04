@@ -60,7 +60,7 @@ class Package extends Model
      */
     public function isActive(): bool
     {
-        return PackageStatus::fromValue($this->staus)->is(PackageStatus::Active);
+        return PackageStatus::fromValue(intval($this->staus))->is(PackageStatus::Active);
     }
 
     /**
@@ -68,7 +68,7 @@ class Package extends Model
      */
     public function isInactive(): bool
     {
-        return PackageStatus::fromValue($this->staus)->is(PackageStatus::Inactive);
+        return PackageStatus::fromValue(intval($this->staus))->is(PackageStatus::Inactive);
     }
 
     #endregion
