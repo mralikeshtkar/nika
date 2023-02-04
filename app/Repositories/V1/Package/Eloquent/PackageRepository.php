@@ -218,4 +218,23 @@ class PackageRepository extends BaseRepository implements PackageRepositoryInter
         return $this;
     }
 
+    /**
+     * @param $relation
+     * @return $this
+     */
+    public function initRelation($relation): static
+    {
+        $this->model = $relation;
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @return Collection
+     */
+    public function pluck($column): Collection
+    {
+        return $this->model->pluck($column);
+    }
+
 }

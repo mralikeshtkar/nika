@@ -264,7 +264,7 @@ class PackageService extends BaseService
      */
     public function packageExercisesDontHavePriority(Request $request, $package): JsonResponse
     {
-        $exercise_ids = ExercisePriorityPackage::query()->where('package_id',$package)->pluck('exercise_id');
+        $exercise_ids = $this->packageRepository->initRelation($package->pivotExercisePriority())->pluck('exercise_id');
         $package = $this->packageRepository->select(['id'])
             ->with([
                 'pivotIntelligencePackage',
