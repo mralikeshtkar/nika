@@ -138,4 +138,9 @@ class QuestionRepository extends BaseRepository implements QuestionRepositoryInt
             ->paginate($request->get('perPage', 10));
     }
 
+    public function storeComment($question, $data)
+    {
+        return $question->storeComment($data);
+    }
+
 }

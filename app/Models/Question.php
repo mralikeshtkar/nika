@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Comment\HasComment;
 use App\Traits\Media\HasMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -16,7 +17,7 @@ use Staudenmeir\EloquentHasManyDeep\HasTableAlias;
 
 class Question extends Model
 {
-    use HasFactory, HasMedia, HasRelationships, HasTableAlias;
+    use HasFactory, HasMedia, HasRelationships, HasTableAlias,HasComment;
 
     #region Constance
 

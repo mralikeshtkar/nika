@@ -5,6 +5,7 @@ namespace App\Repositories\V1\User\Eloquent;
 use App\Enums\Role;
 use App\Models\User;
 use App\Repositories\V1\BaseRepository;
+use App\Repositories\V1\Rahjoo\Interfaces\RahjooRepositoryInterface;
 use App\Repositories\V1\RahjooCourse\Interfaces\RahjooCourseRepositoryInterface;
 use App\Repositories\V1\User\Interfaces\UserRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
@@ -163,11 +164,11 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         return $user->tokens()->where('id', $user->currentAccessToken()->id)->delete();
     }
 
-    public function assignCreateRole($user)
+    public function assignRahjooRole($user)
     {
         if ($user->wasRecentlyCreated) {
             $user->syncRoles(Role::RAHJOO);
-            resolve(RahjooCourseRepositoryInterface::class)->updateOrCreate([
+            resolve(RahjooRepositoryInterface::class)->updateOrCreate([
                 'user_id' => $user->id,
             ], [
                 'user_id' => $user->id,

@@ -3,6 +3,7 @@
 use App\Http\Controllers\V1\Api\Address\ApiAddressController as V1ApiAddressController;
 use App\Http\Controllers\V1\Api\ApiUploadFileController;
 use App\Http\Controllers\V1\Api\City\ApiCityController as V1ApiCityController;
+use App\Http\Controllers\V1\Api\Comment\ApiCommentController as V1ApiCommentController;
 use App\Http\Controllers\V1\Api\DocumentGroup\ApiDocumentGroupController as V1ApiDocumentGroupController;
 use App\Http\Controllers\V1\Api\Exercise\ApiExerciseController as V1ApiExerciseController;
 use App\Http\Controllers\V1\Api\Grade\ApiGradeController as V1ApiGradeController;
@@ -254,6 +255,8 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->put('questions/{question}/change-file-priority', [V1ApiQuestionController::class, 'changeFilePriority']);
             $router->get('questions/{question}/answer-types', [V1ApiQuestionController::class, 'answerTypes']);
             $router->get('questions/{question}/answers', [V1ApiQuestionController::class, 'answers']);
+            $router->post('questions/{question}/comments', [V1ApiQuestionController::class, 'storeComment']);
+            $router->get('questions/{question}/comments', [V1ApiQuestionController::class, 'comments']);
 
             /* Question answer types */
             $router->group([], function (Router $router) {
@@ -320,6 +323,12 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->post('document-groups', [V1ApiDocumentGroupController::class, 'store']);
             $router->put('document-groups/{documentGroup}', [V1ApiDocumentGroupController::class, 'update']);
             $router->delete('document-groups/{documentGroup}', [V1ApiDocumentGroupController::class, 'destroy']);
+        });
+
+        /* Intelligence point names */
+        $router->group([], function (Router $router) {
+            $router->put('comments/{comment}', [V1ApiCommentController::class, 'update']);
+            $router->put('comments/{comment}', [V1ApiCommentController::class, 'destroy']);
         });
 
     });

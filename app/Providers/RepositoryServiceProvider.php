@@ -7,6 +7,7 @@ use App\Repositories\V1\Address\Interfaces\AddressRepositoryInterface;
 use App\Repositories\V1\BaseRepository;
 use App\Repositories\V1\City\Eloquent\CityRepository;
 use App\Repositories\V1\City\Interfaces\CityRepositoryInterface;
+use App\Repositories\V1\Comment\Interfaces\CommentRepositoryInterface;
 use App\Repositories\V1\DocumentGroup\Eloquent\DocumentGroupRepository;
 use App\Repositories\V1\DocumentGroup\Interfaces\DocumentGroupRepositoryInterface;
 use App\Repositories\V1\EloquentRepositoryInterface;
@@ -58,6 +59,7 @@ use App\Repositories\V1\Skill\Eloquent\SkillRepository;
 use App\Repositories\V1\Skill\Interfaces\SkillRepositoryInterface;
 use App\Repositories\V1\User\Eloquent\UserRepository;
 use App\Repositories\V1\User\Interfaces\UserRepositoryInterface;
+use App\Services\V1\Comment\CommentService;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -115,5 +117,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(QuestionRepositoryInterface::class, QuestionRepository::class);
         $this->app->bind(QuestionAnswerTypeServiceRepositoryInterface::class, QuestionAnswerTypeServiceRepository::class);
         $this->app->bind(QuestionAnswerRepositoryInterface::class, QuestionAnswerRepository::class);
+        $this->app->bind(CommentRepositoryInterface::class, CommentService::class);
     }
 }

@@ -378,9 +378,109 @@ class ApiQuestionController extends ApiBaseController
         return $this->questionService->answerTypes($request, $question);
     }
 
+    /**
+     * @OA\Get (
+     *     path="/questions/{id}/answers",
+     *     summary="لیست پاسخ های سوال",
+     *     description="",
+     *     tags={"سوال"},
+     *     @OA\Parameter(
+     *         description="شناسه سوال",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
     public function answers(Request $request, $question)
     {
         return $this->questionService->answers($request, $question);
+    }
+
+    /**
+     * Store a question answer type..
+     *
+     * @OA\Post(
+     *     path="/questions/{id}/comments",
+     *     summary="ثبت نظر برای سوال",
+     *     description="",
+     *     tags={"سوال"},
+     *     @OA\Parameter(
+     *         description="شناسه سوال",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"body"},
+     *                 @OA\Property(
+     *                     property="body",
+     *                     type="string",
+     *                     description="متن",
+     *                 ),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function storeComment(Request $request, $question)
+    {
+        return $this->questionService->storeComment($request, $question);
+    }
+
+    /**
+     * @OA\Get (
+     *     path="/questions/{id}/comments",
+     *     summary="ثبت نظر برای سوال",
+     *     description="",
+     *     tags={"سوال"},
+     *     @OA\Parameter(
+     *         description="شناسه سوال",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شماره صفحه",
+     *         in="query",
+     *         name="page",
+     *         required=true,
+     *         example=1,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="تعداد نمایش در هر صفحه",
+     *         in="query",
+     *         name="perPage",
+     *         example=10,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function comments(Request $request, $question)
+    {
+        return $this->questionService->comments($request, $question);
     }
 
     /**

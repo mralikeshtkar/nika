@@ -2,12 +2,14 @@
 
 namespace App\Services\V1\Question;
 
+use App\Http\Resources\V1\Comment\CommentResource;
 use App\Http\Resources\V1\IntelligencePoint\IntelligencePointResource;
 use App\Http\Resources\V1\PaginationResource;
 use App\Http\Resources\V1\Question\QuestionAnswerTypeResource;
 use App\Http\Resources\V1\Question\QuestionResource;
 use App\Http\Resources\V1\Rahjoo\RahjooResource;
 use App\Models\MediaQuestion;
+use App\Models\Question;
 use App\Repositories\V1\Exercise\Interfaces\ExerciseRepositoryInterfaces;
 use App\Repositories\V1\Media\Interfaces\MediaRepositoryInterface;
 use App\Repositories\V1\Package\Interfaces\IntelligencePackageRepositoryInterface;
@@ -124,7 +126,7 @@ class QuestionService extends BaseService
     public function files(Request $request, $question): JsonResponse
     {
         $question = $this->questionRepository->select(['id'])
-            ->with(['files','files.media'])
+            ->with(['files', 'files.media'])
             ->findOrFailById($question);
         return ApiResponse::message(trans('The information was received successfully'))
             ->addData('question', new QuestionResource($question))
@@ -179,7 +181,7 @@ class QuestionService extends BaseService
         ]);
         try {
             return DB::transaction(function () use ($request, $question) {
-                $mediaQuestion = $this->questionRepository->findOrFailFilesById($question,$request->item_id);
+                $mediaQuestion = $this->questionRepository->findOrFailFilesById($question, $request->item_id);
                 $this->questionRepository->destroyFile($question, $mediaQuestion->id);
                 return ApiResponse::message(trans("Mission accomplished"))->send();
             });
@@ -246,13 +248,57 @@ class QuestionService extends BaseService
             ->send();
     }
 
-    public function answers(Request $request, $question)
+    /**
+     * @param Request $request
+     * @param $question
+     * @return JsonResponse
+     */
+    public function answers(Request $request, $question): JsonResponse
     {
         $question = $this->questionRepository->select(['id'])->findOrFailById($question);
-        $answers = $this->questionRepository->getPaginateAnswers($request,$question);
+        $answers = $this->questionRepository->getPaginateAnswers($request, $question);
         $resource = PaginationResource::make($answers)->additional(['itemsResource' => RahjooResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('answers', $resource)
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $question
+     * @return JsonResponse
+     */
+    public function storeComment(Request $request, $question): JsonResponse
+    {
+        ApiResponse::authorize($request->user()->can('storeComment', Question::class));
+        $question = $this->questionRepository->select(['id'])->findOrFailById($question);
+        ApiResponse::validate($request->all(), [
+            'body' => ['required', 'string'],
+        ]);
+        $comment = $this->questionRepository->storeComment($question, [
+            'user_id' => $request->user()->id,
+            'body' => $request->body,
+        ]);
+        return ApiResponse::message(trans("The :attribute was successfully registered", ['attribute' => trans('Comment')]), Response::HTTP_CREATED)
+            ->addData('comment', new CommentResource($comment))
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $question
+     * @return JsonResponse
+     */
+    public function comments(Request $request, $question): JsonResponse
+    {
+        $question = $this->questionRepository->select(['id'])->findOrFailById($question);
+        $comments = $this->questionRepository->query($question->comments()->latest())
+            ->select(['id','user_id','body','created_at'])
+            ->with(['user:id,first_name,last_name,mobile'])
+            ->paginate($request->get('perPage', 15));
+        $resource = PaginationResource::make($comments)->additional(['itemsResource' => CommentResource::class]);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('comments', $resource)
             ->send();
     }
 

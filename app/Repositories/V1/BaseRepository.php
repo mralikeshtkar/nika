@@ -6,15 +6,16 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class BaseRepository implements EloquentRepositoryInterface
 {
     protected array $scopes = [];
 
     /**
-     * @var Model|Builder
+     * @var Model|Builder|Relation
      */
-    protected Model|Builder $model;
+    protected Model|Builder|Relation $model;
 
     /**
      * @param Model $model
@@ -59,6 +60,16 @@ class BaseRepository implements EloquentRepositoryInterface
     public function findOrFailById($id): Model|array|Collection|Builder|null
     {
         return $this->model->findOrFail($id);
+    }
+
+    /**
+     * @param $query
+     * @return $this
+     */
+    public function query($query): static
+    {
+        $this->model = $query;
+        return $this;
     }
 
     /**

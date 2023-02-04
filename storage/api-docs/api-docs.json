@@ -5009,6 +5009,134 @@
                 }
             }
         },
+        "/questions/{id}/answers": {
+            "get": {
+                "tags": [
+                    "سوال"
+                ],
+                "summary": "لیست پاسخ های سوال",
+                "description": "",
+                "operationId": "3f7a8c5efc302eff330fdcc9424fade2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه سوال",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/questions/{id}/comments": {
+            "get": {
+                "tags": [
+                    "سوال"
+                ],
+                "summary": "ثبت نظر برای سوال",
+                "description": "",
+                "operationId": "8b8ff39ddab1db0a2739cefad49c40cc",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه سوال",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "سوال"
+                ],
+                "summary": "ثبت نظر برای سوال",
+                "description": "",
+                "operationId": "2c3b1e5ee61efb46f6eedb822871d94b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه سوال",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "body"
+                                ],
+                                "properties": {
+                                    "body": {
+                                        "description": "متن",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/questions/{id}/points": {
             "get": {
                 "tags": [
@@ -5521,6 +5649,14 @@
                             "type": "number"
                         },
                         "example": 10
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "نام",
+                        "schema": {
+                            "type": "number"
+                        }
                     },
                     {
                         "name": "has_package",
@@ -6405,6 +6541,210 @@
                 "responses": {
                     "201": {
                         "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/only-rahjoos": {
+            "get": {
+                "tags": [
+                    "کاربر"
+                ],
+                "summary": "لیست کاربران که رهجو بصورت صفحه بندی",
+                "description": "",
+                "operationId": "b8fe2fbe19f2984655a4273646f92908",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "جستجوی نام",
+                        "required": false,
+                        "schema": {
+                            "type": "srting"
+                        }
+                    },
+                    {
+                        "name": "mobile",
+                        "in": "query",
+                        "description": "جستجوی موبایل",
+                        "required": false,
+                        "schema": {
+                            "type": "srting"
+                        }
+                    },
+                    {
+                        "name": "national_code",
+                        "in": "query",
+                        "description": "کد ملی",
+                        "required": false,
+                        "schema": {
+                            "type": "srting"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/only-rahnama": {
+            "get": {
+                "tags": [
+                    "کاربر"
+                ],
+                "summary": "لیست کاربران که رهنما بصورت صفحه بندی",
+                "description": "",
+                "operationId": "0cf828d81d95a08e2340ca7a288ade96",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "جستجوی نام",
+                        "required": false,
+                        "schema": {
+                            "type": "srting"
+                        }
+                    },
+                    {
+                        "name": "mobile",
+                        "in": "query",
+                        "description": "جستجوی موبایل",
+                        "required": false,
+                        "schema": {
+                            "type": "srting"
+                        }
+                    },
+                    {
+                        "name": "national_code",
+                        "in": "query",
+                        "description": "کد ملی",
+                        "required": false,
+                        "schema": {
+                            "type": "srting"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/only-rahyab": {
+            "get": {
+                "tags": [
+                    "کاربر"
+                ],
+                "summary": "لیست کاربران که رهیاب بصورت صفحه بندی",
+                "description": "",
+                "operationId": "f8d6a7bd9e7fcb89c4ba0bb5636fc163",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "جستجوی نام",
+                        "required": false,
+                        "schema": {
+                            "type": "srting"
+                        }
+                    },
+                    {
+                        "name": "mobile",
+                        "in": "query",
+                        "description": "جستجوی موبایل",
+                        "required": false,
+                        "schema": {
+                            "type": "srting"
+                        }
+                    },
+                    {
+                        "name": "national_code",
+                        "in": "query",
+                        "description": "کد ملی",
+                        "required": false,
+                        "schema": {
+                            "type": "srting"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
                         "content": {
                             "application/json": {
                                 "schema": {}
