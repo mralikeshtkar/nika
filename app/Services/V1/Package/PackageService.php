@@ -264,20 +264,21 @@ class PackageService extends BaseService
      */
     public function packageExercisesDontHavePriority(Request $request, $package): JsonResponse
     {
+        $exercise_ids = ExercisePriorityPackage::query()->where('package_id',$package)->pluck('exercise_id');
         $package = $this->packageRepository->select(['id'])
-            ->with(['pivotExercisePriority'])
+            ->with([
+                'pivotIntelligencePackage',
+                'pivotIntelligencePackage:pivot_id,package_id,intelligence_id',
+                'pivotIntelligencePackage.intelligence:id,title',
+                'pivotIntelligencePackage.exercise' => function ($q) use ($exercise_ids, $request) {
+                    $q->select(['id', 'intelligence_package_id', 'title'])
+                        ->whereNotIn('id', $exercise_ids->toArray())
+                        ->when($request->filled('exercise'), function (Builder $builder) use ($request) {
+                            $builder->where('title', 'LIKE', '%' . $request->exercise . '%');
+                        });
+                },
+            ])->pivotIntelligencePackageHasExercise($request,$exercise_ids)
             ->findOrFailById($package);
-        $package->load([
-            'pivotIntelligencePackage:pivot_id,package_id,intelligence_id',
-            'pivotIntelligencePackage.intelligence:id,title',
-            'pivotIntelligencePackage.exercise' => function ($q) use ($package, $request) {
-                $q->select(['id', 'intelligence_package_id', 'title'])
-                    ->whereNotIn('id', $package->pivotExercisePriority->pluck('exercise_id')->toArray())
-                    ->when($request->filled('exercise'), function (Builder $builder) use ($request) {
-                        $builder->where('title', 'LIKE', '%' . $request->exercise . '%');
-                    });
-            },
-        ]);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('package', new PackageResource($package))
             ->send();

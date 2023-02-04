@@ -187,7 +187,7 @@ class PackageRepository extends BaseRepository implements PackageRepositoryInter
     public function paginateExercises(Request $request, $package)
     {
         return $package->exercises()
-            ->when($package->relationLoaded('pivotExercisePriority'),function (Builder $builder)use ($package){
+            ->when($package->relationLoaded('pivotExercisePriority'), function (Builder $builder) use ($package) {
                 $ids = $package->pivotExercisePriority->pluck('exercise_id')->reverse();
                 $builder->orderByRaw(DB::raw("FIELD(id, " . $ids->implode(', ') . ") DESC"));
             })->when($request->filled('lock'), function (Builder $builder) use ($request) {
@@ -197,6 +197,22 @@ class PackageRepository extends BaseRepository implements PackageRepositoryInter
                     $builder->notLocked();
                 });
             })->paginate($request->get('perPage'));
+    }
+
+    /**
+     * @param Request $request
+     * @param $exercise_ids
+     * @return $this
+     */
+    public function pivotIntelligencePackageHasExercise(Request $request, $exercise_ids): static
+    {
+        $this->model = $this->model->whereHas('pivotIntelligencePackage', function (Builder $builder) use ($request, $exercise_ids) {
+            $builder->whereNotIn('id', $exercise_ids->toArray())
+                ->when($request->filled('exercise'), function (Builder $builder) use ($request) {
+                    $builder->where('title', 'LIKE', '%' . $request->exercise . '%');
+                });
+        });
+        return $this;
     }
 
 }

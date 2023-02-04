@@ -97,20 +97,12 @@ class BaseRepository implements EloquentRepositoryInterface
     }
 
     /**
-     * @return array
-     */
-    public function getScopes(): array
-    {
-        return $this->scopes;
-    }
-
-    /**
      * @param array $scopes
      * @return $this
      */
     public function withScopes(array $scopes): static
     {
-        $this->scopes = $scopes;
+        $this->model = $this->model->scopes($scopes);
         return $this;
     }
 }
