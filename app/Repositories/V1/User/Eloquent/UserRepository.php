@@ -42,17 +42,29 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
      */
     public function filterPagination(Request $request): static
     {
-        $this->model = $this->model->when($request->filled('name'), function (Builder $builder) use ($request) {
-            $builder->where(function (Builder $builder) use ($request) {
-                $builder->where('first_name', 'LIKE', '%' . $request->name . '%')
-                    ->orWhere('last_name', 'LIKE', '%' . $request->name . '%');
-            });
-        })->when($request->filled('mobile'), function (Builder $builder) use ($request) {
+        $this->model = $this->model->when($request->filled('mobile'), function (Builder $builder) use ($request) {
             $builder->where('mobile', 'LIKE', '%' . $request->mobile . '%');
         })->when($request->filled('national_code'), function (Builder $builder) use ($request) {
             $builder->where('national_code', 'LIKE', '%' . $request->national_code . '%');
         })->when($request->filled('role'), function (Builder $builder) use ($request) {
-            $builder->hasRole($request->role);
+            $builder->whereHas('roles',function (Builder $builder)use ($request){
+                $builder->where('name',$request->role);
+            });
+        });
+        return $this;
+    }
+
+    /**
+     * @param Request $request
+     * @return $this
+     */
+    public function searchName(Request $request): static
+    {
+        $this->model=$this->model->when($request->filled('name'), function (Builder $builder) use ($request) {
+            $builder->where(function (Builder $builder) use ($request) {
+                $builder->where('first_name', 'LIKE', '%' . $request->name . '%')
+                    ->orWhere('last_name', 'LIKE', '%' . $request->name . '%');
+            });
         });
         return $this;
     }

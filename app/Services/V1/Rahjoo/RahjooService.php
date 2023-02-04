@@ -54,6 +54,7 @@ class RahjooService extends BaseService
     {
         ApiResponse::authorize($request->user()->can('index', Rahjoo::class));
         $rahjoos = $this->rahjooRepository->with(['user'])
+            ->filterPagination($request)
             ->paginate($request->get('perPage', 10));
         $resource = PaginationResource::make($rahjoos)->additional(['itemsResource' => RahjooResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))

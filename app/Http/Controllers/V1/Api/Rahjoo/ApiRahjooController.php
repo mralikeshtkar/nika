@@ -42,6 +42,12 @@ class ApiRahjooController extends ApiBaseController
      *         example=10,
      *         @OA\Schema(type="number"),
      *     ),
+     *     @OA\Parameter(
+     *         description="مقدار 0 پکیج ندارند 1 پکیج دارند",
+     *         in="query",
+     *         name="has_package",
+     *         @OA\Schema(type="number"),
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="عملیات موفق",

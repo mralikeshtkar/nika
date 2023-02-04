@@ -7,6 +7,7 @@ use App\Repositories\V1\BaseRepository;
 use App\Repositories\V1\Rahjoo\Interfaces\RahjooRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 class RahjooRepository extends BaseRepository implements RahjooRepositoryInterface
 {
@@ -40,6 +41,22 @@ class RahjooRepository extends BaseRepository implements RahjooRepositoryInterfa
     }
 
     /**
+     * @param Request $request
+     * @return $this
+     */
+    public function filterPagination(Request $request): static
+    {
+        $this->model = $this->model->when($request->filled('has_package'), function (Builder $builder) use ($request) {
+            $builder->when($request->has_package, function (Builder $builder) use ($request) {
+                $builder->whereNotNull('package_id');
+            }, function (Builder $builder) use ($request) {
+                $builder->whereNull('package_id');
+            });
+        });
+        return $this;
+    }
+
+    /**
      * @return $this
      */
     public function hasMotherOrFather(): static
@@ -52,6 +69,6 @@ class RahjooRepository extends BaseRepository implements RahjooRepositoryInterfa
 
     public function updatePackage($rahjoo, $package)
     {
-        return $rahjoo->update(['package_id'=>$package]);
+        return $rahjoo->update(['package_id' => $package]);
     }
 }
