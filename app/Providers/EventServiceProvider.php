@@ -7,11 +7,13 @@ use App\Models\IntelligenceFeedback;
 use App\Models\IntelligencePoint;
 use App\Models\Media;
 use App\Models\Package;
+use App\Models\User;
 use App\Observers\V1\Exercise\ExerciseObserver;
 use App\Observers\V1\IntelligenceFeedback\IntelligenceFeedbackObserver;
 use App\Observers\V1\IntelligencePoint\IntelligencePointObserver;
 use App\Observers\V1\Media\MediaObserver;
 use App\Observers\V1\Package\PackageObserver;
+use App\Observers\V1\User\UserObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -60,5 +62,6 @@ class EventServiceProvider extends ServiceProvider
         IntelligencePoint::observe(IntelligencePointObserver::class);
         IntelligenceFeedback::observe(IntelligenceFeedbackObserver::class);
         Exercise::observe(ExerciseObserver::class);
+        User::observe(UserObserver::class);
     }
 }

@@ -208,7 +208,6 @@ class UserService extends BaseService
         $this->_checkUserAccountIsNotInactive($user);
         if ($user && Hash::check($request->password, $user->password)) {
             $this->userRepository->markAsVerified($user);
-            if ($user->wasRecentlyCreated) $this->userRepository->assignRahjooRole($user);
             $token = $user->generateToken();
             return ApiResponse::message(trans("Login was successful"))
                 ->addData('token', $token)
@@ -246,7 +245,6 @@ class UserService extends BaseService
                 ->send();
 
         $this->userRepository->markAsVerified($user);
-        if ($user->wasRecentlyCreated) $this->userRepository->assignRahjooRole($user);
         $token = $user->generateToken();
         return ApiResponse::message(trans("Login was successful"))
             ->addData('token', $token)
