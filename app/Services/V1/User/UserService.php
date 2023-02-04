@@ -182,7 +182,7 @@ class UserService extends BaseService
         $token = $user->generateToken();
         return ApiResponse::message(trans("Login was successful"))
             ->addData('token', $token)
-            ->addData('hasName', !is_null($user->name))
+            ->addData('hasName', !is_null($user->first_name))
             ->addData('isPersonnel', $user->isPersonnel())
             ->send();
     }
