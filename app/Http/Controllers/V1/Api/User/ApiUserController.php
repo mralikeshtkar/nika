@@ -27,6 +27,11 @@ class ApiUserController extends ApiBaseController
         $this->userService = $userService;
     }
 
+    public function index(Request $request)
+    {
+        return $this->userService->index($request);
+    }
+
     /**
      * Get current user.
      *
@@ -392,7 +397,39 @@ class ApiUserController extends ApiBaseController
         return $this->userService->store($request);
     }
 
-
+    /**
+     * @OA\Post(
+     *     path="/users/{id}/assign-role",
+     *     summary="ثبت نقش کاربر",
+     *     description="",
+     *     tags={"کاربر"},
+     *     @OA\Parameter(
+     *         description="شناسه کاربر",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"role"},
+     *                 @OA\Property(
+     *                     property="role",
+     *                     type="string",
+     *                     description="نام نقش کاربری (انگلیسی)"
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="ثبت با موفقیت انجام شد",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
     public function assignRole(Request $request,$user)
     {
         return $this->userService->assignRole($request,$user);

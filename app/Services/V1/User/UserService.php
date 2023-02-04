@@ -4,6 +4,7 @@ namespace App\Services\V1\User;
 
 use App\Enums\UserStatus;
 use App\Exceptions\User\UserAccountIsInactiveException;
+use App\Http\Resources\V1\PaginationResource;
 use App\Http\Resources\V1\User\SingleUserResource;
 use App\Http\Resources\V1\User\UserResource;
 use App\Models\City;
@@ -48,6 +49,17 @@ class UserService extends BaseService
     #endregion
 
     #region Public methods
+
+    public function index(Request $request): JsonResponse
+    {
+        $users = $this->userRepository
+            ->filterPagination($request)
+            ->paginate($request->get('perPage',10));
+        $resource = PaginationResource::make($users)->additional(['itemsResource' => UserResource::class]);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('provinces', $resource)
+            ->send();
+    }
 
     /**
      * @param Request $request
@@ -269,7 +281,7 @@ class UserService extends BaseService
         ApiResponse::validate($request->all(), [
             'role' => ['required', 'exists:' . Role::class . ',name'],
         ]);
-        $this->userRepository->assignRole($user,$request->role);
+        $this->userRepository->assignRole($user, $request->role);
         return ApiResponse::message(trans("Mission accomplished"))
             ->send();
     }

@@ -3655,7 +3655,7 @@
                 "tags": [
                     "پکیج"
                 ],
-                "summary": "بروزرسانی اولویت تمرین",
+                "summary": "حذف اولویت تمرین",
                 "description": "",
                 "operationId": "dc7efd2a751670f45dc9146bd839eec0",
                 "parameters": [
@@ -3671,7 +3671,7 @@
                 ],
                 "requestBody": {
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "required": [
                                     "intelligence_id",
@@ -3680,7 +3680,7 @@
                                 "properties": {
                                     "intelligence_id": {
                                         "description": "شناسه هوش",
-                                        "type": "string"
+                                        "type": "number"
                                     },
                                     "exercise_id": {
                                         "description": "شناسه تمرین",
@@ -6654,6 +6654,55 @@
                 },
                 "responses": {
                     "201": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}/assign-role": {
+            "post": {
+                "tags": [
+                    "کاربر"
+                ],
+                "summary": "ثبت نقش کاربر",
+                "description": "",
+                "operationId": "96012ec8450538d074db64fdac43b4eb",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه کاربر",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "role"
+                                ],
+                                "properties": {
+                                    "role": {
+                                        "description": "نام نقش کاربری (انگلیسی)",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
                         "description": "ثبت با موفقیت انجام شد",
                         "content": {
                             "application/json": {

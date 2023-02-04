@@ -21,6 +21,8 @@ class Rahjoo extends Model
      */
     protected $fillable = [
         'user_id',
+        'rahnama_id',
+        'rahyab_id',
         'agent_id',
         'package_id',
         'school',
@@ -46,6 +48,14 @@ class Rahjoo extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function rahnama(): BelongsTo
+    {
+        return $this->belongsTo(User::class,'rahnama_id');
     }
 
     /**

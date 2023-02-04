@@ -57,6 +57,7 @@ Route::prefix('v1')->group(function (Router $router) {
         $router->post('login/otp/resend', [V1UserController::class, 'loginOtpResend']);
 
         $router->middleware('auth:sanctum')->group(function (Router $router) {
+            $router->get('users', [V1UserController::class, 'index']);
             $router->post('users', [V1UserController::class, 'store']);
             $router->put('users/{user}', [V1UserController::class, 'update']);
             $router->post('users/{user}/assign-role', [V1UserController::class, 'assignRole']);
