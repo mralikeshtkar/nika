@@ -263,13 +263,13 @@ class PackageService extends BaseService
      */
     public function packageExercisesDontHavePriority(Request $request, $package): JsonResponse
     {
-        $exercise_ids = $this->packageRepository->initRelation($package->pivotExercisePriority())->pluck('exercise_id');
+        $exercise_ids = ExercisePriorityPackage::query()->where('package_id', $package)->pluck('exercise_id');
         $package = $this->packageRepository->select(['id'])
             ->with([
                 'pivotIntelligencePackage',
                 'pivotIntelligencePackage:pivot_id,package_id,intelligence_id',
                 'pivotIntelligencePackage.intelligence:id,title',
-            ])->pivotIntelligencePackageHasExercise($request,$exercise_ids)
+            ])->pivotIntelligencePackageHasExercise($request, $exercise_ids)
             ->findOrFailById($package);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('package', new PackageResource($package))
@@ -344,7 +344,7 @@ class PackageService extends BaseService
     public function exercises(Request $request, $package)
     {
         $package = $this->packageRepository->select(['id'])->with(['pivotExercisePriority'])->findOrFailById($package);
-        $exercises = $this->packageRepository->paginateExercises($request,$package);
+        $exercises = $this->packageRepository->paginateExercises($request, $package);
         $resource = PaginationResource::make($exercises)->additional(['itemsResource' => ExerciseResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('packages', $resource)
