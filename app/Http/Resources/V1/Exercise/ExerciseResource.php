@@ -21,7 +21,7 @@ class ExerciseResource extends JsonResource
         })->when(array_key_exists('updated_at',$this->resource->getAttributes()), function (Collection $collection) {
             $collection->put('updated_at', jalaliFormat($this->resource->updated_at, 'j F Y'));
         })->when($this->resource->relationLoaded('files'),function (Collection $collection){
-            $collection->put('files', MediaResource::collection($this->resource->files));
+            $collection->put('files', is_array($this->resource->files) && count($this->resource->files) ? MediaResource::collection($this->resource->files) : null);
         });
     }
 }

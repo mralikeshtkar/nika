@@ -9,6 +9,7 @@ use App\Http\Resources\V1\User\UserResource;
 use App\Models\City;
 use App\Models\Grade;
 use App\Models\RahjooParent;
+use App\Models\Role;
 use App\Models\User;
 use App\Repositories\V1\User\Interfaces\UserRepositoryInterface;
 use App\Responses\Api\ApiResponse;
@@ -254,6 +255,22 @@ class UserService extends BaseService
         ]);
         return ApiResponse::message(trans("The :attribute was successfully registered", ['attribute' => trans('User')]), Response::HTTP_CREATED)
             ->addData('user', UserResource::make($user))
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $user
+     * @return JsonResponse
+     */
+    public function assignRole(Request $request, $user): JsonResponse
+    {
+        $user = $this->userRepository->select(['id'])->findOrFailById($user);
+        ApiResponse::validate($request->all(), [
+            'role' => ['required', 'exists:' . Role::class . ',name'],
+        ]);
+        $this->userRepository->assignRole($user,$request->role);
+        return ApiResponse::message(trans("Mission accomplished"))
             ->send();
     }
 

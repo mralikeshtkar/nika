@@ -391,4 +391,35 @@ class ApiUserController extends ApiBaseController
     {
         return $this->userService->store($request);
     }
+
+    /**
+     * @OA\Post(
+     *     path="/users",
+     *     summary="ثبت نقش کاربر",
+     *     description="",
+     *     tags={"کاربر"},
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"role",},
+     *                 @OA\Property(
+     *                     property="role",
+     *                     type="string",
+     *                     description="نام"
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="ثبت با موفقیت انجام شد",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function assignRole(Request $request,$user)
+    {
+        return $this->userService->assignRole($request,$user);
+    }
 }

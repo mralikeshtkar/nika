@@ -109,17 +109,17 @@ class User extends Authenticatable
      */
     public function isPersonnel(): bool
     {
-        return $this->hasAnyRole([RoleEnum::SUPER_ADMIN, RoleEnum::PERSONNEL]);
+        return $this->isSuperAdmin() || $this->hasRole(RoleEnum::PERSONNEL);
     }
 
-    /**
-     * Check user is rahjoo.
-     *
-     * @return bool
-     */
     public function isRahjoo(): bool
     {
-        return $this->hasRole(RoleEnum::RAHJOO);
+        return $this->isSuperAdmin() || $this->hasRole(RoleEnum::RAHJOO);
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->hasRole(RoleEnum::SUPER_ADMIN);
     }
 
     /**
