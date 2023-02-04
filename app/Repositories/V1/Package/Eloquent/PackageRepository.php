@@ -206,12 +206,14 @@ class PackageRepository extends BaseRepository implements PackageRepositoryInter
      */
     public function pivotIntelligencePackageHasExercise(Request $request, $exercise_ids): static
     {
-        $this->model = $this->model->whereHas('pivotIntelligencePackage', function (Builder $builder) use ($request, $exercise_ids) {
-            $builder->whereHas('exercise', function (Builder $builder) use ($request, $exercise_ids) {
-                $builder->whereNotIn('id', $exercise_ids->toArray())
-                    ->when($request->filled('exercise'), function (Builder $builder) use ($request) {
-                        $builder->where('title', 'LIKE', '%' . $request->exercise . '%');
-                    });
+        $this->model = $this->model->where(function (Builder $builder) use ($request, $exercise_ids){
+            $builder->whereHas('pivotIntelligencePackage', function (Builder $builder) use ($request, $exercise_ids) {
+                $builder->whereHas('exercise', function (Builder $builder) use ($request, $exercise_ids) {
+                    $builder->whereNotIn('id', $exercise_ids->toArray())
+                        ->when($request->filled('exercise'), function (Builder $builder) use ($request) {
+                            $builder->where('title', 'LIKE', '%' . $request->exercise . '%');
+                        });
+                });
             });
         });
         return $this;
