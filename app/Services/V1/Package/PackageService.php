@@ -270,13 +270,13 @@ class PackageService extends BaseService
                 'pivotIntelligencePackage',
                 'pivotIntelligencePackage:pivot_id,package_id,intelligence_id',
                 'pivotIntelligencePackage.intelligence:id,title',
-                'pivotIntelligencePackage.exercise' => function ($q) use ($exercise_ids, $request) {
+                /*'pivotIntelligencePackage.exercise' => function ($q) use ($exercise_ids, $request) {
                     $q->select(['id', 'intelligence_package_id', 'title'])
                         ->whereNotIn('id', $exercise_ids->toArray())
                         ->when($request->filled('exercise'), function (Builder $builder) use ($request) {
                             $builder->where('title', 'LIKE', '%' . $request->exercise . '%');
                         });
-                },
+                },*/
             ])->pivotIntelligencePackageHasExercise($request,$exercise_ids)
             ->findOrFailById($package);
         return ApiResponse::message(trans("The information was received successfully"))
