@@ -43,6 +43,12 @@ class ApiRahjooController extends ApiBaseController
      *         @OA\Schema(type="number"),
      *     ),
      *     @OA\Parameter(
+     *         description="نام",
+     *         in="query",
+     *         name="name",
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
      *         description="مقدار 0 پکیج ندارند 1 پکیج دارند",
      *         in="query",
      *         name="has_package",

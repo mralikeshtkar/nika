@@ -46,11 +46,38 @@ class RahjooRepository extends BaseRepository implements RahjooRepositoryInterfa
      */
     public function filterPagination(Request $request): static
     {
+        $this->searchHasPackage($request)->searchName($request);
+        return $this;
+    }
+
+    /**
+     * @param Request $request
+     * @return $this
+     */
+    public function searchHasPackage(Request $request): static
+    {
         $this->model = $this->model->when($request->filled('has_package'), function (Builder $builder) use ($request) {
             $builder->when($request->has_package, function (Builder $builder) use ($request) {
                 $builder->whereNotNull('package_id');
             }, function (Builder $builder) use ($request) {
                 $builder->whereNull('package_id');
+            });
+        });
+        return $this;
+    }
+
+    /**
+     * @param Request $request
+     * @return $this
+     */
+    public function searchName(Request $request): static
+    {
+        $this->model = $this->model->when($request->filled('name'), function (Builder $builder) use ($request) {
+            $builder->where(function (Builder $builder) use ($request) {
+                $builder->whereHas('user', function (Builder $builder) use ($request) {
+                    $builder->where('first_name', 'LIKE', '%' . $request->name . '%')
+                        ->orWhere('last_name', 'LIKE', '%' . $request->name . '%');
+                });
             });
         });
         return $this;
