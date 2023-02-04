@@ -83,7 +83,7 @@ class ExerciseService extends BaseService
             'user_id' => $request->user()->id,
             'intelligence_package_id' => $request->intelligence_package_id,
             'title' => $request->title,
-            'is_locked' => $request->get('is_locked', false),
+            'is_locked' => $request->filled('is_locked'),
         ]);
         return ApiResponse::message(trans("The :attribute was successfully registered", ['attribute' => trans('Exercise')]), Response::HTTP_CREATED)
             ->addData('exercise', new ExerciseResource($exercise))

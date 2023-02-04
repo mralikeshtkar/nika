@@ -392,7 +392,7 @@ class ApiUserController extends ApiBaseController
         return $this->userService->store($request);
     }
 
-    
+
     public function assignRole(Request $request,$user)
     {
         return $this->userService->assignRole($request,$user);
