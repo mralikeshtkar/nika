@@ -69,6 +69,40 @@ class ApiQuestionAnswerController extends ApiBaseController
         return $this->questionAnswerService->store($request, $rahjoo, $exercise);
     }
 
+    /**
+     * @OA\Get (
+     *     path="/rahjoos/{rahjoo}/exercise/{exercise}/questions/{question}",
+     *     summary="نمایش سوال همراه با پاسخ ها",
+     *     description="",
+     *     tags={"رهجو"},
+     *     @OA\Parameter(
+     *         description="شناسه رهجو",
+     *         in="path",
+     *         name="rahjoo",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه تمرین",
+     *         in="path",
+     *         name="exercise",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه سوال",
+     *         in="path",
+     *         name="question",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
     public function showQuestionWithAnswers(Request $request, $rahjoo, $exercise, $question)
     {
         return $this->questionAnswerService->showQuestionWithAnswers($request, $rahjoo, $exercise,$question);
