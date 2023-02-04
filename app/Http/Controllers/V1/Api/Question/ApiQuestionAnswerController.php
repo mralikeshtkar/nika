@@ -72,7 +72,7 @@ class ApiQuestionAnswerController extends ApiBaseController
     /**
      * @OA\Get (
      *     path="/rahjoos/{rahjoo}/exercise/{exercise}/questions/{question}",
-     *     summary="نمایش سوال همراه با پاسخ ها",
+     *     summary="نمایش سوال همراه با پاسخ",
      *     description="",
      *     tags={"رهجو"},
      *     @OA\Parameter(
@@ -103,8 +103,8 @@ class ApiQuestionAnswerController extends ApiBaseController
      *     ),
      * )
      */
-    public function showQuestionWithAnswers(Request $request, $rahjoo, $exercise, $question)
+    public function showQuestionWithAnswer(Request $request, $rahjoo, $exercise, $question)
     {
-        return $this->questionAnswerService->showQuestionWithAnswers($request, $rahjoo, $exercise,$question);
+        return $this->questionAnswerService->showQuestionWithAnswer($request, $rahjoo, $exercise,$question);
     }
 }

@@ -92,7 +92,7 @@ class QuestionAnswerService extends BaseService
      * @param $question
      * @return JsonResponse
      */
-    public function showQuestionWithAnswers(Request $request, $rahjoo, $exercise, $question): JsonResponse
+    public function showQuestionWithAnswer(Request $request, $rahjoo, $exercise, $question): JsonResponse
     {
         $rahjoo = resolve(RahjooRepositoryInterface::class)->select(['id', 'package_id'])
             ->with(['package:id'])
@@ -102,7 +102,10 @@ class QuestionAnswerService extends BaseService
             $exercise,
             $question,
             ['id', 'exercise_id', 'title'],
-            ['files', 'answerTypes:id,question_id,type', 'answers:id,rahjoo_id,question_id,text,created_at', 'answers.file'],
+            ['files', 'answerTypes:id,question_id,type', 'answers.file', 'answers' => function ($q) use ($rahjoo) {
+                $q->select(['id', 'rahjoo_id', 'question_id', 'text', 'created_at'])
+                ->where('rahjoo_id',$rahjoo->id);
+            }],
         );
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('question', new QuestionResource($question))
