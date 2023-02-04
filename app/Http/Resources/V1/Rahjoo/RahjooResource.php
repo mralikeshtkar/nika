@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\V1\Rahjoo;
 
+use App\Http\Resources\V1\Question\QuestionAnswerResource;
 use App\Http\Resources\V1\RahjooParent\RahjooParentResource;
 use App\Http\Resources\V1\User\UserResource;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -23,6 +24,8 @@ class RahjooResource extends JsonResource
             $collection->put('father', RahjooParentResource::make($this->resource->father));
         })->when($this->resource->relationLoaded('mother'), function (Collection $collection) {
             $collection->put('mother', RahjooParentResource::make($this->resource->mother));
+        })->when($this->resource->relationLoaded('answers'), function (Collection $collection) {
+            $collection->put('answers', QuestionAnswerResource::collection($this->resource->answers));
         })->toArray();
     }
 }

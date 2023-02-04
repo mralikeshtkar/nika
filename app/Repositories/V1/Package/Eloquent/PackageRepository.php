@@ -6,6 +6,7 @@ use App\Models\Media;
 use App\Models\Package;
 use App\Repositories\V1\BaseRepository;
 use App\Repositories\V1\Package\Interfaces\PackageRepositoryInterface;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -156,10 +157,18 @@ class PackageRepository extends BaseRepository implements PackageRepositoryInter
         return $package->questions()->paginate($request->get('perPage'));
     }
 
-    public function getPaginateExercises(Request $request, $package, $rahjoo)
+    /**
+     * @param Request $request
+     * @param $package
+     * @param $rahjoo
+     * @return LengthAwarePaginator
+     */
+    public function getPaginateExercises(Request $request, $package, $rahjoo): LengthAwarePaginator
     {
         $ids = $rahjoo->package->pivotExercisePriority->pluck('exercise_id')->reverse();
+        /** @var Package $package */
         return $package->exercises()
+            ->has('questions')
             ->orderByRaw(DB::raw("FIELD(id, " . $ids->implode(', ') . ") DESC"))
             ->when($request->filled('lock'), function (Builder $builder) use ($request) {
                 $builder->when($request->lock == "locked", function (Builder $builder) use ($request) {

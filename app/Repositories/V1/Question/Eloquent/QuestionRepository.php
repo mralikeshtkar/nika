@@ -50,14 +50,14 @@ class QuestionRepository extends BaseRepository implements QuestionRepositoryInt
 
     public function destroyFile($question, $mediaQuestion)
     {
-        return $question->files()->where('id',$mediaQuestion)->delete();
+        return $question->files()->where('id', $mediaQuestion)->delete();
     }
 
     public function resetFilesPriority($question, $ids)
     {
         $priority = 1;
         foreach ($ids as $id) {
-            $question->files()->where('id',$id)->update(['priority' => $priority]);
+            $question->files()->where('id', $id)->update(['priority' => $priority]);
             $priority++;
         }
     }
@@ -95,9 +95,9 @@ class QuestionRepository extends BaseRepository implements QuestionRepositoryInt
         return $question->points()->detach($points);
     }
 
-    public function updatePoint($question, $point,$attributes=[])
+    public function updatePoint($question, $point, $attributes = [])
     {
-        return $question->points()->updateExistingPivot($point,$attributes);
+        return $question->points()->updateExistingPivot($point, $attributes);
     }
 
     /**
@@ -121,6 +121,13 @@ class QuestionRepository extends BaseRepository implements QuestionRepositoryInt
         return $question->answerTypes()
             ->select(['id', 'question_id', 'type', 'priority'])
             ->get();
+    }
+
+    public function getPaginateAnswers(Request $request, $question)
+    {
+        return $question->answerRahjoos()
+            ->with(['user:id,first_name,last_name,mobile','answers', 'answers.file'])->distinct()
+            ->paginate($request->get('perPage', 10),['rahjoos.id','rahjoos.user_id']);
     }
 
 }

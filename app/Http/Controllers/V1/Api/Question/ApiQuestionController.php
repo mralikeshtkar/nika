@@ -378,6 +378,11 @@ class ApiQuestionController extends ApiBaseController
         return $this->questionService->answerTypes($request, $question);
     }
 
+    public function answers(Request $request, $question)
+    {
+        return $this->questionService->answers($request, $question);
+    }
+
     /**
      * Destroy a question.
      *

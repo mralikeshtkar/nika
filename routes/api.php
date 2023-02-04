@@ -245,6 +245,7 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->delete('questions/{question}', [V1ApiQuestionController::class, 'destroy']);
             $router->put('questions/{question}/change-file-priority', [V1ApiQuestionController::class, 'changeFilePriority']);
             $router->get('questions/{question}/answer-types', [V1ApiQuestionController::class, 'answerTypes']);
+            $router->get('questions/{question}/answers', [V1ApiQuestionController::class, 'answers']);
 
             /* Question answer types */
             $router->group([], function (Router $router) {

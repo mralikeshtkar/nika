@@ -3,8 +3,10 @@
 namespace App\Services\V1\Question;
 
 use App\Http\Resources\V1\IntelligencePoint\IntelligencePointResource;
+use App\Http\Resources\V1\PaginationResource;
 use App\Http\Resources\V1\Question\QuestionAnswerTypeResource;
 use App\Http\Resources\V1\Question\QuestionResource;
+use App\Http\Resources\V1\Rahjoo\RahjooResource;
 use App\Models\MediaQuestion;
 use App\Repositories\V1\Exercise\Interfaces\ExerciseRepositoryInterfaces;
 use App\Repositories\V1\Media\Interfaces\MediaRepositoryInterface;
@@ -241,6 +243,16 @@ class QuestionService extends BaseService
         $answerTypes = $this->questionRepository->getAnswerTypes($question);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('answerTypes', QuestionAnswerTypeResource::collection($answerTypes))
+            ->send();
+    }
+
+    public function answers(Request $request, $question)
+    {
+        $question = $this->questionRepository->select(['id'])->findOrFailById($question);
+        $answers = $this->questionRepository->getPaginateAnswers($request,$question);
+        $resource = PaginationResource::make($answers)->additional(['itemsResource' => RahjooResource::class]);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('answers', $resource)
             ->send();
     }
 

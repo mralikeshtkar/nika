@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\RahjooParent\RahjooParentGender;
+use Awobaz\Compoships\Compoships;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Rahjoo extends Model
 {
-    use HasFactory;
+    use HasFactory,Compoships;
 
     #region Constance
 
@@ -30,6 +31,14 @@ class Rahjoo extends Model
     #endregion
 
     #region Relations
+
+    /**
+     * @return \Awobaz\Compoships\Database\Eloquent\Relations\HasMany
+     */
+    public function answers(): \Awobaz\Compoships\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(QuestionAnswer::class,['rahjoo_id','question_id'],['id','laravel_through_key']);
+    }
 
     /**
      * @return BelongsTo

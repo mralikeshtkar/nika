@@ -13,7 +13,7 @@ use Illuminate\Http\UploadedFile;
 
 trait HasMedia
 {
-    use HasRelationships;
+
 
     /**
      * @var mixed
