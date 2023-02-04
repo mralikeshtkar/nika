@@ -207,7 +207,7 @@ class PackageRepository extends BaseRepository implements PackageRepositoryInter
     public function pivotIntelligencePackageHasExercise(Request $request, $exercise_ids): static
     {
         $this->model = $this->model->withWhereHas('pivotIntelligencePackage',function ($q) use ($exercise_ids){
-            $q->whereHas('exercise',function ($q) use ($exercise_ids){
+            $q->withWhereHas('exercise',function ($q) use ($exercise_ids){
                 $q->whereNotIn('id', $exercise_ids->toArray());
             });
         });
