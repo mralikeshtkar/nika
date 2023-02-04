@@ -168,9 +168,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     {
         if ($user->wasRecentlyCreated) {
             $user->syncRoles(Role::RAHJOO);
-            resolve(RahjooRepositoryInterface::class)->updateOrCreate([
-                'user_id' => $user->id,
-            ], [
+            resolve(RahjooRepositoryInterface::class)->create([
                 'user_id' => $user->id,
             ]);
         }
