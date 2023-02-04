@@ -4,8 +4,11 @@ namespace App\Services\V1\Exercise;
 
 use App\Http\Resources\V1\Exercise\ExerciseResource;
 use App\Http\Resources\V1\PaginationResource;
+use App\Http\Resources\V1\Question\QuestionAnswerResource;
+use App\Http\Resources\V1\Rahjoo\RahjooResource;
 use App\Models\IntelligencePackage;
 use App\Repositories\V1\Exercise\Interfaces\ExerciseRepositoryInterfaces;
+use App\Repositories\V1\Question\Interfaces\QuestionAnswerRepositoryInterface;
 use App\Repositories\V1\Question\Interfaces\QuestionRepositoryInterface;
 use App\Responses\Api\ApiResponse;
 use App\Services\V1\BaseService;
@@ -58,7 +61,7 @@ class ExerciseService extends BaseService
      */
     public function show(Request $request, $exercise): JsonResponse
     {
-        $exercise=$this->exerciseRepository->select(['id', 'intelligence_package_id', 'title', 'is_locked', 'created_at','updated_at'])
+        $exercise = $this->exerciseRepository->select(['id', 'intelligence_package_id', 'title', 'is_locked', 'created_at', 'updated_at'])
             ->findOrFailById($exercise);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('exercises', new ExerciseResource($exercise))
@@ -127,6 +130,26 @@ class ExerciseService extends BaseService
             ->send();
     }
 
+    public function questionsAnswers(Request $request, $exercise, $question)
+    {
+        $exercise = $this->exerciseRepository->select(['id'])->findOrFailById($exercise);
+        $question = resolve(ExerciseRepositoryInterfaces::class)->findExerciseQuestionById($request, $exercise, $question, ['id'],
+            [
+                'files',
+                'answerTypes:id,question_id,type',
+                'answers.file',
+                'answers' => function ($q) {
+                    $q->select(['id', 'rahjoo_id', 'question_id', 'text', 'created_at']);
+                },
+            ],
+        );
+        $answers = resolve(QuestionRepositoryInterface::class)->paginateAnswers($request,$question);
+        $resource = PaginationResource::make($answers)->additional(['itemsResource' => RahjooResource::class]);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('answers', $resource)
+            ->send();
+    }
+
     /**
      * @param Request $request
      * @param $exercise
@@ -136,7 +159,7 @@ class ExerciseService extends BaseService
     {
         $exercise = $this->exerciseRepository->select(['id'])->findOrFailById($exercise);
         $this->exerciseRepository->lock($exercise);
-        $exercise = $this->exerciseRepository->select(['id','is_locked'])->findOrFailById($exercise->id);
+        $exercise = $this->exerciseRepository->select(['id', 'is_locked'])->findOrFailById($exercise->id);
         return ApiResponse::message(trans("Mission accomplished"))
             ->addData('exercises', new ExerciseResource($exercise))
             ->send();
@@ -151,7 +174,7 @@ class ExerciseService extends BaseService
     {
         $exercise = $this->exerciseRepository->select(['id'])->findOrFailById($exercise);
         $this->exerciseRepository->unlock($exercise);
-        $exercise = $this->exerciseRepository->select(['id','is_locked'])->findOrFailById($exercise->id);
+        $exercise = $this->exerciseRepository->select(['id', 'is_locked'])->findOrFailById($exercise->id);
         return ApiResponse::message(trans("Mission accomplished"))
             ->addData('exercises', new ExerciseResource($exercise))
             ->send();

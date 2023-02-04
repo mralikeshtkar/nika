@@ -4,6 +4,7 @@ namespace App\Services\V1\Package;
 
 use App\Enums\Media\MediaExtension;
 use App\Enums\Package\PackageStatus;
+use App\Http\Resources\V1\Exercise\ExerciseResource;
 use App\Http\Resources\V1\Package\PackageResource;
 use App\Http\Resources\V1\PaginationResource;
 use App\Models\Exercise;
@@ -344,6 +345,16 @@ class PackageService extends BaseService
         $this->packageRepository->destroyExercisePriority($package, [$request->exercise_id]);
         return ApiResponse::message(trans("Mission accomplished"))
             ->addData('package', new PackageResource($package))
+            ->send();
+    }
+
+    public function exercises(Request $request, $package)
+    {
+        $package = $this->packageRepository->select(['id'])->with(['pivotExercisePriority'])->findOrFailById($package);
+        $exercises = $this->packageRepository->paginateExercises($request,$package);
+        $resource = PaginationResource::make($exercises)->additional(['itemsResource' => ExerciseResource::class]);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('packages', $resource)
             ->send();
     }
 

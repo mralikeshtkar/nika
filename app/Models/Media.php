@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\URL;
 
 class Media extends Model
 {
@@ -39,6 +40,15 @@ class Media extends Model
     #endregion
 
     #region Methods
+
+    /**
+     * @param string $file
+     * @return string
+     */
+    public function generateTemporarySignedRoute(string $file = "original"): string
+    {
+        return URL::temporarySignedRoute('media.download', now()->addHours(), ['media' => $this->id, 'file' => $file]);
+    }
 
     /**
      * @return bool

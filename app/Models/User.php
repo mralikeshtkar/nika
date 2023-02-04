@@ -88,7 +88,7 @@ class User extends Authenticatable
     public function generateToken(): string
     {
         //todo remove all previous login
-        $this->tokens()->delete();
+        //$this->tokens()->delete();
         return $this->createToken(self::AUTHENTICATION_TOKEN_KEY)->plainTextToken;
     }
 

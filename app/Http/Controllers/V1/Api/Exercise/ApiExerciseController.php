@@ -188,8 +188,6 @@ class ApiExerciseController extends ApiBaseController
     }
 
     /**
-     * Get exercise questions as pagination.
-     *
      * @OA\Get (
      *     path="/exercises/{id}/questions",
      *     summary="لیست سوال های تمرین بصورت صفحه بندی",
@@ -227,6 +225,53 @@ class ApiExerciseController extends ApiBaseController
     public function questions(Request $request, $exercise)
     {
         return $this->exerciseService->questions($request,$exercise);
+    }
+
+    /**
+     * @OA\Get (
+     *     path="/exercises/{exercise}/questions/{question}/answers",
+     *     summary="لیست سوال های تمرین بصورت صفحه بندی",
+     *     description="",
+     *     tags={"تمرینات"},
+     *     @OA\Parameter(
+     *         description="شناسه تمرین",
+     *         in="path",
+     *         name="exercise",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه سوال",
+     *         in="path",
+     *         name="question",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شماره صفحه",
+     *         in="query",
+     *         name="page",
+     *         required=true,
+     *         example=1,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="تعداد نمایش در هر صفحه",
+     *         in="query",
+     *         name="perPage",
+     *         example=10,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function questionsAnswers(Request $request, $exercise,$question)
+    {
+        return $this->exerciseService->questionsAnswers($request,$exercise,$question);
     }
 
     /**

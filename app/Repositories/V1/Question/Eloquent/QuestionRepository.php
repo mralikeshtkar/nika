@@ -130,4 +130,12 @@ class QuestionRepository extends BaseRepository implements QuestionRepositoryInt
             ->paginate($request->get('perPage', 10),['rahjoos.id','rahjoos.user_id']);
     }
 
+    public function paginateAnswers(Request $request, $question)
+    {
+        return $question->answerRahjoos()
+            ->with(['user:id,first_name,last_name,mobile','answers', 'answers.file'])
+            ->distinct()
+            ->paginate($request->get('perPage', 10));
+    }
+
 }

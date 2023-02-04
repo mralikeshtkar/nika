@@ -184,4 +184,19 @@ class PackageRepository extends BaseRepository implements PackageRepositoryInter
         return $package->exercises()->findOrFail($exercise);
     }
 
+    public function paginateExercises(Request $request, $package)
+    {
+        return $package->exercises()
+            ->when($package->relationLoaded('pivotExercisePriority'),function (Builder $builder)use ($package){
+                $ids = $package->pivotExercisePriority->pluck('exercise_id')->reverse();
+                $builder->orderByRaw(DB::raw("FIELD(id, " . $ids->implode(', ') . ") DESC"));
+            })->when($request->filled('lock'), function (Builder $builder) use ($request) {
+                $builder->when($request->lock == "locked", function (Builder $builder) use ($request) {
+                    $builder->locked();
+                })->when($request->lock == "notlocked", function (Builder $builder) use ($request) {
+                    $builder->notLocked();
+                });
+            })->paginate($request->get('perPage'));
+    }
+
 }

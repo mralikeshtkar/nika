@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V1\Api\User;
 use App\Exceptions\User\UserAccountIsInactiveException;
 use App\Http\Controllers\V1\Api\ApiBaseController;
 use App\Services\V1\User\UserService;
+use Exception;
 use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
 
@@ -95,6 +96,7 @@ class ApiUserController extends ApiBaseController
      *         @OA\JsonContent()
      *     ),
      * )
+     * @throws Exception
      */
     public function informationUser(Request $request)
     {

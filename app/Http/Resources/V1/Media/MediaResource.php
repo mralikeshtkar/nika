@@ -27,7 +27,7 @@ class MediaResource extends JsonResource
             'is_private' => $this->resource->isDiskPrivate(),
             'files' => $this->resource->isDiskPrivate() ?
                 collect($this->resource->files)->mapWithKeys(function ($item, $key) {
-                    return [$key=>URL::temporarySignedRoute('media.download', now()->addHours(), ['media' => $this->resource->id, 'file' => $key])];
+                    return [$key=>$this->resource->generateTemporarySignedRoute($key)];
                 })->toArray()
                 : $this->_publicURLFiles(),
         ])->when($this->resource->pivot, function (Collection $collection) {

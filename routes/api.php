@@ -33,6 +33,7 @@ use App\Http\Controllers\V1\Api\User\ApiUserController as V1UserController;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
+use OpenApi\Annotations as OA;
 
 /*
 |--------------------------------------------------------------------------
@@ -203,6 +204,7 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->get('packages/{package}/exercise-priority-list', [V1ApiPackageController::class, 'exercisePriority']);
             $router->post('packages/{package}/exercise-priority-detach', [V1ApiPackageController::class, 'storeExercisePriority']);
             $router->delete('packages/{package}/exercise-priority-detach', [V1ApiPackageController::class, 'destroyExercisePriority']);
+            $router->get('packages/{package}/exercises', [V1ApiPackageController::class, 'exercises']);
 
             /* Package intelligences */
             $router->group([], function (Router $router) {
@@ -225,6 +227,7 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->put('exercises/{exercise}', [V1ApiExerciseController::class, 'update']);
             $router->delete('exercises/{exercise}', [V1ApiExerciseController::class, 'destroy']);
             $router->get('exercises/{exercise}/questions', [V1ApiExerciseController::class, 'questions']);
+            $router->get('exercises/{exercise}/questions/{question}/answers', [V1ApiExerciseController::class, 'questionsAnswers']);
             $router->put('exercises/{exercise}/lock', [V1ApiExerciseController::class, 'lock']);
             $router->put('exercises/{exercise}/unlock', [V1ApiExerciseController::class, 'unlock']);
 
@@ -320,7 +323,6 @@ Route::prefix('v1')->group(function (Router $router) {
     $router->get('upload/{media}', [ApiUploadFileController::class, 'show']);
     $router->post('upload', [ApiUploadFileController::class, 'file']);
 
-});
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    $router->post('/token', [\App\Http\Controllers\V1\Api\ApiBaseController::class,'token']);
+
 });
