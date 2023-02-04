@@ -27,9 +27,227 @@ class ApiUserController extends ApiBaseController
         $this->userService = $userService;
     }
 
+    /**
+     * @OA\Get (
+     *     path="/users",
+     *     summary="لیست کاربران بصورت صفحه بندی",
+     *     description="",
+     *     tags={"کاربر"},
+     *     @OA\Parameter(
+     *         description="شماره صفحه",
+     *         in="query",
+     *         name="page",
+     *         required=true,
+     *         example=1,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="تعداد نمایش در هر صفحه",
+     *         in="query",
+     *         name="perPage",
+     *         example=10,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="جستجوی نام",
+     *         in="query",
+     *         name="name",
+     *         required=false,
+     *         @OA\Schema(type="srting"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="جستجوی موبایل",
+     *         in="query",
+     *         name="mobile",
+     *         required=false,
+     *         @OA\Schema(type="srting"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="جستجوی نقش کاربری (نام انگلیسی)",
+     *         in="query",
+     *         name="role",
+     *         required=false,
+     *         @OA\Schema(type="srting"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="کد ملی",
+     *         in="query",
+     *         name="national_code",
+     *         required=false,
+     *         @OA\Schema(type="srting"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
     public function index(Request $request)
     {
         return $this->userService->index($request);
+    }
+
+    /**
+     * @OA\Get (
+     *     path="/users/only-rahjoos",
+     *     summary="لیست کاربران که رهجو بصورت صفحه بندی",
+     *     description="",
+     *     tags={"کاربر"},
+     *     @OA\Parameter(
+     *         description="شماره صفحه",
+     *         in="query",
+     *         name="page",
+     *         required=true,
+     *         example=1,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="تعداد نمایش در هر صفحه",
+     *         in="query",
+     *         name="perPage",
+     *         example=10,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="جستجوی نام",
+     *         in="query",
+     *         name="name",
+     *         required=false,
+     *         @OA\Schema(type="srting"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="جستجوی موبایل",
+     *         in="query",
+     *         name="mobile",
+     *         required=false,
+     *         @OA\Schema(type="srting"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="کد ملی",
+     *         in="query",
+     *         name="national_code",
+     *         required=false,
+     *         @OA\Schema(type="srting"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function onlyRahjoos(Request $request)
+    {
+        return $this->userService->onlyRahjoos($request);
+    }
+
+    /**
+     * @OA\Get (
+     *     path="/users/only-rahnama",
+     *     summary="لیست کاربران که رهنما بصورت صفحه بندی",
+     *     description="",
+     *     tags={"کاربر"},
+     *     @OA\Parameter(
+     *         description="شماره صفحه",
+     *         in="query",
+     *         name="page",
+     *         required=true,
+     *         example=1,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="تعداد نمایش در هر صفحه",
+     *         in="query",
+     *         name="perPage",
+     *         example=10,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="جستجوی نام",
+     *         in="query",
+     *         name="name",
+     *         required=false,
+     *         @OA\Schema(type="srting"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="جستجوی موبایل",
+     *         in="query",
+     *         name="mobile",
+     *         required=false,
+     *         @OA\Schema(type="srting"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="کد ملی",
+     *         in="query",
+     *         name="national_code",
+     *         required=false,
+     *         @OA\Schema(type="srting"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function onlyRahnama(Request $request)
+    {
+        return $this->userService->onlyRahnama($request);
+    }
+
+    /**
+     * @OA\Get (
+     *     path="/users/only-rahyab",
+     *     summary="لیست کاربران که رهیاب بصورت صفحه بندی",
+     *     description="",
+     *     tags={"کاربر"},
+     *     @OA\Parameter(
+     *         description="شماره صفحه",
+     *         in="query",
+     *         name="page",
+     *         required=true,
+     *         example=1,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="تعداد نمایش در هر صفحه",
+     *         in="query",
+     *         name="perPage",
+     *         example=10,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="جستجوی نام",
+     *         in="query",
+     *         name="name",
+     *         required=false,
+     *         @OA\Schema(type="srting"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="جستجوی موبایل",
+     *         in="query",
+     *         name="mobile",
+     *         required=false,
+     *         @OA\Schema(type="srting"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="کد ملی",
+     *         in="query",
+     *         name="national_code",
+     *         required=false,
+     *         @OA\Schema(type="srting"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function onlyRahyab(Request $request)
+    {
+        return $this->userService->onlyRahyab($request);
     }
 
     /**

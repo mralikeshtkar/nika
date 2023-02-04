@@ -2,6 +2,7 @@
 
 namespace App\Services\V1\User;
 
+use App\Enums\Role as RoleEnum;
 use App\Enums\UserStatus;
 use App\Exceptions\User\UserAccountIsInactiveException;
 use App\Http\Resources\V1\PaginationResource;
@@ -57,7 +58,61 @@ class UserService extends BaseService
             ->paginate($request->get('perPage',10));
         $resource = PaginationResource::make($users)->additional(['itemsResource' => UserResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
-            ->addData('provinces', $resource)
+            ->addData('users', $resource)
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function onlyRahjoos(Request $request): JsonResponse
+    {
+        $users = $this->userRepository
+            ->hasRole(RoleEnum::RAHJOO)
+            ->searchName($request)
+            ->searchMobile($request)
+            ->searchNotionalCode($request)
+            ->paginate($request->get('perPage',10));
+        $resource = PaginationResource::make($users)->additional(['itemsResource' => UserResource::class]);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('users', $resource)
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function onlyRahnama(Request $request): JsonResponse
+    {
+        $users = $this->userRepository
+            ->hasRole(RoleEnum::RAHNAMA)
+            ->searchName($request)
+            ->searchMobile($request)
+            ->searchNotionalCode($request)
+            ->paginate($request->get('perPage',10));
+        $resource = PaginationResource::make($users)->additional(['itemsResource' => UserResource::class]);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('users', $resource)
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function onlyRahyab(Request $request): JsonResponse
+    {
+        $users = $this->userRepository
+            ->hasRole(RoleEnum::RAHYAB)
+            ->searchName($request)
+            ->searchMobile($request)
+            ->searchNotionalCode($request)
+            ->paginate($request->get('perPage',10));
+        $resource = PaginationResource::make($users)->additional(['itemsResource' => UserResource::class]);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('users', $resource)
             ->send();
     }
 

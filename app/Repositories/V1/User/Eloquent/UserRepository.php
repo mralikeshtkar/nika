@@ -42,14 +42,47 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
      */
     public function filterPagination(Request $request): static
     {
+        $this->searchName($request)
+            ->searchMobile($request)
+            ->searchRole($request)
+            ->searchNotionalCode($request);
+        return $this;
+    }
+
+    /**
+     * @param Request $request
+     * @return $this
+     */
+    public function searchRole(Request $request): static
+    {
+        $this->model = $this->model->when($request->filled('role'), function (Builder $builder) use ($request) {
+            $builder->whereHas('roles', function (Builder $builder) use ($request) {
+                $builder->where('name', $request->role);
+            });
+        });
+        return $this;
+    }
+
+    /**
+     * @param Request $request
+     * @return $this
+     */
+    public function searchMobile(Request $request): static
+    {
         $this->model = $this->model->when($request->filled('mobile'), function (Builder $builder) use ($request) {
             $builder->where('mobile', 'LIKE', '%' . $request->mobile . '%');
-        })->when($request->filled('national_code'), function (Builder $builder) use ($request) {
+        });
+        return $this;
+    }
+
+    /**
+     * @param Request $request
+     * @return $this
+     */
+    public function searchNotionalCode(Request $request): static
+    {
+        $this->model = $this->model->when($request->filled('national_code'), function (Builder $builder) use ($request) {
             $builder->where('national_code', 'LIKE', '%' . $request->national_code . '%');
-        })->when($request->filled('role'), function (Builder $builder) use ($request) {
-            $builder->whereHas('roles',function (Builder $builder)use ($request){
-                $builder->where('name',$request->role);
-            });
         });
         return $this;
     }
@@ -60,11 +93,23 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
      */
     public function searchName(Request $request): static
     {
-        $this->model=$this->model->when($request->filled('name'), function (Builder $builder) use ($request) {
+        $this->model = $this->model->when($request->filled('name'), function (Builder $builder) use ($request) {
             $builder->where(function (Builder $builder) use ($request) {
                 $builder->where('first_name', 'LIKE', '%' . $request->name . '%')
                     ->orWhere('last_name', 'LIKE', '%' . $request->name . '%');
             });
+        });
+        return $this;
+    }
+
+    /**
+     * @param $role
+     * @return $this
+     */
+    public function hasRole($role): static
+    {
+        $this->model = $this->model->whereHas('roles', function (Builder $builder) use ($role) {
+            $builder->where('name', $role);
         });
         return $this;
     }

@@ -5521,6 +5521,14 @@
                             "type": "number"
                         },
                         "example": 10
+                    },
+                    {
+                        "name": "has_package",
+                        "in": "query",
+                        "description": "مقدار 0 پکیج ندارند 1 پکیج دارند",
+                        "schema": {
+                            "type": "number"
+                        }
                     }
                 ],
                 "responses": {
@@ -6248,6 +6256,164 @@
                 }
             }
         },
+        "/users": {
+            "get": {
+                "tags": [
+                    "کاربر"
+                ],
+                "summary": "لیست کاربران بصورت صفحه بندی",
+                "description": "",
+                "operationId": "751ca5ea5c10394e193f71d522a80be0",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "جستجوی نام",
+                        "required": false,
+                        "schema": {
+                            "type": "srting"
+                        }
+                    },
+                    {
+                        "name": "mobile",
+                        "in": "query",
+                        "description": "جستجوی موبایل",
+                        "required": false,
+                        "schema": {
+                            "type": "srting"
+                        }
+                    },
+                    {
+                        "name": "role",
+                        "in": "query",
+                        "description": "جستجوی نقش کاربری (نام انگلیسی)",
+                        "required": false,
+                        "schema": {
+                            "type": "srting"
+                        }
+                    },
+                    {
+                        "name": "national_code",
+                        "in": "query",
+                        "description": "کد ملی",
+                        "required": false,
+                        "schema": {
+                            "type": "srting"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "کاربر"
+                ],
+                "summary": "ثبت کاربر",
+                "description": "",
+                "operationId": "d1ba7a1c48b57092be74472855c5632b",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "mobile",
+                                    "status"
+                                ],
+                                "properties": {
+                                    "first_name": {
+                                        "description": "نام",
+                                        "type": "string"
+                                    },
+                                    "last_name": {
+                                        "description": "نام خانوادگی",
+                                        "type": "string"
+                                    },
+                                    "father_name": {
+                                        "description": "نام پدر",
+                                        "type": "string"
+                                    },
+                                    "mobile": {
+                                        "description": "شماره موبایل",
+                                        "type": "string"
+                                    },
+                                    "national_code": {
+                                        "description": "کد ملی",
+                                        "type": "number"
+                                    },
+                                    "birthdate": {
+                                        "description": "تاریخ تولد بصورت شمسی با فرمت Y/m/d - مثال:1401/05/10",
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "description": "کلمه عبور",
+                                        "type": "string"
+                                    },
+                                    "city_id": {
+                                        "description": "شناسه شهر کاربر",
+                                        "type": "number"
+                                    },
+                                    "grade_id": {
+                                        "description": "شناسه مقطع تحصیلی کاربر",
+                                        "type": "number"
+                                    },
+                                    "birth_place_id": {
+                                        "description": "شناسه شهر محل تولد کاربر",
+                                        "type": "number"
+                                    },
+                                    "status": {
+                                        "description": "Active: فعال - Inactive: غیرفعال",
+                                        "type": "string",
+                                        "enum": [
+                                            "Active",
+                                            "Inactive"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/user": {
             "get": {
                 "tags": [
@@ -6572,89 +6738,6 @@
                     },
                     "400": {
                         "description": "حساب کاربر مسدود میباشد",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/users": {
-            "post": {
-                "tags": [
-                    "کاربر"
-                ],
-                "summary": "ثبت کاربر",
-                "description": "",
-                "operationId": "d1ba7a1c48b57092be74472855c5632b",
-                "requestBody": {
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "required": [
-                                    "mobile",
-                                    "status"
-                                ],
-                                "properties": {
-                                    "first_name": {
-                                        "description": "نام",
-                                        "type": "string"
-                                    },
-                                    "last_name": {
-                                        "description": "نام خانوادگی",
-                                        "type": "string"
-                                    },
-                                    "father_name": {
-                                        "description": "نام پدر",
-                                        "type": "string"
-                                    },
-                                    "mobile": {
-                                        "description": "شماره موبایل",
-                                        "type": "string"
-                                    },
-                                    "national_code": {
-                                        "description": "کد ملی",
-                                        "type": "number"
-                                    },
-                                    "birthdate": {
-                                        "description": "تاریخ تولد بصورت شمسی با فرمت Y/m/d - مثال:1401/05/10",
-                                        "type": "string"
-                                    },
-                                    "password": {
-                                        "description": "کلمه عبور",
-                                        "type": "string"
-                                    },
-                                    "city_id": {
-                                        "description": "شناسه شهر کاربر",
-                                        "type": "number"
-                                    },
-                                    "grade_id": {
-                                        "description": "شناسه مقطع تحصیلی کاربر",
-                                        "type": "number"
-                                    },
-                                    "birth_place_id": {
-                                        "description": "شناسه شهر محل تولد کاربر",
-                                        "type": "number"
-                                    },
-                                    "status": {
-                                        "description": "Active: فعال - Inactive: غیرفعال",
-                                        "type": "string",
-                                        "enum": [
-                                            "Active",
-                                            "Inactive"
-                                        ]
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "ثبت با موفقیت انجام شد",
                         "content": {
                             "application/json": {
                                 "schema": {}
