@@ -180,6 +180,7 @@ class RahjooService extends BaseService
     public function storeQuestionPoints(Request $request, $rahjoo, $question): JsonResponse
     {
         $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])->findorFailById($rahjoo);
+        ApiResponse::authorize($request->user()->can('manageQuestionPoints', $rahjoo));
         $question = $this->rahjooRepository->query($rahjoo->questions())
             ->with(['pivotPoints'])
             ->findOrFailById($question);
@@ -210,6 +211,7 @@ class RahjooService extends BaseService
     public function updateQuestionPoints(Request $request, $rahjoo, $question): JsonResponse
     {
         $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])->findorFailById($rahjoo);
+        ApiResponse::authorize($request->user()->can('manageQuestionPoints', $rahjoo));
         $question = $this->rahjooRepository->query($rahjoo->questions())->findOrFailById($question);
         ApiResponse::validate($request->all(), [
             'intelligence_point_id' => [

@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Enums\Permission;
+use App\Models\Rahjoo;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -56,5 +57,15 @@ class RahjooPolicy
     {
         return $user->hasPermissionTo(Permission::DELETE_RAHJOOS)
             || $user->hasPermissionTo(Permission::MANAGE_RAHJOOS);
+    }
+
+    /**
+     * @param User $user
+     * @param Rahjoo $rahjoo
+     * @return bool
+     */
+    public function manageQuestionPoints(User $user, Rahjoo $rahjoo): bool
+    {
+        return $user->isRahyab() && $rahjoo->rahyab_id == $user->id;
     }
 }
