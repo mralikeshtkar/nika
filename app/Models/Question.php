@@ -17,7 +17,7 @@ use Staudenmeir\EloquentHasManyDeep\HasTableAlias;
 
 class Question extends Model
 {
-    use HasFactory, HasMedia, HasRelationships, HasTableAlias,HasComment;
+    use HasFactory, HasMedia, HasRelationships, HasTableAlias, HasComment;
 
     #region Constance
 
@@ -84,7 +84,7 @@ class Question extends Model
      */
     public function answerRahjoos(): HasManyThrough
     {
-        return $this->hasManyThrough(Rahjoo::class,QuestionAnswer::class,'question_id','id','id','rahjoo_id');
+        return $this->hasManyThrough(Rahjoo::class, QuestionAnswer::class, 'question_id', 'id', 'id', 'rahjoo_id');
     }
 
     /**
@@ -95,6 +95,14 @@ class Question extends Model
         return $this->belongsToMany(IntelligencePoint::class)
             ->using(IntelligencePointQuestion::class)
             ->withPivot(['max_point', 'description']);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function pivotRahjooPoints(): HasMany
+    {
+        return $this->hasMany(QuestionPointRahjoo::class, 'question_id');
     }
 
     /**

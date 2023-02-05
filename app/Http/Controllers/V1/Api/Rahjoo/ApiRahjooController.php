@@ -296,6 +296,139 @@ class ApiRahjooController extends ApiBaseController
     }
 
     /**
+     * @OA\Post(
+     *     path="/rahjoos/{rahjoo}/questions/{question}/question-points",
+     *     summary="ثبت امتیاز برای رهجو",
+     *     description="",
+     *     tags={"رهجو"},
+     *     @OA\Parameter(
+     *         description="شناسه رهجو",
+     *         in="path",
+     *         name="rahjoo",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه سوال",
+     *         in="path",
+     *         name="question",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                  @OA\Property(property="points", type="array",
+     *                      @OA\Items(
+     *                          type="integer"
+     *                      )
+     *                  )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function storeQuestionPoints(Request $request, $rahjoo, $question)
+    {
+        return $this->rahjooService->storeQuestionPoints($request, $rahjoo, $question);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/rahjoos/{rahjoo}/questions/{question}/question-points-update",
+     *     summary="بروزرسانی امتیاز برای رهجو",
+     *     description="",
+     *     tags={"رهجو"},
+     *     @OA\Parameter(
+     *         description="شناسه رهجو",
+     *         in="path",
+     *         name="rahjoo",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه سوال",
+     *         in="path",
+     *         name="question",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"_method","intelligence_point_id","point"},
+     *                 @OA\Property(
+     *                     property="_method",
+     *                     type="string",
+     *                     default="put",
+     *                     enum={"put"},
+     *                     description="این مقدار باید بصورت ثابت شود",
+     *                 ),
+     *                 @OA\Property(
+     *                     property="intelligence_point_id",
+     *                     type="number",
+     *                     description="شناسه امتیاز هوش"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="point",
+     *                     type="number",
+     *                     description="امتیاز"
+     *                 ),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function updateQuestionPoints(Request $request, $rahjoo, $question)
+    {
+        return $this->rahjooService->updateQuestionPoints($request, $rahjoo, $question);
+    }
+
+    /**
+     * @OA\Get (
+     *     path="/rahjoos/{rahjoo}/questions/{question}/question-points",
+     *     summary="دریافت سوال همراه با امتیاز برای رهجو",
+     *     description="",
+     *     tags={"رهجو"},
+     *     @OA\Parameter(
+     *         description="شناسه رهجو",
+     *         in="path",
+     *         name="rahjoo",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه سوال",
+     *         in="path",
+     *         name="question",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function showQuestionPoints(Request $request, $rahjoo, $question)
+    {
+        return $this->rahjooService->showQuestionPoints($request, $rahjoo, $question);
+    }
+
+    /**
      * Delete a city.
      *
      * @OA\Delete(

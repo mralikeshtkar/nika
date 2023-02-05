@@ -162,6 +162,9 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->post('rahjoos/{rahjoo}/exercise/{exercise}/questions', [V1ApiQuestionAnswerController::class, 'store']);
             $router->get('rahjoos/{rahjoo}/exercise/{exercise}/questions/{question}', [V1ApiQuestionAnswerController::class, 'showQuestionWithAnswer']);
             $router->get('rahjoos/{rahjoo}/exercise/{exercise}/questions', [V1ApiRahjooController::class, 'exerciseQuestions']);
+            $router->post('rahjoos/{rahjoo}/questions/{question}/question-points', [V1ApiRahjooController::class, 'storeQuestionPoints']);
+            $router->put('rahjoos/{rahjoo}/questions/{question}/question-points-update', [V1ApiRahjooController::class, 'updateQuestionPoints']);
+            $router->get('rahjoos/{rahjoo}/questions/{question}/question-points', [V1ApiRahjooController::class, 'showQuestionPoints']);
         });
 
         /* Rahjoo parents */
@@ -328,7 +331,7 @@ Route::prefix('v1')->group(function (Router $router) {
         /* Intelligence point names */
         $router->group([], function (Router $router) {
             $router->put('comments/{comment}', [V1ApiCommentController::class, 'update']);
-            $router->put('comments/{comment}', [V1ApiCommentController::class, 'destroy']);
+            $router->delete('comments/{comment}', [V1ApiCommentController::class, 'destroy']);
         });
 
     });

@@ -98,4 +98,15 @@ class RahjooRepository extends BaseRepository implements RahjooRepositoryInterfa
     {
         return $rahjoo->update(['package_id' => $package]);
     }
+
+    public function attachQuestionPoints($rahjoo, $points)
+    {
+        $rahjoo->questionPoints()->attach($points);
+    }
+
+    public function updateQuestionPoints($rahjoo, $question, $point)
+    {
+        /** @var Rahjoo $rahjoo */
+        $rahjoo->questionPoints()->updateExistingPivot($question,['point'=>$point]);
+    }
 }

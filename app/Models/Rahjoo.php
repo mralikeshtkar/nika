@@ -7,12 +7,15 @@ use Awobaz\Compoships\Compoships;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Rahjoo extends Model
 {
-    use HasFactory,Compoships;
+    use HasFactory, Compoships, HasRelationships;
 
     #region Constance
 
@@ -34,12 +37,28 @@ class Rahjoo extends Model
 
     #region Relations
 
+    public function questionPoints(): BelongsToMany
+    {
+        return $this->belongsToMany(Question::class, 'question_point_rahjoo')
+            ->using(QuestionPointRahjoo::class)
+            ->withPivot(['point'])
+            ->withTimestamps();
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function pivotQuestionPoints(): HasMany
+    {
+        return $this->hasMany(QuestionPointRahjoo::class, 'rahjoo_id');
+    }
+
     /**
      * @return \Awobaz\Compoships\Database\Eloquent\Relations\HasMany
      */
     public function answers(): \Awobaz\Compoships\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(QuestionAnswer::class,['rahjoo_id','question_id'],['id','laravel_through_key']);
+        return $this->hasMany(QuestionAnswer::class, ['rahjoo_id', 'question_id'], ['id', 'laravel_through_key']);
     }
 
     /**
@@ -55,7 +74,7 @@ class Rahjoo extends Model
      */
     public function rahnama(): BelongsTo
     {
-        return $this->belongsTo(User::class,'rahnama_id');
+        return $this->belongsTo(User::class, 'rahnama_id');
     }
 
     /**
@@ -104,6 +123,14 @@ class Rahjoo extends Model
     public function package(): BelongsTo
     {
         return $this->belongsTo(Package::class);
+    }
+
+    /**
+     * @return HasManyDeep
+     */
+    public function questions(): HasManyDeep
+    {
+        return $this->hasManyDeepFromRelations($this->package(), (new Package())->exercises(), (new Exercise())->questions());
     }
 
     #endregion

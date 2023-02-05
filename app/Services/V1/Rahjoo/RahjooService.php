@@ -9,6 +9,7 @@ use App\Http\Resources\V1\Question\QuestionResource;
 use App\Http\Resources\V1\Rahjoo\RahjooResource;
 use App\Models\Package;
 use App\Models\Question;
+use App\Models\QuestionPointRahjoo;
 use App\Models\Rahjoo;
 use App\Models\User;
 use App\Repositories\V1\Exercise\Interfaces\ExerciseRepositoryInterfaces;
@@ -21,6 +22,7 @@ use App\Rules\UserHasRoleRule;
 use App\Services\V1\BaseService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -166,6 +168,86 @@ class RahjooService extends BaseService
         $resource = PaginationResource::make($questions)->additional(['itemsResource' => QuestionResource::class]);
         return ApiResponse::message(trans("The information was register successfully"))
             ->addData('questions', $resource)
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $rahjoo
+     * @param $question
+     * @return JsonResponse
+     */
+    public function storeQuestionPoints(Request $request, $rahjoo, $question): JsonResponse
+    {
+        $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])->findorFailById($rahjoo);
+        $question = $this->rahjooRepository->query($rahjoo->questions())
+            ->with(['pivotPoints'])
+            ->findOrFailById($question);
+        $rules = collect($question->pivotPoints)->mapWithKeys(function ($item) {
+            return ['points.' . $item->intelligence_point_id => ['required', 'numeric', 'min:0', 'max:' . $item->max_point],];
+        })->put('points', ['required', 'array', 'size:' . $question->pivotPoints->count()])->toArray();
+        ApiResponse::validate($request->all(), $rules);
+        $points = collect($request->points)->mapWithKeys(function ($item, $key) use ($request, $rahjoo, $question) {
+            return [
+                $question->id => [
+                    'user_id' => $request->user()->id,
+                    'rahjoo_id' => $rahjoo->id,
+                    'intelligence_point_id' => $key,
+                    'point' => $item,
+                ]
+            ];
+        })->toArray();
+        $this->rahjooRepository->attachQuestionPoints($rahjoo, $points);
+        return ApiResponse::message(trans("The information was register successfully"))->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $rahjoo
+     * @param $question
+     * @return JsonResponse
+     */
+    public function updateQuestionPoints(Request $request, $rahjoo, $question): JsonResponse
+    {
+        $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])->findorFailById($rahjoo);
+        $question = $this->rahjooRepository->query($rahjoo->questions())->findOrFailById($question);
+        ApiResponse::validate($request->all(), [
+            'intelligence_point_id' => [
+                'required',
+                Rule::exists(QuestionPointRahjoo::class, 'intelligence_point_id')
+                    ->where('rahjoo_id', $rahjoo->id)
+                    ->where('question_id', $question->id),
+            ],
+        ]);
+        $point = resolve(QuestionRepositoryInterface::class)->query($question->points())->findOrFailById($request->intelligence_point_id);
+        ApiResponse::validate($request->all(), [
+            'point' => ['required','numeric', 'between:0,'. $point->pivot->max_point],
+        ]);
+        $this->rahjooRepository->updateQuestionPoints($rahjoo, $question->id,$request->point);
+        return ApiResponse::message(trans("The information was register successfully"))->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $rahjoo
+     * @param $question
+     * @return JsonResponse
+     */
+    public function showQuestionPoints(Request $request, $rahjoo, $question): JsonResponse
+    {
+        /** @var Rahjoo $rahjoo */
+        $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])->findorFailById($rahjoo);
+        $question = $this->rahjooRepository->query($rahjoo->questions())
+            ->with([
+                'pivotRahjooPoints' => function ($q) use ($rahjoo) {
+                    $q->with([
+                        'intelligencePointName:intelligence_point_names.id,intelligence_point_names.name',
+                        'user:id,first_name,last_name,mobile',
+                    ])->where('rahjoo_id', $rahjoo->id);
+                },
+            ])->findOrFailById($question);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('question', new QuestionResource($question))
             ->send();
     }
 

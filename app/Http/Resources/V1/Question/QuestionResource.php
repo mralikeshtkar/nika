@@ -3,6 +3,7 @@
 namespace App\Http\Resources\V1\Question;
 
 use App\Http\Resources\V1\Media\MediaResource;
+use App\Http\Resources\V1\QuestionPointRahjoo\QuestionPointRahjooResoruce;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;
 
@@ -28,6 +29,8 @@ class QuestionResource extends JsonResource
             $collection->put('updated_at', jalaliFormat($this->resource->updated_at, 'j F Y'));
         })->when($this->resource->relationLoaded('answers'), function (Collection $collection) {
             $collection->put('answers', QuestionAnswerResource::collection($this->resource->answers));
+        })->when($this->resource->relationLoaded('pivotRahjooPoints'), function (Collection $collection) {
+            $collection->put('pivot_rahjoo_points', QuestionPointRahjooResoruce::collection($this->resource->pivotRahjooPoints));
         });
     }
 }
