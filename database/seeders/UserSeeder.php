@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
 //        $this->_generateToken('+989123456789');
         $this->_createSuperAdmin('+989123456789');
         $this->_createPersonnel();
-        $this->_createRahjoo();
+//        $this->_createRahjoo();
         $this->_createSuperAdmin('+989112352382');
     }
 
