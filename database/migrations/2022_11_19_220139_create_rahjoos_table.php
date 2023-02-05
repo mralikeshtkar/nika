@@ -20,11 +20,13 @@ return new class extends Migration {
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->foreignId('rahnama_id')
+                ->nullable()
                 ->references('id')
                 ->on('users')
                 ->nullOnDelete()
                 ->cascadeOnDelete();
             $table->foreignId('rahyab_id')
+                ->nullable()
                 ->references('id')
                 ->on('users')
                 ->nullOnDelete()
