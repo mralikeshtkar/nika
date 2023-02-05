@@ -145,10 +145,9 @@ class RahjooService extends BaseService
         $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])
             ->with(['package:id', 'package.pivotExercisePriority'])
             ->findorFailById($rahjoo);
-        $exercises = resolve(PackageRepositoryInterface::class)->getPaginateExercises($request, $rahjoo->package, $rahjoo);
-        $resource = PaginationResource::make($exercises)->additional(['itemsResource' => QuestionResource::class]);
+        $exercise = resolve(PackageRepositoryInterface::class)->getNextExercise($request, $rahjoo->package, $rahjoo);
         return ApiResponse::message(trans("The information was register successfully"))
-            ->addData('questions', $resource)
+            ->addData('questions', new QuestionResource($exercise))
             ->send();
     }
 
@@ -164,7 +163,7 @@ class RahjooService extends BaseService
             ->with(['package:id'])
             ->findorFailById($rahjoo);
         $exercise = resolve(PackageRepositoryInterface::class)->findPackageExerciseById($request, $rahjoo->package, $exercise);
-        $questions = resolve(ExerciseRepositoryInterfaces::class)->paginateQuestions($request, $exercise);
+        $questions = resolve(ExerciseRepositoryInterfaces::class)->paginateQuestions($request, $exercise, $rahjoo->id);
         $resource = PaginationResource::make($questions)->additional(['itemsResource' => QuestionResource::class]);
         return ApiResponse::message(trans("The information was register successfully"))
             ->addData('questions', $resource)
@@ -223,9 +222,9 @@ class RahjooService extends BaseService
         ]);
         $point = resolve(QuestionRepositoryInterface::class)->query($question->points())->findOrFailById($request->intelligence_point_id);
         ApiResponse::validate($request->all(), [
-            'point' => ['required','numeric', 'between:0,'. $point->pivot->max_point],
+            'point' => ['required', 'numeric', 'between:0,' . $point->pivot->max_point],
         ]);
-        $this->rahjooRepository->updateQuestionPoints($rahjoo, $question->id,$request->point);
+        $this->rahjooRepository->updateQuestionPoints($rahjoo, $question->id, $request->point);
         return ApiResponse::message(trans("The information was register successfully"))->send();
     }
 

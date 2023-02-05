@@ -4,6 +4,8 @@ namespace App\Repositories\V1\Package\Eloquent;
 
 use App\Models\Media;
 use App\Models\Package;
+use App\Models\Question;
+use App\Models\QuestionAnswer;
 use App\Repositories\V1\BaseRepository;
 use App\Repositories\V1\Package\Interfaces\PackageRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -157,18 +159,16 @@ class PackageRepository extends BaseRepository implements PackageRepositoryInter
         return $package->questions()->paginate($request->get('perPage'));
     }
 
-    /**
-     * @param Request $request
-     * @param $package
-     * @param $rahjoo
-     * @return LengthAwarePaginator
-     */
-    public function getPaginateExercises(Request $request, $package, $rahjoo): LengthAwarePaginator
+
+    public function getNextExercise(Request $request, $package, $rahjoo)
     {
         $ids = $rahjoo->package->pivotExercisePriority->pluck('exercise_id')->reverse();
         /** @var Package $package */
         return $package->exercises()
             ->has('questions')
+            ->withCount(['questions'])
+            ->withQuestionAnswersCount($rahjoo->id)
+            ->having('questions_count', '!=', DB::raw('question_answers_count'))
             ->orderByRaw(DB::raw("FIELD(id, " . $ids->implode(', ') . ") DESC"))
             ->when($request->filled('lock'), function (Builder $builder) use ($request) {
                 $builder->when($request->lock == "locked", function (Builder $builder) use ($request) {
@@ -176,7 +176,7 @@ class PackageRepository extends BaseRepository implements PackageRepositoryInter
                 })->when($request->lock == "notlocked", function (Builder $builder) use ($request) {
                     $builder->notLocked();
                 });
-            })->paginate($request->get('perPage'));
+            })->first();
     }
 
     public function findPackageExerciseById(Request $request, $package, $exercise)

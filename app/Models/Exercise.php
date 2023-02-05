@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
@@ -37,7 +38,7 @@ class Exercise extends Model
      */
     public function intelligencePackage(): BelongsTo
     {
-        return $this->belongsTo(IntelligencePackage::class,'intelligence_package_id','pivot_id');
+        return $this->belongsTo(IntelligencePackage::class, 'intelligence_package_id', 'pivot_id');
     }
 
     /**
@@ -45,7 +46,7 @@ class Exercise extends Model
      */
     public function intelligence(): HasManyDeep
     {
-        return $this->hasManyDeepFromRelations($this->intelligencePackage(),(new IntelligencePackage())->intelligence());
+        return $this->hasManyDeepFromRelations($this->intelligencePackage(), (new IntelligencePackage())->intelligence());
     }
 
     /**
@@ -55,6 +56,11 @@ class Exercise extends Model
     {
         return $this->hasMany(Question::class)
             ->orderBy('priority');
+    }
+
+    public function questionAnswers(): HasManyThrough
+    {
+        return $this->hasManyThrough(QuestionAnswer::class, Question::class, 'exercise_id', 'question_id', 'id', 'id');
     }
 
     /**
@@ -84,7 +90,7 @@ class Exercise extends Model
      */
     public function scopeLocked(Builder $builder)
     {
-        $builder->where('is_locked',true);
+        $builder->where('is_locked', true);
     }
 
     /**
@@ -93,7 +99,17 @@ class Exercise extends Model
      */
     public function scopeNotLocked(Builder $builder)
     {
-        $builder->where('is_locked',false);
+        $builder->where('is_locked', false);
+    }
+
+    public function scopeWithQuestionAnswersCount(Builder $builder, $rahjoo_id)
+    {
+        $builder->addSelect([
+            'question_answers_count' => Question::query()->selectRaw('COUNT(distinct question_answers.question_id)')
+                ->whereColumn('questions.exercise_id', 'exercises.id')
+                ->rightJoin('question_answers', 'question_answers.question_id', '=', 'questions.id')
+                ->where('question_answers.rahjoo_id', $rahjoo_id)
+        ]);
     }
 
     #endregion

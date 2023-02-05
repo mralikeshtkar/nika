@@ -3,8 +3,10 @@
 namespace App\Repositories\V1\Exercise\Eloquent;
 
 use App\Models\Exercise;
+use App\Models\QuestionAnswer;
 use App\Repositories\V1\BaseRepository;
 use App\Repositories\V1\Exercise\Interfaces\ExerciseRepositoryInterfaces;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
@@ -67,12 +69,24 @@ class ExerciseRepository extends BaseRepository implements ExerciseRepositoryInt
         }
     }
 
-    public function paginateQuestions(Request $request, $exercise)
+    /**
+     * @param Request $request
+     * @param $exercise
+     * @param $rahjoo
+     * @return LengthAwarePaginator
+     */
+    public function paginateQuestions(Request $request, $exercise, $rahjoo = null): LengthAwarePaginator
     {
+        /** @var Exercise $exercise */
         return $exercise->questions()
             ->select(['id', 'exercise_id', 'title', 'created_at', 'updated_at'])
             ->with('files')
-            ->paginate($request->get('perPage', 10));
+            ->when($rahjoo,function (Builder $builder)use ($rahjoo){
+                $builder->addSelect(['is_answered'=>QuestionAnswer::query()->selectRaw('COUNT(*)')
+                    ->where('question_answers.rahjoo_id',$rahjoo)
+                    ->whereColumn('questions.id','=','question_answers.question_id'),
+                ]);
+            })->paginate($request->get('perPage', 10));
     }
 
     public function findExerciseQuestionById(Request $request, $exercise, $question, array $columns = ['id', 'exercise_id', 'title', 'created_at', 'updated_at'], array $relations = ['files'])

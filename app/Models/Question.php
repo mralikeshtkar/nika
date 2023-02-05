@@ -35,6 +35,10 @@ class Question extends Model
         'priority',
     ];
 
+    protected $casts=[
+        'is_answered'=>'bool',
+    ];
+
     #endregion
 
     #region Relations
@@ -84,7 +88,7 @@ class Question extends Model
      */
     public function answerRahjoos(): HasManyThrough
     {
-        return $this->hasManyThrough(Rahjoo::class, QuestionAnswer::class, 'question_id', 'id', 'id', 'rahjoo_id');
+        return $this->hasManyThrough(Rahjoo::class, QuestionAnswer::class, 'question_id', 'id', 'id', 'rahjoo_id')->distinct();
     }
 
     /**
