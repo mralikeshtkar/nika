@@ -102,7 +102,7 @@ class QuestionAnswerService extends BaseService
             $exercise,
             $question,
             ['id', 'exercise_id', 'title'],
-            ['files', 'answerTypes:id,question_id,type', 'answers.file', 'answers' => function ($q) use ($rahjoo) {
+            ['files','files.media', 'answerTypes:id,question_id,type', 'answers.file', 'answers' => function ($q) use ($rahjoo) {
                 $q->select(['id', 'rahjoo_id', 'question_id', 'text', 'created_at'])
                     ->where('rahjoo_id', $rahjoo->id);
             }],
