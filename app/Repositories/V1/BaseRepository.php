@@ -116,4 +116,15 @@ class BaseRepository implements EloquentRepositoryInterface
         $this->model = $this->model->scopes($scopes);
         return $this;
     }
+
+    /**
+     * @param string $column
+     * @param $value
+     * @return $this
+     */
+    public function where(string $column, $value): static
+    {
+        $this->model = $this->model->where($column,$value);
+        return $this;
+    }
 }

@@ -263,7 +263,7 @@ class RahjooService extends BaseService
     {
         ApiResponse::authorize($request->user()->can('storeQuestionComment', Rahjoo::class));
         /** @var Rahjoo $rahjoo */
-        $rahjoo = $this->rahjooRepository->select(['id'])->findorFailById($rahjoo);
+        $rahjoo = $this->rahjooRepository->select(['id','package_id'])->findorFailById($rahjoo);
         $question = $this->rahjooRepository->query($rahjoo->questions())->findOrFailById($question);
         ApiResponse::validate($request->all(), [
             'body' => ['required', 'string'],
@@ -275,6 +275,28 @@ class RahjooService extends BaseService
         ]);
         return ApiResponse::message(trans("The :attribute was successfully registered", ['attribute' => trans('Comment')]), Response::HTTP_CREATED)
             ->addData('comment', new CommentResource($comment))
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $rahjoo
+     * @param $question
+     * @return JsonResponse
+     */
+    public function questionComments(Request $request, $rahjoo, $question): JsonResponse
+    {
+        $rahjoo = $this->rahjooRepository->select(['id','package_id'])->findorFailById($rahjoo);
+        $questionRepository = resolve(QuestionRepositoryInterface::class);
+        $question = $this->rahjooRepository->query($rahjoo->questions())->findOrFailById($question);
+        $comments = $questionRepository->query($question->comments()->latest())
+            ->select(['id','user_id','body','created_at'])
+            ->with(['user:id,first_name,last_name,mobile'])
+            ->where('rahjoo_id',$rahjoo->id)
+            ->paginate($request->get('perPage', 15));
+        $resource = PaginationResource::make($comments)->additional(['itemsResource' => CommentResource::class]);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('comments', $resource)
             ->send();
     }
 

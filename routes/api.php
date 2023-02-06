@@ -165,9 +165,9 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->post('rahjoos/{rahjoo}/questions/{question}/question-points', [V1ApiRahjooController::class, 'storeQuestionPoints']);
             $router->put('rahjoos/{rahjoo}/questions/{question}/question-points-update', [V1ApiRahjooController::class, 'updateQuestionPoints']);
             $router->get('rahjoos/{rahjoo}/questions/{question}/question-points', [V1ApiRahjooController::class, 'showQuestionPoints']);
-            $router->post('rahjoos/{rahjoo}/questions/{question}/comments', [V1ApiQuestionAnswerController::class, 'storeQuestionComment']);
-            $router->post('questions/{question}/comments', [V1ApiQuestionController::class, 'storeQuestionComment']);
-            $router->get('questions/{question}/comments', [V1ApiQuestionController::class, 'comments']);
+            $router->post('rahjoos/{rahjoo}/questions/{question}/comments', [V1ApiRahjooController::class, 'storeQuestionComment']);
+            $router->post('rahjoos/{rahjoo}/questions/{question}/comments', [V1ApiRahjooController::class, 'storeQuestionComment']);
+            $router->get('rahjoos/{rahjoo}/questions/{question}/comments', [V1ApiRahjooController::class, 'questionComments']);
         });
 
         /* Rahjoo parents */

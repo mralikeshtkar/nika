@@ -429,13 +429,11 @@ class ApiRahjooController extends ApiBaseController
     }
 
     /**
-     * Store a question answer type..
-     *
      * @OA\Post(
      *     path="/rahjoos/{id}/questions/{question}/comments",
      *     summary="ثبت نظر برای سوال",
      *     description="",
-     *     tags={"سوال"},
+     *     tags={"رهجو"},
      *     @OA\Parameter(
      *         description="شناسه رهجو",
      *         in="path",
@@ -473,6 +471,53 @@ class ApiRahjooController extends ApiBaseController
     public function storeQuestionComment(Request $request, $rahjoo, $question)
     {
         return $this->rahjooService->storeQuestionComment($request, $rahjoo, $question);
+    }
+
+    /**
+     * @OA\Get (
+     *     path="/rahjoos/{id}/questions/{question}/comments",
+     *     summary="رهجو دریافت نظرات سوال",
+     *     description="",
+     *     tags={"رهجو"},
+     *     @OA\Parameter(
+     *         description="شناسه رهجو",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه سوال",
+     *         in="path",
+     *         name="question",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شماره صفحه",
+     *         in="query",
+     *         name="page",
+     *         required=true,
+     *         example=1,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="تعداد نمایش در هر صفحه",
+     *         in="query",
+     *         name="perPage",
+     *         example=10,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function questionComments(Request $request, $rahjoo, $question)
+    {
+        return $this->rahjooService->questionComments($request,$rahjoo, $question);
     }
 
     /**

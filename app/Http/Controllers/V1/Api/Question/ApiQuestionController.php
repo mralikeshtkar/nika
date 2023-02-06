@@ -404,46 +404,6 @@ class ApiQuestionController extends ApiBaseController
     }
 
     /**
-     * @OA\Get (
-     *     path="/questions/{id}/comments",
-     *     summary="ثبت نظر برای سوال",
-     *     description="",
-     *     tags={"سوال"},
-     *     @OA\Parameter(
-     *         description="شناسه سوال",
-     *         in="path",
-     *         name="id",
-     *         required=true,
-     *         @OA\Schema(type="number"),
-     *     ),
-     *     @OA\Parameter(
-     *         description="شماره صفحه",
-     *         in="query",
-     *         name="page",
-     *         required=true,
-     *         example=1,
-     *         @OA\Schema(type="number"),
-     *     ),
-     *     @OA\Parameter(
-     *         description="تعداد نمایش در هر صفحه",
-     *         in="query",
-     *         name="perPage",
-     *         example=10,
-     *         @OA\Schema(type="number"),
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="عملیات موفق",
-     *         @OA\JsonContent()
-     *     ),
-     * )
-     */
-    public function comments(Request $request, $question)
-    {
-        return $this->questionService->comments($request, $question);
-    }
-
-    /**
      * Destroy a question.
      *
      * @OA\Delete(

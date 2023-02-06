@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -36,6 +37,20 @@ class Comment extends Model
     public function rahjoo(): BelongsTo
     {
         return $this->belongsTo(Rahjoo::class,'rahjoo_id');
+    }
+
+    #endregion
+
+    #region Scopes
+
+    /**
+     * @param Builder $builder
+     * @param $rahjoo_id
+     * @return void
+     */
+    public function scopeWhereRahjoo(Builder $builder, $rahjoo_id)
+    {
+        $builder->where('rahjoo_id',$rahjoo_id);
     }
 
     #endregion

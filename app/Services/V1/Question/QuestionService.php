@@ -268,24 +268,6 @@ class QuestionService extends BaseService
      * @param $question
      * @return JsonResponse
      */
-    public function comments(Request $request, $question): JsonResponse
-    {
-        $question = $this->questionRepository->select(['id'])->findOrFailById($question);
-        $comments = $this->questionRepository->query($question->comments()->latest())
-            ->select(['id','user_id','body','created_at'])
-            ->with(['user:id,first_name,last_name,mobile'])
-            ->paginate($request->get('perPage', 15));
-        $resource = PaginationResource::make($comments)->additional(['itemsResource' => CommentResource::class]);
-        return ApiResponse::message(trans("The information was received successfully"))
-            ->addData('comments', $resource)
-            ->send();
-    }
-
-    /**
-     * @param Request $request
-     * @param $question
-     * @return JsonResponse
-     */
     public function destroy(Request $request, $question): JsonResponse
     {
         $question = $this->questionRepository->select(['id'])->findOrFailById($question);
