@@ -17,9 +17,9 @@ class QuestionResource extends JsonResource
      */
     public function toArray($request)
     {
-        return collect($this->resource)->when($this->resource->relationLoaded('files'), function (Collection $collection) {
+        return collect($this->resource)->when($this->resource->relationLoaded('files') && count($this->resource->files), function (Collection $collection) {
             $collection->put('files', collect($this->resource->files)->map(function ($item) {
-                return collect($item)->when($item->relationLoaded('media'), function (Collection $collection) use ($item) {
+                return collect($item)->when($item->relationLoaded('media') && !is_null($item->media), function (Collection $collection) use ($item) {
                     $collection->put('media', new MediaResource($item->media));
                 });
             }));
