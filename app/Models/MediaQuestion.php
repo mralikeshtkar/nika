@@ -22,8 +22,8 @@ class MediaQuestion extends Model
     protected static function boot()
     {
         parent::boot();
-        static::deleted(function () {
-            dd(func_get_args());
+        static::deleted(function (MediaQuestion $question) {
+            //todo deleye ,media
         });
     }
 

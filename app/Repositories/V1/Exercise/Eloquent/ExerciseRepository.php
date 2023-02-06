@@ -80,7 +80,7 @@ class ExerciseRepository extends BaseRepository implements ExerciseRepositoryInt
         /** @var Exercise $exercise */
         return $exercise->questions()
             ->select(['id', 'exercise_id', 'title', 'created_at', 'updated_at'])
-            ->with(['files','answerTypes:id,question_id,type'])
+            ->with(['files','files.media','answerTypes:id,question_id,type'])
             ->when($rahjoo,function (Builder $builder)use ($rahjoo){
                 $builder->addSelect(['is_answered'=>QuestionAnswer::query()->selectRaw('COUNT(*)')
                     ->where('question_answers.rahjoo_id',$rahjoo)
