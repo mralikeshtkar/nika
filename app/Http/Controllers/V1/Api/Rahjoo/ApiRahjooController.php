@@ -242,7 +242,7 @@ class ApiRahjooController extends ApiBaseController
 
     /**
      * @OA\Get (
-     *     path="/rahjoos/{id}/exercises/{exercise}/questions",
+     *     path="/rahjoos/{id}/exercise/{exercise}/questions",
      *     summary="لیست سوالات تمرین رهجو",
      *     description="",
      *     tags={"رهجو"},
@@ -426,6 +426,53 @@ class ApiRahjooController extends ApiBaseController
     public function showQuestionPoints(Request $request, $rahjoo, $question)
     {
         return $this->rahjooService->showQuestionPoints($request, $rahjoo, $question);
+    }
+
+    /**
+     * Store a question answer type..
+     *
+     * @OA\Post(
+     *     path="/rahjoos/{id}/questions/{question}/comments",
+     *     summary="ثبت نظر برای سوال",
+     *     description="",
+     *     tags={"سوال"},
+     *     @OA\Parameter(
+     *         description="شناسه رهجو",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه سوال",
+     *         in="path",
+     *         name="question",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"body"},
+     *                 @OA\Property(
+     *                     property="body",
+     *                     type="string",
+     *                     description="متن",
+     *                 ),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function storeQuestionComment(Request $request, $rahjoo, $question)
+    {
+        return $this->rahjooService->storeQuestionComment($request, $rahjoo, $question);
     }
 
     /**

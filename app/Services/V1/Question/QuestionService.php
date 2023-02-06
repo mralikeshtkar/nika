@@ -268,27 +268,6 @@ class QuestionService extends BaseService
      * @param $question
      * @return JsonResponse
      */
-    public function storeComment(Request $request, $question): JsonResponse
-    {
-        ApiResponse::authorize($request->user()->can('storeComment', Question::class));
-        $question = $this->questionRepository->select(['id'])->findOrFailById($question);
-        ApiResponse::validate($request->all(), [
-            'body' => ['required', 'string'],
-        ]);
-        $comment = $this->questionRepository->storeComment($question, [
-            'user_id' => $request->user()->id,
-            'body' => $request->body,
-        ]);
-        return ApiResponse::message(trans("The :attribute was successfully registered", ['attribute' => trans('Comment')]), Response::HTTP_CREATED)
-            ->addData('comment', new CommentResource($comment))
-            ->send();
-    }
-
-    /**
-     * @param Request $request
-     * @param $question
-     * @return JsonResponse
-     */
     public function comments(Request $request, $question): JsonResponse
     {
         $question = $this->questionRepository->select(['id'])->findOrFailById($question);

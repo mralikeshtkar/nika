@@ -10,8 +10,4 @@ class QuestionPolicy
 {
     use HandlesAuthorization;
 
-    public function storeComment(User $user): bool
-    {
-        return $user->isRahyab() || $user->isRahnama();
-    }
 }

@@ -14,6 +14,7 @@ class Comment extends Model
 
     protected $fillable = [
         'user_id',
+        'rahjoo_id',
         'commentable_id',
         'commentable_type',
         'body',
@@ -27,6 +28,14 @@ class Comment extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function rahjoo(): BelongsTo
+    {
+        return $this->belongsTo(Rahjoo::class,'rahjoo_id');
     }
 
     #endregion

@@ -4,6 +4,7 @@ namespace App\Services\V1\Rahjoo;
 
 use App\Enums\Question\QuestionAnswerType;
 use App\Enums\Role;
+use App\Http\Resources\V1\Comment\CommentResource;
 use App\Http\Resources\V1\PaginationResource;
 use App\Http\Resources\V1\Question\QuestionResource;
 use App\Http\Resources\V1\Rahjoo\RahjooResource;
@@ -249,6 +250,31 @@ class RahjooService extends BaseService
             ])->findOrFailById($question);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('question', new QuestionResource($question))
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $rahjoo
+     * @param $question
+     * @return JsonResponse
+     */
+    public function storeQuestionComment(Request $request, $rahjoo, $question): JsonResponse
+    {
+        ApiResponse::authorize($request->user()->can('storeQuestionComment', Rahjoo::class));
+        /** @var Rahjoo $rahjoo */
+        $rahjoo = $this->rahjooRepository->select(['id'])->findorFailById($rahjoo);
+        $question = $this->rahjooRepository->query($rahjoo->questions())->findOrFailById($question);
+        ApiResponse::validate($request->all(), [
+            'body' => ['required', 'string'],
+        ]);
+        $comment = resolve(QuestionRepositoryInterface::class)->storeComment($question, [
+            'user_id' => $request->user()->id,
+            'rahjoo_id' => $rahjoo->id,
+            'body' => $request->body,
+        ]);
+        return ApiResponse::message(trans("The :attribute was successfully registered", ['attribute' => trans('Comment')]), Response::HTTP_CREATED)
+            ->addData('comment', new CommentResource($comment))
             ->send();
     }
 

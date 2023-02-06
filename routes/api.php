@@ -165,6 +165,9 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->post('rahjoos/{rahjoo}/questions/{question}/question-points', [V1ApiRahjooController::class, 'storeQuestionPoints']);
             $router->put('rahjoos/{rahjoo}/questions/{question}/question-points-update', [V1ApiRahjooController::class, 'updateQuestionPoints']);
             $router->get('rahjoos/{rahjoo}/questions/{question}/question-points', [V1ApiRahjooController::class, 'showQuestionPoints']);
+            $router->post('rahjoos/{rahjoo}/questions/{question}/comments', [V1ApiQuestionAnswerController::class, 'storeQuestionComment']);
+            $router->post('questions/{question}/comments', [V1ApiQuestionController::class, 'storeQuestionComment']);
+            $router->get('questions/{question}/comments', [V1ApiQuestionController::class, 'comments']);
         });
 
         /* Rahjoo parents */
@@ -258,8 +261,6 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->put('questions/{question}/change-file-priority', [V1ApiQuestionController::class, 'changeFilePriority']);
             $router->get('questions/{question}/answer-types', [V1ApiQuestionController::class, 'answerTypes']);
             $router->get('questions/{question}/answers', [V1ApiQuestionController::class, 'answers']);
-            $router->post('questions/{question}/comments', [V1ApiQuestionController::class, 'storeComment']);
-            $router->get('questions/{question}/comments', [V1ApiQuestionController::class, 'comments']);
 
             /* Question answer types */
             $router->group([], function (Router $router) {

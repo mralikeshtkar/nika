@@ -404,46 +404,6 @@ class ApiQuestionController extends ApiBaseController
     }
 
     /**
-     * Store a question answer type..
-     *
-     * @OA\Post(
-     *     path="/questions/{id}/comments",
-     *     summary="ثبت نظر برای سوال",
-     *     description="",
-     *     tags={"سوال"},
-     *     @OA\Parameter(
-     *         description="شناسه سوال",
-     *         in="path",
-     *         name="id",
-     *         required=true,
-     *         @OA\Schema(type="number"),
-     *     ),
-     *     @OA\RequestBody(
-     *         @OA\MediaType(
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema(
-     *                 required={"body"},
-     *                 @OA\Property(
-     *                     property="body",
-     *                     type="string",
-     *                     description="متن",
-     *                 ),
-     *             )
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="عملیات موفق",
-     *         @OA\JsonContent()
-     *     ),
-     * )
-     */
-    public function storeComment(Request $request, $question)
-    {
-        return $this->questionService->storeComment($request, $question);
-    }
-
-    /**
      * @OA\Get (
      *     path="/questions/{id}/comments",
      *     summary="ثبت نظر برای سوال",

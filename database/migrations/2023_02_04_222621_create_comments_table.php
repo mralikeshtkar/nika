@@ -20,6 +20,11 @@ return new class extends Migration {
                 ->on('users')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
+            $table->foreignId('rahjoo_id')
+                ->references('id')
+                ->on('rahjoos')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
             $table->morphs(Comment::POLY_MORPHIC_KEY);
             $table->text('body');
             $table->timestamps();
