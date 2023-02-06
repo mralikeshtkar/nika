@@ -61,7 +61,7 @@ class QuestionAnswerService extends BaseService
             ['id', 'exercise_id', 'title', 'created_at', 'updated_at'],
             ['files', 'answerTypes:id,question_id,type', 'answers:rahjoo_id,question_id'],
         );
-        abort_if($question->answers->contains('rahjoo_id', $rahjoo->id), ApiResponse::error(trans("You have already answered this question"), Response::HTTP_BAD_REQUEST)->send());
+        //abort_if($question->answers->contains('rahjoo_id', $rahjoo->id), ApiResponse::error(trans("You have already answered this question"), Response::HTTP_BAD_REQUEST)->send());
         $rules = $question->answerTypes->pluck('type', 'id')->mapWithKeys(function ($item, $key) {
             return [
                 'answers.' . $key => QuestionAnswerType::fromValue($item)->getRules()
@@ -111,7 +111,7 @@ class QuestionAnswerService extends BaseService
         $answerType = resolve(QuestionRepositoryInterface::class)->query($question->answerTypes())
             ->select(['id', 'question_id', 'type'])
             ->findOrFailById($request->answer_type_id);
-        abort_if($question->answers->contains('rahjoo_id', $rahjoo->id), ApiResponse::error(trans("You have already answered this question"), Response::HTTP_BAD_REQUEST)->send());
+        //abort_if($question->answers->contains('rahjoo_id', $rahjoo->id), ApiResponse::error(trans("You have already answered this question"), Response::HTTP_BAD_REQUEST)->send());
         ApiResponse::validate($request->all(), [
             'answer' => QuestionAnswerType::fromValue($answerType->type)->getRules(),
         ]);
