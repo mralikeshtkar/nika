@@ -160,6 +160,7 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->patch('rahjoos/{rahjoo}/assign-package', [V1ApiRahjooController::class, 'assignPackage']);
             $router->get('rahjoos/{rahjoo}/package-exercises', [V1ApiRahjooController::class, 'packageExercises']);
             $router->post('rahjoos/{rahjoo}/exercise/{exercise}/questions', [V1ApiQuestionAnswerController::class, 'store']);
+            $router->post('rahjoos/{rahjoo}/exercise/{exercise}/question-single', [V1ApiQuestionAnswerController::class, 'storeSingle']);
             $router->get('rahjoos/{rahjoo}/exercise/{exercise}/questions/{question}', [V1ApiQuestionAnswerController::class, 'showQuestionWithAnswer']);
             $router->get('rahjoos/{rahjoo}/exercise/{exercise}/questions', [V1ApiRahjooController::class, 'exerciseQuestions']);
             $router->post('rahjoos/{rahjoo}/questions/{question}/question-points', [V1ApiRahjooController::class, 'storeQuestionPoints']);

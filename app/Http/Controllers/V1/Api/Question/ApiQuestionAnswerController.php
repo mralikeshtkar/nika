@@ -47,6 +47,11 @@ class ApiQuestionAnswerController extends ApiBaseController
      *           mediaType="multipart/form-data",
      *           @OA\Schema(
      *               @OA\Property(
+     *                   property="question_id",
+     *                   type="string",
+     *                   description="شناسه سوال"
+     *               ),
+     *               @OA\Property(
      *                  property="answers",
      *                  type="array",
      *                  @OA\Items(
@@ -67,6 +72,60 @@ class ApiQuestionAnswerController extends ApiBaseController
     public function store(Request $request, $rahjoo, $exercise)
     {
         return $this->questionAnswerService->store($request, $rahjoo, $exercise);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/rahjoos/{rahjoo}/exercise/{exercise}/question-single",
+     *     summary="بصورت تکی پاسخ سوال",
+     *     description="",
+     *     tags={"پاسخ سوال"},
+     *     @OA\Parameter(
+     *         description="شناسه رهجو",
+     *         in="path",
+     *         name="rahjoo",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه تمرین",
+     *         in="path",
+     *         name="exercise",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\RequestBody(
+     *       @OA\MediaType(
+     *           mediaType="multipart/form-data",
+     *           @OA\Schema(
+     *               @OA\Property(
+     *                   property="question_id",
+     *                   type="string",
+     *                   description="شناسه سوال"
+     *               ),
+     *               @OA\Property(
+     *                   property="answer_type_id",
+     *                   type="string",
+     *                   description="شناسه نوع جواب سوال"
+     *               ),
+     *               @OA\Property(
+     *                   property="answer",
+     *                   type="string",
+     *                   description="یا باید فایل باید یا متن (در swagger چنین قابلیتی وجود ندارد برای تست بزارم یا متن باشه یا فایل)"
+     *               ),
+     *           ),
+     *       )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="ثبت با موفقیت انجام شد",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function storeSingle(Request $request,$rahjoo, $exercise)
+    {
+        return $this->questionAnswerService->storeSingle($request, $rahjoo, $exercise);
     }
 
     /**
