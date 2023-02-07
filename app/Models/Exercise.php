@@ -107,7 +107,7 @@ class Exercise extends Model
         $builder->addSelect([
             'question_answers_count' => Question::query()->selectRaw('COUNT(distinct question_answers.question_id)')
                 ->whereColumn('questions.exercise_id', 'exercises.id')
-                ->join('question_answers', 'question_answers.question_id', '=', 'questions.id')
+                ->leftJoin('question_answers', 'question_answers.question_id', '=', 'questions.id')
                 ->where('question_answers.rahjoo_id', $rahjoo_id)
         ]);
     }
