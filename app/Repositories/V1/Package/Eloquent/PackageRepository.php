@@ -159,7 +159,6 @@ class PackageRepository extends BaseRepository implements PackageRepositoryInter
         return $package->questions()->paginate($request->get('perPage'));
     }
 
-
     public function getNextExercise(Request $request, $package, $rahjoo)
     {
         $ids = $rahjoo->package->pivotExercisePriority->pluck('exercise_id')->reverse();

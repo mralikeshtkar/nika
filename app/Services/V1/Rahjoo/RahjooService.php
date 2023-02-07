@@ -5,6 +5,7 @@ namespace App\Services\V1\Rahjoo;
 use App\Enums\Question\QuestionAnswerType;
 use App\Enums\Role;
 use App\Http\Resources\V1\Comment\CommentResource;
+use App\Http\Resources\V1\Exercise\ExerciseResource;
 use App\Http\Resources\V1\PaginationResource;
 use App\Http\Resources\V1\Question\QuestionResource;
 use App\Http\Resources\V1\Rahjoo\RahjooResource;
@@ -148,7 +149,7 @@ class RahjooService extends BaseService
             ->findorFailById($rahjoo);
         $exercise = resolve(PackageRepositoryInterface::class)->getNextExercise($request, $rahjoo->package, $rahjoo);
         return ApiResponse::message(trans("The information was register successfully"))
-            ->addData('questions', new QuestionResource($exercise))
+            ->addData('exercise', new ExerciseResource($exercise))
             ->send();
     }
 

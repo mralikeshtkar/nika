@@ -80,11 +80,11 @@ class ExerciseRepository extends BaseRepository implements ExerciseRepositoryInt
         /** @var Exercise $exercise */
         return $exercise->questions()
             ->select(['id', 'exercise_id', 'title', 'created_at', 'updated_at'])
-            ->with(['files','files.media','answerTypes:id,question_id,type'])
-            ->when($rahjoo,function (Builder $builder)use ($rahjoo){
-                $builder->addSelect(['is_answered'=>QuestionAnswer::query()->selectRaw('COUNT(*)')
-                    ->where('question_answers.rahjoo_id',$rahjoo)
-                    ->whereColumn('questions.id','=','question_answers.question_id'),
+            ->with(['files', 'files.media', 'answerTypes:id,question_id,type'])
+            ->when($rahjoo, function (Builder $builder) use ($rahjoo) {
+                $builder->addSelect(['rahjoo_answers_count' => QuestionAnswer::query()->selectRaw('COUNT(*)')
+                    ->where('question_answers.rahjoo_id', $rahjoo)
+                    ->whereColumn('questions.id', '=', 'question_answers.question_id'),
                 ]);
             })->paginate($request->get('perPage', 10));
     }

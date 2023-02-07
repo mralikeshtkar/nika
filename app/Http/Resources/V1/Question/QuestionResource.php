@@ -31,8 +31,8 @@ class QuestionResource extends JsonResource
             $collection->put('answers', QuestionAnswerResource::collection($this->resource->answers));
         })->when($this->resource->relationLoaded('pivotRahjooPoints'), function (Collection $collection) {
             $collection->put('pivot_rahjoo_points', QuestionPointRahjooResoruce::collection($this->resource->pivotRahjooPoints));
-        })->when($this->resource->relationLoaded('questionAnswers') && array_key_exists('questions_count', $this->resource->getAttributes()), function (Collection $collection) {
-            $collection->put('is_answered_questions', count($this->resource->questionAnswers) == $this->resource->questions_count);
+        })->when($this->resource->relationLoaded('answerTypes') && array_key_exists('rahjoo_answers_count', $this->resource->getAttributes()), function (Collection $collection) {
+            $collection->put('is_answered', count($this->resource->answerTypes) == $this->resource->rahjoo_answers_count);
         });
     }
 }
