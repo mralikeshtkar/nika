@@ -76,7 +76,7 @@ class ApiQuestionAnswerController extends ApiBaseController
 
     /**
      * @OA\Post(
-     *     path="/rahjoos/{rahjoo}/exercise/{exercise}/question-single",
+     *     path="/rahjoos/{rahjoo}/exercise/{exercise}/question-single/{question}/{questionAnswerType}",
      *     summary="بصورت تکی پاسخ سوال",
      *     description="",
      *     tags={"پاسخ سوال"},
@@ -94,20 +94,24 @@ class ApiQuestionAnswerController extends ApiBaseController
      *         required=true,
      *         @OA\Schema(type="number"),
      *     ),
+     *     @OA\Parameter(
+     *         description="شناسه سوال",
+     *         in="path",
+     *         name="question",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه نوع جواب سوال",
+     *         in="path",
+     *         name="questionAnswerType",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
      *     @OA\RequestBody(
      *       @OA\MediaType(
      *           mediaType="multipart/form-data",
      *           @OA\Schema(
-     *               @OA\Property(
-     *                   property="question_id",
-     *                   type="string",
-     *                   description="شناسه سوال"
-     *               ),
-     *               @OA\Property(
-     *                   property="answer_type_id",
-     *                   type="string",
-     *                   description="شناسه نوع جواب سوال"
-     *               ),
      *               @OA\Property(
      *                   property="file",
      *                   type="string",
@@ -123,9 +127,9 @@ class ApiQuestionAnswerController extends ApiBaseController
      *     ),
      * )
      */
-    public function storeSingle(Request $request,$rahjoo, $exercise)
+    public function storeSingle(Request $request,$rahjoo, $exercise,$question ,$questionAnswerType)
     {
-        return $this->questionAnswerService->storeSingle($request, $rahjoo, $exercise);
+        return $this->questionAnswerService->storeSingle($request, $rahjoo, $exercise,$question ,$questionAnswerType);
     }
 
     /**

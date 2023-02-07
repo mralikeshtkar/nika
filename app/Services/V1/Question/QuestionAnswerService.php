@@ -90,27 +90,25 @@ class QuestionAnswerService extends BaseService
      * @param Request $request
      * @param $rahjoo
      * @param $exercise
+     * @param $question
+     * @param $questionAnswerType
      * @return mixed
      */
-    public function storeSingle(Request $request, $rahjoo, $exercise): mixed
+    public function storeSingle(Request $request, $rahjoo, $exercise,$question ,$questionAnswerType): mixed
     {
         $rahjoo = resolve(RahjooRepositoryInterface::class)->select(['id', 'package_id'])
             ->with(['package:id'])
             ->findorFailById($rahjoo);
         $exercise = resolve(PackageRepositoryInterface::class)->findPackageExerciseById($request, $rahjoo->package, $exercise);
-        ApiResponse::validate($request->all(), [
-            'question_id' => ['required', 'exists:' . Question::class . ',id'],
-            'answer_type_id' => ['required', Rule::exists(\App\Models\QuestionAnswerType::class, 'id')->where('question_id', $request->question_id)],
-        ]);
         $question = resolve(ExerciseRepositoryInterfaces::class)->findExerciseQuestionById($request,
             $exercise,
-            $request->question_id,
+            $question,
             ['id', 'exercise_id', 'title', 'created_at', 'updated_at'],
             ['files', 'answers:rahjoo_id,question_id'],
         );
         $answerType = resolve(QuestionRepositoryInterface::class)->query($question->answerTypes())
             ->select(['id', 'question_id', 'type'])
-            ->findOrFailById($request->answer_type_id);
+            ->findOrFailById($questionAnswerType);
         //abort_if($question->answers->contains('rahjoo_id', $rahjoo->id), ApiResponse::error(trans("You have already answered this question"), Response::HTTP_BAD_REQUEST)->send());
         ApiResponse::validate($request->all(), [
             'file' => QuestionAnswerType::fromValue($answerType->type)->getRules(),
