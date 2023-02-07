@@ -113,17 +113,17 @@ class QuestionAnswerService extends BaseService
             ->findOrFailById($request->answer_type_id);
         //abort_if($question->answers->contains('rahjoo_id', $rahjoo->id), ApiResponse::error(trans("You have already answered this question"), Response::HTTP_BAD_REQUEST)->send());
         ApiResponse::validate($request->all(), [
-            'answer' => QuestionAnswerType::fromValue($answerType->type)->getRules(),
+            'file' => QuestionAnswerType::fromValue($answerType->type)->getRules(),
         ]);
         try {
             return DB::transaction(function () use ($request, $rahjoo, $question) {
-                $isFile = $request->hasFile('answer');
+                $isFile = $request->hasFile('file');
                 $questionAnswer = $this->questionAnswerRepository->create([
                     'rahjoo_id' => $rahjoo->id,
                     'question_id' => $question->id,
-                    'text' => $isFile ? null : $request->input('answer'),
+                    'text' => $isFile ? null : $request->input('file'),
                 ]);
-                if ($isFile) $this->questionAnswerRepository->uploadFile($questionAnswer, $request->file('answer'));
+                if ($isFile) $this->questionAnswerRepository->uploadFile($questionAnswer, $request->file('file'));
                 return ApiResponse::message(trans("The :attribute was successfully registered", ['attribute' => trans('QuestionAnswer')]), Response::HTTP_CREATED)->send();
             });
         } catch (Throwable $e) {
