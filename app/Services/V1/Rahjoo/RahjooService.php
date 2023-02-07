@@ -149,7 +149,7 @@ class RahjooService extends BaseService
             ->findorFailById($rahjoo);
         $exercise = resolve(PackageRepositoryInterface::class)->getNextExercise($request, $rahjoo->package, $rahjoo);
         return ApiResponse::message(trans("The information was register successfully"))
-            ->addData('exercise', $exercise ? ExerciseResource::collection($exercise) : null)
+            ->addData('exercise', $exercise ? new ExerciseResource($exercise) : null)
             ->send();
     }
 
