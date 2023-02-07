@@ -296,6 +296,45 @@ class ApiRahjooController extends ApiBaseController
     }
 
     /**
+     * @OA\Get (
+     *     path="/rahjoos/{id}/exercise/{exercise}/question-single/{question}",
+     *     summary="سوال تمرین رهجو",
+     *     description="",
+     *     tags={"رهجو"},
+     *     @OA\Parameter(
+     *         description="شناسه رهجو",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه تمرین",
+     *         in="path",
+     *         name="exercise",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه سوال",
+     *         in="path",
+     *         name="question",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function exerciseSingleQuestion(Request $request, $rahjoo, $exercise)
+    {
+        return $this->rahjooService->packageQuestions($request, $rahjoo, $exercise);
+    }
+
+    /**
      * @OA\Post(
      *     path="/rahjoos/{rahjoo}/questions/{question}/question-points",
      *     summary="ثبت امتیاز برای رهجو",

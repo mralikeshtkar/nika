@@ -8,7 +8,11 @@ use App\Repositories\V1\BaseRepository;
 use App\Repositories\V1\Exercise\Interfaces\ExerciseRepositoryInterfaces;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ExerciseRepository extends BaseRepository implements ExerciseRepositoryInterfaces
 {
@@ -87,6 +91,18 @@ class ExerciseRepository extends BaseRepository implements ExerciseRepositoryInt
                     ->whereColumn('questions.id', '=', 'question_answers.question_id'),
                 ]);
             })->paginate($request->get('perPage', 10));
+    }
+
+    public function findSingleQuestion(Request $request, $exercise, $question, $rahjoo = null): Model|Collection|HasMany|array|null
+    {
+        /** @var Exercise $exercise */
+        return $exercise->questions()
+            ->select(['id', 'exercise_id', 'title', 'created_at', 'updated_at'])
+            ->with(['files', 'files.media', 'answerTypes:id,question_id,type'])
+            ->withCount(['answerTypes', 'answers' => function ($q) use ($rahjoo) {
+                $q->where('rahjoo_id', $rahjoo);
+            }])->having('answers_count', '!=', DB::raw('answer_types_count'))
+            ->findOrFail($question);
     }
 
     public function findExerciseQuestionById(Request $request, $exercise, $question, array $columns = ['id', 'exercise_id', 'title', 'created_at', 'updated_at'], array $relations = ['files'])
