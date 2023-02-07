@@ -58,6 +58,14 @@ class Exercise extends Model
             ->orderBy('priority');
     }
 
+    /**
+     * @return HasManyDeep
+     */
+    public function questionAnswerTypes(): HasManyDeep
+    {
+        return $this->hasManyDeepFromRelations($this->questions(), (new Question())->answerTypes());
+    }
+
     public function questionAnswers(): HasManyThrough
     {
         return $this->hasManyThrough(QuestionAnswer::class, Question::class, 'exercise_id', 'question_id', 'id', 'id');
@@ -107,7 +115,7 @@ class Exercise extends Model
         $builder->addSelect([
             'question_answers_count' => Question::query()->selectRaw('COUNT(distinct question_answers.question_id)')
                 ->whereColumn('questions.exercise_id', 'exercises.id')
-                ->leftJoin('question_answers', 'question_answers.question_id', '=', 'questions.id')
+                ->join('question_answers', 'question_answers.question_id', '=', 'questions.id')
                 ->where('question_answers.rahjoo_id', $rahjoo_id)
         ]);
     }
