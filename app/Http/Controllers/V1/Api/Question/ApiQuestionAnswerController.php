@@ -109,7 +109,7 @@ class ApiQuestionAnswerController extends ApiBaseController
      *                   description="شناسه نوع جواب سوال"
      *               ),
      *               @OA\Property(
-     *                   property="answer",
+     *                   property="file",
      *                   type="string",
      *                   description="یا باید فایل باید یا متن (در swagger چنین قابلیتی وجود ندارد برای تست بزارم یا متن باشه یا فایل)"
      *               ),
