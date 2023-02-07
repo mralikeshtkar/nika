@@ -74,14 +74,6 @@ class Exercise extends Model
     /**
      * @return HasManyDeep
      */
-    public function questionAnswersRahjoos(): HasManyDeep
-    {
-        return $this->hasManyDeepFromRelations($this->questionAnswers(), (new QuestionAnswer())->rahjoo());
-    }
-
-    /**
-     * @return HasManyDeep
-     */
     public function points(): HasManyDeep
     {
         return $this->hasManyDeepFromRelations($this->questions(), (new Question())->points())
