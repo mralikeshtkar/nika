@@ -165,6 +165,9 @@ class PackageRepository extends BaseRepository implements PackageRepositoryInter
         /** @var Package $package */
         return $package->exercises()
             ->has('questions')
+            ->withCount(['questions'=>function($q){
+                $q->has('answerTypes');
+            }])
             
             ->orderByRaw(DB::raw("FIELD(id, " . $ids->implode(', ') . ") DESC"))
             ->when($request->filled('lock'), function (Builder $builder) use ($request) {
