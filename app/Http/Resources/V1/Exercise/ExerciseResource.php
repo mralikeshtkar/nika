@@ -22,6 +22,8 @@ class ExerciseResource extends JsonResource
             $collection->put('updated_at', jalaliFormat($this->resource->updated_at, 'j F Y'));
         })->when($this->resource->relationLoaded('files'),function (Collection $collection){
             $collection->put('files', is_array($this->resource->files) && count($this->resource->files) ? MediaResource::collection($this->resource->files) : null);
+        })->when($this->resource->relationLoaded('answerTypes') && array_key_exists('rahjoo_answers_count', $this->resource->getAttributes()), function (Collection $collection) {
+            $collection->put('is_answered', count($this->resource->answerTypes) == $this->resource->rahjoo_answers_count);
         });
     }
 }
