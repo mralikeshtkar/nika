@@ -86,7 +86,7 @@ class ExerciseRepository extends BaseRepository implements ExerciseRepositoryInt
             ->select(['id', 'exercise_id', 'title', 'created_at', 'updated_at'])
             ->with(['files', 'files.media', 'answerTypes' => function ($q) use ($rahjoo) {
                 $q->select(['id', 'question_id', 'type'])
-                    ->with(['answers' => function ($q) use ($rahjoo) {
+                    ->with(['answer' => function ($q) use ($rahjoo) {
                         $q->with('file')->where('rahjoo_id', $rahjoo);
                     }]);
             }])
@@ -105,7 +105,7 @@ class ExerciseRepository extends BaseRepository implements ExerciseRepositoryInt
             ->select(['id', 'exercise_id', 'title', 'created_at', 'updated_at'])
             ->with(['files', 'files.media', 'answerTypes' => function ($q) use ($rahjoo) {
                 $q->select(['id', 'question_id', 'type'])
-                    ->with(['answers' => function ($q) use ($rahjoo) {
+                    ->with(['answer' => function ($q) use ($rahjoo) {
                         $q->with('file')->where('rahjoo_id', $rahjoo);
                     }]);
             }])->when($rahjoo, function (Builder $builder) use ($rahjoo) {

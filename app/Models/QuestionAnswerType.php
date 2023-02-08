@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class QuestionAnswerType extends Model
 {
@@ -27,11 +28,11 @@ class QuestionAnswerType extends Model
     #region Relations
 
     /**
-     * @return HasMany
+     * @return HasOne
      */
-    public function answers(): HasMany
+    public function answer(): HasOne
     {
-        return $this->hasMany(QuestionAnswer::class, 'question_answer_type_id');
+        return $this->hasOne(QuestionAnswer::class, 'question_answer_type_id');
     }
 
     #endregion
