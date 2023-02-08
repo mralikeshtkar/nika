@@ -24,11 +24,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('background')->default(UserBackground::Black);
-            $table->string('color')->default(UserColor::Pink);
-        });
-        dd("ok");
         $this->call([
             ProvinceSeeder::class,
             PermissionSeeder::class,

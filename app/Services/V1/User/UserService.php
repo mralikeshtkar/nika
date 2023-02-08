@@ -3,6 +3,8 @@
 namespace App\Services\V1\User;
 
 use App\Enums\Role as RoleEnum;
+use App\Enums\User\UserBackground;
+use App\Enums\User\UserColor;
 use App\Enums\UserStatus;
 use App\Exceptions\User\UserAccountIsInactiveException;
 use App\Http\Resources\V1\PaginationResource;
@@ -22,6 +24,7 @@ use App\Rules\NationalCodeRule;
 use App\Rules\PasswordRule;
 use App\Services\V1\BaseService;
 use BenSampo\Enum\Rules\EnumKey;
+use BenSampo\Enum\Rules\EnumValue;
 use Exception;
 use Hekmatinasser\Verta\Verta;
 use Illuminate\Http\JsonResponse;
@@ -144,7 +147,7 @@ class UserService extends BaseService
     public function currentUser(Request $request): JsonResponse
     {
         $user = $request->user()->load('rahjoo')
-            ->only(['id', 'first_name', 'last_name', 'mobile', 'birthdate', 'rahjoo']);
+            ->only(['id','background', 'color', 'first_name', 'last_name', 'mobile', 'birthdate', 'rahjoo']);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('user', new SingleUserResource($user))
             ->send();
@@ -304,6 +307,8 @@ class UserService extends BaseService
     {
         ApiResponse::authorize($request->user()->can('create', User::class));
         ApiResponse::validate($request->all(), [
+            'background' => ['nullable', new EnumValue(UserBackground::class)],
+            'color' => ['nullable', new EnumValue(UserColor::class)],
             'first_name' => ['nullable', 'string'],
             'last_name' => ['nullable', 'string'],
             'father_name' => ['nullable', 'string'],
@@ -342,6 +347,10 @@ class UserService extends BaseService
             $collection->put('status', $request->status);
         }, function (Collection $collection) {
             $collection->put('status', UserStatus::Active);
+        })->when($request->filled('background'), function (Collection $collection) use ($request) {
+            $collection->put('background', $request->background);
+        })->when($request->filled('color'), function (Collection $collection) use ($request) {
+            $collection->put('color', $request->color);
         })->toArray());
         return ApiResponse::message(trans("The :attribute was successfully registered", ['attribute' => trans('User')]), Response::HTTP_CREATED)
             ->addData('user', UserResource::make($user))

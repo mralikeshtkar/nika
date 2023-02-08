@@ -619,6 +619,16 @@ class ApiUserController extends ApiBaseController
      *                     description="کلمه عبور"
      *                 ),
      *                 @OA\Property(
+     *                     property="background",
+     *                     type="string",
+     *                     description="پس زمینه"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="color",
+     *                     type="string",
+     *                     description="رنگ"
+     *                 ),
+     *                 @OA\Property(
      *                     property="city_id",
      *                     type="number",
      *                     description="شناسه شهر کاربر"
