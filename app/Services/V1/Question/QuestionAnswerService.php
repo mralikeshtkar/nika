@@ -144,7 +144,7 @@ class QuestionAnswerService extends BaseService
             ->with(['package:id'])
             ->findorFailById($rahjoo);
         $exercise = resolve(PackageRepositoryInterface::class)->findPackageExerciseById($request, $rahjoo->package, $exercise);
-        $question = resolve(ExerciseRepositoryInterfaces::class)->findSingleQuestion($request,
+        $question = resolve(ExerciseRepositoryInterfaces::class)->findExerciseQuestionById($request,
             $exercise,
             $question,
             ['id', 'exercise_id', 'title'],
