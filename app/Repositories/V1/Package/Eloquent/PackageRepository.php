@@ -176,7 +176,7 @@ class PackageRepository extends BaseRepository implements PackageRepositoryInter
                 })->when($request->lock == "notlocked", function (Builder $builder) use ($request) {
                     $builder->notLocked();
                 });
-            })->last();
+            })->get();
     }
 
     public function findPackageExerciseById(Request $request, $package, $exercise)
