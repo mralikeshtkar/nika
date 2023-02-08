@@ -16,6 +16,8 @@ class PackageSeeder extends Seeder
      */
     public function run()
     {
-        Package::factory()->withIntelligences()->count(10)->create();
+        foreach (range(0, 3) as $i) {
+            Package::factory()->withIntelligences()->create(['title' => trans("Package") . $i]);
+        }
     }
 }

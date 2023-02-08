@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\User\UserBackground;
+use App\Enums\User\UserColor;
 use App\Enums\UserStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -15,6 +17,8 @@ return new class extends Migration {
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->string('background')->default(UserBackground::Black);
+            $table->string('color')->default(UserColor::Pink);
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('father_name')->nullable();
