@@ -110,7 +110,7 @@ class QuestionAnswerService extends BaseService
         $answerType = resolve(QuestionRepositoryInterface::class)->query($question->answerTypes())
             ->select(['id', 'question_id', 'type'])
             ->findOrFailById($questionAnswerType);
-        //abort_if($question->answers->contains('rahjoo_id', $rahjoo->id), ApiResponse::error(trans("You have already answered this question"), Response::HTTP_BAD_REQUEST)->send());
+//        abort_if($question->answers->contains('rahjoo_id', $rahjoo->id), ApiResponse::error(trans("You have already answered this question"), Response::HTTP_BAD_REQUEST)->send());
         ApiResponse::validate($request->all(), [
             'file' => QuestionAnswerType::fromValue($answerType->type)->getRules(),
         ]);
@@ -144,20 +144,7 @@ class QuestionAnswerService extends BaseService
             ->with(['package:id'])
             ->findorFailById($rahjoo);
         $exercise = resolve(PackageRepositoryInterface::class)->findPackageExerciseById($request, $rahjoo->package, $exercise);
-        $question = resolve(ExerciseRepositoryInterfaces::class)->findExerciseQuestionById($request,
-            $exercise,
-            $question,
-            ['id', 'exercise_id', 'title'],
-            ['files', 'files.media', 'answerTypes'=>function($q) use($rahjoo){
-                $q->select(['id', 'question_id', 'type'])
-                    ->with(['answer' => function ($q) use ($rahjoo) {
-                        $q->with('file')->where('rahjoo_id', $rahjoo);
-                    }]);
-            }, 'answers.file', 'answers' => function ($q) use ($rahjoo) {
-                $q->select(['id', 'rahjoo_id', 'question_id', 'text', 'created_at'])
-                    ->where('rahjoo_id', $rahjoo->id);
-            }],
-        );
+        $question = resolve(ExerciseRepositoryInterfaces::class)->findSingleQuestion($request, $exercise, $rahjoo->id);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('question', new QuestionResource($question))
             ->send();
