@@ -307,7 +307,7 @@ class UserService extends BaseService
             'first_name' => ['nullable', 'string'],
             'last_name' => ['nullable', 'string'],
             'father_name' => ['nullable', 'string'],
-            'mobile' => ['required', new MobileRule(), new MobileIsUniqueRule()],
+            'mobile' => ['required', new MobileRule()],
             'national_code' => ['nullable', new NationalCodeRule()],
             'birthdate' => ['nullable', 'jdate:' . User::BIRTHDATE_VALIDATION_FORMAT],
             'password' => ['nullable', new PasswordRule()],

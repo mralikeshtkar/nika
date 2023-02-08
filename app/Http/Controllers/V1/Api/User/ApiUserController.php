@@ -157,7 +157,7 @@ class ApiUserController extends ApiBaseController
      *                 required={"intelligence"},
      *                 @OA\Property(
      *                     property="first_name",
-     *                     type="string",
+     *                     type="array",
      *                     description="نام"
      *                 ),
      *             )
