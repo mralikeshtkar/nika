@@ -168,14 +168,16 @@ class PackageRepository extends BaseRepository implements PackageRepositoryInter
             ->withCount(['questionAnswerTypes','questionAnswers'=>function($query)use($rahjoo){
                 $query->where('rahjoo_id',$rahjoo->id);
             }])->having('question_answer_types_count', '!=', DB::raw('question_answers_count'))
-            /*->orderByRaw(DB::raw("FIELD(id, " . $ids->implode(', ') . ") DESC"))
+            ->when($ids->count(),function (Builder $builder)use($ids){
+                $builder->orderByRaw(DB::raw("FIELD(id, " . $ids->implode(', ') . ") DESC"));
+            })
             ->when($request->filled('lock'), function (Builder $builder) use ($request) {
                 $builder->when($request->lock == "locked", function (Builder $builder) use ($request) {
                     $builder->locked();
                 })->when($request->lock == "notlocked", function (Builder $builder) use ($request) {
                     $builder->notLocked();
                 });
-            })*/->first();
+            })->first();
     }
 
     public function findPackageExerciseById(Request $request, $package, $exercise)
