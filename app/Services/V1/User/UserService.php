@@ -340,6 +340,8 @@ class UserService extends BaseService
             'birth_place_id' => $request->birth_place_id,
         ])->when($request->filled('status'), function (Collection $collection) use ($request) {
             $collection->put('status', $request->status);
+        }, function (Collection $collection) {
+            $collection->put('status', UserStatus::Active);
         })->toArray());
         return ApiResponse::message(trans("The :attribute was successfully registered", ['attribute' => trans('User')]), Response::HTTP_CREATED)
             ->addData('user', UserResource::make($user))
