@@ -105,12 +105,12 @@ class QuestionAnswerService extends BaseService
             $exercise,
             $question,
             ['id', 'exercise_id', 'title', 'created_at', 'updated_at'],
-            ['files', 'answers:rahjoo_id,question_id'],
+            ['files', 'answers:rahjoo_id,question_id,question_answer_type_id'],
         );
         $answerType = resolve(QuestionRepositoryInterface::class)->query($question->answerTypes())
             ->select(['id', 'question_id', 'type'])
             ->findOrFailById($questionAnswerType);
-//        abort_if($question->answers->contains('rahjoo_id', $rahjoo->id), ApiResponse::error(trans("You have already answered this question"), Response::HTTP_BAD_REQUEST)->send());
+        abort_if($question->answers->where('rahjoo_id', $rahjoo->id)->where('question_answer_type_id',$answerType->id)->count(), ApiResponse::error(trans("You have already answered this question"), Response::HTTP_BAD_REQUEST)->send());
         ApiResponse::validate($request->all(), [
             'file' => QuestionAnswerType::fromValue($answerType->type)->getRules(),
         ]);
