@@ -143,28 +143,34 @@ class ApiUserController extends ApiBaseController
     }
 
     /**
-     * Store a user.
-     *
      * @OA\Post(
-     *     path="/users",
-     *     summary="ثبت کاربر",
+     *     path="/users/{user}/rahnama/intelligences",
+     *     summary="ثبت هوش ها برای رهنما",
      *     description="",
-     *     tags={"کاربر"},
+     *     tags={"رهنما"},
+     *     @OA\Parameter(
+     *         description="شناسه کاربر",
+     *         in="path",
+     *         name="user",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
      *     @OA\RequestBody(
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"intelligence"},
+     *                 required={"intelligences[]"},
      *                 @OA\Property(
-     *                     property="first_name",
+     *                     property="intelligences[]",
      *                     type="array",
-     *                     description="نام"
+     *                     collectionFormat="multi",
+     *                     @OA\Items(type="number", format="id")
      *                 ),
      *             )
      *         )
      *     ),
      *     @OA\Response(
-     *         response=201,
+     *         response=200,
      *         description="ثبت با موفقیت انجام شد",
      *         @OA\JsonContent()
      *     ),
