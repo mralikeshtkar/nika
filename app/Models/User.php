@@ -168,6 +168,14 @@ class User extends Authenticatable
     #region Relations
 
     /**
+     * @return BelongsToMany
+     */
+    public function rahnamaIntelligences(): BelongsToMany
+    {
+        return $this->belongsToMany(Intelligence::class,'intelligence_rahnama','rahnama_id','id','id','intelligence_id');
+    }
+
+    /**
      * @return BelongsTo
      */
     public function birth_place(): BelongsTo

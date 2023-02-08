@@ -155,6 +155,11 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         return $model->refresh();
     }
 
+    public function storeRahnamaIntelligences(Request $request, $user,$data)
+    {
+        return $user->rahnamaIntelligences()->sync($data);
+    }
+
     /**
      * @param $user
      * @return mixed

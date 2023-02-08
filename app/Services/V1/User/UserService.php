@@ -25,6 +25,7 @@ use Exception;
 use Hekmatinasser\Verta\Verta;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -55,7 +56,7 @@ class UserService extends BaseService
     {
         $users = $this->userRepository
             ->filterPagination($request)
-            ->paginate($request->get('perPage',10));
+            ->paginate($request->get('perPage', 10));
         $resource = PaginationResource::make($users)->additional(['itemsResource' => UserResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('users', $resource)
@@ -73,11 +74,20 @@ class UserService extends BaseService
             ->searchName($request)
             ->searchMobile($request)
             ->searchNotionalCode($request)
-            ->paginate($request->get('perPage',10));
+            ->paginate($request->get('perPage', 10));
         $resource = PaginationResource::make($users)->additional(['itemsResource' => UserResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('users', $resource)
             ->send();
+    }
+
+    public function storeRahnamaIntelligences(Request $request, $user)
+    {
+        $user = $this->userRepository
+//            ->hasRole(RoleEnum::RAHNAMA)
+            ->findOrFailById($user);
+        dd($user->rahnamaIntelligences);
+        $this->userRepository->storeRahnamaIntelligences($request,$user);
     }
 
     /**
@@ -91,7 +101,7 @@ class UserService extends BaseService
             ->searchName($request)
             ->searchMobile($request)
             ->searchNotionalCode($request)
-            ->paginate($request->get('perPage',10));
+            ->paginate($request->get('perPage', 10));
         $resource = PaginationResource::make($users)->additional(['itemsResource' => UserResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('users', $resource)
@@ -109,7 +119,7 @@ class UserService extends BaseService
             ->searchName($request)
             ->searchMobile($request)
             ->searchNotionalCode($request)
-            ->paginate($request->get('perPage',10));
+            ->paginate($request->get('perPage', 10));
         $resource = PaginationResource::make($users)->additional(['itemsResource' => UserResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('users', $resource)
@@ -290,7 +300,7 @@ class UserService extends BaseService
             'national_code' => ['nullable', new NationalCodeRule()],
             'birthdate' => ['nullable', 'jdate:' . User::BIRTHDATE_VALIDATION_FORMAT],
             'password' => ['nullable', new PasswordRule()],
-            'status' => ['required', new EnumKey(UserStatus::class)],
+            'status' => ['nullable', new EnumKey(UserStatus::class)],
             'city_id' => ['nullable', 'exists:' . City::class . ',id'],
             'grade_id' => ['nullable', 'exists:' . Grade::class . ',id'],
             'birth_place_id' => ['nullable', 'exists:' . City::class . ',id'],
@@ -299,11 +309,11 @@ class UserService extends BaseService
             'mobile' => to_valid_mobile_number($request->mobile),
             'birthdate' => $request->filled('birthdate') ? Verta::parseFormat(User::BIRTHDATE_VALIDATION_FORMAT, $request->birthdate) : null,
             'password' => $request->filled('password') ? Hash::make($request->password) : null,
-            'status' => UserStatus::getValue($request->status),
+            'status' => $request->filled('status') ? UserStatus::getValue($request->status) : null,
         ]);
         $user = $this->userRepository->updateOrCreate([
             'mobile' => $request->mobile,
-        ], [
+        ], collect([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'father_name' => $request->father_name,
@@ -317,7 +327,9 @@ class UserService extends BaseService
             'city_id' => $request->city_id,
             'grade_id' => $request->grade_id,
             'birth_place_id' => $request->birth_place_id,
-        ]);
+        ])->when($request->filled('status'), function (Collection $collection) use ($request) {
+            $collection->put('status', $request->status);
+        }));
         return ApiResponse::message(trans("The :attribute was successfully registered", ['attribute' => trans('User')]), Response::HTTP_CREATED)
             ->addData('user', UserResource::make($user))
             ->send();

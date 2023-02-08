@@ -140,6 +140,38 @@ class RahjooService extends BaseService
     /**
      * @param Request $request
      * @param $rahjoo
+     * @param $user
+     * @return JsonResponse
+     */
+    public function assignRahyab(Request $request, $rahjoo, $user): JsonResponse
+    {
+        $rahjoo = $this->rahjooRepository->select(['id'])->findorFailById($rahjoo);
+        $user = resolve(UserRepositoryInterface::class)->select(['id'])->findOrFailById($user);
+        $this->rahjooRepository->update($rahjoo, [
+            'rahyab_id' => $user->id,
+        ]);
+        return ApiResponse::message(trans("Mission accomplished"))->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $rahjoo
+     * @param $user
+     * @return JsonResponse
+     */
+    public function assignRahnama(Request $request, $rahjoo, $user): JsonResponse
+    {
+        $rahjoo = $this->rahjooRepository->select(['id'])->findorFailById($rahjoo);
+        $user = resolve(UserRepositoryInterface::class)->select(['id'])->findOrFailById($user);
+        $this->rahjooRepository->update($rahjoo, [
+            'rahnama_id' => $user->id,
+        ]);
+        return ApiResponse::message(trans("Mission accomplished"))->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $rahjoo
      * @return JsonResponse
      */
     public function packageExercises(Request $request, $rahjoo): JsonResponse
@@ -172,13 +204,13 @@ class RahjooService extends BaseService
             ->send();
     }
 
-    public function exerciseSingleQuestion(Request $request, $rahjoo, $exercise,$question)
+    public function exerciseSingleQuestion(Request $request, $rahjoo, $exercise, $question)
     {
         $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])
             ->with(['package:id'])
             ->findorFailById($rahjoo);
         $exercise = resolve(PackageRepositoryInterface::class)->findPackageExerciseById($request, $rahjoo->package, $exercise);
-        $question = resolve(ExerciseRepositoryInterfaces::class)->findSingleQuestion($request, $exercise,$question, $rahjoo->id);;
+        $question = resolve(ExerciseRepositoryInterfaces::class)->findSingleQuestion($request, $exercise, $question, $rahjoo->id);;
         return ApiResponse::message(trans("The information was register successfully"))
             ->addData('question', new QuestionResource($question))
             ->send();
@@ -276,7 +308,7 @@ class RahjooService extends BaseService
     {
         ApiResponse::authorize($request->user()->can('storeQuestionComment', Rahjoo::class));
         /** @var Rahjoo $rahjoo */
-        $rahjoo = $this->rahjooRepository->select(['id','package_id'])->findorFailById($rahjoo);
+        $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])->findorFailById($rahjoo);
         $question = $this->rahjooRepository->query($rahjoo->questions())->findOrFailById($question);
         ApiResponse::validate($request->all(), [
             'body' => ['required', 'string'],
@@ -299,13 +331,13 @@ class RahjooService extends BaseService
      */
     public function questionComments(Request $request, $rahjoo, $question): JsonResponse
     {
-        $rahjoo = $this->rahjooRepository->select(['id','package_id'])->findorFailById($rahjoo);
+        $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])->findorFailById($rahjoo);
         $questionRepository = resolve(QuestionRepositoryInterface::class);
         $question = $this->rahjooRepository->query($rahjoo->questions())->findOrFailById($question);
         $comments = $questionRepository->query($question->comments()->latest())
-            ->select(['id','user_id','body','created_at'])
+            ->select(['id', 'user_id', 'body', 'created_at'])
             ->with(['user:id,first_name,last_name,mobile'])
-            ->where('rahjoo_id',$rahjoo->id)
+            ->where('rahjoo_id', $rahjoo->id)
             ->paginate($request->get('perPage', 15));
         $resource = PaginationResource::make($comments)->additional(['itemsResource' => CommentResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))

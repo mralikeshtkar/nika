@@ -193,6 +193,100 @@ class ApiRahjooController extends ApiBaseController
     }
 
     /**
+     * @OA\Post(
+     *     path="/rahjoos/{id}/assign-rahyab/{user}",
+     *     summary="ثبت رهیاب برای رهجو",
+     *     description="",
+     *     tags={"رهجو"},
+     *     @OA\Parameter(
+     *         description="شناسه رهجو",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه کاربر",
+     *         in="path",
+     *         name="user",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"_method"},
+     *                 @OA\Property(
+     *                     property="_method",
+     *                     type="string",
+     *                     default="patch",
+     *                     enum={"patch"},
+     *                     description="این مقدار باید بصورت ثابت شود",
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function assignRahyab(Request $request, $rahjoo,$user)
+    {
+        return $this->rahjooService->assignRahyab($request, $rahjoo,$user);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/rahjoos/{id}/assign-rahnama/{user}",
+     *     summary="ثبت رهیاب برای رهجو",
+     *     description="",
+     *     tags={"رهجو"},
+     *     @OA\Parameter(
+     *         description="شناسه رهجو",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه کاربر",
+     *         in="path",
+     *         name="user",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"_method"},
+     *                 @OA\Property(
+     *                     property="_method",
+     *                     type="string",
+     *                     default="patch",
+     *                     enum={"patch"},
+     *                     description="این مقدار باید بصورت ثابت شود",
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function assignRahnama(Request $request, $rahjoo,$user)
+    {
+        return $this->rahjooService->assignRahnama($request, $rahjoo,$user);
+    }
+
+    /**
      * @OA\Get (
      *     path="/rahjoos/{id}/package-exercises",
      *     summary="لیست تمرین های رهجو بصورت صفحه بندی",

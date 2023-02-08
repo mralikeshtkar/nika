@@ -60,11 +60,13 @@ Route::prefix('v1')->group(function (Router $router) {
         $router->middleware('auth:sanctum')->group(function (Router $router) {
             $router->get('users', [V1UserController::class, 'index']);
             $router->get('users/only-rahjoos', [V1UserController::class, 'onlyRahjoos']);
-            $router->get('users/only-rahnama', [V1UserController::class, 'onlyRahnama']);
+            $router->post('users/{user}/rahnama/intelligences', [V1UserController::class, 'storeRahnamaIntelligences']);
             $router->get('users/only-rahyab', [V1UserController::class, 'onlyRahyab']);
             $router->post('users', [V1UserController::class, 'store']);
             $router->put('users/{user}', [V1UserController::class, 'update']);
             $router->post('users/{user}/assign-role', [V1UserController::class, 'assignRole']);
+
+
         });
     });
 
@@ -158,6 +160,8 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->post('rahjoos/{user}', [V1ApiRahjooController::class, 'store']);
             $router->delete('rahjoos/{rahjoo}', [V1ApiRahjooController::class, 'destroy']);
             $router->patch('rahjoos/{rahjoo}/assign-package', [V1ApiRahjooController::class, 'assignPackage']);
+            $router->patch('rahjoos/{rahjoo}/assign-rahyab/{user}', [V1ApiRahjooController::class, 'assignRahyab']);
+            $router->patch('rahjoos/{rahjoo}/assign-rahnama/{user}', [V1ApiRahjooController::class, 'assignRahnama']);
             $router->get('rahjoos/{rahjoo}/package-exercises', [V1ApiRahjooController::class, 'packageExercises']);
             $router->post('rahjoos/{rahjoo}/exercise/{exercise}/questions', [V1ApiQuestionAnswerController::class, 'store']);
             $router->post('rahjoos/{rahjoo}/exercise/{exercise}/question-single/{question}/{questionAnswerType}', [V1ApiQuestionAnswerController::class, 'storeSingle']);

@@ -142,6 +142,11 @@ class ApiUserController extends ApiBaseController
         return $this->userService->onlyRahjoos($request);
     }
 
+    public function storeRahnamaIntelligences(Request $request, $user)
+    {
+        return $this->userService->storeRahnamaIntelligences($request,$user);
+    }
+
     /**
      * @OA\Get (
      *     path="/users/only-rahnama",
@@ -543,7 +548,7 @@ class ApiUserController extends ApiBaseController
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"mobile","status",},
+     *                 required={"mobile"},
      *                 @OA\Property(
      *                     property="first_name",
      *                     type="string",
