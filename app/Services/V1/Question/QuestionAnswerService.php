@@ -75,6 +75,7 @@ class QuestionAnswerService extends BaseService
                     $questionAnswer = $this->questionAnswerRepository->create([
                         'rahjoo_id' => $rahjoo->id,
                         'question_id' => $question->id,
+                        'question_answer_type_id' => $key,
                         'text' => $isFile ? null : $request->input('answers.' . $key),
                     ]);
                     if ($isFile) $this->questionAnswerRepository->uploadFile($questionAnswer, $request->file('answers.' . $key));
@@ -94,7 +95,7 @@ class QuestionAnswerService extends BaseService
      * @param $questionAnswerType
      * @return mixed
      */
-    public function storeSingle(Request $request, $rahjoo, $exercise,$question ,$questionAnswerType): mixed
+    public function storeSingle(Request $request, $rahjoo, $exercise, $question, $questionAnswerType): mixed
     {
         $rahjoo = resolve(RahjooRepositoryInterface::class)->select(['id', 'package_id'])
             ->with(['package:id'])
@@ -114,11 +115,12 @@ class QuestionAnswerService extends BaseService
             'file' => QuestionAnswerType::fromValue($answerType->type)->getRules(),
         ]);
         try {
-            return DB::transaction(function () use ($request, $rahjoo, $question) {
+            return DB::transaction(function () use ($request, $rahjoo, $answerType, $question) {
                 $isFile = $request->hasFile('file');
                 $questionAnswer = $this->questionAnswerRepository->create([
                     'rahjoo_id' => $rahjoo->id,
                     'question_id' => $question->id,
+                    'question_answer_type_id' => $answerType->id,
                     'text' => $isFile ? null : $request->input('file'),
                 ]);
                 if ($isFile) $this->questionAnswerRepository->uploadFile($questionAnswer, $request->file('file'));

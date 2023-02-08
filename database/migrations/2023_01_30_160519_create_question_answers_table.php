@@ -24,6 +24,11 @@ return new class extends Migration {
                 ->on('questions')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
+            $table->foreignId('question_answer_type_id')
+                ->references('id')
+                ->on('question_answer_types')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
             $table->text('text')->nullable();
             $table->timestamps();
         });

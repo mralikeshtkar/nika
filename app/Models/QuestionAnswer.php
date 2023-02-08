@@ -16,6 +16,7 @@ class QuestionAnswer extends Model
     protected $fillable = [
         'rahjoo_id',
         'question_id',
+        'question_answer_type_id',
         'text',
     ];
 
