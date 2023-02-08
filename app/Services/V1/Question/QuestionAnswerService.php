@@ -144,8 +144,7 @@ class QuestionAnswerService extends BaseService
             ->with(['package:id'])
             ->findorFailById($rahjoo);
         $exercise = resolve(PackageRepositoryInterface::class)->findPackageExerciseById($request, $rahjoo->package, $exercise);
-        $question = resolve(ExerciseRepositoryInterfaces::class)->findSingleQuestion($request, $exercise, $rahjoo->id);
- 
+        $question = resolve(ExerciseRepositoryInterfaces::class)->findSingleQuestion($request, $exercise,$question, $rahjoo->id);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('question', new QuestionResource($question))
             ->send();

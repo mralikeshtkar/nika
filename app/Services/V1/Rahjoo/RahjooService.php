@@ -178,7 +178,7 @@ class RahjooService extends BaseService
             ->with(['package:id'])
             ->findorFailById($rahjoo);
         $exercise = resolve(PackageRepositoryInterface::class)->findPackageExerciseById($request, $rahjoo->package, $exercise);
-        $question = resolve(ExerciseRepositoryInterfaces::class)->findSingleQuestion($request, $exercise, $rahjoo->id);
+        $question = null;
         return ApiResponse::message(trans("The information was register successfully"))
             ->addData('question', new QuestionResource($question))
             ->send();
