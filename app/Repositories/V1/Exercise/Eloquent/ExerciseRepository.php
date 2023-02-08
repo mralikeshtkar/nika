@@ -84,7 +84,7 @@ class ExerciseRepository extends BaseRepository implements ExerciseRepositoryInt
         /** @var Exercise $exercise */
         return $exercise->questions()
             ->select(['id', 'exercise_id', 'title', 'created_at', 'updated_at'])
-            ->with(['files', 'files.media', 'answerTypes:' => function ($q) use ($rahjoo) {
+            ->with(['files', 'files.media', 'answerTypes' => function ($q) use ($rahjoo) {
                 $q->select(['id', 'question_id', 'type'])
                     ->with(['answers' => function ($q) use ($rahjoo) {
                         $q->with('file')->where('rahjoo_id', $rahjoo);
@@ -103,13 +103,12 @@ class ExerciseRepository extends BaseRepository implements ExerciseRepositoryInt
         /** @var Exercise $exercise */
         return $exercise->questions()
             ->select(['id', 'exercise_id', 'title', 'created_at', 'updated_at'])
-            ->with(['files', 'files.media', 'answerTypes:' => function ($q) use ($rahjoo) {
+            ->with(['files', 'files.media', 'answerTypes' => function ($q) use ($rahjoo) {
                 $q->select(['id', 'question_id', 'type'])
                     ->with(['answers' => function ($q) use ($rahjoo) {
                         $q->with('file')->where('rahjoo_id', $rahjoo);
                     }]);
-            }])
-            ->when($rahjoo, function (Builder $builder) use ($rahjoo) {
+            }])->when($rahjoo, function (Builder $builder) use ($rahjoo) {
                 $builder->addSelect(['rahjoo_answers_count' => QuestionAnswer::query()->selectRaw('COUNT(*)')
                     ->where('question_answers.rahjoo_id', $rahjoo)
                     ->whereColumn('questions.id', '=', 'question_answers.question_id'),
