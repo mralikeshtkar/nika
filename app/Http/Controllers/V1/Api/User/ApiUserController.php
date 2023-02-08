@@ -142,6 +142,34 @@ class ApiUserController extends ApiBaseController
         return $this->userService->onlyRahjoos($request);
     }
 
+    /**
+     * Store a user.
+     *
+     * @OA\Post(
+     *     path="/users",
+     *     summary="ثبت کاربر",
+     *     description="",
+     *     tags={"کاربر"},
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"intelligence"},
+     *                 @OA\Property(
+     *                     property="first_name",
+     *                     type="string",
+     *                     description="نام"
+     *                 ),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="ثبت با موفقیت انجام شد",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
     public function storeRahnamaIntelligences(Request $request, $user)
     {
         return $this->userService->storeRahnamaIntelligences($request,$user);

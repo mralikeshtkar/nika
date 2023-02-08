@@ -10,6 +10,7 @@ use App\Http\Resources\V1\User\SingleUserResource;
 use App\Http\Resources\V1\User\UserResource;
 use App\Models\City;
 use App\Models\Grade;
+use App\Models\Intelligence;
 use App\Models\RahjooParent;
 use App\Models\Role;
 use App\Models\User;
@@ -81,13 +82,23 @@ class UserService extends BaseService
             ->send();
     }
 
-    public function storeRahnamaIntelligences(Request $request, $user)
+    /**
+     * @param Request $request
+     * @param $user
+     * @return JsonResponse
+     */
+    public function storeRahnamaIntelligences(Request $request, $user): JsonResponse
     {
         $user = $this->userRepository
-//            ->hasRole(RoleEnum::RAHNAMA)
+            ->hasRole(RoleEnum::RAHNAMA)
             ->findOrFailById($user);
-        dd($user->rahnamaIntelligences);
-        $this->userRepository->storeRahnamaIntelligences($request,$user);
+        ApiResponse::validate($request->all(), [
+            'intelligences' => ['required', 'array', 'min:1'],
+            'intelligences.*' => ['required', 'numeric', 'exists:' . Intelligence::class . ',id'],
+        ]);
+        $this->userRepository->storeRahnamaIntelligences($request, $user,$request->intelligences);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->send();
     }
 
     /**
@@ -329,7 +340,7 @@ class UserService extends BaseService
             'birth_place_id' => $request->birth_place_id,
         ])->when($request->filled('status'), function (Collection $collection) use ($request) {
             $collection->put('status', $request->status);
-        }));
+        })->toArray());
         return ApiResponse::message(trans("The :attribute was successfully registered", ['attribute' => trans('User')]), Response::HTTP_CREATED)
             ->addData('user', UserResource::make($user))
             ->send();

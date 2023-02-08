@@ -172,7 +172,7 @@ class User extends Authenticatable
      */
     public function rahnamaIntelligences(): BelongsToMany
     {
-        return $this->belongsToMany(Intelligence::class,'intelligence_rahnama','rahnama_id','id','id','intelligence_id');
+        return $this->belongsToMany(Intelligence::class,'intelligence_rahnama','rahnama_id','intelligence_id','id','id');
     }
 
     /**
