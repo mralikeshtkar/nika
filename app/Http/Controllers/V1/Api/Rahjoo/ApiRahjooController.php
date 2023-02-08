@@ -329,9 +329,9 @@ class ApiRahjooController extends ApiBaseController
      *     ),
      * )
      */
-    public function exerciseSingleQuestion(Request $request, $rahjoo, $exercise)
+    public function exerciseSingleQuestion(Request $request, $rahjoo, $exercise,$question)
     {
-        return $this->rahjooService->exerciseSingleQuestion($request, $rahjoo, $exercise);
+        return $this->rahjooService->exerciseSingleQuestion($request, $rahjoo, $exercise,$question);
     }
 
     /**

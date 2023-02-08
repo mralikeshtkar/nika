@@ -172,13 +172,13 @@ class RahjooService extends BaseService
             ->send();
     }
 
-    public function exerciseSingleQuestion(Request $request, $rahjoo, $exercise)
+    public function exerciseSingleQuestion(Request $request, $rahjoo, $exercise,$question)
     {
         $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])
             ->with(['package:id'])
             ->findorFailById($rahjoo);
         $exercise = resolve(PackageRepositoryInterface::class)->findPackageExerciseById($request, $rahjoo->package, $exercise);
-        $question = null;
+        $question = resolve(ExerciseRepositoryInterfaces::class)->findSingleQuestion($request, $exercise,$question, $rahjoo->id);;
         return ApiResponse::message(trans("The information was register successfully"))
             ->addData('question', new QuestionResource($question))
             ->send();
