@@ -34,8 +34,10 @@ class RahjooRepository extends BaseRepository implements RahjooRepositoryInterfa
      */
     public function haveNotRahnamaRahyab(Request $request): static
     {
-        $this->model = $this->model->whereNull('rahnama_id')
-            ->orWhereNull('rahyab_id');
+        $this->model = $this->model->where(function (Builder $builder) {
+            $builder->whereNull('rahnama_id')
+                ->orWhereNull('rahyab_id');
+        });
         return $this;
     }
 
@@ -118,6 +120,6 @@ class RahjooRepository extends BaseRepository implements RahjooRepositoryInterfa
     public function updateQuestionPoints($rahjoo, $question, $point)
     {
         /** @var Rahjoo $rahjoo */
-        $rahjoo->questionPoints()->updateExistingPivot($question,['point'=>$point]);
+        $rahjoo->questionPoints()->updateExistingPivot($question, ['point' => $point]);
     }
 }
