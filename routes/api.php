@@ -59,9 +59,9 @@ Route::prefix('v1')->group(function (Router $router) {
 
         $router->middleware('auth:sanctum')->group(function (Router $router) {
             $router->get('users', [V1UserController::class, 'index']);
-            $router->get('users/only-rahjoos', [V1UserController::class, 'onlyRahjoos']);
-            $router->get('users/only-rahnama', [V1UserController::class, 'onlyRahnama']);
-            $router->get('users/only-rahyab', [V1UserController::class, 'onlyRahyab']);
+            $router->get('users-list/only-rahjoos', [V1UserController::class, 'onlyRahjoos']);
+            $router->get('users-list/only-rahnama', [V1UserController::class, 'onlyRahnama']);
+            $router->get('users-list/only-rahyab', [V1UserController::class, 'onlyRahyab']);
             $router->post('users/{user}/rahnama/intelligences', [V1UserController::class, 'storeRahnamaIntelligences']);
             $router->get('users/{user}/rahnama', [V1UserController::class, 'rahnama']);
             $router->post('users/{user}/upload-profile', [V1UserController::class, 'uploadProfile']);

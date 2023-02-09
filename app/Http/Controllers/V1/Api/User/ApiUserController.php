@@ -90,7 +90,7 @@ class ApiUserController extends ApiBaseController
 
     /**
      * @OA\Get (
-     *     path="/users/only-rahjoos",
+     *     path="/users-list/only-rahjoos",
      *     summary="لیست کاربران که رهجو بصورت صفحه بندی",
      *     description="",
      *     tags={"کاربر"},
@@ -208,7 +208,7 @@ class ApiUserController extends ApiBaseController
 
     /**
      * @OA\Get (
-     *     path="/users/only-rahnama",
+     *     path="/users-list/only-rahnama",
      *     summary="لیست کاربران که رهنما بصورت صفحه بندی",
      *     description="",
      *     tags={"کاربر"},
@@ -262,7 +262,7 @@ class ApiUserController extends ApiBaseController
 
     /**
      * @OA\Get (
-     *     path="/users/only-rahyab",
+     *     path="/users-list/only-rahyab",
      *     summary="لیست کاربران که رهیاب بصورت صفحه بندی",
      *     description="",
      *     tags={"کاربر"},
