@@ -78,7 +78,7 @@ class RahjooService extends BaseService
         //ApiResponse::authorize($request->user()->can('show', Rahjoo::class));
         $rahjoo = $this->rahjooRepository->select([
             'id', 'user_id', 'agent_id', 'package_id', 'school', 'which_child_of_family', 'disease_background',
-        ])->with(['package:id,name','user:id,first_name,last_name,mobile,birthdate'])->findorFailById($rahjoo);
+        ])->with(['package:id,title','user:id,first_name,last_name,mobile,birthdate'])->findorFailById($rahjoo);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('rahjoos', RahjooResource::make($rahjoo))
             ->send();
