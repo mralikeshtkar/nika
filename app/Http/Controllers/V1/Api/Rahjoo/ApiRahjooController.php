@@ -682,7 +682,7 @@ class ApiRahjooController extends ApiBaseController
 
     /**
      * @OA\Get (
-     *     path="/rahjoos/have-not-rahnama-rahyab",
+     *     path="/rahjoos/list/have-not-rahnama-rahyab",
      *     summary="لیست رهجو هایی که رهیاب یا رهنما ندارند بصورت صفحه بندی",
      *     description="",
      *     tags={"رهجو"},
