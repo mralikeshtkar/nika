@@ -3,6 +3,7 @@
 namespace App\Repositories\V1\User\Eloquent;
 
 use App\Enums\Role;
+use App\Models\Media;
 use App\Models\User;
 use App\Repositories\V1\BaseRepository;
 use App\Repositories\V1\Rahjoo\Interfaces\RahjooRepositoryInterface;
@@ -104,6 +105,15 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     }
 
     /**
+     * @return $this
+     */
+    public function withPivotRahjooIntelligencesCount(): static
+    {
+        $this->model = $this->model->withCount('pivotRahjooIntelligences');
+        return $this;
+    }
+
+    /**
      * @param $role
      * @return $this
      */
@@ -158,6 +168,14 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     public function storeRahnamaIntelligences(Request $request, $user,$data)
     {
         return $user->rahnamaIntelligences()->sync($data);
+    }
+
+    public function uploadProfile($user, $image)
+    {
+        return $user->setDisk(Media::MEDIA_PRIVATE_DISK)
+            ->setDirectory(User::MEDIA_DIRECTORY_PROFILES)
+            ->setCollection(User::MEDIA_COLLECTION_PROFILES)
+            ->addMedia($image);
     }
 
     /**

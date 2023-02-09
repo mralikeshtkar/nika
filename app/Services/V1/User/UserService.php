@@ -2,6 +2,7 @@
 
 namespace App\Services\V1\User;
 
+use App\Enums\Media\MediaExtension;
 use App\Enums\Role as RoleEnum;
 use App\Enums\User\UserBackground;
 use App\Enums\User\UserColor;
@@ -16,6 +17,7 @@ use App\Models\Intelligence;
 use App\Models\RahjooParent;
 use App\Models\Role;
 use App\Models\User;
+use App\Repositories\V1\Media\Interfaces\MediaRepositoryInterface;
 use App\Repositories\V1\User\Interfaces\UserRepositoryInterface;
 use App\Responses\Api\ApiResponse;
 use App\Rules\MobileIsUniqueRule;
@@ -99,7 +101,7 @@ class UserService extends BaseService
             'intelligences' => ['required', 'array', 'min:1'],
             'intelligences.*' => ['required', 'numeric', 'exists:' . Intelligence::class . ',id'],
         ]);
-        $this->userRepository->storeRahnamaIntelligences($request, $user,$request->intelligences);
+        $this->userRepository->storeRahnamaIntelligences($request, $user, $request->intelligences);
         return ApiResponse::message(trans("The information was received successfully"))
             ->send();
     }
@@ -116,7 +118,7 @@ class UserService extends BaseService
             ->with(['rahnamaIntelligences:id,title'])
             ->findOrFailById($user);
         return ApiResponse::message(trans("The information was received successfully"))
-            ->addData('user',new UserResource($user))
+            ->addData('user', new UserResource($user))
             ->send();
     }
 
@@ -146,6 +148,7 @@ class UserService extends BaseService
     {
         $users = $this->userRepository
             ->hasRole(RoleEnum::RAHYAB)
+            ->withPivotRahjooIntelligencesCount()
             ->searchName($request)
             ->searchMobile($request)
             ->searchNotionalCode($request)
@@ -158,12 +161,35 @@ class UserService extends BaseService
 
     /**
      * @param Request $request
+     * @param $user
+     * @return JsonResponse
+     */
+    public function uploadProfile(Request $request, $user): JsonResponse
+    {
+        $user = $this->userRepository->select(['id'])
+            ->with(['profile'])
+            ->findOrFailById($user);
+        ApiResponse::validate($request->all(), [
+            'file' => ['required', ['required', 'file', 'mimes:' . implode(",", MediaExtension::getExtensions(MediaExtension::Image))]]
+        ]);
+        if ($user->profile) resolve(MediaRepositoryInterface::class)->destroy($user->profile);
+        $this->userRepository->uploadProfile($user, $request->file);
+        $user = $this->userRepository->select(['id'])
+            ->with(['profile'])
+            ->findOrFailById($user);
+        return ApiResponse::message(trans("Mission accomplished"))
+            ->addData('user', new UserResource($user))
+            ->send();
+    }
+
+    /**
+     * @param Request $request
      * @return JsonResponse
      */
     public function currentUser(Request $request): JsonResponse
     {
         $user = $request->user()->load('rahjoo')
-            ->only(['id','background', 'color', 'first_name', 'last_name', 'mobile', 'birthdate', 'rahjoo']);
+            ->only(['id', 'background', 'color', 'first_name', 'last_name', 'mobile', 'birthdate', 'rahjoo']);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('user', new SingleUserResource($user))
             ->send();

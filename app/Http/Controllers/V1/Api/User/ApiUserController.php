@@ -315,6 +315,45 @@ class ApiUserController extends ApiBaseController
     }
 
     /**
+     * @OA\Post(
+     *     path="/users/{id}/upload-profile",
+     *     summary="اپلود پروفایل",
+     *     description="",
+     *     tags={"کاربر"},
+     *     @OA\Parameter(
+     *         description="شناسه کاربر",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"file"},
+     *                  @OA\Property(
+     *                      property="file",
+     *                      type="string",
+     *                      description="تصویر پکیج",
+     *                      format="binary",
+     *                  ),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="ثبت با موفقیت انجام شد",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function uploadProfile(Request $request, $user)
+    {
+        return $this->userService->uploadProfile($request,$user);
+    }
+
+    /**
      * Get current user.
      *
      * @OA\Get(

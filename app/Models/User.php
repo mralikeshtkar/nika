@@ -4,12 +4,15 @@ namespace App\Models;
 
 use App\Enums\Role as RoleEnum;
 use App\Enums\UserStatus;
+use App\Traits\Media\HasMedia;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -20,9 +23,13 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles, HasRelationships;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, HasRelationships, HasMedia;
 
     #region Constance
+
+    const MEDIA_COLLECTION_PROFILES = "media collection profiles";
+
+    const MEDIA_DIRECTORY_PROFILES = "profiles";
 
     const BIRTHDATE_VALIDATION_FORMAT = 'Y/m/d';
 
@@ -180,7 +187,7 @@ class User extends Authenticatable
      */
     public function rahnamaIntelligences(): BelongsToMany
     {
-        return $this->belongsToMany(Intelligence::class,'intelligence_rahnama','rahnama_id','intelligence_id','id','id');
+        return $this->belongsToMany(Intelligence::class, 'intelligence_rahnama', 'rahnama_id', 'intelligence_id', 'id', 'id');
     }
 
     /**
@@ -245,6 +252,22 @@ class User extends Authenticatable
     public function intelligences(): BelongsToMany
     {
         return $this->belongsToMany(Intelligence::class);
+    }
+
+    /**
+     * @return MorphOne
+     */
+    public function profile(): MorphOne
+    {
+        return $this->singleMedia()->where('collection', self::MEDIA_COLLECTION_PROFILES);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function pivotRahjooIntelligences(): HasMany
+    {
+        return $this->hasMany(RahjooIntelligenceRahyab::class,'rahnama_id');
     }
 
     #endregion

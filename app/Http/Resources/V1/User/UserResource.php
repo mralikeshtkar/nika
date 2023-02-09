@@ -3,6 +3,7 @@
 namespace App\Http\Resources\V1\User;
 
 use App\Enums\UserStatus;
+use App\Http\Resources\V1\Media\MediaResource;
 use App\Http\Resources\V1\Personnel\PersonnelResource;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -37,6 +38,8 @@ class UserResource extends JsonResource
             $collection->put('birth_place_province', $this->resource->birth_place_province);
         })->when($this->resource->relationLoaded('personnel'), function (Collection $collection) {
             $collection->put('personnel', PersonnelResource::make($this->resource->personnel));
+        })->when($this->resource->relationLoaded('profile'), function (Collection $collection) {
+            $collection->put('profile', new MediaResource($this->resource->profile));
         })->toArray();
     }
 }
