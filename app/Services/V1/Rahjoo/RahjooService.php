@@ -75,7 +75,7 @@ class RahjooService extends BaseService
      */
     public function show(Request $request, $rahjoo): JsonResponse
     {
-        ApiResponse::authorize($request->user()->can('show', Rahjoo::class));
+        //ApiResponse::authorize($request->user()->can('show', Rahjoo::class));
         $rahjoo = $this->rahjooRepository->select([
             'id', 'user_id', 'agent_id', 'package_id', 'school', 'which_child_of_family', 'disease_background',
         ])->with(['user', 'father', 'mother', 'package:id,title,is_completed,price,description'])->findorFailById($rahjoo);
