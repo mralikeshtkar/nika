@@ -15,7 +15,7 @@ class QuestionAnswerTypeResource extends JsonResource
      */
     public function toArray($request)
     {
-        return collect($this->resource)->when($this->resource->relationLoaded('answer'), function (Collection $collection) {
+        return collect($this->resource)->when($this->resource->relationLoaded('answer') && !is_null($this->resource->answer), function (Collection $collection) {
             $collection->put('answer', new QuestionAnswerResource($this->resource->answer));
         });
     }
