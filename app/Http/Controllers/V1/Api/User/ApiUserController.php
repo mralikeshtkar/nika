@@ -257,6 +257,7 @@ class ApiUserController extends ApiBaseController
      */
     public function onlyRahnama(Request $request)
     {
+        dd("salam");
         return $this->userService->onlyRahnama($request);
     }
 
