@@ -369,6 +369,7 @@ class RahjooService extends BaseService
         $rahjoos = $this->rahjooRepository->select(['id', 'user_id', 'package_id','rahnama_id','rahyab_id'])
             ->with(['user:id,first_name,last_name,mobile'])
             ->haveNotRahnamaRahyab($request)
+            ->whereNotNull('package_id')
             ->paginate($request->get('perPage', 10));
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('rahjoos', RahjooResource::collection($rahjoos))

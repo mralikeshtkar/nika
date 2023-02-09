@@ -127,4 +127,24 @@ class BaseRepository implements EloquentRepositoryInterface
         $this->model = $this->model->where($column,$value);
         return $this;
     }
+
+    /**
+     * @param string $column
+     * @return $this
+     */
+    public function whereNull(string $column): static
+    {
+        $this->model = $this->model->whereNull($column);
+        return $this;
+    }
+
+    /**
+     * @param string $column
+     * @return $this
+     */
+    public function whereNotNull(string $column): static
+    {
+        $this->model = $this->model->whereNotNull($column);
+        return $this;
+    }
 }
