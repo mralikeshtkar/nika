@@ -76,6 +76,7 @@ class UserService extends BaseService
     public function onlyRahjoos(Request $request): JsonResponse
     {
         $users = $this->userRepository
+            ->select(['id','first_name','last_name','mobile'])
             ->hasRole(RoleEnum::RAHJOO)
             ->searchName($request)
             ->searchMobile($request)
@@ -129,6 +130,7 @@ class UserService extends BaseService
     public function onlyRahnama(Request $request): JsonResponse
     {
         $users = $this->userRepository
+            ->select(['id','first_name','last_name','mobile'])
             ->hasRole(RoleEnum::RAHNAMA)
             ->searchName($request)
             ->withPivotRahjooIntelligencesCount()
@@ -148,6 +150,7 @@ class UserService extends BaseService
     public function onlyRahyab(Request $request): JsonResponse
     {
         $users = $this->userRepository
+            ->select(['id','first_name','last_name','mobile'])
             ->hasRole(RoleEnum::RAHYAB)
             ->searchName($request)
             ->searchMobile($request)
