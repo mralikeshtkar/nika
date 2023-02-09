@@ -128,6 +128,7 @@ class UserService extends BaseService
      */
     public function onlyRahnama(Request $request): JsonResponse
     {
+        dd("salm");
         $users = $this->userRepository
             ->hasRole(RoleEnum::RAHNAMA)
             ->searchName($request)
@@ -148,7 +149,6 @@ class UserService extends BaseService
     {
         $users = $this->userRepository
             ->hasRole(RoleEnum::RAHYAB)
-            ->withPivotRahjooIntelligencesCount()
             ->searchName($request)
             ->searchMobile($request)
             ->searchNotionalCode($request)
