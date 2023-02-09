@@ -24,7 +24,7 @@ class UserResource extends JsonResource
             $collection->put('status', $status->key)->put('status_translated', $status->description);
         })->when($this->resource->originalIsEquivalent('birthdate'), function (Collection $collection) {
             $collection->put('birthdate', jalaliFormat($this->resource->birthdate, User::BIRTHDATE_VALIDATION_FORMAT))
-                ->put('age', Carbon::now()->diff($this->resource->birthdate)->format('%y years, %m months and %d days'));
+                ->put('age', Carbon::now()->diff($this->resource->birthdate)->y);
         })->when($this->resource->originalIsEquivalent('grade_name'), function (Collection $collection) {
             $collection->put('grade_name', $this->resource->grade_name);
         })->when($this->resource->originalIsEquivalent('city_name'), function (Collection $collection) {
