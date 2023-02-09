@@ -679,4 +679,37 @@ class ApiRahjooController extends ApiBaseController
     {
         return $this->rahjooService->destroy($request, $user);
     }
+
+    /**
+     * @OA\Get (
+     *     path="/rahjoos/have-not-rahnama-rahyab",
+     *     summary="لیست رهجو هایی که رهیاب یا رهنما ندارند بصورت صفحه بندی",
+     *     description="",
+     *     tags={"رهجو"},
+     *     @OA\Parameter(
+     *         description="شماره صفحه",
+     *         in="query",
+     *         name="page",
+     *         required=true,
+     *         example=1,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="تعداد نمایش در هر صفحه",
+     *         in="query",
+     *         name="perPage",
+     *         example=10,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function haveNotRahnamaRahyab(Request $request)
+    {
+        return $this->rahjooService->haveNotRahnamaRahyab($request);
+    }
 }

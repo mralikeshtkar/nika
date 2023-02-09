@@ -28,6 +28,17 @@ class RahjooRepository extends BaseRepository implements RahjooRepositoryInterfa
         return $this->model->updateOrCreate($attributes, $values);
     }
 
+    /**
+     * @param Request $request
+     * @return $this
+     */
+    public function haveNotRahnamaRahyab(Request $request): static
+    {
+        $this->model = $this->model->whereNull('rahnama_id')
+            ->orWhereNull('rahyab_id');
+        return $this;
+    }
+
     public function storeManyCourses($rahjoo, $courses, $user_id)
     {
         $courses = collect($courses)->map(function ($item) use ($user_id) {

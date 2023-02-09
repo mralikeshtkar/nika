@@ -360,6 +360,21 @@ class RahjooService extends BaseService
         return ApiResponse::message(trans("The :attribute was successfully deleted", ['attribute' => trans('Rahjoo')]))->send();
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function haveNotRahnamaRahyab(Request $request): JsonResponse
+    {
+        $rahjoos = $this->rahjooRepository->select(['id', 'user_id', 'package_id'])
+            ->with(['user:id,first_name,last_name,mobile'])
+            ->haveNotRahnamaRahyab($request)
+            ->paginate($request->get('perPage', 10));
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('rahjoos', RahjooResource::collection($rahjoos))
+            ->send();
+    }
+
     #endregion
 
 }
