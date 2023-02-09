@@ -24,6 +24,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        Schema::table('rahjoos', function (Blueprint $table) {
+            $table->string('code')->nullable();
+        });
+        dd("ok");
         $this->call([
             ProvinceSeeder::class,
             PermissionSeeder::class,

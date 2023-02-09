@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\RahjooParent\RahjooParentGender;
 use Awobaz\Compoships\Compoships;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -28,10 +29,23 @@ class Rahjoo extends Model
         'rahyab_id',
         'agent_id',
         'package_id',
+        'code',
         'school',
         'which_child_of_family',
         'disease_background',
     ];
+
+    #endregion
+
+    #region Methods
+
+    protected static function boot()
+    {
+        parent::boot();
+        self::creating(function ($model) {
+            $model->code = IdGenerator::generate(['table' => self::getTable(), 'field' => 'code', 'length' => 6]);
+        });
+    }
 
     #endregion
 

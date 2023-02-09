@@ -37,6 +37,7 @@ return new class extends Migration {
                 ->on('users')
                 ->nullOnDelete()
                 ->cascadeOnDelete();
+            $table->string('code');
             $table->string('school')->nullable();
             $table->unsignedInteger('which_child_of_family')->nullable();
             $table->text('disease_background')->nullable();

@@ -11,6 +11,7 @@
         "bensampo/laravel-enum": "^6.1",
         "darkaonline/l5-swagger": "^8.4",
         "guzzlehttp/guzzle": "^7.2",
+        "haruncpi/laravel-id-generator": "^1.1",
         "hekmatinasser/verta": "^8.1",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
