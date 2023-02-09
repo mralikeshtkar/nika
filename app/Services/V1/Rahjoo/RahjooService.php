@@ -77,8 +77,8 @@ class RahjooService extends BaseService
     {
         //ApiResponse::authorize($request->user()->can('show', Rahjoo::class));
         $rahjoo = $this->rahjooRepository->select([
-            'id', 'user_id', 'agent_id', 'package_id','code', 'school', 'which_child_of_family', 'disease_background',
-        ])->with(['package:id,title','user:id,first_name,last_name,mobile,birthdate','user.profile'])->findorFailById($rahjoo);
+            'id', 'user_id', 'agent_id', 'package_id', 'code', 'school', 'which_child_of_family', 'disease_background',
+        ])->with(['package:id,title', 'user:id,first_name,last_name,mobile,birthdate', 'user.profile'])->findorFailById($rahjoo);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('rahjoos', RahjooResource::make($rahjoo))
             ->send();
@@ -345,6 +345,16 @@ class RahjooService extends BaseService
             ->send();
     }
 
+    public function storeIntelligenceRahnama(Request $request, $rahjoo)
+    {
+        $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])
+            ->with(['package:id', 'package.pivotIntelligences:package_id,intelligence_id'])
+            ->findorFailById($rahjoo);
+        ApiResponse::validate($request->all(), [
+            'rahnama_id' => ['required']
+        ]);
+    }
+
     /**
      * Destroy a rahjoo.
      *
@@ -366,7 +376,7 @@ class RahjooService extends BaseService
      */
     public function haveNotRahnamaRahyab(Request $request): JsonResponse
     {
-        $rahjoos = $this->rahjooRepository->select(['id', 'user_id', 'package_id','rahnama_id','rahyab_id'])
+        $rahjoos = $this->rahjooRepository->select(['id', 'user_id', 'package_id', 'rahnama_id', 'rahyab_id'])
             ->with(['user:id,first_name,last_name,mobile'])
             ->haveNotRahnamaRahyab($request)
             ->whereNotNull('package_id')

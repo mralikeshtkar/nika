@@ -653,6 +653,11 @@ class ApiRahjooController extends ApiBaseController
         return $this->rahjooService->questionComments($request,$rahjoo, $question);
     }
 
+    public function storeIntelligenceRahnama(Request $request, $rahjoo)
+    {
+        return $this->rahjooService->storeIntelligenceRahnama($request,$rahjoo);
+    }
+
     /**
      * Delete a city.
      *

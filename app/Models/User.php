@@ -270,6 +270,22 @@ class User extends Authenticatable
         return $this->hasMany(RahjooIntelligenceRahyab::class,'rahnama_id');
     }
 
+    /**
+     * @return HasMany
+     */
+    public function rahnamaRahjoos(): HasMany
+    {
+        return $this->hasMany(Rahjoo::class,'rahnama_id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function rahyabRahjoos(): HasMany
+    {
+        return $this->hasMany(Rahjoo::class,'rahyab_id');
+    }
+
     #endregion
 
     #region Scopes

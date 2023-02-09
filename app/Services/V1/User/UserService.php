@@ -133,7 +133,7 @@ class UserService extends BaseService
             ->select(['id','first_name','last_name','mobile'])
             ->hasRole(RoleEnum::RAHNAMA)
             ->searchName($request)
-            ->withPivotRahjooIntelligencesCount()
+            ->withRahnamaRahjoosCount()
             ->searchMobile($request)
             ->searchNotionalCode($request)
             ->paginate($request->get('perPage', 10));
@@ -153,6 +153,7 @@ class UserService extends BaseService
             ->select(['id','first_name','last_name','mobile'])
             ->hasRole(RoleEnum::RAHYAB)
             ->searchName($request)
+            ->withRahyabRahjoosCount()
             ->searchMobile($request)
             ->searchNotionalCode($request)
             ->paginate($request->get('perPage', 10));

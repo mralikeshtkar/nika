@@ -114,6 +114,24 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     }
 
     /**
+     * @return $this
+     */
+    public function withRahnamaRahjoosCount(): static
+    {
+        $this->model = $this->model->withCount('rahnamaRahjoos');
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function withRahyabRahjoosCount(): static
+    {
+        $this->model = $this->model->withCount('rahyabRahjoos');
+        return $this;
+    }
+
+    /**
      * @param $role
      * @return $this
      */
