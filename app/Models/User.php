@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Staudenmeir\EloquentHasManyDeep\HasOneDeep;
@@ -81,6 +82,11 @@ class User extends Authenticatable
     #endregion
 
     #region Methods
+
+    public function calculateAge($birthdate): int
+    {
+        return Carbon::now()->diff($birthdate)->y;
+    }
 
     /**
      * Generate new api token.
