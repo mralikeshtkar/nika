@@ -366,7 +366,7 @@ class RahjooService extends BaseService
      */
     public function haveNotRahnamaRahyab(Request $request): JsonResponse
     {
-        $rahjoos = $this->rahjooRepository->select(['id', 'user_id', 'package_id'])
+        $rahjoos = $this->rahjooRepository->select(['id', 'user_id', 'package_id','rahnama_id','rahyab_id'])
             ->with(['user:id,first_name,last_name,mobile'])
             ->haveNotRahnamaRahyab($request)
             ->paginate($request->get('perPage', 10));
