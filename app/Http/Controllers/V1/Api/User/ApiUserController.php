@@ -182,6 +182,31 @@ class ApiUserController extends ApiBaseController
     }
 
     /**
+     * @OA\Get(
+     *     path="/users/{user}/rahnama",
+     *     summary="دریافت اطلاعات هوش",
+     *     description="",
+     *     tags={"رهنما"},
+     *     @OA\Parameter(
+     *         description="شناسه کاربر",
+     *         in="path",
+     *         name="user",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="ثبت با موفقیت انجام شد",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function rahnama(Request $request, $user)
+    {
+        return $this->userService->rahnama($request,$user);
+    }
+
+    /**
      * @OA\Get (
      *     path="/users/only-rahnama",
      *     summary="لیست کاربران که رهنما بصورت صفحه بندی",

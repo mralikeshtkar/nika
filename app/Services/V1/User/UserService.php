@@ -106,6 +106,22 @@ class UserService extends BaseService
 
     /**
      * @param Request $request
+     * @param $user
+     * @return JsonResponse
+     */
+    public function rahnama(Request $request, $user): JsonResponse
+    {
+        $user = $this->userRepository
+            ->hasRole(RoleEnum::RAHNAMA)
+            ->with(['rahnamaIntelligences:id,title'])
+            ->findOrFailById($user);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('user',new UserResource($user))
+            ->send();
+    }
+
+    /**
+     * @param Request $request
      * @return JsonResponse
      */
     public function onlyRahnama(Request $request): JsonResponse
