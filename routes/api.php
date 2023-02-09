@@ -160,7 +160,6 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->get('rahjoos/{rahjoo}', [V1ApiRahjooController::class, 'show']);
             $router->post('rahjoos/{user}', [V1ApiRahjooController::class, 'store']);
             $router->delete('rahjoos/{rahjoo}', [V1ApiRahjooController::class, 'destroy']);
-            $router->get('rahjoos/have-not-rahnama-rahyab', [V1ApiRahjooController::class, 'haveNotRahnamaRahyab']);
             $router->patch('rahjoos/{rahjoo}/assign-package', [V1ApiRahjooController::class, 'assignPackage']);
             $router->patch('rahjoos/{rahjoo}/assign-rahyab/{user}', [V1ApiRahjooController::class, 'assignRahyab']);
             $router->patch('rahjoos/{rahjoo}/assign-rahnama/{user}', [V1ApiRahjooController::class, 'assignRahnama']);
@@ -176,6 +175,7 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->post('rahjoos/{rahjoo}/questions/{question}/comments', [V1ApiRahjooController::class, 'storeQuestionComment']);
             $router->post('rahjoos/{rahjoo}/questions/{question}/comments', [V1ApiRahjooController::class, 'storeQuestionComment']);
             $router->get('rahjoos/{rahjoo}/questions/{question}/comments', [V1ApiRahjooController::class, 'questionComments']);
+            $router->get('rahjoos/have-not-rahnama-rahyab', [V1ApiRahjooController::class, 'haveNotRahnamaRahyab']);
         });
 
         /* Rahjoo parents */
