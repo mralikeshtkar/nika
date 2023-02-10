@@ -131,7 +131,7 @@ class UserService extends BaseService
     {
         $users = $this->userRepository
             ->select(['id','first_name','last_name','mobile'])
-            ->with(['intelligences:id,title'])
+            ->with(['rahnamaIntelligences:id,title'])
             ->hasRole(RoleEnum::RAHNAMA)
             ->searchName($request)
             ->withRahnamaRahjoosCount()
