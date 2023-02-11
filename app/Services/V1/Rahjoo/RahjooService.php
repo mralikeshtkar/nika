@@ -417,8 +417,11 @@ class RahjooService extends BaseService
         $intelligences = resolve(IntelligenceRepositoryInterface::class)
             ->select(['id', 'title'])
             ->get()
-            ->map(function ($item) {
-                return $item;
+            ->map(function ($item) use ($rahjoo) {
+                if ($i = $rahjoo->pivotIntelligenceRahnama->firstWhere('intelligence_id', $item->id))
+                    return $item->merge($i);
+                else
+                    return $item;
             });
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('intelligences', $intelligences)
