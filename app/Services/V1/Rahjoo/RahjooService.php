@@ -418,10 +418,11 @@ class RahjooService extends BaseService
             ->select(['id', 'title'])
             ->get()
             ->map(function ($item) use ($rahjoo) {
+                /** @var Intelligence $item */
                 if ($i = $rahjoo->pivotIntelligenceRahnama->firstWhere('intelligence_id', $item->id))
-                    return $item->merge($i);
+                    return collect($item)->merge($i);
                 else
-                    return $item;
+                    return collect($item)->merge(['rahnama_id' => null, 'intelligence_id' => null, 'rahjoo_id' => null]);
             });
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('intelligences', $intelligences)
