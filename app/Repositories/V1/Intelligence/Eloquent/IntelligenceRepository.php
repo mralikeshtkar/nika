@@ -6,6 +6,7 @@ use App\Models\Intelligence;
 use App\Models\IntelligencePackage;
 use App\Repositories\V1\BaseRepository;
 use App\Repositories\V1\Intelligence\Interfaces\IntelligenceRepositoryInterface;
+use App\Repositories\V1\User\Eloquent\UserRepository;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;

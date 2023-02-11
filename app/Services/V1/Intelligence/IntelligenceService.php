@@ -60,7 +60,9 @@ class IntelligenceService extends BaseService
         $intelligences = $this->intelligenceRepository
             ->select(['id','title'])
             ->searchTitle($request)
-            ->with(['rahnama'])
+            ->with(['rahnama'=>function($q){
+                $q->select(['id','first_name','last_name'])->with('rahnamaRahjoos');
+            }])
             ->get();
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('intelligences', IntelligenceResource::collection($intelligences))
