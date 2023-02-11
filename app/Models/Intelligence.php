@@ -54,5 +54,13 @@ class Intelligence extends Model
         return $this->hasMany(IntelligencePackage::class);
     }
 
+    /**
+     * @return BelongsToMany
+     */
+    public function rahnama(): BelongsToMany
+    {
+        return $this->belongsToMany(Intelligence::class, 'intelligence_rahnama', 'intelligence_id', 'rahnama_id', 'id', 'id');
+    }
+
     #endregion
 }

@@ -224,4 +224,29 @@ class ApiIntelligenceController extends ApiBaseController
     {
         return $this->intelligenceService->destroy($request,$intelligence);
     }
+
+    /**
+     * @OA\Get(
+     *     path="/intelligences/{id}/rahnama",
+     *     summary="لیست رهنماهای هوش",
+     *     description="",
+     *     tags={"هوش"},
+     *     @OA\Parameter(
+     *         description="شناسه هوش",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function rahnama(Request $request, $intelligence)
+    {
+        return $this->intelligenceService->rahnama($request,$intelligence);
+    }
 }

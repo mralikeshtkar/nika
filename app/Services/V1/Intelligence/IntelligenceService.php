@@ -133,5 +133,20 @@ class IntelligenceService extends BaseService
         return ApiResponse::message(trans("The :attribute was successfully deleted", ['attribute' => trans('Intelligence')]))->send();
     }
 
+    /**
+     * @param Request $request
+     * @param $intelligence
+     * @return JsonResponse
+     */
+    public function rahnama(Request $request, $intelligence): JsonResponse
+    {
+        $intelligence = $this->intelligenceRepository->select(['id'])
+            ->with(['rahnama'])
+            ->findOrFailById($intelligence);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('intelligence', new IntelligenceResource($intelligence))
+            ->send();
+    }
+
     #endregion
 }
