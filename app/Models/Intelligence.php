@@ -59,7 +59,7 @@ class Intelligence extends Model
      */
     public function rahnama(): BelongsToMany
     {
-        return $this->belongsToMany(Intelligence::class, 'intelligence_rahnama', 'intelligence_id', 'rahnama_id', 'id', 'id');
+        return $this->belongsToMany(User::class, 'intelligence_rahnama', 'intelligence_id', 'rahnama_id', 'id', 'id');
     }
 
     #endregion
