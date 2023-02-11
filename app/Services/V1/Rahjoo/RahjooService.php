@@ -6,6 +6,7 @@ use App\Enums\Question\QuestionAnswerType;
 use App\Enums\Role;
 use App\Http\Resources\V1\Comment\CommentResource;
 use App\Http\Resources\V1\Exercise\ExerciseResource;
+use App\Http\Resources\V1\IntelligencePackagePointRahjoo\IntelligencePackagePointRahjooResource;
 use App\Http\Resources\V1\PaginationResource;
 use App\Http\Resources\V1\Question\QuestionResource;
 use App\Http\Resources\V1\Rahjoo\RahjooResource;
@@ -27,6 +28,7 @@ use App\Rules\UserHasRoleRule;
 use App\Services\V1\BaseService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response;
@@ -80,7 +82,7 @@ class RahjooService extends BaseService
     {
         //ApiResponse::authorize($request->user()->can('show', Rahjoo::class));
         $rahjoo = $this->rahjooRepository->select([
-            'id', 'user_id','rahyab_id', 'agent_id', 'package_id', 'code', 'school', 'which_child_of_family', 'disease_background',
+            'id', 'user_id', 'rahyab_id', 'agent_id', 'package_id', 'code', 'school', 'which_child_of_family', 'disease_background',
         ])->with(['package:id,title', 'user:id,first_name,last_name,mobile,birthdate', 'user.profile'])->findorFailById($rahjoo);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('rahjoos', RahjooResource::make($rahjoo))
@@ -481,27 +483,48 @@ class RahjooService extends BaseService
         })->put('points', ['required', 'array', 'min:1'])
             ->toArray();
         ApiResponse::validate($request->all(), $rules);
-        $points = collect($request->points)->mapWithKeys(function ($point, $intelligence_id) use ($request, $rahjoo, $intelligencePackage) {
-            return [
-                $intelligence_id => [
-                    'user_id' => $request->user()->id,
-                    'rahjoo_id' => $rahjoo->id,
-                    'intelligence_package_id' => $intelligencePackage->pivot_id,
-                    'point' => $point,
-                ],
-            ];
-        });
-        $this->rahjooRepository->attachIntelligencePackagePoints($rahjoo, $points);
+        try {
+            return DB::transaction(function () use ($rahjoo, $intelligencePackage, $request) {
+                $points = collect($request->points)->mapWithKeys(function ($point, $intelligence_id) use ($request, $rahjoo, $intelligencePackage) {
+                    return [
+                        $intelligence_id => [
+                            'user_id' => $request->user()->id,
+                            'intelligence_package_id' => $intelligencePackage->pivot_id,
+                            'point' => $point,
+                        ],
+                    ];
+                });
+                $intelligencePackagePoints = $rahjoo->pivotIntelligencePackagePoints()
+                    ->where('intelligence_package_id', $intelligencePackage->pivot_id)
+                    ->get();
+                $this->rahjooRepository->attachIntelligencePackagePoints($rahjoo, $intelligencePackagePoints, $points);
+                return ApiResponse::message(trans("Mission accomplished"))->send();
+            });
+        } catch (\Throwable $e) {
+            return ApiResponse::message(trans("Internal server error"), Response::HTTP_INTERNAL_SERVER_ERROR)->send();
+        }
     }
 
-    public function updateIntelligencePackagePoints(Request $request, $rahjoo, $intelligencePackage)
+    /**
+     * @param Request $request
+     * @param $rahjoo
+     * @param $intelligencePackage
+     * @return JsonResponse
+     */
+    public function showIntelligencePackagePoints(Request $request, $rahjoo, $intelligencePackage): JsonResponse
     {
-
-    }
-
-    public function showIntelligencePackagePoints(Request $request, $rahjoo, $intelligencePackage)
-    {
-
+        /** @var Rahjoo $rahjoo */
+        $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])->findorFailById($rahjoo);
+        $intelligencePackageRepository = resolve(IntelligencePackageRepositoryInterface::class);
+        /** @var IntelligencePackage $intelligencePackage */
+        $intelligencePackage = $intelligencePackageRepository->query($rahjoo->packagePivotIntelligencePackage())
+            ->findOrFailByPivotId($intelligencePackage);
+        $points = $this->rahjooRepository->query($rahjoo->pivotIntelligencePackagePoints()->where('intelligence_package_id', $intelligencePackage->pivot_id))
+            ->select(['user_id', 'rahjoo_id', 'intelligence_package_id', 'intelligence_point_id', 'point', 'created_at',])
+            ->get();
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('points', IntelligencePackagePointRahjooResource::collection($points))
+            ->send();
     }
 
     #endregion

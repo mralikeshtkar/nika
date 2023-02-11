@@ -23,14 +23,15 @@ return new class extends Migration {
                 ->on('rahjoos')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->foreignId('intelligence_package_id')
+            $table->unsignedBigInteger('intelligence_package_id');
+            $table->foreign('intelligence_package_id','fk_intelligence_package_id')
                 ->references('pivot_id')
                 ->on('intelligence_package')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->foreignId('intelligence_id')
+            $table->foreignId('intelligence_point_id')
                 ->references('id')
-                ->on('intelligences')
+                ->on('intelligence_points')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->unsignedInteger('point');

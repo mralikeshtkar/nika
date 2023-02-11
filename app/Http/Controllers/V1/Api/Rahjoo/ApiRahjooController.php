@@ -787,9 +787,9 @@ class ApiRahjooController extends ApiBaseController
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"rahanma_id","intelligence_id"},
+     *                 required={"rahnama_id","intelligence_id"},
      *                 @OA\Property(
-     *                     property="rahanma_id",
+     *                     property="rahnama_id",
      *                     type="string",
      *                     description="شناسه رهنما",
      *                 ),
@@ -876,11 +876,6 @@ class ApiRahjooController extends ApiBaseController
     public function storeIntelligencePackagePoints(Request $request, $rahjoo, $intelligencePackage)
     {
         return $this->rahjooService->storeIntelligencePackagePoints($request, $rahjoo, $intelligencePackage);
-    }
-
-    public function updateIntelligencePackagePoints(Request $request, $rahjoo, $intelligencePackage)
-    {
-        return $this->rahjooService->updateIntelligencePackagePoints($request, $rahjoo, $intelligencePackage);
     }
 
     public function showIntelligencePackagePoints(Request $request, $rahjoo, $intelligencePackage)

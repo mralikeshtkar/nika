@@ -180,7 +180,6 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->post('rahjoos/{rahjoo}/intelligence-rahnama', [V1ApiRahjooController::class, 'storeIntelligenceRahnama']);
             $router->get('rahjoos/list/have-not-rahnama-rahyab', [V1ApiRahjooController::class, 'haveNotRahnamaRahyab']);
             $router->post('rahjoos/{rahjoo}/intelligence-packages/{intelligencePackage}/intelligence-package-points', [V1ApiRahjooController::class, 'storeIntelligencePackagePoints']);
-            $router->put('rahjoos/{rahjoo}/intelligence-packages/{intelligencePackage}/intelligence-package-points-update', [V1ApiRahjooController::class, 'updateIntelligencePackagePoints']);
             $router->get('rahjoos/{rahjoo}/intelligence-packages/{intelligencePackage}/intelligence-package-points', [V1ApiRahjooController::class, 'showIntelligencePackagePoints']);
         });
 

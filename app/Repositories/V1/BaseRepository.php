@@ -147,4 +147,13 @@ class BaseRepository implements EloquentRepositoryInterface
         $this->model = $this->model->whereNotNull($column);
         return $this;
     }
+
+    /**
+     * @return array|Collection
+     */
+    public function get(): array|Collection
+    {
+        return $this->model->get();
+    }
+
 }

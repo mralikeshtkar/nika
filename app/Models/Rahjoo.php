@@ -161,7 +161,17 @@ class Rahjoo extends Model
      */
     public function intelligencePackagePoints(): BelongsToMany
     {
-        return $this->belongsToMany(IntelligencePackage::class, 'intelligence_package_point_rahjoo', 'rahjoo_id', 'pivot', 'id', 'intelligence_package_id');
+        return $this->belongsToMany(IntelligencePackage::class, 'intelligence_package_point_rahjoo', 'rahjoo_id', 'intelligence_package_id', 'id', 'pivot_id')
+            ->withPivot(['user_id', 'intelligence_point_id', 'point'])
+            ->withTimestamps();
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function pivotIntelligencePackagePoints(): HasMany
+    {
+        return $this->hasMany(IntelligencePackagePointRahjoo::class,'rahjoo_id');
     }
 
     /**
