@@ -128,4 +128,10 @@ class RahjooRepository extends BaseRepository implements RahjooRepositoryInterfa
         /** @var Rahjoo $rahjoo */
         $rahjoo->intelligenceRahyab()->attach($rahnama_id, ['intelligence_id' => $intelligence_id]);
     }
+
+    public function attachIntelligencePackagePoints($rahjoo, $points)
+    {
+        /** @var Rahjoo $rahjoo */
+        dd($rahjoo->intelligencePackagePoints);
+    }
 }

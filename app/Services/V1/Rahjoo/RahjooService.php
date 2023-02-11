@@ -80,7 +80,7 @@ class RahjooService extends BaseService
     {
         //ApiResponse::authorize($request->user()->can('show', Rahjoo::class));
         $rahjoo = $this->rahjooRepository->select([
-            'id', 'user_id', 'agent_id', 'package_id', 'code', 'school', 'which_child_of_family', 'disease_background',
+            'id', 'user_id','rahnama_id', 'agent_id', 'package_id', 'code', 'school', 'which_child_of_family', 'disease_background',
         ])->with(['package:id,title', 'user:id,first_name,last_name,mobile,birthdate', 'user.profile'])->findorFailById($rahjoo);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('rahjoos', RahjooResource::make($rahjoo))
@@ -359,7 +359,7 @@ class RahjooService extends BaseService
         /** @var Rahjoo $rahjoo */
         $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])->findorFailById($rahjoo);
         $intelligencePackageRepository = resolve(IntelligencePackageRepositoryInterface::class);
-        $intelligencePackage = $intelligencePackageRepository->query($rahjoo->pivotIntelligencePackage())
+        $intelligencePackage = $intelligencePackageRepository->query($rahjoo->packagePivotIntelligencePackage())
             ->select(['pivot_id'])
             ->findOrFailByPivotId($intelligencePackage);
         ApiResponse::validate($request->all(), [
@@ -464,6 +464,44 @@ class RahjooService extends BaseService
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('rahjoos', RahjooResource::collection($rahjoos))
             ->send();
+    }
+
+    public function storeIntelligencePackagePoints(Request $request, $rahjoo, $intelligencePackage)
+    {
+        /** @var Rahjoo $rahjoo */
+        $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])->findorFailById($rahjoo);
+        /** @var IntelligencePackage $intelligencePackage */
+        $intelligencePackage = resolve(IntelligencePackageRepositoryInterface::class)
+            ->query($rahjoo->packagePivotIntelligencePackage())
+            ->findOrFailByPivotId($intelligencePackage);
+        $rules = $intelligencePackage->points->pluck('max_point', 'id')->mapWithKeys(function ($max_point, $intelligence_id) {
+            return [
+                'points.' . $intelligence_id => ['required', 'numeric', 'between:0,' . $max_point],
+            ];
+        })->put('points', ['required', 'array', 'min:1'])
+            ->toArray();
+        ApiResponse::validate($request->all(), $rules);
+        $points = collect($request->points)->mapWithKeys(function ($point, $intelligence_id) use ($request, $rahjoo, $intelligencePackage) {
+            return [
+                $intelligence_id => [
+                    'user_id' => $request->user()->id,
+                    'rahjoo_id' => $rahjoo->id,
+                    'intelligence_package_id' => $intelligencePackage->pivot_id,
+                    'point' => $point,
+                ],
+            ];
+        });
+        $this->rahjooRepository->attachIntelligencePackagePoints($rahjoo, $points);
+    }
+
+    public function updateIntelligencePackagePoints(Request $request, $rahjoo, $intelligencePackage)
+    {
+
+    }
+
+    public function showIntelligencePackagePoints(Request $request, $rahjoo, $intelligencePackage)
+    {
+
     }
 
     #endregion

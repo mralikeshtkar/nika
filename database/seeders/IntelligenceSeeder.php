@@ -16,7 +16,7 @@ class IntelligenceSeeder extends Seeder
      */
     public function run()
     {
-        foreach (range(1, 15) as $item) {
+        foreach (range(1, 8) as $item) {
             Intelligence::factory()->create([
                 'title'=>trans("Intelligence") . " " . $item,
             ]);

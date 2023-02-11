@@ -179,6 +179,9 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->get('rahjoos/{rahjoo}/intelligence-rahnama', [V1ApiRahjooController::class, 'intelligenceRahnama']);
             $router->post('rahjoos/{rahjoo}/intelligence-rahnama', [V1ApiRahjooController::class, 'storeIntelligenceRahnama']);
             $router->get('rahjoos/list/have-not-rahnama-rahyab', [V1ApiRahjooController::class, 'haveNotRahnamaRahyab']);
+            $router->post('rahjoos/{rahjoo}/intelligence-packages/{intelligencePackage}/intelligence-package-points', [V1ApiRahjooController::class, 'storeIntelligencePackagePoints']);
+            $router->put('rahjoos/{rahjoo}/intelligence-packages/{intelligencePackage}/intelligence-package-points-update', [V1ApiRahjooController::class, 'updateIntelligencePackagePoints']);
+            $router->get('rahjoos/{rahjoo}/intelligence-packages/{intelligencePackage}/intelligence-package-points', [V1ApiRahjooController::class, 'showIntelligencePackagePoints']);
         });
 
         /* Rahjoo parents */
@@ -353,8 +356,8 @@ Route::prefix('v1')->group(function (Router $router) {
     $router->get('upload/{media}', [ApiUploadFileController::class, 'show']);
     $router->post('upload', [ApiUploadFileController::class, 'file']);
 
-    $router->post('/token', [\App\Http\Controllers\V1\Api\ApiBaseController::class,'token']);
-    $router->middleware('auth:sanctum')->get('/test/{id}', function (Request $request,$id){
+    $router->post('/token', [\App\Http\Controllers\V1\Api\ApiBaseController::class, 'token']);
+    $router->middleware('auth:sanctum')->get('/test/{id}', function (Request $request, $id) {
         dd(\App\Models\User::query()->find($id)->isRahjoo());
     });
 

@@ -872,4 +872,19 @@ class ApiRahjooController extends ApiBaseController
     {
         return $this->rahjooService->haveNotRahnamaRahyab($request);
     }
+
+    public function storeIntelligencePackagePoints(Request $request, $rahjoo, $intelligencePackage)
+    {
+        return $this->rahjooService->storeIntelligencePackagePoints($request, $rahjoo, $intelligencePackage);
+    }
+
+    public function updateIntelligencePackagePoints(Request $request, $rahjoo, $intelligencePackage)
+    {
+        return $this->rahjooService->updateIntelligencePackagePoints($request, $rahjoo, $intelligencePackage);
+    }
+
+    public function showIntelligencePackagePoints(Request $request, $rahjoo, $intelligencePackage)
+    {
+        return $this->rahjooService->showIntelligencePackagePoints($request, $rahjoo, $intelligencePackage);
+    }
 }
