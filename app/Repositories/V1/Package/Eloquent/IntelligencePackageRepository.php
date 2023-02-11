@@ -66,4 +66,9 @@ class IntelligencePackageRepository extends BaseRepository implements Intelligen
         return $intelligencePackage->update(['updated_at' => now()]);
     }
 
+    public function storeComment($intelligencePackage, $data)
+    {
+        return $intelligencePackage->comments()->create($data);
+    }
+
 }

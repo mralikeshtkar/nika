@@ -2,16 +2,18 @@
 
 namespace App\Models;
 
+use App\Traits\Comment\HasComment;
 use Awobaz\Compoships\Compoships;
 use Awobaz\Compoships\Database\Eloquent\Relations\BelongsTo;
 use Awobaz\Compoships\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class IntelligencePackage extends Pivot
 {
-    use Compoships,HasRelationships;
+    use Compoships, HasRelationships, HasComment;
 
     /**
      * @var string[]
@@ -20,12 +22,18 @@ class IntelligencePackage extends Pivot
         'is_completed' => 'bool',
     ];
 
+    public function comments(): MorphMany
+    {
+        return $this->morphMany(Comment::class, Comment::POLY_MORPHIC_KEY,null,null,'pivot_id');
+    }
+
+
     /**
      * @return HasMany
      */
     public function exercises(): HasMany
     {
-        return $this->hasMany(Exercise::class, 'intelligence_package_id','pivot_id');
+        return $this->hasMany(Exercise::class, 'intelligence_package_id', 'pivot_id');
     }
 
     /**
@@ -33,12 +41,12 @@ class IntelligencePackage extends Pivot
      */
     public function exercise(): HasOne
     {
-        return $this->hasOne(Exercise::class, 'intelligence_package_id','pivot_id');
+        return $this->hasOne(Exercise::class, 'intelligence_package_id', 'pivot_id');
     }
 
     public function exerciseQuestionPivotPoints()
     {
-        return $this->hasManyDeepFromRelations($this->exercises(),(new Exercise())->questions(),(new Question())->pivotPoints());
+        return $this->hasManyDeepFromRelations($this->exercises(), (new Exercise())->questions(), (new Question())->pivotPoints());
     }
 
     public function intelligence(): BelongsTo

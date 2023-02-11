@@ -68,8 +68,6 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->post('users', [V1UserController::class, 'store']);
             $router->put('users/{user}', [V1UserController::class, 'update']);
             $router->post('users/{user}/assign-role', [V1UserController::class, 'assignRole']);
-
-
         });
     });
 
@@ -175,8 +173,9 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->put('rahjoos/{rahjoo}/questions/{question}/question-points-update', [V1ApiRahjooController::class, 'updateQuestionPoints']);
             $router->get('rahjoos/{rahjoo}/questions/{question}/question-points', [V1ApiRahjooController::class, 'showQuestionPoints']);
             $router->post('rahjoos/{rahjoo}/questions/{question}/comments', [V1ApiRahjooController::class, 'storeQuestionComment']);
-            $router->post('rahjoos/{rahjoo}/questions/{question}/comments', [V1ApiRahjooController::class, 'storeQuestionComment']);
             $router->get('rahjoos/{rahjoo}/questions/{question}/comments', [V1ApiRahjooController::class, 'questionComments']);
+            $router->post('rahjoos/{rahjoo}/intelligence-packages/{intelligencePackage}/comments', [V1ApiRahjooController::class, 'storeIntelligencePackageComment']);
+            $router->get('rahjoos/{rahjoo}/intelligence-packages/{intelligencePackage}/comments', [V1ApiRahjooController::class, 'intelligencePackageComments']);
             $router->get('rahjoos/{rahjoo}/intelligence-rahnama', [V1ApiRahjooController::class, 'intelligenceRahnama']);
             $router->post('rahjoos/{rahjoo}/intelligence-rahnama', [V1ApiRahjooController::class, 'storeIntelligenceRahnama']);
             $router->get('rahjoos/list/have-not-rahnama-rahyab', [V1ApiRahjooController::class, 'haveNotRahnamaRahyab']);

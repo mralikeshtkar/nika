@@ -10,12 +10,14 @@ use App\Http\Resources\V1\PaginationResource;
 use App\Http\Resources\V1\Question\QuestionResource;
 use App\Http\Resources\V1\Rahjoo\RahjooResource;
 use App\Models\Intelligence;
+use App\Models\IntelligencePackage;
 use App\Models\Package;
 use App\Models\Question;
 use App\Models\QuestionPointRahjoo;
 use App\Models\Rahjoo;
 use App\Models\User;
 use App\Repositories\V1\Exercise\Interfaces\ExerciseRepositoryInterfaces;
+use App\Repositories\V1\Package\Interfaces\IntelligencePackageRepositoryInterface;
 use App\Repositories\V1\Package\Interfaces\PackageRepositoryInterface;
 use App\Repositories\V1\Question\Interfaces\QuestionRepositoryInterface;
 use App\Repositories\V1\Rahjoo\Interfaces\RahjooRepositoryInterface;
@@ -337,7 +339,60 @@ class RahjooService extends BaseService
         $question = $this->rahjooRepository->query($rahjoo->questions())->findOrFailById($question);
         $comments = $questionRepository->query($question->comments()->latest())
             ->select(['id', 'user_id', 'body', 'created_at'])
-            ->with(['user:id,first_name,last_name,mobile'])
+            ->with(['user:id,first_name,last_name'])
+            ->where('rahjoo_id', $rahjoo->id)
+            ->paginate($request->get('perPage', 15));
+        $resource = PaginationResource::make($comments)->additional(['itemsResource' => CommentResource::class]);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('comments', $resource)
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $rahjoo
+     * @param $intelligencePackage
+     * @return JsonResponse
+     */
+    public function storeIntelligencePackageComment(Request $request, $rahjoo, $intelligencePackage): JsonResponse
+    {
+        /** @var Rahjoo $rahjoo */
+        $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])->findorFailById($rahjoo);
+        $intelligencePackageRepository = resolve(IntelligencePackageRepositoryInterface::class);
+        $intelligencePackage = $intelligencePackageRepository->query($rahjoo->pivotIntelligencePackage())
+            ->select(['pivot_id'])
+            ->findOrFailByPivotId($intelligencePackage);
+        ApiResponse::validate($request->all(), [
+            'body' => ['required', 'string'],
+        ]);
+        $comment = $intelligencePackageRepository->storeComment($intelligencePackage, [
+            'user_id' => $request->user()->id,
+            'rahjoo_id' => $rahjoo->id,
+            'body' => $request->body,
+        ]);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('comment', new CommentResource($comment))
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $rahjoo
+     * @param $intelligencePackage
+     * @return JsonResponse
+     */
+    public function intelligencePackageComments(Request $request, $rahjoo, $intelligencePackage): JsonResponse
+    {
+        /** @var Rahjoo $rahjoo */
+        $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])->findorFailById($rahjoo);
+        $intelligencePackageRepository = resolve(IntelligencePackageRepositoryInterface::class);
+        /** @var IntelligencePackage $intelligencePackage */
+        $intelligencePackage = $intelligencePackageRepository->query($rahjoo->pivotIntelligencePackage())
+            ->select(['pivot_id'])
+            ->findOrFailByPivotId($intelligencePackage);
+        $comments = $intelligencePackageRepository->query($intelligencePackage->comments()->latest())
+            ->select(['id', 'user_id', 'body', 'created_at'])
+            ->with(['user:id,first_name,last_name'])
             ->where('rahjoo_id', $rahjoo->id)
             ->paginate($request->get('perPage', 15));
         $resource = PaginationResource::make($comments)->additional(['itemsResource' => CommentResource::class]);
@@ -375,7 +430,7 @@ class RahjooService extends BaseService
             'rahnama_id' => ['required', 'exists:' . User::class . ',id'],
             'intelligence_id' => ['required', 'exists:' . Intelligence::class . ',id'],
         ]);
-        $this->rahjooRepository->storeIntelligenceRahnama($rahjoo,$request->rahnama_id,$request->intelligence_id);
+        $this->rahjooRepository->storeIntelligenceRahnama($rahjoo, $request->rahnama_id, $request->intelligence_id);
         return ApiResponse::message(trans("Mission accomplished"))
             ->send();
     }

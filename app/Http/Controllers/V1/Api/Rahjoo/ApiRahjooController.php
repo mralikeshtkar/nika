@@ -654,6 +654,56 @@ class ApiRahjooController extends ApiBaseController
     }
 
     /**
+     * @OA\Post(
+     *     path="/rahjoos/{id}/intelligence-packages/{intelligencePackageComments}/comments",
+     *     summary="ثبت نظر برای سوال",
+     *     description="",
+     *     tags={"رهجو"},
+     *     @OA\Parameter(
+     *         description="شناسه رهجو",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه سوال",
+     *         in="path",
+     *         name="question",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"body"},
+     *                 @OA\Property(
+     *                     property="body",
+     *                     type="string",
+     *                     description="متن",
+     *                 ),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function storeIntelligencePackageComment(Request $request, $rahjoo,$intelligencePackage)
+    {
+        return $this->rahjooService->storeIntelligencePackageComment($request, $rahjoo,$intelligencePackage);
+    }
+
+    public function intelligencePackageComments(Request $request, $rahjoo,$intelligencePackage)
+    {
+        return $this->rahjooService->intelligencePackageComments($request, $rahjoo,$intelligencePackage);
+    }
+
+    /**
      * @OA\Get (
      *     path="/rahjoos/{id}/intelligence-rahnama",
      *     summary="دریافت رهنما هوش برای رهجو",

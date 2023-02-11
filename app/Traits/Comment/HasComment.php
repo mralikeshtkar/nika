@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 trait HasComment
 {
-    use HasRelationships;
-
     /**
      * @param $data
      * @return Model

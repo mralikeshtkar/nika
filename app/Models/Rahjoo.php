@@ -156,6 +156,11 @@ class Rahjoo extends Model
         return $this->belongsTo(Package::class);
     }
 
+    public function pivotIntelligencePackage()
+    {
+        return $this->hasManyDeepFromRelations($this->package(),(new Package())->pivotIntelligencePackage());
+    }
+
     /**
      * @return HasManyDeep
      */

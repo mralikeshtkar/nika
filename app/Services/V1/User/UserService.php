@@ -195,6 +195,10 @@ class UserService extends BaseService
     {
         $user = $request->user()->load('rahjoo')
             ->only(['id', 'background', 'color', 'first_name', 'last_name', 'mobile', 'birthdate', 'rahjoo']);
+        $user = collect($user)
+            ->put('isPersonnel', $request->user()->isPersonnel())
+            ->put('role', optional($request->user()->roles()->first())->name)
+            ->toArray();
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('user', new SingleUserResource($user))
             ->send();

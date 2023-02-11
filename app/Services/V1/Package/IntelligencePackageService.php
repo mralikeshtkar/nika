@@ -16,6 +16,7 @@ use App\Responses\Api\ApiResponse;
 use App\Services\V1\BaseService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 class IntelligencePackageService extends BaseService
