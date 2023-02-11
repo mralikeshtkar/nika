@@ -61,7 +61,7 @@ class IntelligenceService extends BaseService
             ->select(['id','title'])
             ->searchTitle($request)
             ->with(['rahnama'=>function($q){
-                $q->select(['id','first_name','last_name'])->with('rahnamaRahjoos');
+                $q->select(['id','first_name','last_name'])->withCount('rahnamaRahjoos');
             }])
             ->get();
         return ApiResponse::message(trans("The information was received successfully"))
