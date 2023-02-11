@@ -76,7 +76,7 @@ class UserService extends BaseService
     public function onlyRahjoos(Request $request): JsonResponse
     {
         $users = $this->userRepository
-            ->select(['id','first_name','last_name','mobile'])
+            ->select(['id', 'first_name', 'last_name', 'mobile'])
             ->hasRole(RoleEnum::RAHJOO)
             ->searchName($request)
             ->searchMobile($request)
@@ -130,7 +130,7 @@ class UserService extends BaseService
     public function onlyRahnama(Request $request): JsonResponse
     {
         $users = $this->userRepository
-            ->select(['id','first_name','last_name','mobile'])
+            ->select(['id', 'first_name', 'last_name', 'mobile'])
             ->with(['rahnamaIntelligences:id,title'])
             ->hasRole(RoleEnum::RAHNAMA)
             ->searchName($request)
@@ -151,7 +151,7 @@ class UserService extends BaseService
     public function onlyRahyab(Request $request): JsonResponse
     {
         $users = $this->userRepository
-            ->select(['id','first_name','last_name','mobile'])
+            ->select(['id', 'first_name', 'last_name', 'mobile'])
             ->hasRole(RoleEnum::RAHYAB)
             ->searchName($request)
             ->withRahyabRahjoosCount()
@@ -403,6 +403,73 @@ class UserService extends BaseService
         return ApiResponse::message(trans("The :attribute was successfully registered", ['attribute' => trans('User')]), Response::HTTP_CREATED)
             ->addData('user', UserResource::make($user))
             ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $user
+     * @return JsonResponse
+     */
+    public function update(Request $request, $user): JsonResponse
+    {
+        ApiResponse::authorize($request->user()->can('update', User::class));
+        $user = $this->userRepository->findOrFailById($user);
+        $request->merge([
+            'mobile' => $request->filled('mobile') ? to_valid_mobile_number($request->mobile) : null,
+        ]);
+        ApiResponse::validate($request->all(), [
+            'background' => ['nullable', new EnumValue(UserBackground::class)],
+            'color' => ['nullable', new EnumValue(UserColor::class)],
+            'first_name' => ['nullable', 'string'],
+            'last_name' => ['nullable', 'string'],
+            'father_name' => ['nullable', 'string'],
+            'mobile' => ['nullable', new MobileRule()],
+            'national_code' => ['nullable', new NationalCodeRule()],
+            'birthdate' => ['nullable', 'jdate:' . User::BIRTHDATE_VALIDATION_FORMAT],
+            'password' => ['nullable', new PasswordRule()],
+            'status' => ['nullable', new EnumKey(UserStatus::class)],
+            'city_id' => ['nullable', 'exists:' . City::class . ',id'],
+            'grade_id' => ['nullable', 'exists:' . Grade::class . ',id'],
+            'birth_place_id' => ['nullable', 'exists:' . City::class . ',id'],
+        ]);
+        $request->merge([
+            'birthdate' => $request->filled('birthdate') ? Verta::parseFormat(User::BIRTHDATE_VALIDATION_FORMAT, $request->birthdate) : null,
+            'password' => $request->filled('password') ? Hash::make($request->password) : null,
+            'status' => $request->filled('status') ? UserStatus::getValue($request->status) : null,
+        ]);
+        $user = $this->userRepository->update($user, collect([])
+            ->when($request->filled('first_name'), function (Collection $collection) use ($request) {
+                $collection->put('first_name', $request->first_name);
+            })->when($request->filled('last_name'), function (Collection $collection) use ($request) {
+                $collection->put('last_name', $request->last_name);
+            })->when($request->filled('father_name'), function (Collection $collection) use ($request) {
+                $collection->put('father_name', $request->father_name);
+            })->when($request->filled('mobile'), function (Collection $collection) use ($request) {
+                $collection->put('mobile', $request->mobile);
+            })->when($request->filled('national_code'), function (Collection $collection) use ($request) {
+                $collection->put('national_code', $request->national_code);
+            })->when($request->filled('birthdate'), function (Collection $collection) use ($request) {
+                $collection->put('birthdate', $request->birthdate->datetime());
+            })->when($request->filled('password'), function (Collection $collection) use ($request) {
+                $collection->put('password', $request->password);
+            })->when($request->filled('status'), function (Collection $collection) use ($request) {
+                $collection->put('status', $request->status);
+            })->when($request->filled('city_id'), function (Collection $collection) use ($request) {
+                $collection->put('city_id', $request->city_id);
+            })->when($request->filled('grade_id'), function (Collection $collection) use ($request) {
+                $collection->put('grade_id', $request->grade_id);
+            })->when($request->filled('birth_place_id'), function (Collection $collection) use ($request) {
+                $collection->put('birth_place_id', $request->birth_place_id);
+            })->when($request->filled('status'), function (Collection $collection) use ($request) {
+                $collection->put('status', $request->status);
+            }, function (Collection $collection) {
+                $collection->put('status', UserStatus::Active);
+            })->when($request->filled('background'), function (Collection $collection) use ($request) {
+                $collection->put('background', $request->background);
+            })->when($request->filled('color'), function (Collection $collection) use ($request) {
+                $collection->put('color', $request->color);
+            })->toArray());
+        return ApiResponse::message(trans("The :attribute was successfully updated", ['attribute' => trans('User')]))->send();
     }
 
     /**

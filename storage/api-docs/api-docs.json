@@ -6506,6 +6506,89 @@
                 }
             }
         },
+        "/rahjoos/{id}/intelligence-rahnama": {
+            "get": {
+                "tags": [
+                    "رهجو"
+                ],
+                "summary": "دریافت رهنما هوش برای رهجو",
+                "description": "",
+                "operationId": "f5cf0241b887199e4673bb3d5e15b7f9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه رهجو",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "رهجو"
+                ],
+                "summary": "ثبت رهنما هوش برای رهجو",
+                "description": "",
+                "operationId": "2ebd2e9d532c809d57e57ea5bf5ffd52",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه رهجو",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "rahanma_id",
+                                    "intelligence_id"
+                                ],
+                                "properties": {
+                                    "rahanma_id": {
+                                        "description": "شناسه رهنما",
+                                        "type": "string"
+                                    },
+                                    "intelligence_id": {
+                                        "description": "شناسه هوش",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/rahjoos/{id}": {
             "delete": {
                 "tags": [

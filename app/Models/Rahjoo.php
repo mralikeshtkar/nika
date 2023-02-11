@@ -51,6 +51,23 @@ class Rahjoo extends Model
 
     #region Relations
 
+    /**
+     * @return BelongsToMany
+     */
+    public function intelligenceRahyab(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'rahjoo_intelligence_rahyab', 'rahjoo_id', 'rahnama_id', 'id', 'id')
+            ->using(RahjooIntelligenceRahyab::class);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function pivotIntelligenceRahyab(): HasMany
+    {
+        return $this->hasMany(RahjooIntelligenceRahyab::class,'rahjoo_id');
+    }
+
     public function questionPoints(): BelongsToMany
     {
         return $this->belongsToMany(Question::class, 'question_point_rahjoo')

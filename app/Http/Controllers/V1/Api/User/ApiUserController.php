@@ -178,7 +178,7 @@ class ApiUserController extends ApiBaseController
      */
     public function storeRahnamaIntelligences(Request $request, $user)
     {
-        return $this->userService->storeRahnamaIntelligences($request,$user);
+        return $this->userService->storeRahnamaIntelligences($request, $user);
     }
 
     /**
@@ -203,7 +203,7 @@ class ApiUserController extends ApiBaseController
      */
     public function rahnama(Request $request, $user)
     {
-        return $this->userService->rahnama($request,$user);
+        return $this->userService->rahnama($request, $user);
     }
 
     /**
@@ -350,7 +350,7 @@ class ApiUserController extends ApiBaseController
      */
     public function uploadProfile(Request $request, $user)
     {
-        return $this->userService->uploadProfile($request,$user);
+        return $this->userService->uploadProfile($request, $user);
     }
 
     /**
@@ -728,6 +728,11 @@ class ApiUserController extends ApiBaseController
         return $this->userService->store($request);
     }
 
+    public function update(Request $request, $user)
+    {
+        return $this->userService->update($request, $user);
+    }
+
     /**
      * @OA\Post(
      *     path="/users/{id}/assign-role",
@@ -761,8 +766,8 @@ class ApiUserController extends ApiBaseController
      *     ),
      * )
      */
-    public function assignRole(Request $request,$user)
+    public function assignRole(Request $request, $user)
     {
-        return $this->userService->assignRole($request,$user);
+        return $this->userService->assignRole($request, $user);
     }
 }

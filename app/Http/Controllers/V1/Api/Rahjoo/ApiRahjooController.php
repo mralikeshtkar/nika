@@ -653,6 +653,69 @@ class ApiRahjooController extends ApiBaseController
         return $this->rahjooService->questionComments($request,$rahjoo, $question);
     }
 
+    /**
+     * @OA\Get (
+     *     path="/rahjoos/{id}/intelligence-rahnama",
+     *     summary="دریافت رهنما هوش برای رهجو",
+     *     description="",
+     *     tags={"رهجو"},
+     *     @OA\Parameter(
+     *         description="شناسه رهجو",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function intelligenceRahnama(Request $request, $rahjoo)
+    {
+        return $this->rahjooService->intelligenceRahnama($request,$rahjoo);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/rahjoos/{id}/intelligence-rahnama",
+     *     summary="ثبت رهنما هوش برای رهجو",
+     *     description="",
+     *     tags={"رهجو"},
+     *     @OA\Parameter(
+     *         description="شناسه رهجو",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"rahanma_id","intelligence_id"},
+     *                 @OA\Property(
+     *                     property="rahanma_id",
+     *                     type="string",
+     *                     description="شناسه رهنما",
+     *                 ),
+     *                 @OA\Property(
+     *                     property="intelligence_id",
+     *                     type="string",
+     *                     description="شناسه هوش",
+     *                 ),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
     public function storeIntelligenceRahnama(Request $request, $rahjoo)
     {
         return $this->rahjooService->storeIntelligenceRahnama($request,$rahjoo);

@@ -35,6 +35,18 @@ class UserPolicy
     }
 
     /**
+     * Check user can access to create.
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function update(User $user): bool
+    {
+        return $user->hasPermissionTo(Permission::EDIT_USERS)
+            || $user->hasPermissionTo(Permission::MANAGE_USERS);
+    }
+
+    /**
      * Check user can access to edit.
      *
      * @param User $user

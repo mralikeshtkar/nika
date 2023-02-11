@@ -177,6 +177,7 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->post('rahjoos/{rahjoo}/questions/{question}/comments', [V1ApiRahjooController::class, 'storeQuestionComment']);
             $router->post('rahjoos/{rahjoo}/questions/{question}/comments', [V1ApiRahjooController::class, 'storeQuestionComment']);
             $router->get('rahjoos/{rahjoo}/questions/{question}/comments', [V1ApiRahjooController::class, 'questionComments']);
+            $router->get('rahjoos/{rahjoo}/intelligence-rahnama', [V1ApiRahjooController::class, 'intelligenceRahnama']);
             $router->post('rahjoos/{rahjoo}/intelligence-rahnama', [V1ApiRahjooController::class, 'storeIntelligenceRahnama']);
             $router->get('rahjoos/list/have-not-rahnama-rahyab', [V1ApiRahjooController::class, 'haveNotRahnamaRahyab']);
         });

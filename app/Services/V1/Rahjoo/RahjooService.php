@@ -9,6 +9,7 @@ use App\Http\Resources\V1\Exercise\ExerciseResource;
 use App\Http\Resources\V1\PaginationResource;
 use App\Http\Resources\V1\Question\QuestionResource;
 use App\Http\Resources\V1\Rahjoo\RahjooResource;
+use App\Models\Intelligence;
 use App\Models\Package;
 use App\Models\Question;
 use App\Models\QuestionPointRahjoo;
@@ -345,14 +346,38 @@ class RahjooService extends BaseService
             ->send();
     }
 
-    public function storeIntelligenceRahnama(Request $request, $rahjoo)
+    /**
+     * @param Request $request
+     * @param $rahjoo
+     * @return JsonResponse
+     */
+    public function intelligenceRahnama(Request $request, $rahjoo): JsonResponse
+    {
+        $rahjoo = $this->rahjooRepository->select(['id'])
+            ->with(['pivotIntelligenceRahyab'])
+            ->findorFailById($rahjoo);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('rahjoo', new RahjooResource($rahjoo))
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $rahjoo
+     * @return JsonResponse
+     */
+    public function storeIntelligenceRahnama(Request $request, $rahjoo): JsonResponse
     {
         $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])
             ->with(['package:id', 'package.pivotIntelligences:package_id,intelligence_id'])
             ->findorFailById($rahjoo);
         ApiResponse::validate($request->all(), [
-            'rahnama_id' => ['required']
+            'rahnama_id' => ['required', 'exists:' . User::class . ',id'],
+            'intelligence_id' => ['required', 'exists:' . Intelligence::class . ',id'],
         ]);
+        $this->rahjooRepository->storeIntelligenceRahnama($rahjoo,$request->rahnama_id,$request->intelligence_id);
+        return ApiResponse::message(trans("Mission accomplished"))
+            ->send();
     }
 
     /**
