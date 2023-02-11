@@ -125,9 +125,12 @@ class RahjooRepository extends BaseRepository implements RahjooRepositoryInterfa
 
     public function storeIntelligenceRahnama($rahjoo, $rahnama_id, $intelligence_id)
     {
-
         /** @var Rahjoo $rahjoo */
-        $rahjoo->intelligenceRahyab()->attach($rahnama_id, ['intelligence_id' => $intelligence_id]);
+//        $intelligenceRahyab = $rahjoo->intelligenceRahyab()->wherePivot('intelligence_id',$intelligence_id)->pluck('id');
+//        if ($intelligenceRahyab->count())
+        /*if ($intelligenceRahyab->count())
+        $rahjoo->intelligenceRahyab()->wherePivot('intelligence_id',$intelligence_id)->delete();*/
+        $rahjoo->intelligenceRahnama()->attach($rahnama_id, ['intelligence_id' => $intelligence_id]);
     }
 
     public function attachIntelligencePackagePoints($rahjoo, $intelligencePackagePoints, $points)

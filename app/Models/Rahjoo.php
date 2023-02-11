@@ -54,7 +54,7 @@ class Rahjoo extends Model
     /**
      * @return BelongsToMany
      */
-    public function intelligenceRahyab(): BelongsToMany
+    public function intelligenceRahnama(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'rahjoo_intelligence_rahyab', 'rahjoo_id', 'rahnama_id', 'id', 'id')
             ->using(RahjooIntelligenceRahyab::class);
@@ -63,7 +63,7 @@ class Rahjoo extends Model
     /**
      * @return HasMany
      */
-    public function pivotIntelligenceRahyab(): HasMany
+    public function pivotIntelligenceRahnama(): HasMany
     {
         return $this->hasMany(RahjooIntelligenceRahyab::class, 'rahjoo_id');
     }
@@ -156,6 +156,11 @@ class Rahjoo extends Model
         return $this->belongsTo(Package::class);
     }
 
+    public function packageIntelligences(): HasManyDeep
+    {
+        return $this->hasManyDeepFromRelations($this->package(), (new Package())->intelligences());
+    }
+
     /**
      * @return BelongsToMany
      */
@@ -171,7 +176,7 @@ class Rahjoo extends Model
      */
     public function pivotIntelligencePackagePoints(): HasMany
     {
-        return $this->hasMany(IntelligencePackagePointRahjoo::class,'rahjoo_id');
+        return $this->hasMany(IntelligencePackagePointRahjoo::class, 'rahjoo_id');
     }
 
     /**

@@ -873,11 +873,77 @@ class ApiRahjooController extends ApiBaseController
         return $this->rahjooService->haveNotRahnamaRahyab($request);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/rahjoos/{rahjoo}/intelligence-packages/{intelligencePackage}/intelligence-package-points",
+     *     summary="ثبت امتیاز برای هوش پکیج",
+     *     description="",
+     *     tags={"رهجو"},
+     *     @OA\Parameter(
+     *         description="شناسه رهجو",
+     *         in="path",
+     *         name="rahjoo",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه هوش پکیج",
+     *         in="path",
+     *         name="intelligencePackage",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                  @OA\Property(property="points", type="array",
+     *                      @OA\Items(
+     *                          type="integer"
+     *                      )
+     *                  )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
     public function storeIntelligencePackagePoints(Request $request, $rahjoo, $intelligencePackage)
     {
         return $this->rahjooService->storeIntelligencePackagePoints($request, $rahjoo, $intelligencePackage);
     }
 
+    /**
+     * @OA\Get (
+     *     path="/rahjoos/{rahjoo}/intelligence-packages/{intelligencePackage}/intelligence-package-points",
+     *     summary="دریافت امتیاز هوش پکیج برای رهجو",
+     *     description="",
+     *     tags={"رهجو"},
+     *     @OA\Parameter(
+     *         description="شناسه رهجو",
+     *         in="path",
+     *         name="rahjoo",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه هوش پکیج",
+     *         in="path",
+     *         name="intelligencePackage",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
     public function showIntelligencePackagePoints(Request $request, $rahjoo, $intelligencePackage)
     {
         return $this->rahjooService->showIntelligencePackagePoints($request, $rahjoo, $intelligencePackage);
