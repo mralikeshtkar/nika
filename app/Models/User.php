@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
@@ -124,7 +125,7 @@ class User extends Authenticatable
      */
     public function isPersonnel(): bool
     {
-        return $this->isSuperAdmin() || $this->hasRole(RoleEnum::PERSONNEL);
+        return $this->hasAnyRole(Arr::except(\App\Enums\Role::asArray(),\App\Enums\Role::RAHJOO()->key));
     }
 
     public function isRahjoo(): bool

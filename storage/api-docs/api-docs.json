@@ -2432,6 +2432,37 @@
                 }
             }
         },
+        "/intelligences/{id}/rahnama": {
+            "get": {
+                "tags": [
+                    "هوش"
+                ],
+                "summary": "لیست رهنماهای هوش",
+                "description": "",
+                "operationId": "3991fe33b1a3caf153a76fe135e4e310",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه هوش",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/intelligence-packages/{id}/exercises": {
             "get": {
                 "tags": [
@@ -6506,6 +6537,47 @@
                 }
             }
         },
+        "/rahjoos/list/have-not-rahnama-rahyab": {
+            "get": {
+                "tags": [
+                    "رهجو"
+                ],
+                "summary": "لیست رهجو هایی که رهیاب یا رهنما ندارند بصورت صفحه بندی",
+                "description": "",
+                "operationId": "ab0151cf8516a1cb0374814528ee0402",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/roles": {
             "get": {
                 "tags": [
@@ -7033,6 +7105,14 @@
                                         "description": "کلمه عبور",
                                         "type": "string"
                                     },
+                                    "background": {
+                                        "description": "پس زمینه",
+                                        "type": "string"
+                                    },
+                                    "color": {
+                                        "description": "رنگ",
+                                        "type": "string"
+                                    },
                                     "city_id": {
                                         "description": "شناسه شهر کاربر",
                                         "type": "number"
@@ -7071,14 +7151,14 @@
                 }
             }
         },
-        "/users/only-rahjoos": {
+        "/users-list/only-rahjoos": {
             "get": {
                 "tags": [
                     "کاربر"
                 ],
                 "summary": "لیست کاربران که رهجو بصورت صفحه بندی",
                 "description": "",
-                "operationId": "b8fe2fbe19f2984655a4273646f92908",
+                "operationId": "ac7daff4a04a41ee199ae8d219d82697",
                 "parameters": [
                     {
                         "name": "page",
@@ -7192,14 +7272,45 @@
                 }
             }
         },
-        "/users/only-rahnama": {
+        "/users/{user}/rahnama": {
+            "get": {
+                "tags": [
+                    "رهنما"
+                ],
+                "summary": "دریافت اطلاعات هوش",
+                "description": "",
+                "operationId": "f7d28a3ce18945de901074cd37e03e21",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "شناسه کاربر",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users-list/only-rahnama": {
             "get": {
                 "tags": [
                     "کاربر"
                 ],
                 "summary": "لیست کاربران که رهنما بصورت صفحه بندی",
                 "description": "",
-                "operationId": "0cf828d81d95a08e2340ca7a288ade96",
+                "operationId": "1e33bf522320c2b1e32383e81b4d3bdd",
                 "parameters": [
                     {
                         "name": "page",
@@ -7260,14 +7371,14 @@
                 }
             }
         },
-        "/users/only-rahyab": {
+        "/users-list/only-rahyab": {
             "get": {
                 "tags": [
                     "کاربر"
                 ],
                 "summary": "لیست کاربران که رهیاب بصورت صفحه بندی",
                 "description": "",
-                "operationId": "f8d6a7bd9e7fcb89c4ba0bb5636fc163",
+                "operationId": "a7d74d5ad163b4ad62235b6e373b04db",
                 "parameters": [
                     {
                         "name": "page",
@@ -7319,6 +7430,56 @@
                 "responses": {
                     "200": {
                         "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}/upload-profile": {
+            "post": {
+                "tags": [
+                    "کاربر"
+                ],
+                "summary": "اپلود پروفایل",
+                "description": "",
+                "operationId": "cfefee1ade551b2ed97362f0bf5fdf91",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه کاربر",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "file"
+                                ],
+                                "properties": {
+                                    "file": {
+                                        "description": "تصویر پکیج",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ثبت با موفقیت انجام شد",
                         "content": {
                             "application/json": {
                                 "schema": {}

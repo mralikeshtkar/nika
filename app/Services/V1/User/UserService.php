@@ -321,6 +321,7 @@ class UserService extends BaseService
             ->addData('token', $token)
             ->addData('hasName', !is_null($user->first_name))
             ->addData('isPersonnel', $user->isPersonnel())
+            ->addData('role', optional($user->roles()->first())->name)
             ->send();
     }
 
