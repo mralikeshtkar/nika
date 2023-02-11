@@ -80,7 +80,7 @@ class RahjooService extends BaseService
     {
         //ApiResponse::authorize($request->user()->can('show', Rahjoo::class));
         $rahjoo = $this->rahjooRepository->select([
-            'id', 'user_id','rahnama_id', 'agent_id', 'package_id', 'code', 'school', 'which_child_of_family', 'disease_background',
+            'id', 'user_id','rahyab_id', 'agent_id', 'package_id', 'code', 'school', 'which_child_of_family', 'disease_background',
         ])->with(['package:id,title', 'user:id,first_name,last_name,mobile,birthdate', 'user.profile'])->findorFailById($rahjoo);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('rahjoos', RahjooResource::make($rahjoo))
