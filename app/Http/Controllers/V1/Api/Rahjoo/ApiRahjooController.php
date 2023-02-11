@@ -656,7 +656,7 @@ class ApiRahjooController extends ApiBaseController
     /**
      * @OA\Post(
      *     path="/rahjoos/{id}/intelligence-packages/{intelligencePackage}/comments",
-     *     summary="ثبت نظر برای سوال",
+     *     summary="ثبت نظر برای هوش پکیج",
      *     description="",
      *     tags={"رهجو"},
      *     @OA\Parameter(
@@ -698,6 +698,48 @@ class ApiRahjooController extends ApiBaseController
         return $this->rahjooService->storeIntelligencePackageComment($request, $rahjoo, $intelligencePackage);
     }
 
+    /**
+     * @OA\Get (
+     *     path="/rahjoos/{id}/intelligence-packages/{intelligencePackage}/comments",
+     *     summary="رهجو دریافت نظرات هوش پکیج",
+     *     description="",
+     *     tags={"رهجو"},
+     *     @OA\Parameter(
+     *         description="شناسه رهجو",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه هوش پکیج",
+     *         in="path",
+     *         name="intelligencePackage",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شماره صفحه",
+     *         in="query",
+     *         name="page",
+     *         required=true,
+     *         example=1,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="تعداد نمایش در هر صفحه",
+     *         in="query",
+     *         name="perPage",
+     *         example=10,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
     public function intelligencePackageComments(Request $request, $rahjoo, $intelligencePackage)
     {
         return $this->rahjooService->intelligencePackageComments($request, $rahjoo, $intelligencePackage);
