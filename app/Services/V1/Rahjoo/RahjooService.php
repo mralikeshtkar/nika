@@ -410,7 +410,7 @@ class RahjooService extends BaseService
      */
     public function intelligenceRahnama(Request $request, $rahjoo): JsonResponse
     {
-        $rahjoo = $this->rahjooRepository->select(['id'])
+        $rahjoo = $this->rahjooRepository->select(['id','package_id'])
             ->with(['pivotIntelligenceRahnama','packageIntelligences'])
             ->findorFailById($rahjoo);
         return ApiResponse::message(trans("The information was received successfully"))
