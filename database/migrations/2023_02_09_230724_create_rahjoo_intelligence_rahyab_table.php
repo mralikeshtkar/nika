@@ -26,7 +26,7 @@ return new class extends Migration
                 ->cascadeOnUpdate();
             $table->foreignId('rahjoo_id')
                 ->references('id')
-                ->on('intelligences')
+                ->on('rahjoos')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
         });
