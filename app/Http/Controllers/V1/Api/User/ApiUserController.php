@@ -728,6 +728,107 @@ class ApiUserController extends ApiBaseController
         return $this->userService->store($request);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/users/{id}",
+     *     summary="بروزرسانی کاربر",
+     *     description="",
+     *     tags={"کاربر"},
+     *     @OA\Parameter(
+     *         description="شناسه کاربر",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"_method"},
+     *                 @OA\Property(
+     *                     property="_method",
+     *                     type="string",
+     *                     default="put",
+     *                     enum={"put"},
+     *                     description="این مقدار باید بصورت ثابت شود",
+     *                 ),
+     *                 @OA\Property(
+     *                     property="first_name",
+     *                     type="string",
+     *                     description="نام"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="last_name",
+     *                     type="string",
+     *                     description="نام خانوادگی"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="father_name",
+     *                     type="string",
+     *                     description="نام پدر"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="mobile",
+     *                     type="string",
+     *                     description="شماره موبایل"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="national_code",
+     *                     type="number",
+     *                     description="کد ملی"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="birthdate",
+     *                     type="string",
+     *                     description="تاریخ تولد بصورت شمسی با فرمت Y/m/d - مثال:1401/05/10"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="password",
+     *                     type="string",
+     *                     description="کلمه عبور"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="background",
+     *                     type="string",
+     *                     description="پس زمینه"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="color",
+     *                     type="string",
+     *                     description="رنگ"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="city_id",
+     *                     type="number",
+     *                     description="شناسه شهر کاربر"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="grade_id",
+     *                     type="number",
+     *                     description="شناسه مقطع تحصیلی کاربر"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="birth_place_id",
+     *                     type="number",
+     *                     description="شناسه شهر محل تولد کاربر"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="status",
+     *                     type="string",
+     *                     enum={"Active","Inactive"},
+     *                     description="Active: فعال - Inactive: غیرفعال",
+     *                 ),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="ثبت با موفقیت انجام شد",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
     public function update(Request $request, $user)
     {
         return $this->userService->update($request, $user);

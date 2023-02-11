@@ -7905,6 +7905,115 @@
                 }
             }
         },
+        "/users/{id}": {
+            "post": {
+                "tags": [
+                    "کاربر"
+                ],
+                "summary": "بروزرسانی کاربر",
+                "description": "",
+                "operationId": "ac308530472d61f58f3c4c3707c88560",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه کاربر",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "_method"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "description": "این مقدار باید بصورت ثابت شود",
+                                        "type": "string",
+                                        "default": "put",
+                                        "enum": [
+                                            "put"
+                                        ]
+                                    },
+                                    "first_name": {
+                                        "description": "نام",
+                                        "type": "string"
+                                    },
+                                    "last_name": {
+                                        "description": "نام خانوادگی",
+                                        "type": "string"
+                                    },
+                                    "father_name": {
+                                        "description": "نام پدر",
+                                        "type": "string"
+                                    },
+                                    "mobile": {
+                                        "description": "شماره موبایل",
+                                        "type": "string"
+                                    },
+                                    "national_code": {
+                                        "description": "کد ملی",
+                                        "type": "number"
+                                    },
+                                    "birthdate": {
+                                        "description": "تاریخ تولد بصورت شمسی با فرمت Y/m/d - مثال:1401/05/10",
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "description": "کلمه عبور",
+                                        "type": "string"
+                                    },
+                                    "background": {
+                                        "description": "پس زمینه",
+                                        "type": "string"
+                                    },
+                                    "color": {
+                                        "description": "رنگ",
+                                        "type": "string"
+                                    },
+                                    "city_id": {
+                                        "description": "شناسه شهر کاربر",
+                                        "type": "number"
+                                    },
+                                    "grade_id": {
+                                        "description": "شناسه مقطع تحصیلی کاربر",
+                                        "type": "number"
+                                    },
+                                    "birth_place_id": {
+                                        "description": "شناسه شهر محل تولد کاربر",
+                                        "type": "number"
+                                    },
+                                    "status": {
+                                        "description": "Active: فعال - Inactive: غیرفعال",
+                                        "type": "string",
+                                        "enum": [
+                                            "Active",
+                                            "Inactive"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ثبت با موفقیت انجام شد",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/users/{id}/assign-role": {
             "post": {
                 "tags": [

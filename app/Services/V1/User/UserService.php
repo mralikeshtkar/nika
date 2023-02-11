@@ -437,38 +437,8 @@ class UserService extends BaseService
             'password' => $request->filled('password') ? Hash::make($request->password) : null,
             'status' => $request->filled('status') ? UserStatus::getValue($request->status) : null,
         ]);
-        $user = $this->userRepository->update($user, collect([])
-            ->when($request->filled('first_name'), function (Collection $collection) use ($request) {
-                $collection->put('first_name', $request->first_name);
-            })->when($request->filled('last_name'), function (Collection $collection) use ($request) {
-                $collection->put('last_name', $request->last_name);
-            })->when($request->filled('father_name'), function (Collection $collection) use ($request) {
-                $collection->put('father_name', $request->father_name);
-            })->when($request->filled('mobile'), function (Collection $collection) use ($request) {
-                $collection->put('mobile', $request->mobile);
-            })->when($request->filled('national_code'), function (Collection $collection) use ($request) {
-                $collection->put('national_code', $request->national_code);
-            })->when($request->filled('birthdate'), function (Collection $collection) use ($request) {
-                $collection->put('birthdate', $request->birthdate->datetime());
-            })->when($request->filled('password'), function (Collection $collection) use ($request) {
-                $collection->put('password', $request->password);
-            })->when($request->filled('status'), function (Collection $collection) use ($request) {
-                $collection->put('status', $request->status);
-            })->when($request->filled('city_id'), function (Collection $collection) use ($request) {
-                $collection->put('city_id', $request->city_id);
-            })->when($request->filled('grade_id'), function (Collection $collection) use ($request) {
-                $collection->put('grade_id', $request->grade_id);
-            })->when($request->filled('birth_place_id'), function (Collection $collection) use ($request) {
-                $collection->put('birth_place_id', $request->birth_place_id);
-            })->when($request->filled('status'), function (Collection $collection) use ($request) {
-                $collection->put('status', $request->status);
-            }, function (Collection $collection) {
-                $collection->put('status', UserStatus::Active);
-            })->when($request->filled('background'), function (Collection $collection) use ($request) {
-                $collection->put('background', $request->background);
-            })->when($request->filled('color'), function (Collection $collection) use ($request) {
-                $collection->put('color', $request->color);
-            })->toArray());
+        $data = $this->_updateData($request);
+        if ($data->count()) $this->userRepository->update($user, $data->toArray());
         return ApiResponse::message(trans("The :attribute was successfully updated", ['attribute' => trans('User')]))->send();
     }
 
@@ -518,5 +488,45 @@ class UserService extends BaseService
     }
 
     #endregion
+
+    /**
+     * @param Request $request
+     * @return Collection|\Illuminate\Support\HigherOrderWhenProxy|mixed
+     */
+    private function _updateData(Request $request): mixed
+    {
+        return collect([])
+            ->when($request->filled('first_name'), function (Collection $collection) use ($request) {
+                $collection->put('first_name', $request->first_name);
+            })->when($request->filled('last_name'), function (Collection $collection) use ($request) {
+                $collection->put('last_name', $request->last_name);
+            })->when($request->filled('father_name'), function (Collection $collection) use ($request) {
+                $collection->put('father_name', $request->father_name);
+            })->when($request->filled('mobile'), function (Collection $collection) use ($request) {
+                $collection->put('mobile', $request->mobile);
+            })->when($request->filled('national_code'), function (Collection $collection) use ($request) {
+                $collection->put('national_code', $request->national_code);
+            })->when($request->filled('birthdate'), function (Collection $collection) use ($request) {
+                $collection->put('birthdate', $request->birthdate->datetime());
+            })->when($request->filled('password'), function (Collection $collection) use ($request) {
+                $collection->put('password', $request->password);
+            })->when($request->filled('status'), function (Collection $collection) use ($request) {
+                $collection->put('status', $request->status);
+            })->when($request->filled('city_id'), function (Collection $collection) use ($request) {
+                $collection->put('city_id', $request->city_id);
+            })->when($request->filled('grade_id'), function (Collection $collection) use ($request) {
+                $collection->put('grade_id', $request->grade_id);
+            })->when($request->filled('birth_place_id'), function (Collection $collection) use ($request) {
+                $collection->put('birth_place_id', $request->birth_place_id);
+            })->when($request->filled('status'), function (Collection $collection) use ($request) {
+                $collection->put('status', $request->status);
+            }, function (Collection $collection) {
+                $collection->put('status', UserStatus::Active);
+            })->when($request->filled('background'), function (Collection $collection) use ($request) {
+                $collection->put('background', $request->background);
+            })->when($request->filled('color'), function (Collection $collection) use ($request) {
+                $collection->put('color', $request->color);
+            });
+    }
 
 }
