@@ -18,6 +18,7 @@ use App\Models\QuestionPointRahjoo;
 use App\Models\Rahjoo;
 use App\Models\User;
 use App\Repositories\V1\Exercise\Interfaces\ExerciseRepositoryInterfaces;
+use App\Repositories\V1\Intelligence\Interfaces\IntelligenceRepositoryInterface;
 use App\Repositories\V1\Package\Interfaces\IntelligencePackageRepositoryInterface;
 use App\Repositories\V1\Package\Interfaces\PackageRepositoryInterface;
 use App\Repositories\V1\Question\Interfaces\QuestionRepositoryInterface;
@@ -413,6 +414,7 @@ class RahjooService extends BaseService
         $rahjoo = $this->rahjooRepository->select(['id','package_id'])
             ->with(['pivotIntelligenceRahnama','packageIntelligences'])
             ->findorFailById($rahjoo);
+        dd(resolve(IntelligenceRepositoryInterface::class)->select(['id','title'])->get()->toArray());
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('rahjoo', new RahjooResource($rahjoo))
             ->send();
