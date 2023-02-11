@@ -35,15 +35,15 @@ class UserPolicy
     }
 
     /**
-     * Check user can access to create.
-     *
      * @param User $user
+     * @param User $user2
      * @return bool
      */
-    public function update(User $user): bool
+    public function update(User $user,User $user2): bool
     {
         return $user->hasPermissionTo(Permission::EDIT_USERS)
-            || $user->hasPermissionTo(Permission::MANAGE_USERS);
+            || $user->hasPermissionTo(Permission::MANAGE_USERS)
+            || $user->id == $user2->id;
     }
 
     /**

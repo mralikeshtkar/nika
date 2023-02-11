@@ -425,8 +425,8 @@ class UserService extends BaseService
      */
     public function update(Request $request, $user): JsonResponse
     {
-        ApiResponse::authorize($request->user()->can('update', User::class));
         $user = $this->userRepository->findOrFailById($user);
+        ApiResponse::authorize($request->user()->can('update', $user));
         $request->merge([
             'mobile' => $request->filled('mobile') ? to_valid_mobile_number($request->mobile) : null,
         ]);
