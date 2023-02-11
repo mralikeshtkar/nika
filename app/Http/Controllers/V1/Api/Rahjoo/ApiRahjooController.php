@@ -877,7 +877,7 @@ class ApiRahjooController extends ApiBaseController
      * @OA\Post(
      *     path="/rahjoos/{rahjoo}/intelligence-packages/{intelligencePackage}/intelligence-package-points",
      *     summary="ثبت امتیاز برای هوش پکیج",
-     *     description="",
+     *     description="در points باید شامل یک ارایه باشد که key ان intelligence_point_id و مقدار امتیاز باشد (حداقل یک ایتم اجباری میباشد)",
      *     tags={"رهجو"},
      *     @OA\Parameter(
      *         description="شناسه رهجو",

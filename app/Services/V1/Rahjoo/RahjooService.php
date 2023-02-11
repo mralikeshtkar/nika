@@ -237,7 +237,7 @@ class RahjooService extends BaseService
             ->with(['pivotPoints'])
             ->findOrFailById($question);
         $rules = collect($question->pivotPoints)->mapWithKeys(function ($item) {
-            return ['points.' . $item->intelligence_point_id => ['required', 'numeric', 'min:0', 'max:' . $item->max_point],];
+            return ['points.' . $item->intelligence_point_id => ['nullable', 'numeric', 'min:0', 'max:' . $item->max_point],];
         })->put('points', ['required', 'array', 'size:' . $question->pivotPoints->count()])->toArray();
         ApiResponse::validate($request->all(), $rules);
         $points = collect($request->points)->mapWithKeys(function ($item, $key) use ($request, $rahjoo, $question) {
@@ -445,13 +445,13 @@ class RahjooService extends BaseService
             'intelligence_id' => ['required', 'exists:' . Intelligence::class . ',id'],
         ]);
         try {
-            return DB::transaction(function ()use ($rahjoo,$request){
+            return DB::transaction(function () use ($rahjoo, $request) {
                 $this->rahjooRepository->storeIntelligenceRahnama($rahjoo, $request->rahnama_id, $request->intelligence_id);
                 return ApiResponse::message(trans("Mission accomplished"))
                     ->send();
             });
-        }catch (Throwable $e){
-            return ApiResponse::message(trans("Internal server error"),Response::HTTP_INTERNAL_SERVER_ERROR)->send();
+        } catch (Throwable $e) {
+            return ApiResponse::message(trans("Internal server error"), Response::HTTP_INTERNAL_SERVER_ERROR)->send();
         }
     }
 
@@ -496,7 +496,7 @@ class RahjooService extends BaseService
             ->findOrFailByPivotId($intelligencePackage);
         $rules = $intelligencePackage->points->pluck('max_point', 'id')->mapWithKeys(function ($max_point, $intelligence_id) {
             return [
-                'points.' . $intelligence_id => ['required', 'numeric', 'between:0,' . $max_point],
+                'points.' . $intelligence_id => ['nullable', 'numeric', 'between:0,' . $max_point],
             ];
         })->put('points', ['required', 'array', 'min:1'])
             ->toArray();

@@ -24,6 +24,7 @@ use App\Http\Controllers\V1\Api\PsychologicalQuestion\ApiPsychologicalQuestionCo
 use App\Http\Controllers\V1\Api\Question\ApiQuestionAnswerController as V1ApiQuestionAnswerController;
 use App\Http\Controllers\V1\Api\Question\ApiQuestionAnswerTypeController as V1ApiQuestionAnswerTypeController;
 use App\Http\Controllers\V1\Api\Question\ApiQuestionController as V1ApiQuestionController;
+use App\Http\Controllers\V1\Api\Question\ApiQuestionDurationController as V1ApiQuestionDurationController;
 use App\Http\Controllers\V1\Api\Question\ApiQuestionPointController as V1ApiQuestionPointController;
 use App\Http\Controllers\V1\Api\Rahjoo\ApiRahjooController as V1ApiRahjooController;
 use App\Http\Controllers\V1\Api\RahjooCourse\ApiRahjooCourseController as V1ApiRahjooCourseController;
@@ -289,6 +290,11 @@ Route::prefix('v1')->group(function (Router $router) {
                 $router->post('questions/{question}/points', [V1ApiQuestionPointController::class, 'store']);
                 $router->put('questions/{question}/update-points', [V1ApiQuestionPointController::class, 'update']);
                 $router->delete('questions/{question}/destroy-points', [V1ApiQuestionPointController::class, 'destroy']);
+            });
+
+            /* Question durations */
+            $router->group([], function (Router $router) {
+                $router->post('question-durations/{question}/start', [V1ApiQuestionDurationController::class, 'start']);
             });
         });
 

@@ -43,9 +43,11 @@ use App\Repositories\V1\PsychologicalQuestion\Eloquent\PsychologicalQuestionRepo
 use App\Repositories\V1\PsychologicalQuestion\Interfaces\PsychologicalQuestionRepositoryInterface;
 use App\Repositories\V1\Question\Eloquent\QuestionAnswerRepository;
 use App\Repositories\V1\Question\Eloquent\QuestionAnswerTypeServiceRepository;
+use App\Repositories\V1\Question\Eloquent\QuestionDurationRepository;
 use App\Repositories\V1\Question\Eloquent\QuestionRepository;
 use App\Repositories\V1\Question\Interfaces\QuestionAnswerRepositoryInterface;
 use App\Repositories\V1\Question\Interfaces\QuestionAnswerTypeServiceRepositoryInterface;
+use App\Repositories\V1\Question\Interfaces\QuestionDurationRepositoryInterface;
 use App\Repositories\V1\Question\Interfaces\QuestionRepositoryInterface;
 use App\Repositories\V1\Rahjoo\Eloquent\RahjooRepository;
 use App\Repositories\V1\Rahjoo\Interfaces\RahjooRepositoryInterface;
@@ -117,6 +119,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(QuestionRepositoryInterface::class, QuestionRepository::class);
         $this->app->bind(QuestionAnswerTypeServiceRepositoryInterface::class, QuestionAnswerTypeServiceRepository::class);
         $this->app->bind(QuestionAnswerRepositoryInterface::class, QuestionAnswerRepository::class);
+        $this->app->bind(QuestionDurationRepositoryInterface::class, QuestionDurationRepository::class);
         $this->app->bind(CommentRepositoryInterface::class, CommentService::class);
     }
 }

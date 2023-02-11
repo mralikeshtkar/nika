@@ -203,5 +203,10 @@ class Rahjoo extends Model
         return $this->hasManyDeepFromRelations($this->package(), (new Package())->exercises(), (new Exercise())->questions());
     }
 
+    public function questionDuration(): HasOne
+    {
+        return $this->hasOne(QuestionDuration::class,'rahjoo_id');
+    }
+
     #endregion
 }

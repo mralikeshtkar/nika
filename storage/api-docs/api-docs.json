@@ -6506,6 +6506,121 @@
                 }
             }
         },
+        "/rahjoos/{id}/intelligence-packages/{intelligencePackage}/comments": {
+            "get": {
+                "tags": [
+                    "رهجو"
+                ],
+                "summary": "رهجو دریافت نظرات هوش پکیج",
+                "description": "",
+                "operationId": "fa4bb70b71877fb89d35495e57647f0d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه رهجو",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "intelligencePackage",
+                        "in": "path",
+                        "description": "شناسه هوش پکیج",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "شماره صفحه",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "تعداد نمایش در هر صفحه",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "example": 10
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "رهجو"
+                ],
+                "summary": "ثبت نظر برای هوش پکیج",
+                "description": "",
+                "operationId": "e912f5e036b5aa8b4250c9eca8547a3a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "شناسه رهجو",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "intelligencePackage",
+                        "in": "path",
+                        "description": "شناسه هوش پکیج",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "body"
+                                ],
+                                "properties": {
+                                    "body": {
+                                        "description": "متن",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/rahjoos/{id}/intelligence-rahnama": {
             "get": {
                 "tags": [
@@ -6559,11 +6674,11 @@
                         "multipart/form-data": {
                             "schema": {
                                 "required": [
-                                    "rahanma_id",
+                                    "rahnama_id",
                                     "intelligence_id"
                                 ],
                                 "properties": {
-                                    "rahanma_id": {
+                                    "rahnama_id": {
                                         "description": "شناسه رهنما",
                                         "type": "string"
                                     },
@@ -6649,6 +6764,101 @@
                         "example": 10
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/rahjoos/{rahjoo}/intelligence-packages/{intelligencePackage}/intelligence-package-points": {
+            "get": {
+                "tags": [
+                    "رهجو"
+                ],
+                "summary": "دریافت امتیاز هوش پکیج برای رهجو",
+                "description": "",
+                "operationId": "a3d8edf539bbbeb1cafd93d2cdab6a73",
+                "parameters": [
+                    {
+                        "name": "rahjoo",
+                        "in": "path",
+                        "description": "شناسه رهجو",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "intelligencePackage",
+                        "in": "path",
+                        "description": "شناسه هوش پکیج",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفق",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "رهجو"
+                ],
+                "summary": "ثبت امتیاز برای هوش پکیج",
+                "description": "",
+                "operationId": "4778b6d131991b2c83894a5205432d27",
+                "parameters": [
+                    {
+                        "name": "rahjoo",
+                        "in": "path",
+                        "description": "شناسه رهجو",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "intelligencePackage",
+                        "in": "path",
+                        "description": "شناسه هوش پکیج",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "points": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "عملیات موفق",
