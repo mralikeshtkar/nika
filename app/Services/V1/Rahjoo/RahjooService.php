@@ -33,6 +33,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class RahjooService extends BaseService
 {
@@ -443,9 +444,15 @@ class RahjooService extends BaseService
             'rahnama_id' => ['required', 'exists:' . User::class . ',id'],
             'intelligence_id' => ['required', 'exists:' . Intelligence::class . ',id'],
         ]);
-        $this->rahjooRepository->storeIntelligenceRahnama($rahjoo, $request->rahnama_id, $request->intelligence_id);
-        return ApiResponse::message(trans("Mission accomplished"))
-            ->send();
+        try {
+            return DB::transaction(function ()use ($rahjoo,$request){
+                $this->rahjooRepository->storeIntelligenceRahnama($rahjoo, $request->rahnama_id, $request->intelligence_id);
+                return ApiResponse::message(trans("Mission accomplished"))
+                    ->send();
+            });
+        }catch (Throwable $e){
+            return ApiResponse::message(trans("Internal server error"),Response::HTTP_INTERNAL_SERVER_ERROR)->send();
+        }
     }
 
     /**
@@ -511,7 +518,7 @@ class RahjooService extends BaseService
                 $this->rahjooRepository->attachIntelligencePackagePoints($rahjoo, $intelligencePackagePoints, $points);
                 return ApiResponse::message(trans("Mission accomplished"))->send();
             });
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             return ApiResponse::message(trans("Internal server error"), Response::HTTP_INTERNAL_SERVER_ERROR)->send();
         }
     }
