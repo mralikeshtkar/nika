@@ -32,8 +32,10 @@ use Hekmatinasser\Verta\Verta;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class UserService extends BaseService
 {
@@ -379,34 +381,41 @@ class UserService extends BaseService
             'password' => $request->filled('password') ? Hash::make($request->password) : null,
             'status' => $request->filled('status') ? UserStatus::getValue($request->status) : null,
         ]);
-        $user = $this->userRepository->updateOrCreate([
-            'mobile' => $request->mobile,
-        ], collect([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'father_name' => $request->father_name,
-            'mobile' => $request->mobile,
-            'national_code' => $request->national_code,
-            'ip' => $request->ip(),
-            'birthdate' => $request->filled('birthdate') ? $request->birthdate->datetime() : null,
-            'password' => $request->password,
-            'verified_at' => now(),
-            'status' => $request->status,
-            'city_id' => $request->city_id,
-            'grade_id' => $request->grade_id,
-            'birth_place_id' => $request->birth_place_id,
-        ])->when($request->filled('status'), function (Collection $collection) use ($request) {
-            $collection->put('status', $request->status);
-        }, function (Collection $collection) {
-            $collection->put('status', UserStatus::Active);
-        })->when($request->filled('background'), function (Collection $collection) use ($request) {
-            $collection->put('background', $request->background);
-        })->when($request->filled('color'), function (Collection $collection) use ($request) {
-            $collection->put('color', $request->color);
-        })->toArray());
-        return ApiResponse::message(trans("The :attribute was successfully registered", ['attribute' => trans('User')]), Response::HTTP_CREATED)
-            ->addData('user', UserResource::make($user))
-            ->send();
+        try {
+            return DB::transaction(function () use ($request) {
+                $user = $this->userRepository->updateOrCreate([
+                    'mobile' => $request->mobile,
+                ], collect([
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
+                    'father_name' => $request->father_name,
+                    'mobile' => $request->mobile,
+                    'national_code' => $request->national_code,
+                    'ip' => $request->ip(),
+                    'birthdate' => $request->filled('birthdate') ? $request->birthdate->datetime() : null,
+                    'password' => $request->password,
+                    'verified_at' => now(),
+                    'status' => $request->status,
+                    'city_id' => $request->city_id,
+                    'grade_id' => $request->grade_id,
+                    'birth_place_id' => $request->birth_place_id,
+                ])->when($request->filled('status'), function (Collection $collection) use ($request) {
+                    $collection->put('status', $request->status);
+                }, function (Collection $collection) {
+                    $collection->put('status', UserStatus::Active);
+                })->when($request->filled('background'), function (Collection $collection) use ($request) {
+                    $collection->put('background', $request->background);
+                })->when($request->filled('color'), function (Collection $collection) use ($request) {
+                    $collection->put('color', $request->color);
+                })->toArray());
+                if (!$request->filled('personnel')) resolve(UserRepositoryInterface::class)->assignRahjooRole($user);
+                return ApiResponse::message(trans("The :attribute was successfully registered", ['attribute' => trans('User')]), Response::HTTP_CREATED)
+                    ->addData('user', UserResource::make($user))
+                    ->send();
+            });
+        } catch (Throwable $e) {
+            return ApiResponse::error(trans("Internal server error"), Response::HTTP_INTERNAL_SERVER_ERROR)->send();
+        }
     }
 
     /**

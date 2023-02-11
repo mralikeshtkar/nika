@@ -234,9 +234,9 @@ class ApiRahjooController extends ApiBaseController
      *     ),
      * )
      */
-    public function assignRahyab(Request $request, $rahjoo,$user)
+    public function assignRahyab(Request $request, $rahjoo, $user)
     {
-        return $this->rahjooService->assignRahyab($request, $rahjoo,$user);
+        return $this->rahjooService->assignRahyab($request, $rahjoo, $user);
     }
 
     /**
@@ -281,9 +281,9 @@ class ApiRahjooController extends ApiBaseController
      *     ),
      * )
      */
-    public function assignRahnama(Request $request, $rahjoo,$user)
+    public function assignRahnama(Request $request, $rahjoo, $user)
     {
-        return $this->rahjooService->assignRahnama($request, $rahjoo,$user);
+        return $this->rahjooService->assignRahnama($request, $rahjoo, $user);
     }
 
     /**
@@ -423,9 +423,9 @@ class ApiRahjooController extends ApiBaseController
      *     ),
      * )
      */
-    public function exerciseSingleQuestion(Request $request, $rahjoo, $exercise,$question)
+    public function exerciseSingleQuestion(Request $request, $rahjoo, $exercise, $question)
     {
-        return $this->rahjooService->exerciseSingleQuestion($request, $rahjoo, $exercise,$question);
+        return $this->rahjooService->exerciseSingleQuestion($request, $rahjoo, $exercise, $question);
     }
 
     /**
@@ -650,12 +650,12 @@ class ApiRahjooController extends ApiBaseController
      */
     public function questionComments(Request $request, $rahjoo, $question)
     {
-        return $this->rahjooService->questionComments($request,$rahjoo, $question);
+        return $this->rahjooService->questionComments($request, $rahjoo, $question);
     }
 
     /**
      * @OA\Post(
-     *     path="/rahjoos/{id}/intelligence-packages/{intelligencePackageComments}/comments",
+     *     path="/rahjoos/{id}/intelligence-packages/{intelligencePackage}/comments",
      *     summary="ثبت نظر برای سوال",
      *     description="",
      *     tags={"رهجو"},
@@ -667,9 +667,9 @@ class ApiRahjooController extends ApiBaseController
      *         @OA\Schema(type="number"),
      *     ),
      *     @OA\Parameter(
-     *         description="شناسه سوال",
+     *         description="شناسه هوش پکیج",
      *         in="path",
-     *         name="question",
+     *         name="intelligencePackage",
      *         required=true,
      *         @OA\Schema(type="number"),
      *     ),
@@ -693,14 +693,14 @@ class ApiRahjooController extends ApiBaseController
      *     ),
      * )
      */
-    public function storeIntelligencePackageComment(Request $request, $rahjoo,$intelligencePackage)
+    public function storeIntelligencePackageComment(Request $request, $rahjoo, $intelligencePackage)
     {
-        return $this->rahjooService->storeIntelligencePackageComment($request, $rahjoo,$intelligencePackage);
+        return $this->rahjooService->storeIntelligencePackageComment($request, $rahjoo, $intelligencePackage);
     }
 
-    public function intelligencePackageComments(Request $request, $rahjoo,$intelligencePackage)
+    public function intelligencePackageComments(Request $request, $rahjoo, $intelligencePackage)
     {
-        return $this->rahjooService->intelligencePackageComments($request, $rahjoo,$intelligencePackage);
+        return $this->rahjooService->intelligencePackageComments($request, $rahjoo, $intelligencePackage);
     }
 
     /**
@@ -725,7 +725,7 @@ class ApiRahjooController extends ApiBaseController
      */
     public function intelligenceRahnama(Request $request, $rahjoo)
     {
-        return $this->rahjooService->intelligenceRahnama($request,$rahjoo);
+        return $this->rahjooService->intelligenceRahnama($request, $rahjoo);
     }
 
     /**
@@ -768,7 +768,7 @@ class ApiRahjooController extends ApiBaseController
      */
     public function storeIntelligenceRahnama(Request $request, $rahjoo)
     {
-        return $this->rahjooService->storeIntelligenceRahnama($request,$rahjoo);
+        return $this->rahjooService->storeIntelligenceRahnama($request, $rahjoo);
     }
 
     /**
