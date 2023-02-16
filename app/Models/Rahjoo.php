@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\RahjooParent\RahjooParentGender;
 use Awobaz\Compoships\Compoships;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -43,13 +44,21 @@ class Rahjoo extends Model
     {
         parent::boot();
         self::creating(function ($model) {
-            $model->code = IdGenerator::generate(['table' => self::getTable(), 'field' => 'code', 'length' => 6]);
+            $model->code = IdGenerator::generate(['table' => (new self())->getTable(), 'field' => 'code', 'length' => 6, 'prefix' => rand(1, 9)]);
         });
     }
 
     #endregion
 
     #region Relations
+
+    /**
+     * @return BelongsTo
+     */
+    public function rahyab(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'rahyab_id');
+    }
 
     /**
      * @return BelongsToMany
@@ -156,6 +165,14 @@ class Rahjoo extends Model
         return $this->belongsTo(Package::class);
     }
 
+    /**
+     * @return HasManyDeep
+     */
+    public function packageExercises(): HasManyDeep
+    {
+        return $this->hasManyDeepFromRelations($this->package(), (new Package())->exercises());
+    }
+
     public function packageIntelligences(): HasManyDeep
     {
         return $this->hasManyDeepFromRelations($this->package(), (new Package())->intelligences());
@@ -205,7 +222,40 @@ class Rahjoo extends Model
 
     public function questionDuration(): HasOne
     {
-        return $this->hasOne(QuestionDuration::class,'rahjoo_id');
+        return $this->hasOne(QuestionDuration::class, 'rahjoo_id');
+    }
+
+    public function questionAnswers(): HasMany
+    {
+        return $this->hasMany(QuestionAnswer::class, 'rahjoo_id');
+    }
+
+    public function lastExercise(): HasOne
+    {
+        return $this->hasOne(Exercise::class, 'id', 'last_exercise_id');
+    }
+
+    #endregion
+
+    #region Scopes
+
+    public function scopeLastExercise(Builder $builder, $hasIntelligencePackage = false)
+    {
+        $builder->addSelect([
+            'last_exercise_id' => Exercise::query()
+                ->select('id')
+                ->when($hasIntelligencePackage,function ($q){
+                    $q->whereHas('intelligencePackage', function ($q) {
+                        $q->where('intelligence_package.package_id', 'rahjoos.package_id');
+                    });
+                })->whereHas('questions', function ($q) {
+                    $q->whereHas('answerTypes', function ($q) {
+                        $q->whereDoesntHave('answer', function ($q) {
+                            $q->whereColumn('rahjoo_id', 'rahjoos.id');
+                        });
+                    });
+                })->limit(1)
+        ])->with('lastExercise:id,title');
     }
 
     #endregion

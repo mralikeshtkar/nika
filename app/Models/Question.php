@@ -134,6 +134,14 @@ class Question extends Model
     }
 
     /**
+     * @return HasOneDeep
+     */
+    public function package(): HasOneDeep
+    {
+        return $this->hasOneDeepFromRelations($this->intelligencePackage(),(new IntelligencePackage())->package());
+    }
+
+    /**
      * @return HasManyDeep
      */
     public function exercisePivotPoints(): HasManyDeep

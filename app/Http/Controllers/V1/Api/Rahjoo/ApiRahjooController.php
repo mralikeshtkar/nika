@@ -67,6 +67,24 @@ class ApiRahjooController extends ApiBaseController
     }
 
     /**
+     * @OA\Get(
+     *     path="/rahjoos/packages",
+     *     summary="دریافت رهجو ها همراه با پکیج و تمرین",
+     *     description="",
+     *     tags={"رهجو"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent()
+     *     )
+     * )
+     */
+    public function packages(Request $request)
+    {
+        return $this->rahjooService->packages($request);
+    }
+
+    /**
      * Show a rahjoo.
      *
      * @OA\Get(

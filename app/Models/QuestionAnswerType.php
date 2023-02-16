@@ -35,5 +35,13 @@ class QuestionAnswerType extends Model
         return $this->hasOne(QuestionAnswer::class, 'question_answer_type_id');
     }
 
+    /**
+     * @return HasMany
+     */
+    public function answers(): HasMany
+    {
+        return $this->hasMany(QuestionAnswer::class, 'question_answer_type_id');
+    }
+
     #endregion
 }

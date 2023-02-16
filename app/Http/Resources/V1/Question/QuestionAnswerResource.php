@@ -3,6 +3,7 @@
 namespace App\Http\Resources\V1\Question;
 
 use App\Http\Resources\V1\Media\MediaResource;
+use App\Http\Resources\V1\Rahjoo\RahjooResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;
 
@@ -22,6 +23,8 @@ class QuestionAnswerResource extends JsonResource
             $collection->put('updated_at', jalaliFormat($this->resource->updated_at, 'j F Y'));
         })->when($this->resource->relationLoaded('file'), function (Collection $collection) {
             $collection->put('file',$this->resource->file ? new MediaResource($this->resource->file) : null);
+        })->when($this->resource->relationLoaded('rahjoo'), function (Collection $collection) {
+            $collection->put('rahjoo',new RahjooResource($this->resource->rahjoo));
         });
     }
 }

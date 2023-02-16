@@ -31,6 +31,8 @@ use App\Http\Controllers\V1\Api\RahjooCourse\ApiRahjooCourseController as V1ApiR
 use App\Http\Controllers\V1\Api\RahjooParent\ApiRahjooParentController as V1ApiRahjooParentController;
 use App\Http\Controllers\V1\Api\Role\ApiRoleController as V1ApiRoleController;
 use App\Http\Controllers\V1\Api\Skill\ApiSkillController as V1ApiSkillController;
+use App\Http\Controllers\V1\Api\User\ApiRahnamaController as V1ApiRahnamaController;
+use App\Http\Controllers\V1\Api\User\ApiRahyabController as V1ApiRahyabController;
 use App\Http\Controllers\V1\Api\User\ApiUserController as V1UserController;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
@@ -73,6 +75,23 @@ Route::prefix('v1')->group(function (Router $router) {
     });
 
     $router->middleware('auth:sanctum')->group(function (Router $router) {
+
+        /* Rahyab */
+        $router->group([], function (Router $router) {
+            $router->get('rahyab/{rahnama}/packages', [V1ApiRahyabController::class, 'packages']);
+        });
+
+        /* Rahnama */
+        $router->group([], function (Router $router) {
+            $router->get('rahnama/{rahnama}/packages', [V1ApiRahnamaController::class, 'packages']);
+        });
+
+        /* Users */
+        $router->group([], function (Router $router) {
+            $router->get('user', [V1UserController::class, 'currentUser']);
+            $router->put('user/information', [V1UserController::class, 'informationUser']);
+            $router->post('logout', [V1UserController::class, 'logout']);
+        });
 
         /* Users */
         $router->group([], function (Router $router) {
@@ -158,6 +177,7 @@ Route::prefix('v1')->group(function (Router $router) {
         /* Rahjoos */
         $router->group([], function (Router $router) {
             $router->get('rahjoos', [V1ApiRahjooController::class, 'index']);
+            $router->get('rahjoos/packages', [V1ApiRahjooController::class, 'packages']);
             $router->get('rahjoos/{rahjoo}', [V1ApiRahjooController::class, 'show']);
             $router->post('rahjoos/{user}', [V1ApiRahjooController::class, 'store']);
             $router->delete('rahjoos/{rahjoo}', [V1ApiRahjooController::class, 'destroy']);

@@ -110,6 +110,14 @@ class Package extends Model
     }
 
     /**
+     * @return HasOneDeep
+     */
+    public function questions(): HasOneDeep
+    {
+        return $this->hasOneDeepFromRelations($this->pivotIntelligences(), (new IntelligencePackage)->exercises(),(new Exercise())->questions());
+    }
+
+    /**
      * @return HasMany
      */
     public function pivotIntelligences(): HasMany
@@ -146,6 +154,14 @@ class Package extends Model
     public function IntelligencePackageExercises(): HasManyDeep
     {
         return $this->hasManyDeepFromRelations($this->pivotIntelligencePackage(), (new IntelligencePackage)->exercises());
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function rahjoos(): HasMany
+    {
+        return $this->hasMany(Rahjoo::class);
     }
 
     #endregion

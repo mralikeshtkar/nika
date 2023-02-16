@@ -74,6 +74,23 @@ class RahjooService extends BaseService
     }
 
     /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function packages(Request $request): JsonResponse
+    {
+        $rahjoos = Rahjoo::query()
+            ->select(['id', 'user_id', 'rahyab_id', 'package_id', 'code'])
+            ->lastExercise()
+            ->with(['rahyab:id,first_name,last_name', 'user:id,first_name,last_name', 'package:id,title'])
+            ->paginate();
+        $resource = PaginationResource::make($rahjoos)->additional(['itemsResource' => RahjooResource::class]);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('rahjoos', $resource)
+            ->send();
+    }
+
+    /**
      * Show a rahjoo.
      *
      * @param Request $request

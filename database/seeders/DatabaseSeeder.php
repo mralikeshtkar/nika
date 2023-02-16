@@ -13,6 +13,7 @@ use App\Models\IntelligencePointName;
 use App\Models\Package;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class DatabaseSeeder extends Seeder
@@ -24,16 +25,34 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        //$this->_truncateTables();
+
         $this->call([
-//            ProvinceSeeder::class,
 //            PermissionSeeder::class,
-//            GradeSeeder::class,
             UserSeeder::class,
+//            ProvinceSeeder::class,
+//            GradeSeeder::class,
 //            IntelligenceSeeder::class,
 //            PackageSeeder::class,
 //            ExerciseSeeder::class,
 //            IntelligencePointNameSeeder::class,
 //            IntelligencePointSeeder::class,
         ]);
+    }
+
+    /**
+     * @return void
+     */
+    private function _truncateTables(): void
+    {
+        Schema::disableForeignKeyConstraints();
+        $tables = DB::select('SHOW TABLES');
+        foreach ($tables as $name) {
+            if (current($name) == 'migrations') {
+                continue;
+            }
+            DB::table(current($name))->truncate();
+        }
+        Schema::enableForeignKeyConstraints();
     }
 }

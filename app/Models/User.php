@@ -125,7 +125,7 @@ class User extends Authenticatable
      */
     public function isPersonnel(): bool
     {
-        return $this->hasAnyRole(Arr::except(\App\Enums\Role::asArray(),\App\Enums\Role::RAHJOO()->key));
+        return $this->hasAnyRole(Arr::except(\App\Enums\Role::asArray(), \App\Enums\Role::RAHJOO()->key));
     }
 
     public function isRahjoo(): bool
@@ -268,7 +268,7 @@ class User extends Authenticatable
      */
     public function pivotRahjooIntelligences(): HasMany
     {
-        return $this->hasMany(RahjooIntelligenceRahyab::class,'rahnama_id');
+        return $this->hasMany(RahjooIntelligenceRahyab::class, 'rahnama_id');
     }
 
     /**
@@ -276,7 +276,12 @@ class User extends Authenticatable
      */
     public function rahnamaRahjoos(): HasMany
     {
-        return $this->hasMany(Rahjoo::class,'rahnama_id');
+        return $this->hasMany(Rahjoo::class, 'rahnama_id');
+    }
+
+    public function rahnamaRahjooQuestions()
+    {
+        return $this->hasManyDeepFromRelations($this->rahnamaRahjoos(), (new Rahjoo())->questions());
     }
 
     /**
@@ -284,7 +289,7 @@ class User extends Authenticatable
      */
     public function rahyabRahjoos(): HasMany
     {
-        return $this->hasMany(Rahjoo::class,'rahyab_id');
+        return $this->hasMany(Rahjoo::class, 'rahyab_id');
     }
 
     #endregion

@@ -9,6 +9,7 @@ use Awobaz\Compoships\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class IntelligencePackage extends Pivot
@@ -24,7 +25,7 @@ class IntelligencePackage extends Pivot
 
     public function comments(): MorphMany
     {
-        return $this->morphMany(Comment::class, Comment::POLY_MORPHIC_KEY,null,null,'pivot_id');
+        return $this->morphMany(Comment::class, Comment::POLY_MORPHIC_KEY, null, null, 'pivot_id');
     }
 
 
@@ -44,7 +45,10 @@ class IntelligencePackage extends Pivot
         return $this->hasOne(Exercise::class, 'intelligence_package_id', 'pivot_id');
     }
 
-    public function exerciseQuestionPivotPoints()
+    /**
+     * @return HasManyDeep
+     */
+    public function exerciseQuestionPivotPoints(): HasManyDeep
     {
         return $this->hasManyDeepFromRelations($this->exercises(), (new Exercise())->questions(), (new Question())->pivotPoints());
     }
@@ -52,6 +56,11 @@ class IntelligencePackage extends Pivot
     public function intelligence(): BelongsTo
     {
         return $this->belongsTo(Intelligence::class);
+    }
+
+    public function package(): BelongsTo
+    {
+        return $this->belongsTo(Package::class);
     }
 
     /**

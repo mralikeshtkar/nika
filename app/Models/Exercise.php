@@ -50,6 +50,14 @@ class Exercise extends Model
     }
 
     /**
+     * @return HasManyDeep
+     */
+    public function package(): HasManyDeep
+    {
+        return $this->hasManyDeepFromRelations($this->intelligencePackage(), (new IntelligencePackage())->package());
+    }
+
+    /**
      * @return HasMany
      */
     public function questions(): HasMany
