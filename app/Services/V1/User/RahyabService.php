@@ -4,6 +4,7 @@ namespace App\Services\V1\User;
 
 use AjCastro\EagerLoadPivotRelations\EagerLoadPivotBuilder;
 use App\Enums\Role as RoleEnum;
+use App\Http\Resources\V1\Exercise\ExerciseResource;
 use App\Http\Resources\V1\PaginationResource;
 use App\Http\Resources\V1\Question\QuestionResource;
 use App\Http\Resources\V1\Rahjoo\RahjooResource;
@@ -59,6 +60,102 @@ class RahyabService extends BaseService
         $resource = PaginationResource::make($rahjoos)->additional(['itemsResource' => RahjooResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('rahjoos', $resource)
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $rahyab
+     * @param $rahjoo
+     * @return JsonResponse
+     */
+    public function exercises(Request $request, $rahyab, $rahjoo): JsonResponse
+    {
+        $rahyab = $this->userRepository
+            ->hasRole(RoleEnum::RAHYAB)
+            ->findOrFailById($rahyab);
+        /** @var Rahjoo $rahjoo */
+        $rahjoo = Rahjoo::query()
+            ->where('rahyab_id', $rahyab->id)
+            ->findOrFail($rahjoo);
+        $exercises = $rahjoo->packageExercises()
+            ->whereHas('questions', function ($q) use ($request, $rahjoo) {
+                $q->whereHas('answerTypes', function ($q) use ($request, $rahjoo) {
+                    $q->when($request->filled('answered'), function ($q) use ($request, $rahjoo) {
+                        $q->whereHas('answer', function ($q) use ($request, $rahjoo) {
+                            $q->where('rahjoo_id', $rahjoo->id);
+                        });
+                    })->when($request->filled('notAnswered'), function ($q) use ($request, $rahjoo) {
+                        $q->whereDoesntHave('answer', function ($q) use ($request, $rahjoo) {
+                            $q->where('rahjoo_id', $rahjoo->id);
+                        });
+                    });
+                });
+            })
+            ->paginate();
+        $resource = PaginationResource::make($exercises)->additional(['itemsResource' => ExerciseResource::class]);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('exercises', $resource)
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $rahyab
+     * @param $rahjoo
+     * @param $exercise
+     * @return JsonResponse
+     */
+    public function questions(Request $request, $rahyab, $rahjoo, $exercise): JsonResponse
+    {
+        $rahyab = $this->userRepository
+            ->hasRole(RoleEnum::RAHYAB)
+            ->findOrFailById($rahyab);
+        /** @var Rahjoo $rahjoo */
+        $rahjoo = Rahjoo::query()
+            ->where('rahyab_id', $rahyab->id)
+            ->findOrFail($rahjoo);
+        /** @var Exercise $exercise */
+        $exercise = $rahjoo->packageExercises()->findOrFail($exercise);
+        $questions = $exercise->questions()
+            ->withWhereHas('answerTypes', function ($q) use ($request, $rahjoo) {
+                $q->when($request->filled('answered'), function ($q) use ($request, $rahjoo) {
+                    $q->whereHas('answer', function ($q) use ($request, $rahjoo) {
+                        $q->where('rahjoo_id', $rahjoo->id);
+                    });
+                })->when($request->filled('notAnswered'), function ($q) use ($request, $rahjoo) {
+                    $q->whereDoesntHave('answer', function ($q) use ($request, $rahjoo) {
+                        $q->where('rahjoo_id', $rahjoo->id);
+                    });
+                })->with(['answer' => function ($q) use ($rahjoo) {
+                    $q->where('rahjoo_id', $rahjoo->id);
+                }]);
+            })->paginate();
+        $resource = PaginationResource::make($questions)->additional(['itemsResource' => QuestionResource::class]);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('questions', $resource)
+            ->send();
+    }
+
+    public function question(Request $request, $rahyab, $rahjoo, $exercise, $question)
+    {
+        $rahyab = $this->userRepository
+            ->hasRole(RoleEnum::RAHYAB)
+            ->findOrFailById($rahyab);
+        /** @var Rahjoo $rahjoo */
+        $rahjoo = Rahjoo::query()
+            ->where('rahyab_id', $rahyab->id)
+            ->findOrFail($rahjoo);
+        /** @var Exercise $exercise */
+        $exercise = $rahjoo->packageExercises()->findOrFail($exercise);
+        $question = $exercise->questions()
+            ->with(['answerTypes' => function ($q) use ($request, $rahjoo) {
+                $q->with(['answer' => function ($q) use ($rahjoo) {
+                    $q->where('rahjoo_id', $rahjoo->id);
+                }]);
+            }])->findOrFail($question);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('question', new QuestionResource($question))
             ->send();
     }
 

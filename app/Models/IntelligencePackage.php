@@ -78,4 +78,12 @@ class IntelligencePackage extends Pivot
     {
         return $this->hasMany(IntelligenceFeedback::class, 'intelligence_package_id', 'pivot_id');
     }
+
+    /**
+     * @return HasMany
+     */
+    public function pivotIntelligenceRahjooRahyab(): HasMany
+    {
+        return $this->hasMany(RahjooIntelligenceRahyab::class,'intelligence_id', 'intelligence_id');
+    }
 }

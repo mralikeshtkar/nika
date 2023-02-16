@@ -79,11 +79,17 @@ Route::prefix('v1')->group(function (Router $router) {
         /* Rahyab */
         $router->group([], function (Router $router) {
             $router->get('rahyab/{rahnama}/packages', [V1ApiRahyabController::class, 'packages']);
+            $router->get('rahyab/{rahnama}/{rahjoo}/exercises', [V1ApiRahyabController::class, 'exercises']);
+            $router->get('rahyab/{rahnama}/{rahjoo}/exercises/{exercise}/questions', [V1ApiRahyabController::class, 'questions']);
+            $router->get('rahyab/{rahnama}/{rahjoo}/exercises/{exercise}/questions/{question}', [V1ApiRahyabController::class, 'question']);
         });
 
         /* Rahnama */
         $router->group([], function (Router $router) {
             $router->get('rahnama/{rahnama}/packages', [V1ApiRahnamaController::class, 'packages']);
+            $router->get('rahnama/{rahnama}/{rahjoo}/exercises', [V1ApiRahnamaController::class, 'exercises']);
+            $router->get('rahnama/{rahnama}/{rahjoo}/exercises/{exercise}/questions', [V1ApiRahnamaController::class, 'questions']);
+            $router->get('rahnama/{rahnama}/{rahjoo}/exercises/{exercise}/questions/{question}', [V1ApiRahnamaController::class, 'question']);
         });
 
         /* Users */

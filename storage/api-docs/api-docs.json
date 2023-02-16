@@ -7361,6 +7361,189 @@
                 }
             }
         },
+        "/rahnama/{rahnama}/{rahjoo}/packages": {
+            "get": {
+                "tags": [
+                    "رهنما"
+                ],
+                "summary": "دریافت تمرین های رهجو رهنما",
+                "description": "",
+                "operationId": "381056181ba687993a6810500bafcdea",
+                "parameters": [
+                    {
+                        "name": "rahnama",
+                        "in": "path",
+                        "description": "شناسه رهنما",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "rahjoo",
+                        "in": "path",
+                        "description": "شناسه رهجو",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "answered",
+                        "in": "query",
+                        "description": "تمرین هایی که پاسخ داده شده اند. مقدار مهم نیست ولی 1بزارید",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "notAnswered",
+                        "in": "query",
+                        "description": "تمرین هایی که پاسخ داده نشده اند. مقدار مهم نیست ولی 1بزارید",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/rahnama/{rahnama}/{rahjoo}/exercises/{exercise}/questions": {
+            "get": {
+                "tags": [
+                    "رهنما"
+                ],
+                "summary": "دریافت سوال های رهجو رهنما",
+                "description": "",
+                "operationId": "7508b7aa5190f68d5e4f7368442866df",
+                "parameters": [
+                    {
+                        "name": "rahnama",
+                        "in": "path",
+                        "description": "شناسه رهنما",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "rahjoo",
+                        "in": "path",
+                        "description": "شناسه رهجو",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "exercise",
+                        "in": "path",
+                        "description": "شناسه تمرین",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "answered",
+                        "in": "query",
+                        "description": "تمرین هایی که پاسخ داده شده اند. مقدار مهم نیست ولی 1بزارید",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "notAnswered",
+                        "in": "query",
+                        "description": "تمرین هایی که پاسخ داده نشده اند. مقدار مهم نیست ولی 1بزارید",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/rahnama/{rahnama}/{rahjoo}/exercises/{exercise}/questions/{question}": {
+            "get": {
+                "tags": [
+                    "رهنما"
+                ],
+                "summary": "دریافت سوال رهجو رهنما",
+                "description": "",
+                "operationId": "7517ec9aa0204b654ba02d54bc9d473a",
+                "parameters": [
+                    {
+                        "name": "rahnama",
+                        "in": "path",
+                        "description": "شناسه رهنما",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "rahjoo",
+                        "in": "path",
+                        "description": "شناسه رهجو",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "exercise",
+                        "in": "path",
+                        "description": "شناسه تمرین",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "question",
+                        "in": "path",
+                        "description": "شناسه سوال",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/rahyab/{rahyab}/packages": {
             "get": {
                 "tags": [
@@ -7374,6 +7557,189 @@
                         "name": "rahyab",
                         "in": "path",
                         "description": "شناسه رهیاب",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/rahyab/{rahyab}/{rahjoo}/exercises": {
+            "get": {
+                "tags": [
+                    "رهیاب"
+                ],
+                "summary": "دریافت تمرین های رهجو رهیاب",
+                "description": "",
+                "operationId": "c391cde9bc5366ec0cd33dae6f9ecd3a",
+                "parameters": [
+                    {
+                        "name": "rahyab",
+                        "in": "path",
+                        "description": "شناسه رهیاب",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "rahjoo",
+                        "in": "path",
+                        "description": "شناسه رهجو",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "answered",
+                        "in": "query",
+                        "description": "تمرین هایی که پاسخ داده شده اند. مقدار مهم نیست ولی 1بزارید",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "notAnswered",
+                        "in": "query",
+                        "description": "تمرین هایی که پاسخ داده نشده اند. مقدار مهم نیست ولی 1بزارید",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/rahyab/{rahyab}/{rahjoo}/exercises/{exercise}/questions": {
+            "get": {
+                "tags": [
+                    "رهیاب"
+                ],
+                "summary": "دریافت سوال های رهجو رهیاب",
+                "description": "",
+                "operationId": "98688cff7d82691480b75df4e993558f",
+                "parameters": [
+                    {
+                        "name": "rahyab",
+                        "in": "path",
+                        "description": "شناسه رهیاب",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "rahjoo",
+                        "in": "path",
+                        "description": "شناسه رهجو",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "exercise",
+                        "in": "path",
+                        "description": "شناسه تمرین",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "answered",
+                        "in": "query",
+                        "description": "تمرین هایی که پاسخ داده شده اند. مقدار مهم نیست ولی 1بزارید",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "notAnswered",
+                        "in": "query",
+                        "description": "تمرین هایی که پاسخ داده نشده اند. مقدار مهم نیست ولی 1بزارید",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/rahyab/{rahyab}/{rahjoo}/exercises/{exercise}/questions/{question}": {
+            "get": {
+                "tags": [
+                    "رهیاب"
+                ],
+                "summary": "دریافت سوال رهجو رهیاب",
+                "description": "",
+                "operationId": "8bb3fc593f6296d01a0d06b2798015e7",
+                "parameters": [
+                    {
+                        "name": "rahyab",
+                        "in": "path",
+                        "description": "شناسه رهیاب",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "rahjoo",
+                        "in": "path",
+                        "description": "شناسه رهجو",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "exercise",
+                        "in": "path",
+                        "description": "شناسه تمرین",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "question",
+                        "in": "path",
+                        "description": "شناسه سوال",
                         "required": true,
                         "schema": {
                             "type": "number"
