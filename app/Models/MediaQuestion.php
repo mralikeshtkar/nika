@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class MediaQuestion extends Model
 {
-    use HasFactory;
 
     protected $fillable = [
         'question_id',
