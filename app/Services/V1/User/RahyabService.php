@@ -157,7 +157,7 @@ class RahyabService extends BaseService
         /** @var Exercise $exercise */
         $exercise = $rahjoo->packageExercises()->findOrFail($exercise);
         $question = $exercise->questions()
-            ->with(['files:id,question_id,' => function ($q) {
+            ->with(['files' => function ($q) {
                 $q->select(['id', 'question_id', 'media_id', 'text'])
                     ->with(['media']);
             }, 'answerTypes' => function ($q) use ($request, $rahjoo) {
