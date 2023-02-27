@@ -173,11 +173,11 @@ class RahnamaService extends BaseService
         $question = $exercise->questions()
             ->withWhereHas('answerTypes', function ($q) use ($request, $rahjoo) {
                 $q->with(['answer' => function ($q) use ($rahjoo) {
-                    $q->where('rahjoo_id', $rahjoo->id);
+                    $q->with(['file'])->where('rahjoo_id', $rahjoo->id);
                 }]);
             })->findOrFail($question);
         return ApiResponse::message(trans("The information was received successfully"))
-            ->addData('questions', new QuestionResource($question))
+            ->addData('question', new QuestionResource($question))
             ->send();
     }
 
