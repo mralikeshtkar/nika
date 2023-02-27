@@ -171,6 +171,10 @@ class RahnamaService extends BaseService
                 });
             })->findOrFail($exercise);
         $question = $exercise->questions()
+            ->with(['files' => function ($q) {
+                $q->select(['id', 'question_id', 'media_id', 'text'])
+                    ->with(['media']);
+            }])
             ->withWhereHas('answerTypes', function ($q) use ($request, $rahjoo) {
                 $q->with(['answer' => function ($q) use ($rahjoo) {
                     $q->with(['file'])->where('rahjoo_id', $rahjoo->id);
