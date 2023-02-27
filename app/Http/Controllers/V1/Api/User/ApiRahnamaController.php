@@ -188,7 +188,6 @@ class ApiRahnamaController extends ApiBaseController
      */
     public function question(Request $request, $rahnama, $rahjoo, $exercise, $question)
     {
-        dd("ok");
         return $this->rahnamaService->question($request, $rahnama, $rahjoo, $exercise, $question);
     }
 }
