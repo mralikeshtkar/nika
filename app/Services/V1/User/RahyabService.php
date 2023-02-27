@@ -137,7 +137,15 @@ class RahyabService extends BaseService
             ->send();
     }
 
-    public function question(Request $request, $rahyab, $rahjoo, $exercise, $question)
+    /**
+     * @param Request $request
+     * @param $rahyab
+     * @param $rahjoo
+     * @param $exercise
+     * @param $question
+     * @return JsonResponse
+     */
+    public function question(Request $request, $rahyab, $rahjoo, $exercise, $question): JsonResponse
     {
         $rahyab = $this->userRepository
             ->hasRole(RoleEnum::RAHYAB)
@@ -149,7 +157,7 @@ class RahyabService extends BaseService
         /** @var Exercise $exercise */
         $exercise = $rahjoo->packageExercises()->findOrFail($exercise);
         $question = $exercise->questions()
-            ->with(['answerTypes' => function ($q) use ($request, $rahjoo) {
+            ->with(['files','answerTypes' => function ($q) use ($request, $rahjoo) {
                 $q->with(['answer' => function ($q) use ($rahjoo) {
                     $q->with(['file'])->where('rahjoo_id', $rahjoo->id);
                 }]);
