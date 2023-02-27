@@ -48,7 +48,7 @@ class ApiRahnamaController extends ApiBaseController
 
     /**
      * @OA\Get(
-     *     path="/rahnama/{rahnama}/{rahjoo}/packages",
+     *     path="/rahnama/{rahnama}/{rahjoo}/exercises",
      *     summary="دریافت تمرین های رهجو رهنما",
      *     description="",
      *     tags={"رهنما"},
