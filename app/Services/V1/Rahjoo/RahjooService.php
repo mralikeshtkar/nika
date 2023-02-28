@@ -330,9 +330,9 @@ class RahjooService extends BaseService
      */
     public function storeQuestionComment(Request $request, $rahjoo, $question): JsonResponse
     {
-        ApiResponse::authorize($request->user()->can('storeQuestionComment', Rahjoo::class));
         /** @var Rahjoo $rahjoo */
         $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])->findorFailById($rahjoo);
+        ApiResponse::authorize($request->user()->can('storeQuestionComment', $rahjoo));
         $question = $this->rahjooRepository->query($rahjoo->questions())->findOrFailById($question);
         ApiResponse::validate($request->all(), [
             'body' => ['required', 'string'],
