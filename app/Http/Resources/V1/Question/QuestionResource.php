@@ -40,7 +40,7 @@ class QuestionResource extends JsonResource
         })->when($this->resource->question_duration_start_start, function (Collection $collection) {
             $collection->put('question_duration_start_start', jalaliFormat($this->resource->question_duration_start_start, 'Y/m/d H:i:s'));
         })->when($this->resource->latest_answer_created_at && $this->resource->question_duration_start_start, function (Collection $collection) {
-            $collection->put('duration', $this->resource->latest_answer_created_at->diff($this->resource->question_duration_start_start)->format('%d روز %H ساعت %i دقیقه %s ثانیه'));
+            $collection->put('duration', $this->resource->latest_answer_created_at->diff($this->resource->question_duration_start_start)->format('%n روز %H ساعت %i دقیقه %s ثانیه'));
         });
     }
 
