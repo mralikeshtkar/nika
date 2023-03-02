@@ -83,13 +83,8 @@ class RahjooService extends BaseService
         $rahjoos = Rahjoo::query()
             ->select(['id', 'user_id', 'rahyab_id', 'package_id', 'code'])
             ->lastExercise(true)
-            ->when($request->filled('has_package'), function (Builder $builder) use ($request) {
-                $builder->when($request->has_package, function (Builder $builder) use ($request) {
-                    $builder->whereNotNull('package_id');
-                }, function (Builder $builder) use ($request) {
-                    $builder->whereNull('package_id');
-                });
-            })->with(['user:id,first_name,last_name', 'package:id,title'])
+            ->whereNotNull('package_id')
+            ->with(['user:id,first_name,last_name', 'package:id,title'])
             ->paginate($request->get('perPage', 10));
         $resource = PaginationResource::make($rahjoos)->additional(['itemsResource' => RahjooResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))

@@ -72,12 +72,6 @@ class ApiRahjooController extends ApiBaseController
      *     summary="دریافت رهجو ها همراه با پکیج و تمرین",
      *     description="",
      *     tags={"رهجو"},
-     *     @OA\Parameter(
-     *         description="مقدار 0 پکیج ندارند 1 پکیج دارند",
-     *         in="query",
-     *         name="has_package",
-     *         @OA\Schema(type="number"),
-     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="OK",
