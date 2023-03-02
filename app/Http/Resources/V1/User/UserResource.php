@@ -40,6 +40,9 @@ class UserResource extends JsonResource
             $collection->put('personnel', PersonnelResource::make($this->resource->personnel));
         })->when($this->resource->relationLoaded('profile'), function (Collection $collection) {
             $collection->put('profile', new MediaResource($this->resource->profile));
+        })->when($this->resource->relationLoaded('roles'), function (Collection $collection) {
+            $collection->put('role', optional($this->resource->roles->first())->name)
+                ->put('translated_role', optional($this->resource->roles->first())->name_fa);
         })->toArray();
     }
 }

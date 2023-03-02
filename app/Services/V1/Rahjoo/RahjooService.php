@@ -360,7 +360,10 @@ class RahjooService extends BaseService
         $question = $this->rahjooRepository->query($rahjoo->questions())->findOrFailById($question);
         $comments = $questionRepository->query($question->comments()->latest())
             ->select(['id', 'user_id', 'body', 'created_at'])
-            ->with(['user:id,first_name,last_name'])
+            ->with(['user' => function ($q) {
+                $q->select(['id', 'first_name', 'last_name'])
+                    ->with('roles:id,name');
+            }])
             ->where('rahjoo_id', $rahjoo->id)
             ->paginate($request->get('perPage', 15));
         $resource = PaginationResource::make($comments)->additional(['itemsResource' => CommentResource::class]);
