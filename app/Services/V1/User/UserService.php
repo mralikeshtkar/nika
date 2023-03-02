@@ -30,6 +30,7 @@ use BenSampo\Enum\Rules\EnumKey;
 use BenSampo\Enum\Rules\EnumValue;
 use Exception;
 use Hekmatinasser\Verta\Verta;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -476,7 +477,20 @@ class UserService extends BaseService
     {
         if ($user) $user = $this->userRepository->with(['roles:id,name'])
             ->findOrFailById($user);
-        $totalRahjoos = Rahjoo::query()->count();
+        $totalRahjoos = Rahjoo::query()
+            ->when($user, function ($q) use ($user) {
+                $q->when($user->hasRahyabRole(), function ($q) use ($user) {
+                    /** @var Builder $q $q */
+                    $q->whereHas('user',function ($q)use ($user){
+                        $q->where('rahyab_id', $user->id);
+                    });
+                })->when($user->hasRahnamaRole(), function ($q) use ($user) {
+                    $q->whereHas('pivotIntelligenceRahnama',function ($q)use ($user){
+                        $q->where('rahnama_id', $user->id);
+                    });
+                });
+            })->whereNotNull('package_id')
+            ->count();
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('totalRahjoos', $totalRahjoos)
             ->send();

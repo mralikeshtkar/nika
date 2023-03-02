@@ -135,12 +135,22 @@ class User extends Authenticatable
 
     public function isRahyab(): bool
     {
-        return $this->isSuperAdmin() || $this->hasRole(RoleEnum::RAHYAB);
+        return $this->isSuperAdmin() || $this->hasRahyabRole();
+    }
+
+    public function hasRahyabRole(): bool
+    {
+        return $this->hasRole(RoleEnum::RAHYAB);
     }
 
     public function isRahnama(): bool
     {
-        return $this->isSuperAdmin() || $this->hasRole(RoleEnum::RAHYAB);
+        return $this->isSuperAdmin() || $this->hasRahnamaRole();
+    }
+
+    public function hasRahnamaRole(): bool
+    {
+        return $this->hasRole(RoleEnum::RAHNAMA);
     }
 
     public function isSuperAdmin(): bool
