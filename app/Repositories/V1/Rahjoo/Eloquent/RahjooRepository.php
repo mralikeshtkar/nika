@@ -165,8 +165,11 @@ class RahjooRepository extends BaseRepository implements RahjooRepositoryInterfa
     {
         $this->model = $this->model->where(function ($q) use ($user) {
             $q->when($user->hasSupportRole(), function ($q) use ($user) {
-                $q->where('support_id', $user->id);
-            })->whereNotNull('support_id');
+                /** @var Builder $q */
+                $q->whereHas('support', function ($q) use ($user) {
+                    $q->where('support_id', $user->id);
+                });
+            })->has('support');
         });
         return $this;
     }
@@ -174,7 +177,7 @@ class RahjooRepository extends BaseRepository implements RahjooRepositoryInterfa
     public function withSupportIfIsSuperAdmin($user): static
     {
         $this->model = $this->model->when($user->isSuperAdmin(), function ($q) {
-            $q->with(['support:id,first_name,last_name']);
+            $q->with(['support','support.support:id,first_name,last_name']);
         });
         return $this;
     }

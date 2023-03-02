@@ -127,11 +127,11 @@ class Rahjoo extends Model
     }
 
     /**
-     * @return BelongsTo
+     * @return HasOne
      */
-    public function support(): BelongsTo
+    public function support(): HasOne
     {
-        return $this->belongsTo(User::class, 'support_id');
+        return $this->hasOne(RahjooSupport::class, 'rahjoo_id');
     }
 
     /**
