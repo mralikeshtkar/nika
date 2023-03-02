@@ -51,6 +51,7 @@ use App\Repositories\V1\Question\Interfaces\QuestionAnswerTypeServiceRepositoryI
 use App\Repositories\V1\Question\Interfaces\QuestionDurationRepositoryInterface;
 use App\Repositories\V1\Question\Interfaces\QuestionRepositoryInterface;
 use App\Repositories\V1\Rahjoo\Eloquent\RahjooRepository;
+use App\Repositories\V1\Rahjoo\Eloquent\RahjooSupportRepository;
 use App\Repositories\V1\Rahjoo\Interfaces\RahjooRepositoryInterface;
 use App\Repositories\V1\Rahjoo\Interfaces\RahjooSupportRepositoryInterface;
 use App\Repositories\V1\RahjooCourse\Eloquent\RahjooCourseRepository;
@@ -123,6 +124,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(QuestionAnswerRepositoryInterface::class, QuestionAnswerRepository::class);
         $this->app->bind(QuestionDurationRepositoryInterface::class, QuestionDurationRepository::class);
         $this->app->bind(CommentRepositoryInterface::class, CommentService::class);
-        $this->app->bind(RahjooSupportRepositoryInterface::class, RahjooSupport::class);
+        $this->app->bind(RahjooSupportRepositoryInterface::class, RahjooSupportRepository::class);
     }
 }
