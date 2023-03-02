@@ -27,6 +27,7 @@ use App\Repositories\V1\User\Interfaces\UserRepositoryInterface;
 use App\Responses\Api\ApiResponse;
 use App\Rules\UserHasRoleRule;
 use App\Services\V1\BaseService;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -82,7 +83,13 @@ class RahjooService extends BaseService
         $rahjoos = Rahjoo::query()
             ->select(['id', 'user_id', 'rahyab_id', 'package_id', 'code'])
             ->lastExercise(true)
-            ->whereHas('pivotIntelligenceRahnama', function ($q) use ($rahnama) {
+            ->when($request->filled('has_package'), function (Builder $builder) use ($request) {
+                $builder->when($request->has_package, function (Builder $builder) use ($request) {
+                    $builder->whereNotNull('package_id');
+                }, function (Builder $builder) use ($request) {
+                    $builder->whereNull('package_id');
+                });
+            })->whereHas('pivotIntelligenceRahnama', function ($q) use ($rahnama) {
                 $q->where('rahnama_id', $rahnama->id);
             })->with(['user:id,first_name,last_name', 'package:id,title'])
             ->paginate();
