@@ -881,7 +881,7 @@ class ApiUserController extends ApiBaseController
      *         description="شناسه کاربر",
      *         in="path",
      *         name="user",
-     *         required=true,
+     *         required=false,
      *         @OA\Schema(type="number"),
      *     ),
      *     @OA\Response(
