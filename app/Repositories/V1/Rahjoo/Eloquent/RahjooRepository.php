@@ -161,10 +161,20 @@ class RahjooRepository extends BaseRepository implements RahjooRepositoryInterfa
         return $rahjoo->update(['support_id' => $support_id]);
     }
 
+    public function onlySupportRahjoos($user): static
+    {
+        $this->model = $this->model->where(function ($q) use ($user) {
+            $q->when($user->hasSupportRole(), function ($q) use ($user) {
+                $q->where('support_id', $user->id);
+            })->whereNotNull('support_id');
+        });
+        return $this;
+    }
+
     public function withSupportIfIsSuperAdmin($user): static
     {
-        $this->model = $this->model->when($user->isSuperAdmin(),function ($q){
-           $q->with(['support:id,first_name,last_name']);
+        $this->model = $this->model->when($user->isSuperAdmin(), function ($q) {
+            $q->with(['support:id,first_name,last_name']);
         });
         return $this;
     }

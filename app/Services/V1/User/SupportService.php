@@ -41,6 +41,7 @@ class SupportService extends BaseService
     {
         ApiResponse::authorize($request->user()->isSupport());
         $rahjoos = resolve(RahjooRepositoryInterface::class)
+            ->onlySupportRahjoos($request->user())
             ->withSupportIfIsSuperAdmin($request->user())
             ->with(['user:id,first_name,last_name,birthdate'])
             ->paginate($request->get('perPage', 10));
