@@ -511,10 +511,11 @@ class UserService extends BaseService
                 /** @var Builder $q */
                 $q->whereHas('answerTypes', function ($q) {
                     /** @var Builder $q */
-                    
+
                 });
             });
-        })->count();
+        })->get();
+        dd($notFinishedRahjoos);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('totalRahjoos', $totalRahjoos)
             ->addData('finishedRahjoos', $finishedRahjoos)
