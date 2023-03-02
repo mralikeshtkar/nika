@@ -79,7 +79,7 @@ class RahyabService extends BaseService
             ->where('rahyab_id', $rahyab->id)
             ->findOrFail($rahjoo);
         $exercises = $rahjoo->packageExercises()
-            ->withAggregate('questionAnswer','created_at')
+            ->withAggregate('questionAnswer','question_answers.created_at')
             ->with(['intelligence:id,title'])
             ->whereHas('questions', function ($q) use ($request, $rahjoo) {
                 $q->whereHas('answerTypes', function ($q) use ($request, $rahjoo) {
