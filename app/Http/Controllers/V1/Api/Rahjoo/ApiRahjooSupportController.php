@@ -23,9 +23,29 @@ class ApiRahjooSupportController extends ApiBaseController
         $this->rahjooSupportService = $rahjooSupportService;
     }
 
+    /**
+     * @OA\Get(
+     *     path="/rahjoo-supports/{rahjooSupport}",
+     *     summary="دریافت پشتیبانی رهجو",
+     *     description="",
+     *     tags={"پشتیبان"},
+     *     @OA\Parameter(
+     *         description="شناسه پشتیبانی رهجو",
+     *         in="path",
+     *         name="rahjooSupport",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent()
+     *     )
+     * )
+     */
     public function show(Request $request, $rahjooSupport)
     {
-        return $this->rahjooSupportService->show($request,$rahjooSupport);
+        return $this->rahjooSupportService->show($request, $rahjooSupport);
     }
 
 }
