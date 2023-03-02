@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class IntelligencePoint extends Model
 {
@@ -49,6 +50,14 @@ class IntelligencePoint extends Model
     public function intelligencePointName(): BelongsTo
     {
         return $this->belongsTo(IntelligencePointName::class);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function questionPointRahjoo(): HasMany
+    {
+        return $this->hasMany(QuestionPointRahjoo::class);
     }
 
     #endregion

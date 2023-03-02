@@ -48,6 +48,38 @@ class ApiQuestionPointController extends ApiBaseController
     }
 
     /**
+     * @OA\Get (
+     *     path="/questions/{id}/points/{rahjoo}/have-not",
+     *     summary="دریافت ارزش های یک سوال که نمره داده نشده اند",
+     *     description="",
+     *     tags={"سوال"},
+     *     @OA\Parameter(
+     *         description="شناسه سوال",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه رهجو",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="rahjoo"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function haveNotPoint(Request $request, $question, $rahjoo)
+    {
+        return $this->questionPointService->haveNotPoint($request, $question,$rahjoo);
+    }
+
+    /**
      * @OA\Post(
      *     path="/questions/{id}/points",
      *     summary="ثبت ارزش برای سوال",
