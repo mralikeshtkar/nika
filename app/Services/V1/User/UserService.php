@@ -255,7 +255,6 @@ class UserService extends BaseService
         ]);
         $request->merge(['mobile' => to_valid_mobile_number($request->mobile)]);
         $user = $this->userRepository->firstOrCreateByMobile($request->mobile);
-        resolve(UserRepositoryInterface::class)->assignRahjooRole($user);
         $this->_checkUserAccountIsNotInactive($user);
         if ($user->hasPassword()) {
             return ApiResponse::message(trans("The information was received successfully"))
