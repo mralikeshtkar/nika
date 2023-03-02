@@ -873,7 +873,7 @@ class ApiUserController extends ApiBaseController
     }
     /**
      * @OA\Get(
-     *     path="/users/userInformation/{id}",
+     *     path="/users/rahjooInformation/{id}",
      *     summary="دریافت تعداد رهجو های رهنماو رهیاب و ...",
      *     description="",
      *     tags={"کاربر"},
