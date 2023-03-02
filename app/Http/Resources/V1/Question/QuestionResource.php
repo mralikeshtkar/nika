@@ -36,10 +36,34 @@ class QuestionResource extends JsonResource
         })->when($this->resource->relationLoaded('answerTypes') && array_key_exists('rahjoo_answers_count', $this->resource->getAttributes()), function (Collection $collection) {
             $collection->put('is_answered', count($this->resource->answerTypes) <= $this->resource->rahjoo_answers_count );
         })->when($this->resource->latest_answer_created_at && $this->resource->question_duration_start_start, function (Collection $collection) {
-            dd(now()->diffForHumans(now()->subDays()),now()->diffInSeconds(now()->subDays(2)));
+            dd($this->time_elapsed_string(now()->diff(now()->subDays())),now()->diffInSeconds(now()->subDays(2)));
             dd($this->resource->latest_answer_created_at,$this->resource->question_duration_start_start);
 
             $collection->put('updated_at', jalaliFormat($this->resource->updated_at, 'j F Y'));
         });
+    }
+
+    function time_elapsed_string($diff) {
+
+        $diff->w = floor($diff->d / 7);
+        $diff->d -= $diff->w * 7;
+
+        $string = array(
+            'y' => 'year',
+            'm' => 'month',
+            'w' => 'week',
+            'd' => 'day',
+            'h' => 'hour',
+            'i' => 'minute',
+            's' => 'second',
+        );
+        foreach ($string as $k => &$v) {
+            if ($diff->$k) {
+                $v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? 's' : '');
+            } else {
+                unset($string[$k]);
+            }
+        }
+        return $string ? implode(', ', $string) : 'just now';
     }
 }
