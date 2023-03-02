@@ -34,37 +34,10 @@ class QuestionResource extends JsonResource
         })->when($this->resource->relationLoaded('answerTypes'), function (Collection $collection) {
             $collection->put('answer_types', QuestionAnswerTypeResource::collection($this->resource->answerTypes));
         })->when($this->resource->relationLoaded('answerTypes') && array_key_exists('rahjoo_answers_count', $this->resource->getAttributes()), function (Collection $collection) {
-            $collection->put('is_answered', count($this->resource->answerTypes) <= $this->resource->rahjoo_answers_count);
+            $collection->put('is_answered', count($this->resource->answerTypes) <= $this->resource->rahjoo_answers_count );
         })->when($this->resource->latest_answer_created_at && $this->resource->question_duration_start_start, function (Collection $collection) {
-            dd($this->time_elapsed_string(now()->diff(now()->subDays())));
-            dd($this->resource->latest_answer_created_at, $this->resource->question_duration_start_start);
-
-            $collection->put('updated_at', jalaliFormat($this->resource->updated_at, 'j F Y'));
+            $collection->put('duration', $this->resource->latest_answer_created_at->diff($this->resource->question_duration_start_start)->format('%d روز %H ساعت %i دقیقه %s ثانیه'));
         });
     }
 
-    function time_elapsed_string($diff)
-    {
-
-        $min = $diff->format('%i');
-        $sec = $diff->format('%s');
-        $hour = $diff->format('%h');
-        $mon = $diff->format('%m');
-        $day = $diff->format('%d');
-        $year = $diff->format('%y');
-        if ($diff->format('%i%h%d%m%y') == "00000") {
-            //echo $diff->format('%i%h%d%m%y')."<br>";
-            return $sec . " Seconds";
-        } else if ($diff->format('%h%d%m%y') == "0000") {
-            return $min . " Minutes";
-        } else if ($diff->format('%d%m%y') == "000") {
-            return $hour . " Hours";
-        } else if ($diff->format('%m%y') == "00") {
-            return $day . " Days";
-        } else if ($diff->format('%y') == "0") {
-            return $mon . " Months";
-        } else {
-            return $year . " Years";
-        }
-    }
 }
