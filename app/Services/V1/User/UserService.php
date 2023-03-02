@@ -505,23 +505,9 @@ class UserService extends BaseService
                 });
             });
         })->count();
-        $notFinishedRahjoos = $rahjoos->whereHas('package', function ($q) {
-            /** @var Builder $q */
-            $q->whereHas('questions', function ($q) {
-                /** @var Builder $q */
-                $q->whereHas('answerTypes', function ($q) {
-                    /** @var Builder $q */
-                    $q->doesntHave('answer', function ($q) {
-                        /** @var Builder $q */
-                        $q->whereColumn('rahjoo_id', 'rahjoos.id');
-                    });
-                });
-            });
-        })->count();
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('totalRahjoos', $totalRahjoos)
             ->addData('finishedRahjoos', $finishedRahjoos)
-            ->addData('notFinishedRahjoos', $notFinishedRahjoos)
             ->send();
     }
 
