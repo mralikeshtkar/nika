@@ -124,6 +124,7 @@ class RahnamaService extends BaseService
                 });
             })->findOrFail($exercise);
         $questions = $exercise->questions()
+            ->with(['questionDurationStart'])
             ->withWhereHas('answerTypes', function ($q) use ($request, $rahjoo) {
                 $q->with(['answer' => function ($q) use ($rahjoo) {
                     $q->where('rahjoo_id', $rahjoo->id);
@@ -139,6 +140,7 @@ class RahnamaService extends BaseService
             })->paginate();
         $resource = PaginationResource::make($questions)->additional(['itemsResource' => QuestionResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('exercise', new ExerciseResource($exercise))
             ->addData('questions', $resource)
             ->send();
     }

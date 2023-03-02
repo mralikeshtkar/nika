@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasOneDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
@@ -35,8 +36,8 @@ class Question extends Model
         'priority',
     ];
 
-    protected $casts=[
-        'is_answered'=>'bool',
+    protected $casts = [
+        'is_answered' => 'bool',
     ];
 
     #endregion
@@ -138,7 +139,7 @@ class Question extends Model
      */
     public function package(): HasOneDeep
     {
-        return $this->hasOneDeepFromRelations($this->intelligencePackage(),(new IntelligencePackage())->package());
+        return $this->hasOneDeepFromRelations($this->intelligencePackage(), (new IntelligencePackage())->package());
     }
 
     /**
@@ -147,6 +148,11 @@ class Question extends Model
     public function exercisePivotPoints(): HasManyDeep
     {
         return $this->hasManyDeepFromRelations($this->exercise(), (new Exercise())->pivotPoints());
+    }
+
+    public function questionDurationStart(): HasOne
+    {
+        return $this->hasOne(QuestionDuration::class);
     }
 
     #endregion
