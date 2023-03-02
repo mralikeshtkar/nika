@@ -362,7 +362,7 @@ class RahjooService extends BaseService
             ->select(['id', 'user_id', 'body', 'created_at'])
             ->with(['user' => function ($q) {
                 $q->select(['id', 'first_name', 'last_name'])
-                    ->with('roles:id,name');
+                    ->with('roles:id,name,name_fa');
             }])
             ->where('rahjoo_id', $rahjoo->id)
             ->paginate($request->get('perPage', 15));
