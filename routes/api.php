@@ -69,6 +69,7 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->get('users/{user}/rahnama', [V1UserController::class, 'rahnama']);
             $router->post('users/{user}/upload-profile', [V1UserController::class, 'uploadProfile']);
             $router->post('users', [V1UserController::class, 'store']);
+            $router->get('users/rahjooInformation/{user?}', [V1UserController::class, 'rahjooInformation']);
             $router->put('users/{user}', [V1UserController::class, 'update']);
             $router->post('users/{user}/assign-role', [V1UserController::class, 'assignRole']);
         });

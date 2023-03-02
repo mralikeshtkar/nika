@@ -871,4 +871,10 @@ class ApiUserController extends ApiBaseController
     {
         return $this->userService->assignRole($request, $user);
     }
+
+    public function rahjooInformation(Request $request, $user = null)
+    {
+        dd("ok",$user);
+        return $this->userService->rahjooInformation($request, $user);
+    }
 }
