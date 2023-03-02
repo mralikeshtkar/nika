@@ -36,7 +36,7 @@ class QuestionResource extends JsonResource
         })->when($this->resource->relationLoaded('answerTypes') && array_key_exists('rahjoo_answers_count', $this->resource->getAttributes()), function (Collection $collection) {
             $collection->put('is_answered', count($this->resource->answerTypes) <= $this->resource->rahjoo_answers_count );
         })->when($this->resource->latest_answer_created_at && $this->resource->question_duration_start_start, function (Collection $collection) {
-            dd($this->time_elapsed_string(now()->diff(now()->subDays())),now()->diffInSeconds(now()->subDays(2)));
+            dd(now()->diff(now()->subDays())->format('%Y سال %m ماه %d روز %H ساعت %i دقیقه %s ثانیه'));
             dd($this->resource->latest_answer_created_at,$this->resource->question_duration_start_start);
 
             $collection->put('updated_at', jalaliFormat($this->resource->updated_at, 'j F Y'));
