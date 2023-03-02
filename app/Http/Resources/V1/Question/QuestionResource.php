@@ -49,13 +49,13 @@ class QuestionResource extends JsonResource
         $diff->d -= $diff->w * 7;
 
         $string = array(
-            'y' => 'year',
-            'm' => 'month',
-            'w' => 'week',
-            'd' => 'day',
-            'h' => 'hour',
-            'i' => 'minute',
-            's' => 'second',
+            'y' => 'سال',
+            'm' => 'ماه',
+            'w' => 'هفته',
+            'd' => 'روز',
+            'h' => 'ساعت',
+            'i' => 'دقیقه',
+            's' => 'ثانیه',
         );
         foreach ($string as $k => &$v) {
             if ($diff->$k) {
@@ -64,6 +64,6 @@ class QuestionResource extends JsonResource
                 unset($string[$k]);
             }
         }
-        return $string ? implode(', ', $string) : 'just now';
+        return implode(', ', $string);
     }
 }
