@@ -20,6 +20,7 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
+        dd($this->resource->relationLoaded('roles'));
         return collect($this->resource)->when($this->resource->originalIsEquivalent('status'), function (Collection $collection) {
             $status = UserStatus::coerce(intval($this->resource->status));
             $collection->put('status', $status->key)->put('status_translated', $status->description);

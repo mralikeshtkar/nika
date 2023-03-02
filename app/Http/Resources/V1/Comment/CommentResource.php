@@ -19,7 +19,6 @@ class CommentResource extends JsonResource
         return collect($this->resource)->when(array_key_exists('created_at', $this->resource->getAttributes()), function (Collection $collection) {
             $collection->put('created_at', jalaliFormat($this->resource->created_at, 'j F Y'));
         })->when($this->resource->relationLoaded('user'), function (Collection $collection) {
-            dd($this->resource->user);
             $collection->put('user', new UserResource($this->resource->user));
         });
     }
