@@ -79,6 +79,12 @@ class Exercise extends Model
         return $this->hasManyThrough(QuestionAnswer::class, Question::class, 'exercise_id', 'question_id', 'id', 'id');
     }
 
+    public function questionAnswer(): HasManyThrough
+    {
+        return $this->hasOneThrough(QuestionAnswer::class, Question::class, 'exercise_id', 'question_id', 'id', 'id')
+            ->latest();
+    }
+
     /**
      * @return HasManyDeep
      */
