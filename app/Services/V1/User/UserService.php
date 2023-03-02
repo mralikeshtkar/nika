@@ -14,6 +14,7 @@ use App\Http\Resources\V1\User\UserResource;
 use App\Models\City;
 use App\Models\Grade;
 use App\Models\Intelligence;
+use App\Models\Rahjoo;
 use App\Models\RahjooParent;
 use App\Models\Role;
 use App\Models\User;
@@ -475,7 +476,10 @@ class UserService extends BaseService
     {
         if ($user) $user = $this->userRepository->with(['roles:id,name'])
             ->findOrFailById($user);
-
+        $totalRahjoos = Rahjoo::query()->count();
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('totalRahjoos', $totalRahjoos)
+            ->send();
     }
 
     #endregion

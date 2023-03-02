@@ -874,7 +874,6 @@ class ApiUserController extends ApiBaseController
 
     public function rahjooInformation(Request $request, $user = null)
     {
-        dd("ok",$user);
         return $this->userService->rahjooInformation($request, $user);
     }
 }
