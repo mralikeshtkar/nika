@@ -17,9 +17,9 @@ class ExerciseResource extends JsonResource
     public function toArray($request)
     {
         return collect($this->resource)->when(array_key_exists('created_at',$this->resource->getAttributes()), function (Collection $collection) {
-            $collection->put('created_at', jalaliFormat($this->resource->created_at, 'j F Y'));
+            $collection->put('created_at', jalaliFormat($this->resource->created_at));
         })->when(array_key_exists('updated_at',$this->resource->getAttributes()), function (Collection $collection) {
-            $collection->put('updated_at', jalaliFormat($this->resource->updated_at, 'j F Y'));
+            $collection->put('updated_at', jalaliFormat($this->resource->updated_at));
         })->when($this->resource->latest_answer_at, function (Collection $collection) {
             $collection->put('latest_answer_at', jalaliFormat($this->resource->updated_at));
         })->when($this->resource->relationLoaded('files'),function (Collection $collection){

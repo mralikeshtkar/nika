@@ -47,7 +47,7 @@ class Exercise extends Model
      */
     public function intelligence(): HasManyDeep
     {
-        return $this->hasManyDeepFromRelations($this->intelligencePackage(), (new IntelligencePackage())->intelligence());
+        return $this->hasOneDeepFromRelations($this->intelligencePackage(), (new IntelligencePackage())->intelligence());
     }
 
     /**
