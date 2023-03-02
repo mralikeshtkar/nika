@@ -286,6 +286,7 @@ class UserService extends BaseService
         $user = $this->userRepository->verified()->findByMobile($request->mobile);
         $this->_checkUserAccountIsNotInactive($user);
         if ($user && Hash::check($request->password, $user->password)) {
+            if (!$user->roles()->count()) resolve(UserRepositoryInterface::class)->assignRahjooRole($user);
             $this->userRepository->markAsVerified($user);
             $token = $user->generateToken();
             return ApiResponse::message(trans("Login was successful"))
@@ -324,6 +325,7 @@ class UserService extends BaseService
                 ->send();
         $this->userRepository->markAsVerified($user);
         $token = $user->generateToken();
+        if (!$user->roles()->count()) resolve(UserRepositoryInterface::class)->assignRahjooRole($user);
         return ApiResponse::message(trans("Login was successful"))
             ->addData('token', $token)
             ->addData('hasName', !is_null($user->first_name))
