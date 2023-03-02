@@ -27,6 +27,7 @@ use App\Http\Controllers\V1\Api\Question\ApiQuestionController as V1ApiQuestionC
 use App\Http\Controllers\V1\Api\Question\ApiQuestionDurationController as V1ApiQuestionDurationController;
 use App\Http\Controllers\V1\Api\Question\ApiQuestionPointController as V1ApiQuestionPointController;
 use App\Http\Controllers\V1\Api\Rahjoo\ApiRahjooController as V1ApiRahjooController;
+use App\Http\Controllers\V1\Api\Rahjoo\ApiRahjooSupportController as V1ApiRahjooSupportController;
 use App\Http\Controllers\V1\Api\RahjooCourse\ApiRahjooCourseController as V1ApiRahjooCourseController;
 use App\Http\Controllers\V1\Api\RahjooParent\ApiRahjooParentController as V1ApiRahjooParentController;
 use App\Http\Controllers\V1\Api\Role\ApiRoleController as V1ApiRoleController;
@@ -83,6 +84,11 @@ Route::prefix('v1')->group(function (Router $router) {
         /* Support */
         $router->group([], function (Router $router) {
             $router->get('support/rahjoos', [V1ApiSupportController::class, 'rahjoos']);
+        });
+
+        /* Support */
+        $router->group([], function (Router $router) {
+            $router->get('rahjoo-supports/{rahjooSupport}', [V1ApiRahjooSupportController::class, 'show']);
         });
 
         /* Rahyab */

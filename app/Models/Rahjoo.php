@@ -131,7 +131,8 @@ class Rahjoo extends Model
      */
     public function support(): HasOne
     {
-        return $this->hasOne(RahjooSupport::class, 'rahjoo_id');
+        return $this->hasOne(RahjooSupport::class, 'rahjoo_id')
+            ->latest();
     }
 
     /**
@@ -253,7 +254,7 @@ class Rahjoo extends Model
         $builder->addSelect([
             'last_exercise_id' => Exercise::query()
                 ->select('id')
-                ->when($hasIntelligencePackage,function ($q){
+                ->when($hasIntelligencePackage, function ($q) {
                     $q->whereHas('intelligencePackage', function ($q) {
                         $q->where('intelligence_package.package_id', 'rahjoos.package_id');
                     });

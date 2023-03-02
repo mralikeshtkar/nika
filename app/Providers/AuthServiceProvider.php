@@ -21,6 +21,7 @@ use App\Models\Question;
 use App\Models\Rahjoo;
 use App\Models\RahjooCourse;
 use App\Models\RahjooParent;
+use App\Models\RahjooSupport;
 use App\Models\Role;
 use App\Models\Skill;
 use App\Models\User;
@@ -42,6 +43,7 @@ use App\Policies\Question\QuestionPolicy;
 use App\Policies\RahjooCoursePolicy;
 use App\Policies\RahjooParentPolicy;
 use App\Policies\RahjooPolicy;
+use App\Policies\RahjooSupport\RahjooSupportPolicy;
 use App\Policies\RolePolicy;
 use App\Policies\SkillPolicy;
 use App\Policies\UserPolicy;
@@ -78,6 +80,7 @@ class AuthServiceProvider extends ServiceProvider
         DocumentGroup::class => DocumentGroupPolicy::class,
         Question::class => QuestionPolicy::class,
         Comment::class => CommentPolicy::class,
+        RahjooSupport::class => RahjooSupportPolicy::class,
     ];
 
     /**

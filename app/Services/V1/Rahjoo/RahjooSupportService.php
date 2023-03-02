@@ -10,6 +10,7 @@ use App\Http\Resources\V1\IntelligencePackagePointRahjoo\IntelligencePackagePoin
 use App\Http\Resources\V1\PaginationResource;
 use App\Http\Resources\V1\Question\QuestionResource;
 use App\Http\Resources\V1\Rahjoo\RahjooResource;
+use App\Http\Resources\V1\Rahjoo\RahjooSupportResource;
 use App\Models\Exercise;
 use App\Models\Intelligence;
 use App\Models\IntelligencePackage;
@@ -58,7 +59,20 @@ class RahjooSupportService extends BaseService
 
     #region Public methods
 
-
+    /**
+     * @param Request $request
+     * @param $rahjooSupport
+     * @return JsonResponse
+     */
+    public function show(Request $request, $rahjooSupport): JsonResponse
+    {
+        $rahjooSupport = $this->rahjooSupportRepository->with(['rahjoo'])
+            ->findOrFailById($rahjooSupport);
+        ApiResponse::authorize($request->user()->can('show', $rahjooSupport));
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('rahjooSupport', new RahjooSupportResource($rahjooSupport))
+            ->send();
+    }
 
     #endregion
 

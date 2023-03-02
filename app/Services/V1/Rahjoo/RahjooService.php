@@ -380,7 +380,7 @@ class RahjooService extends BaseService
         ApiResponse::authorize($request->user()->can('manageQuestionPoints', [$rahjoo, $question]));
         $rules = collect($question->pivotPoints)->mapWithKeys(function ($item) {
             return ['points.' . $item->intelligence_point_id => ['nullable', 'numeric', 'min:0', 'max:' . $item->max_point],];
-        })->put('points', ['required', 'array', 'size:' . $question->pivotPoints->count()])->toArray();
+        })->put('points', ['required', 'array'])->toArray();
         ApiResponse::validate($request->all(), $rules);
         $points = collect($request->points)->mapWithKeys(function ($item, $key) use ($request, $rahjoo, $question) {
             return [

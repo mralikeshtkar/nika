@@ -39,4 +39,9 @@ class ApiSupportController extends ApiBaseController
     {
         return $this->supportService->rahjoos($request);
     }
+
+    public function rahjoo(Request $request,$rahjoo)
+    {
+        return $this->supportService->rahjoo($request,$rahjoo);
+    }
 }
