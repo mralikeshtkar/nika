@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class QuestionDuration extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'rahjoo_id',
         'question_id',

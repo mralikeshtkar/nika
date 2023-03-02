@@ -38,6 +38,7 @@ class Question extends Model
 
     protected $casts = [
         'is_answered' => 'bool',
+        'latest_answer_created_at' => 'datetime',
     ];
 
     #endregion

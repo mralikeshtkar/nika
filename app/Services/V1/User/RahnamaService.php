@@ -126,6 +126,7 @@ class RahnamaService extends BaseService
         /** @var Exercise $exercise */
         $questions = $exercise->questions()
             ->withAggregate('latestAnswer','created_at')
+            ->withAggregate('questionDurationStart','start')
             ->withWhereHas('answerTypes', function ($q) use ($request, $rahjoo) {
                 $q->with(['answer' => function ($q) use ($rahjoo) {
                     $q->where('rahjoo_id', $rahjoo->id);
