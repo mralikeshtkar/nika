@@ -508,11 +508,7 @@ class UserService extends BaseService
         $notFinishedRahjoos = $rahjoos->whereHas('package', function ($q) {
             /** @var Builder $q */
             $q->whereHas('questions', function ($q) {
-                /** @var Builder $q */
-                $q->whereHas('answerTypes', function ($q) {
-                    /** @var Builder $q */
-
-                });
+                
             });
         })->get();
         dd($notFinishedRahjoos);
