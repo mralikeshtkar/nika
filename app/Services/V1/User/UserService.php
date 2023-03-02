@@ -170,6 +170,46 @@ class UserService extends BaseService
 
     /**
      * @param Request $request
+     * @return JsonResponse
+     */
+    public function onlyAgent(Request $request): JsonResponse
+    {
+        $users = $this->userRepository
+            ->hasRole(RoleEnum::AGENT)
+            ->select(['id', 'first_name', 'last_name', 'mobile'])
+            ->searchName($request)
+            ->withRahyabRahjoosCount()
+            ->searchMobile($request)
+            ->searchNotionalCode($request)
+            ->paginate($request->get('perPage', 10));
+        $resource = PaginationResource::make($users)->additional(['itemsResource' => UserResource::class]);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('users', $resource)
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function onlySupport(Request $request): JsonResponse
+    {
+        $users = $this->userRepository
+            ->hasRole(RoleEnum::SUPPORT)
+            ->select(['id', 'first_name', 'last_name', 'mobile'])
+            ->searchName($request)
+            ->withRahyabRahjoosCount()
+            ->searchMobile($request)
+            ->searchNotionalCode($request)
+            ->paginate($request->get('perPage', 10));
+        $resource = PaginationResource::make($users)->additional(['itemsResource' => UserResource::class]);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('users', $resource)
+            ->send();
+    }
+
+    /**
+     * @param Request $request
      * @param $user
      * @return JsonResponse
      */

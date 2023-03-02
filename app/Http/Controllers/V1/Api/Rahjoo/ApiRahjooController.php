@@ -54,6 +54,12 @@ class ApiRahjooController extends ApiBaseController
      *         name="has_package",
      *         @OA\Schema(type="number"),
      *     ),
+     *     @OA\Parameter(
+     *         description="مقدار 0 پکیج ندارند 1 نماینده دارند",
+     *         in="query",
+     *         name="has_agent",
+     *         @OA\Schema(type="number"),
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="عملیات موفق",

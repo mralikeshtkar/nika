@@ -37,6 +37,12 @@ return new class extends Migration {
                 ->on('users')
                 ->nullOnDelete()
                 ->cascadeOnDelete();
+            $table->foreignId('support_id')
+                ->nullable()
+                ->references('id')
+                ->on('users')
+                ->nullOnDelete()
+                ->cascadeOnDelete();
             $table->string('code');
             $table->string('school')->nullable();
             $table->unsignedInteger('which_child_of_family')->nullable();

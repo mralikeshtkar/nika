@@ -59,7 +59,25 @@ class RahjooRepository extends BaseRepository implements RahjooRepositoryInterfa
      */
     public function filterPagination(Request $request): static
     {
-        $this->searchHasPackage($request)->searchName($request);
+        $this->searchHasPackage($request)
+            ->searchName($request)
+            ->searchHasAgent($request);
+        return $this;
+    }
+
+    /**
+     * @param Request $request
+     * @return $this
+     */
+    public function searchHasAgent(Request $request): static
+    {
+        $this->model = $this->model->when($request->filled('has_agent'), function (Builder $builder) use ($request) {
+            $builder->when($request->has_agent, function (Builder $builder) use ($request) {
+                $builder->whereNotNull('agent_id');
+            }, function (Builder $builder) use ($request) {
+                $builder->whereNull('agent_id');
+            });
+        });
         return $this;
     }
 

@@ -79,7 +79,7 @@ class RahyabService extends BaseService
             ->where('rahyab_id', $rahyab->id)
             ->findOrFail($rahjoo);
         $exercises = $rahjoo->packageExercises()
-            ->withAggregate('questionAnswer AS latest_answer_at','question_answers.created_at')
+            ->withAggregate('questionAnswer AS latest_answer_at', 'question_answers.created_at')
             ->with(['intelligence:id,title'])
             ->whereHas('questions', function ($q) use ($request, $rahjoo) {
                 $q->whereHas('answerTypes', function ($q) use ($request, $rahjoo) {
@@ -120,8 +120,8 @@ class RahyabService extends BaseService
         /** @var Exercise $exercise */
         $exercise = $rahjoo->packageExercises()->findOrFail($exercise);
         $questions = $exercise->questions()
-            ->withAggregate('latestAnswer','created_at')
-            ->withAggregate('questionDurationStart','start')
+            ->withAggregate('latestAnswer', 'created_at')
+            ->withAggregate('questionDurationStart', 'start')
             ->withWhereHas('answerTypes', function ($q) use ($request, $rahjoo) {
                 $q->when($request->filled('answered'), function ($q) use ($request, $rahjoo) {
                     $q->whereHas('answer', function ($q) use ($request, $rahjoo) {
@@ -161,8 +161,8 @@ class RahyabService extends BaseService
         /** @var Exercise $exercise */
         $exercise = $rahjoo->packageExercises()->findOrFail($exercise);
         $question = $exercise->questions()
-            ->withAggregate('latestAnswer','created_at')
-            ->withAggregate('questionDurationStart','start')
+            ->withAggregate('latestAnswer', 'created_at')
+            ->withAggregate('questionDurationStart', 'start')
             ->with(['files' => function ($q) {
                 $q->select(['id', 'question_id', 'media_id', 'text'])
                     ->with(['media']);

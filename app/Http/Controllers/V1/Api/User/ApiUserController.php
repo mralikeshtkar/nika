@@ -315,6 +315,114 @@ class ApiUserController extends ApiBaseController
     }
 
     /**
+     * @OA\Get (
+     *     path="/users-list/only-aganet",
+     *     summary="لیست کاربران که نماینده بصورت صفحه بندی",
+     *     description="",
+     *     tags={"کاربر"},
+     *     @OA\Parameter(
+     *         description="شماره صفحه",
+     *         in="query",
+     *         name="page",
+     *         required=true,
+     *         example=1,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="تعداد نمایش در هر صفحه",
+     *         in="query",
+     *         name="perPage",
+     *         example=10,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="جستجوی نام",
+     *         in="query",
+     *         name="name",
+     *         required=false,
+     *         @OA\Schema(type="srting"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="جستجوی موبایل",
+     *         in="query",
+     *         name="mobile",
+     *         required=false,
+     *         @OA\Schema(type="srting"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="کد ملی",
+     *         in="query",
+     *         name="national_code",
+     *         required=false,
+     *         @OA\Schema(type="srting"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function onlyAgent(Request $request)
+    {
+        return $this->userService->onlyAgent($request);
+    }
+
+    /**
+     * @OA\Get (
+     *     path="/users-list/only-support",
+     *     summary="لیست کاربران که پشتیبان بصورت صفحه بندی",
+     *     description="",
+     *     tags={"کاربر"},
+     *     @OA\Parameter(
+     *         description="شماره صفحه",
+     *         in="query",
+     *         name="page",
+     *         required=true,
+     *         example=1,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="تعداد نمایش در هر صفحه",
+     *         in="query",
+     *         name="perPage",
+     *         example=10,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="جستجوی نام",
+     *         in="query",
+     *         name="name",
+     *         required=false,
+     *         @OA\Schema(type="srting"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="جستجوی موبایل",
+     *         in="query",
+     *         name="mobile",
+     *         required=false,
+     *         @OA\Schema(type="srting"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="کد ملی",
+     *         in="query",
+     *         name="national_code",
+     *         required=false,
+     *         @OA\Schema(type="srting"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function onlySupport(Request $request)
+    {
+        return $this->userService->onlySupport($request);
+    }
+
+    /**
      * @OA\Post(
      *     path="/users/{id}/upload-profile",
      *     summary="اپلود پروفایل",
