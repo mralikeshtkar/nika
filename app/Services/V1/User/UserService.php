@@ -492,6 +492,7 @@ class UserService extends BaseService
                 });
             });
         $totalRahjoos = $rahjoos->whereNotNull('package_id')->count();
+        $notFinishedRahjoos = $rahjoos->get();
         $finishedRahjoos = $rahjoos->whereHas('package', function ($q) {
             /** @var Builder $q */
             $q->whereHas('questions', function ($q) {
@@ -505,7 +506,7 @@ class UserService extends BaseService
                 });
             });
         })->count();
-        $notFinishedRahjoos = $rahjoos->get();
+
         dd($notFinishedRahjoos);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('totalRahjoos', $totalRahjoos)
