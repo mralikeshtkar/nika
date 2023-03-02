@@ -505,9 +505,7 @@ class UserService extends BaseService
                 });
             });
         })->count();
-        $notFinishedRahjoos = $rahjoos->whereHas('package', function ($q) {
-            
-        })->get();
+        $notFinishedRahjoos = $rahjoos->get();
         dd($notFinishedRahjoos);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('totalRahjoos', $totalRahjoos)
