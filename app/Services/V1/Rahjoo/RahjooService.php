@@ -366,12 +366,11 @@ class RahjooService extends BaseService
      */
     public function storeQuestionPoints(Request $request, $rahjoo, $question): JsonResponse
     {
-        dd($request->user()->can('manageQuestionPoints', $rahjoo));
         $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])->findorFailById($rahjoo);
-        ApiResponse::authorize($request->user()->can('manageQuestionPoints', $rahjoo));
         $question = $this->rahjooRepository->query($rahjoo->questions())
             ->with(['pivotPoints'])
             ->findOrFailById($question);
+        ApiResponse::authorize($request->user()->can('manageQuestionPoints', $rahjoo,$question));
         $rules = collect($question->pivotPoints)->mapWithKeys(function ($item) {
             return ['points.' . $item->intelligence_point_id => ['nullable', 'numeric', 'min:0', 'max:' . $item->max_point],];
         })->put('points', ['required', 'array', 'size:' . $question->pivotPoints->count()])->toArray();

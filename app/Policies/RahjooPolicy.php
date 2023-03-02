@@ -62,11 +62,17 @@ class RahjooPolicy
     /**
      * @param User $user
      * @param Rahjoo $rahjoo
+     * @param $question
      * @return bool
      */
-    public function manageQuestionPoints(User $user, Rahjoo $rahjoo): bool
+    public function manageQuestionPoints(User $user, Rahjoo $rahjoo, $question): bool
     {
-        return $user->isRahyab() && $rahjoo->rahyab_id == $user->id;
+
+        return ($user->isRahyab() && $rahjoo->rahyab_id == $user->id)
+            || $rahjoo->pivotIntelligenceRahnama()
+                ->where('rahnama_id', $user->id)
+                ->where('question_id', $question->id)
+                ->exists();
     }
 
     /**
