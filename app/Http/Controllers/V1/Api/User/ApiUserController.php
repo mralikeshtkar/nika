@@ -871,6 +871,26 @@ class ApiUserController extends ApiBaseController
     {
         return $this->userService->assignRole($request, $user);
     }
+    /**
+     * @OA\Get(
+     *     path="/users/userInformation/{id}",
+     *     summary="دریافت تعداد رهجو های رهنماو رهیاب و ...",
+     *     description="",
+     *     tags={"رهنما"},
+     *     @OA\Parameter(
+     *         description="شناسه کاربر",
+     *         in="path",
+     *         name="user",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="ثبت با موفقیت انجام شد",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
 
     public function rahjooInformation(Request $request, $user = null)
     {

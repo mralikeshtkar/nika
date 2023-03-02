@@ -474,7 +474,12 @@ class UserService extends BaseService
             ->send();
     }
 
-    public function rahjooInformation(Request $request, $user)
+    /**
+     * @param Request $request
+     * @param $user
+     * @return JsonResponse
+     */
+    public function rahjooInformation(Request $request, $user): JsonResponse
     {
         if ($user) $user = $this->userRepository->with(['roles:id,name'])
             ->findOrFailById($user);
