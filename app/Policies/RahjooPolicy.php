@@ -76,6 +76,7 @@ class RahjooPolicy
      */
     public function storeQuestionComment(User $user, Rahjoo $rahjoo): bool
     {
+        return true;
         //return $user->isRahyab() && $rahjoo->rahyab_id == $user->id;
     }
 }
