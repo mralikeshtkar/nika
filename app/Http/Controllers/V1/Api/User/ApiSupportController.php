@@ -37,14 +37,6 @@ class ApiSupportController extends ApiBaseController
      */
     public function rahjoos(Request $request)
     {
-        Schema::table('rahjoos', function ($table) {
-            $table->foreignId('support_id')
-                ->nullable()
-                ->references('id')
-                ->on('users')
-                ->nullOnDelete()
-                ->cascadeOnDelete();
-        });
         return $this->supportService->rahjoos($request);
     }
 }
