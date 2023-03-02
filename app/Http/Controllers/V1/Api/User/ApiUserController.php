@@ -876,7 +876,7 @@ class ApiUserController extends ApiBaseController
      *     path="/users/userInformation/{id}",
      *     summary="دریافت تعداد رهجو های رهنماو رهیاب و ...",
      *     description="",
-     *     tags={"رهنما"},
+     *     tags={"کاربر"},
      *     @OA\Parameter(
      *         description="شناسه کاربر",
      *         in="path",
