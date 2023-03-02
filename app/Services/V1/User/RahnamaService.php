@@ -123,8 +123,9 @@ class RahnamaService extends BaseService
                         ->where('rahjoo_id', $rahjoo->id);
                 });
             })->findOrFail($exercise);
+        /** @var Exercise $exercise */
         $questions = $exercise->questions()
-            ->with(['questionDurationStart','latestAnswer'])
+            ->withAggregate('latestAnswer','created_at')
             ->withWhereHas('answerTypes', function ($q) use ($request, $rahjoo) {
                 $q->with(['answer' => function ($q) use ($rahjoo) {
                     $q->where('rahjoo_id', $rahjoo->id);
