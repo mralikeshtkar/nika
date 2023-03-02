@@ -175,6 +175,8 @@ class RahnamaService extends BaseService
                 });
             })->findOrFail($exercise);
         $question = $exercise->questions()
+            ->withAggregate('latestAnswer','created_at')
+            ->withAggregate('questionDurationStart','start')
             ->with(['files' => function ($q) {
                 $q->select(['id', 'question_id', 'media_id', 'text'])
                     ->with(['media']);

@@ -34,7 +34,11 @@ class QuestionResource extends JsonResource
         })->when($this->resource->relationLoaded('answerTypes'), function (Collection $collection) {
             $collection->put('answer_types', QuestionAnswerTypeResource::collection($this->resource->answerTypes));
         })->when($this->resource->relationLoaded('answerTypes') && array_key_exists('rahjoo_answers_count', $this->resource->getAttributes()), function (Collection $collection) {
-            $collection->put('is_answered', count($this->resource->answerTypes) <= $this->resource->rahjoo_answers_count );
+            $collection->put('is_answered', count($this->resource->answerTypes) <= $this->resource->rahjoo_answers_count);
+        })->when($this->resource->latest_answer_created_at, function (Collection $collection) {
+            $collection->put('latest_answer_created_at', jalaliFormat($this->resource->latest_answer_created_at, 'Y/m/d h:i:s'));
+        })->when($this->resource->question_duration_start_start, function (Collection $collection) {
+            $collection->put('question_duration_start_start', jalaliFormat($this->resource->question_duration_start_start, 'Y/m/d h:i:s'));
         })->when($this->resource->latest_answer_created_at && $this->resource->question_duration_start_start, function (Collection $collection) {
             $collection->put('duration', $this->resource->latest_answer_created_at->diff($this->resource->question_duration_start_start)->format('%d روز %H ساعت %i دقیقه %s ثانیه'));
         });
