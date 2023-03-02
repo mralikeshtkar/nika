@@ -500,7 +500,7 @@ class UserService extends BaseService
                     /** @var Builder $q */
                     $q->whereHas('answer', function ($q) {
                         /** @var Builder $q */
-                        $q->whereColumn('rahjoo_id', 'rahjoos.id');
+                        $q->whereColumn('question_answers.rahjoo_id', 'rahjoos.id');
                     });
                 });
             });
@@ -510,7 +510,7 @@ class UserService extends BaseService
             $q->whereHas('questions', function ($q) {
                 /** @var Builder $q */
                 $q->whereHas('answerTypes', function ($q) {
-                    
+
                 });
             });
         })->count();
