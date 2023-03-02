@@ -20,6 +20,8 @@ class ExerciseResource extends JsonResource
             $collection->put('created_at', jalaliFormat($this->resource->created_at, 'j F Y'));
         })->when(array_key_exists('updated_at',$this->resource->getAttributes()), function (Collection $collection) {
             $collection->put('updated_at', jalaliFormat($this->resource->updated_at, 'j F Y'));
+        })->when($this->resource->latest_answer_at, function (Collection $collection) {
+            $collection->put('latest_answer_at', jalaliFormat($this->resource->updated_at));
         })->when($this->resource->relationLoaded('files'),function (Collection $collection){
             $collection->put('files', is_array($this->resource->files) && count($this->resource->files) ? MediaResource::collection($this->resource->files) : null);
         })->when(array_key_exists('question_answer_types_count', $this->resource->getAttributes()) && array_key_exists('question_answers_count', $this->resource->getAttributes()), function (Collection $collection) {

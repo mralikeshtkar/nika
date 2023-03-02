@@ -27,6 +27,7 @@ class Exercise extends Model
 
     protected $casts = [
         'is_locked' => 'bool',
+        'latest_answer_at' => 'datetime',
     ];
 
     #endregion
