@@ -185,6 +185,7 @@ Route::prefix('v1')->group(function (Router $router) {
         $router->group([], function (Router $router) {
             $router->get('rahjoos', [V1ApiRahjooController::class, 'index']);
             $router->get('rahjoos/packages', [V1ApiRahjooController::class, 'packages']);
+            $router->get('rahjoos/{rahjoo}/exercises', [V1ApiRahjooController::class, 'exercises']);
             $router->get('rahjoos/{rahjoo}', [V1ApiRahjooController::class, 'show']);
             $router->post('rahjoos/{user}', [V1ApiRahjooController::class, 'store']);
             $router->delete('rahjoos/{rahjoo}', [V1ApiRahjooController::class, 'destroy']);

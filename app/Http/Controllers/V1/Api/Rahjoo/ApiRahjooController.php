@@ -85,6 +85,45 @@ class ApiRahjooController extends ApiBaseController
     }
 
     /**
+     * @OA\Get(
+     *     path="/rahjoos/{rahjoo}/exercises",
+     *     summary="دریافت تمرین های رهجو",
+     *     description="",
+     *     tags={"رهجو"},
+     *     @OA\Parameter(
+     *         description="شناسه رهجو",
+     *         in="path",
+     *         name="rahjoo",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="تمرین هایی که پاسخ داده شده اند. مقدار مهم نیست ولی 1بزارید",
+     *         in="query",
+     *         name="answered",
+     *         required=false,
+     *         @OA\Schema(type="string"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="تمرین هایی که پاسخ داده نشده اند. مقدار مهم نیست ولی 1بزارید",
+     *         in="query",
+     *         name="notAnswered",
+     *         required=false,
+     *         @OA\Schema(type="string"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent()
+     *     )
+     * )
+     */
+    public function exercises(Request $request, $rahjoo)
+    {
+        return $this->rahjooService->exercises($request,$rahjoo);
+    }
+
+    /**
      * Show a rahjoo.
      *
      * @OA\Get(
