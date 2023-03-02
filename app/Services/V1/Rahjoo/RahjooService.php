@@ -89,8 +89,6 @@ class RahjooService extends BaseService
                 }, function (Builder $builder) use ($request) {
                     $builder->whereNull('package_id');
                 });
-            })->whereHas('pivotIntelligenceRahnama', function ($q) use ($rahnama) {
-                $q->where('rahnama_id', $rahnama->id);
             })->with(['user:id,first_name,last_name', 'package:id,title'])
             ->paginate();
         $resource = PaginationResource::make($rahjoos)->additional(['itemsResource' => RahjooResource::class]);
