@@ -255,6 +255,7 @@ class UserService extends BaseService
         ]);
         $request->merge(['mobile' => to_valid_mobile_number($request->mobile)]);
         $user = $this->userRepository->firstOrCreateByMobile($request->mobile);
+        resolve(UserRepositoryInterface::class)->assignRahjooRole($user);
         $this->_checkUserAccountIsNotInactive($user);
         if ($user->hasPassword()) {
             return ApiResponse::message(trans("The information was received successfully"))
@@ -322,7 +323,6 @@ class UserService extends BaseService
         if ($user->verificationCodeIsExpired())
             return ApiResponse::error(trans("Verification code is expired"), Response::HTTP_BAD_REQUEST)
                 ->send();
-
         $this->userRepository->markAsVerified($user);
         $token = $user->generateToken();
         return ApiResponse::message(trans("Login was successful"))
