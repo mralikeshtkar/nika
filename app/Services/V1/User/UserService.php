@@ -494,7 +494,17 @@ class UserService extends BaseService
             ->count();
         dd(Rahjoo::query()
             ->whereHas('package', function ($q) {
-
+                /** @var Builder $q */
+                $q->whereHas('questions', function ($q) {
+                    /** @var Builder $q */
+                    $q->whereHas('answerTypes', function ($q) {
+                        /** @var Builder $q */
+                        $q->whereHas('answer', function ($q) {
+                            /** @var Builder $q */
+                            $q->whereColumn('rahjoo_id', 'rahjoos.id');
+                        })
+                    });
+                });
             })->count());
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('totalRahjoos', $totalRahjoos)
