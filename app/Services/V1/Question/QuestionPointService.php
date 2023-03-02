@@ -67,6 +67,7 @@ class QuestionPointService extends BaseService
         /** @var Question $question */
         $question = $this->questionRepository->query($rahjoo->questions())->findOrFailById($question);
         $points = $question->points()
+            ->withPointName()
             ->whereDoesntHave('questionPointRahjoo', function ($q) use ($rahjoo, $question) {
                 $q->where('question_id', $question->id)
                     ->where('rahjoo_id', $rahjoo->id);
