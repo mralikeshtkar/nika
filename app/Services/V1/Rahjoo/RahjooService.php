@@ -84,7 +84,7 @@ class RahjooService extends BaseService
             ->select(['id', 'user_id', 'rahyab_id', 'package_id', 'code'])
             ->lastExercise(true)
             ->whereNotNull('package_id')
-            ->with(['user:id,first_name,last_name', 'package:id,title'])
+            ->with(['user:id,first_name,last_name,birthdate', 'package:id,title','rahyab:id,first_name,last_name'])
             ->paginate($request->get('perPage', 10));
         $resource = PaginationResource::make($rahjoos)->additional(['itemsResource' => RahjooResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
