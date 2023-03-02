@@ -481,6 +481,7 @@ class UserService extends BaseService
      */
     public function rahjooInformation(Request $request, $user): JsonResponse
     {
+        dd("خن");
         if ($user) $user = $this->userRepository->with(['roles:id,name'])
             ->findOrFailById($user);
         $totalRahjoos = Rahjoo::query()
