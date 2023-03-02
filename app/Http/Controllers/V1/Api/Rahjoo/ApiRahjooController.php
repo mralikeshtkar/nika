@@ -71,7 +71,7 @@ class ApiRahjooController extends ApiBaseController
      *     path="/rahjoos/packages",
      *     summary="دریافت رهجو ها همراه با پکیج و تمرین",
      *     description="",
-     *     tags={"رهجو"},
+     *     tags={"ادمین"},
      *     @OA\Response(
      *         response=200,
      *         description="OK",
@@ -89,7 +89,7 @@ class ApiRahjooController extends ApiBaseController
      *     path="/rahjoos/{rahjoo}/exercises",
      *     summary="دریافت تمرین های رهجو",
      *     description="",
-     *     tags={"رهجو"},
+     *     tags={"ادمین"},
      *     @OA\Parameter(
      *         description="شناسه رهجو",
      *         in="path",
@@ -128,7 +128,7 @@ class ApiRahjooController extends ApiBaseController
      *     path="/rahjoos/{rahjoo}/exercises/{exercise}/questions",
      *     summary="دریافت سوال های رهجو",
      *     description="",
-     *     tags={"رهجو"},
+     *     tags={"ادمین"},
      *     @OA\Parameter(
      *         description="شناسه رهجو",
      *         in="path",
@@ -174,7 +174,7 @@ class ApiRahjooController extends ApiBaseController
      *     path="/rahjoos/{rahjoo}/exercises/{exercise}/questions/{question}",
      *     summary="دریافت سوال رهجو",
      *     description="",
-     *     tags={"رهجو"},
+     *     tags={"ادمین"},
      *     @OA\Parameter(
      *         description="شناسه رهجو",
      *         in="path",
