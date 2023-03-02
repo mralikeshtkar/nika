@@ -882,7 +882,7 @@ class ApiUserController extends ApiBaseController
      *         in="path",
      *         name="user",
      *         required=false,
-     *         @OA\Schema(type="number"),
+     *         @OA\Schema(type="string"),
      *     ),
      *     @OA\Response(
      *         response=200,
