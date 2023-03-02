@@ -506,10 +506,7 @@ class UserService extends BaseService
             });
         })->count();
         $notFinishedRahjoos = $rahjoos->whereHas('package', function ($q) {
-            /** @var Builder $q */
-            $q->whereHas('questions', function ($q) {
-                
-            });
+            
         })->get();
         dd($notFinishedRahjoos);
         return ApiResponse::message(trans("The information was received successfully"))
