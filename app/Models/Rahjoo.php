@@ -127,6 +127,14 @@ class Rahjoo extends Model
     }
 
     /**
+     * @return BelongsTo
+     */
+    public function support(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'support_id');
+    }
+
+    /**
      * @return HasMany
      */
     public function parents(): HasMany

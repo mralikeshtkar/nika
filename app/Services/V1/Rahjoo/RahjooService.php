@@ -267,6 +267,21 @@ class RahjooService extends BaseService
     /**
      * @param Request $request
      * @param $rahjoo
+     * @return JsonResponse
+     */
+    public function assignSupport(Request $request, $rahjoo): JsonResponse
+    {
+        $rahjoo = $this->rahjooRepository->select(['id'])->findorFailById($rahjoo);
+        ApiResponse::validate($request->all(), [
+            'support_id' => ['required', new UserHasRoleRule(Role::SUPPORT)],
+        ]);
+        $this->rahjooRepository->updateSupport($rahjoo, $request->support_id);
+        return ApiResponse::message(trans("Mission accomplished"))->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $rahjoo
      * @param $user
      * @return JsonResponse
      */

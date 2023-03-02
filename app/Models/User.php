@@ -153,6 +153,16 @@ class User extends Authenticatable
         return $this->hasRole(RoleEnum::RAHNAMA);
     }
 
+    public function isSupport(): bool
+    {
+        return $this->isSuperAdmin() || $this->hasSupportRole();
+    }
+
+    public function hasSupportRole(): bool
+    {
+        return $this->hasRole(RoleEnum::SUPPORT);
+    }
+
     public function isSuperAdmin(): bool
     {
         return $this->hasRole(RoleEnum::SUPER_ADMIN);

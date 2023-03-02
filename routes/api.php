@@ -33,6 +33,7 @@ use App\Http\Controllers\V1\Api\Role\ApiRoleController as V1ApiRoleController;
 use App\Http\Controllers\V1\Api\Skill\ApiSkillController as V1ApiSkillController;
 use App\Http\Controllers\V1\Api\User\ApiRahnamaController as V1ApiRahnamaController;
 use App\Http\Controllers\V1\Api\User\ApiRahyabController as V1ApiRahyabController;
+use App\Http\Controllers\V1\Api\User\ApiSupportController as V1ApiSupportController;
 use App\Http\Controllers\V1\Api\User\ApiUserController as V1UserController;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
@@ -78,6 +79,11 @@ Route::prefix('v1')->group(function (Router $router) {
     });
 
     $router->middleware('auth:sanctum')->group(function (Router $router) {
+
+        /* Support */
+        $router->group([], function (Router $router) {
+            $router->get('support/rahjoos', [V1ApiSupportController::class, 'rahjoos']);
+        });
 
         /* Rahyab */
         $router->group([], function (Router $router) {
@@ -194,6 +200,7 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->post('rahjoos/{user}', [V1ApiRahjooController::class, 'store']);
             $router->delete('rahjoos/{rahjoo}', [V1ApiRahjooController::class, 'destroy']);
             $router->patch('rahjoos/{rahjoo}/assign-package', [V1ApiRahjooController::class, 'assignPackage']);
+            $router->patch('rahjoos/{rahjoo}/assign-support', [V1ApiRahjooController::class, 'assignSupport']);
             $router->patch('rahjoos/{rahjoo}/assign-rahyab/{user}', [V1ApiRahjooController::class, 'assignRahyab']);
             $router->patch('rahjoos/{rahjoo}/assign-rahnama/{user}', [V1ApiRahjooController::class, 'assignRahnama']);
             $router->get('rahjoos/{rahjoo}/package-exercises', [V1ApiRahjooController::class, 'packageExercises']);

@@ -156,6 +156,19 @@ class RahjooRepository extends BaseRepository implements RahjooRepositoryInterfa
         $rahjoo->intelligenceRahnama()->attach($rahnama_id, ['intelligence_id' => $intelligence_id]);
     }
 
+    public function updateSupport($rahjoo, $support_id)
+    {
+        return $rahjoo->update(['support_id' => $support_id]);
+    }
+
+    public function withSupportIfIsSuperAdmin($user): static
+    {
+        $this->model = $this->model->when($user->isSuperAdmin(),function ($q){
+           $q->with(['support:id,first_name,last_name']);
+        });
+        return $this;
+    }
+
     public function attachIntelligencePackagePoints($rahjoo, $intelligencePackagePoints, $points)
     {
         /** @var Rahjoo $rahjoo */
