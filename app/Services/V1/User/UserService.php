@@ -478,7 +478,7 @@ class UserService extends BaseService
     {
         if ($user) $user = $this->userRepository->with(['roles:id,name'])
             ->findOrFailById($user);
-        $totalRahjoos = Rahjoo::query()
+        $rahjoos = Rahjoo::query()
             ->when($user, function ($q) use ($user) {
                 $q->when($user->hasRahyabRole(), function ($q) use ($user) {
                     /** @var Builder $q $q */
@@ -490,24 +490,38 @@ class UserService extends BaseService
                         $q->where('rahnama_id', $user->id);
                     });
                 });
-            })->whereNotNull('package_id')
-            ->count();
-        dd(Rahjoo::query()
-            ->whereHas('package', function ($q) {
+            });
+        $totalRahjoos = $rahjoos->whereNotNull('package_id')->count();
+        $finishedRahjoos = $rahjoos->whereHas('package', function ($q) {
+            /** @var Builder $q */
+            $q->whereHas('questions', function ($q) {
                 /** @var Builder $q */
-                $q->whereHas('questions', function ($q) {
+                $q->whereHas('answerTypes', function ($q) {
                     /** @var Builder $q */
-                    $q->whereHas('answerTypes', function ($q) {
+                    $q->whereHas('answer', function ($q) {
                         /** @var Builder $q */
-                        $q->whereHas('answer', function ($q) {
-                            /** @var Builder $q */
-                            $q->whereColumn('rahjoo_id', 'rahjoos.id');
-                        });
+                        $q->whereColumn('rahjoo_id', 'rahjoos.id');
                     });
                 });
-            })->count());
+            });
+        })->count();
+        $notFinishedRahjoos = $rahjoos->whereHas('package', function ($q) {
+            /** @var Builder $q */
+            $q->whereHas('questions', function ($q) {
+                /** @var Builder $q */
+                $q->whereHas('answerTypes', function ($q) {
+                    /** @var Builder $q */
+                    $q->doesntHave('answer', function ($q) {
+                        /** @var Builder $q */
+                        $q->whereColumn('rahjoo_id', 'rahjoos.id');
+                    });
+                });
+            });
+        })->count();
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('totalRahjoos', $totalRahjoos)
+            ->addData('finishedRahjoos', $finishedRahjoos)
+            ->addData('notFinishedRahjoos', $notFinishedRahjoos)
             ->send();
     }
 
