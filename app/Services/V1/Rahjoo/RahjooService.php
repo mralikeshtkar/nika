@@ -24,6 +24,7 @@ use App\Repositories\V1\Package\Interfaces\IntelligencePackageRepositoryInterfac
 use App\Repositories\V1\Package\Interfaces\PackageRepositoryInterface;
 use App\Repositories\V1\Question\Interfaces\QuestionRepositoryInterface;
 use App\Repositories\V1\Rahjoo\Interfaces\RahjooRepositoryInterface;
+use App\Repositories\V1\Rahjoo\Interfaces\RahjooSupportRepositoryInterface;
 use App\Repositories\V1\User\Interfaces\UserRepositoryInterface;
 use App\Responses\Api\ApiResponse;
 use App\Rules\UserHasRoleRule;
@@ -275,7 +276,13 @@ class RahjooService extends BaseService
         ApiResponse::validate($request->all(), [
             'support_id' => ['required', new UserHasRoleRule(Role::SUPPORT)],
         ]);
-        $this->rahjooRepository->updateSupport($rahjoo, $request->support_id);
+        resolve(RahjooSupportRepositoryInterface::class)->updateOrCreate([
+            'rahjoo_id' => $rahjoo->id,
+            'support_id' => $request->support_id,
+        ],[
+            'rahjoo_id' => $rahjoo->id,
+            'support_id' => $request->support_id,
+        ]);
         return ApiResponse::message(trans("Mission accomplished"))->send();
     }
 
@@ -370,7 +377,7 @@ class RahjooService extends BaseService
         $question = $this->rahjooRepository->query($rahjoo->questions())
             ->with(['pivotPoints'])
             ->findOrFailById($question);
-        ApiResponse::authorize($request->user()->can('manageQuestionPoints', [$rahjoo,$question]));
+        ApiResponse::authorize($request->user()->can('manageQuestionPoints', [$rahjoo, $question]));
         $rules = collect($question->pivotPoints)->mapWithKeys(function ($item) {
             return ['points.' . $item->intelligence_point_id => ['nullable', 'numeric', 'min:0', 'max:' . $item->max_point],];
         })->put('points', ['required', 'array', 'size:' . $question->pivotPoints->count()])->toArray();
@@ -399,7 +406,7 @@ class RahjooService extends BaseService
     {
         $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])->findorFailById($rahjoo);
         $question = $this->rahjooRepository->query($rahjoo->questions())->findOrFailById($question);
-        ApiResponse::authorize($request->user()->can('manageQuestionPoints', [$rahjoo,$question]));
+        ApiResponse::authorize($request->user()->can('manageQuestionPoints', [$rahjoo, $question]));
         ApiResponse::validate($request->all(), [
             'intelligence_point_id' => [
                 'required',
