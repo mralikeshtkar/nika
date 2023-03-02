@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\RahjooSupport;
 use App\Repositories\V1\Address\Eloquent\AddressRepository;
 use App\Repositories\V1\Address\Interfaces\AddressRepositoryInterface;
 use App\Repositories\V1\BaseRepository;
@@ -51,6 +52,7 @@ use App\Repositories\V1\Question\Interfaces\QuestionDurationRepositoryInterface;
 use App\Repositories\V1\Question\Interfaces\QuestionRepositoryInterface;
 use App\Repositories\V1\Rahjoo\Eloquent\RahjooRepository;
 use App\Repositories\V1\Rahjoo\Interfaces\RahjooRepositoryInterface;
+use App\Repositories\V1\Rahjoo\Interfaces\RahjooSupportRepositoryInterface;
 use App\Repositories\V1\RahjooCourse\Eloquent\RahjooCourseRepository;
 use App\Repositories\V1\RahjooCourse\Interfaces\RahjooCourseRepositoryInterface;
 use App\Repositories\V1\RahjooParent\Eloquent\RahjooParentRepository;
@@ -121,5 +123,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(QuestionAnswerRepositoryInterface::class, QuestionAnswerRepository::class);
         $this->app->bind(QuestionDurationRepositoryInterface::class, QuestionDurationRepository::class);
         $this->app->bind(CommentRepositoryInterface::class, CommentService::class);
+        $this->app->bind(RahjooSupportRepositoryInterface::class, RahjooSupport::class);
     }
 }
