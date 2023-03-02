@@ -124,7 +124,7 @@ class RahnamaService extends BaseService
                 });
             })->findOrFail($exercise);
         $questions = $exercise->questions()
-            ->with(['questionDurationStart'])
+            ->with(['questionDurationStart','latestAnswer'])
             ->withWhereHas('answerTypes', function ($q) use ($request, $rahjoo) {
                 $q->with(['answer' => function ($q) use ($rahjoo) {
                     $q->where('rahjoo_id', $rahjoo->id);

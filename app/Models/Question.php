@@ -83,6 +83,14 @@ class Question extends Model
         return $this->hasMany(QuestionAnswer::class);
     }
 
+    /**
+     * @return HasOne
+     */
+    public function latestAnswer(): HasOne
+    {
+        return $this->hasOne(QuestionAnswer::class)->latest();
+    }
+
 
     /**
      * @return HasManyThrough
