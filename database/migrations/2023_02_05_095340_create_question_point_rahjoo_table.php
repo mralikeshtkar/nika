@@ -33,7 +33,7 @@ return new class extends Migration {
                 ->on('intelligence_points')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->primary(['rahjoo_id', 'question_id']);
+            $table->primary(['rahjoo_id', 'question_id','intelligence_point_id'],'primary_key');
             $table->unsignedInteger('point');
             $table->timestamps();
         });
