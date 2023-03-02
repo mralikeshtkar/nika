@@ -478,7 +478,7 @@ class UserService extends BaseService
     {
         if ($user) $user = $this->userRepository->with(['roles:id,name'])
             ->findOrFailById($user);
-        $rahjoos = Rahjoo::query()
+        $totalRahjoos = Rahjoo::query()
             ->when($user, function ($q) use ($user) {
                 $q->when($user->hasRahyabRole(), function ($q) use ($user) {
                     /** @var Builder $q $q */
@@ -490,10 +490,20 @@ class UserService extends BaseService
                         $q->where('rahnama_id', $user->id);
                     });
                 });
-            });
-        $totalRahjoos = $rahjoos->whereNotNull('package_id')->count();
-        $notFinishedRahjoos = $rahjoos->get();
-        $finishedRahjoos = $rahjoos->whereHas('package', function ($q) {
+            })->whereNotNull('package_id')->count();
+        $finishedRahjoos = Rahjoo::query()
+            ->when($user, function ($q) use ($user) {
+                $q->when($user->hasRahyabRole(), function ($q) use ($user) {
+                    /** @var Builder $q $q */
+                    $q->whereHas('user', function ($q) use ($user) {
+                        $q->where('rahyab_id', $user->id);
+                    });
+                })->when($user->hasRahnamaRole(), function ($q) use ($user) {
+                    $q->whereHas('pivotIntelligenceRahnama', function ($q) use ($user) {
+                        $q->where('rahnama_id', $user->id);
+                    });
+                });
+            })->whereHas('package', function ($q) {
             /** @var Builder $q */
             $q->whereHas('questions', function ($q) {
                 /** @var Builder $q */
@@ -506,8 +516,31 @@ class UserService extends BaseService
                 });
             });
         })->count();
-
-        dd($notFinishedRahjoos);
+        $notFinishedRahjoos = Rahjoo::query()
+            ->when($user, function ($q) use ($user) {
+                $q->when($user->hasRahyabRole(), function ($q) use ($user) {
+                    /** @var Builder $q $q */
+                    $q->whereHas('user', function ($q) use ($user) {
+                        $q->where('rahyab_id', $user->id);
+                    });
+                })->when($user->hasRahnamaRole(), function ($q) use ($user) {
+                    $q->whereHas('pivotIntelligenceRahnama', function ($q) use ($user) {
+                        $q->where('rahnama_id', $user->id);
+                    });
+                });
+            })->whereHas('package', function ($q) {
+            /** @var Builder $q */
+            $q->whereHas('questions', function ($q) {
+                /** @var Builder $q */
+                $q->whereHas('answerTypes', function ($q) {
+                    /** @var Builder $q */
+                    $q->whereHas('answer', function ($q) {
+                        /** @var Builder $q */
+                        $q->whereColumn('question_answers.rahjoo_id', 'rahjoos.id');
+                    });
+                });
+            });
+        })->count();
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('totalRahjoos', $totalRahjoos)
             ->addData('finishedRahjoos', $finishedRahjoos)
