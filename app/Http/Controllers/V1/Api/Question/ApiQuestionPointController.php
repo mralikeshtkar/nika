@@ -63,9 +63,9 @@ class ApiQuestionPointController extends ApiBaseController
      *     @OA\Parameter(
      *         description="شناسه رهجو",
      *         in="path",
-     *         name="id",
+     *         name="number",
      *         required=true,
-     *         @OA\Schema(type="rahjoo"),
+     *         @OA\Schema(type="number"),
      *     ),
      *     @OA\Response(
      *         response=200,
