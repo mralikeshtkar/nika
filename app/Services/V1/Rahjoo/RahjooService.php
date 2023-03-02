@@ -90,7 +90,7 @@ class RahjooService extends BaseService
                     $builder->whereNull('package_id');
                 });
             })->with(['user:id,first_name,last_name', 'package:id,title'])
-            ->paginate();
+            ->paginate($request->get('perPage', 10));
         $resource = PaginationResource::make($rahjoos)->additional(['itemsResource' => RahjooResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('rahjoos', $resource)
