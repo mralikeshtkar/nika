@@ -399,7 +399,7 @@ class RahjooService extends BaseService
     {
         $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])->findorFailById($rahjoo);
         $question = $this->rahjooRepository->query($rahjoo->questions())->findOrFailById($question);
-        ApiResponse::authorize($request->user()->can('manageQuestionPoints', [$rahjoo,$question]))
+        ApiResponse::authorize($request->user()->can('manageQuestionPoints', [$rahjoo,$question]));
         ApiResponse::validate($request->all(), [
             'intelligence_point_id' => [
                 'required',
