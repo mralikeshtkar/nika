@@ -70,7 +70,7 @@ class RahjooPolicy
         return ($user->isRahyab() && $rahjoo->rahyab_id == $user->id)
             || $rahjoo->pivotIntelligenceRahnama()
                 ->where('rahnama_id', $user->id)
-                ->where('question_id', $question->id)
+                ->where('intelligence_id', $question->exercise->intelligencePackage->intelligence_id)
                 ->exists();
     }
 
