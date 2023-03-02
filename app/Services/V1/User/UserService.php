@@ -502,7 +502,7 @@ class UserService extends BaseService
                         $q->whereHas('answer', function ($q) {
                             /** @var Builder $q */
                             $q->whereColumn('rahjoo_id', 'rahjoos.id');
-                        })
+                        });
                     });
                 });
             })->count());
