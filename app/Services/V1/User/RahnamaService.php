@@ -55,7 +55,7 @@ class RahnamaService extends BaseService
             ->lastExercise(true)
             ->whereHas('pivotIntelligenceRahnama', function ($q) use ($rahnama) {
                 $q->where('rahnama_id', $rahnama->id);
-            })->with(['user:id,first_name,last_name', 'package:id,title'])
+            })->with(['user:id,first_name,last_name,birthdate','rahyab:id,first_name,last_name', 'package:id,title'])
             ->paginate();
         $resource = PaginationResource::make($rahjoos)->additional(['itemsResource' => RahjooResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
