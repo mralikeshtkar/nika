@@ -124,6 +124,105 @@ class ApiRahjooController extends ApiBaseController
     }
 
     /**
+     * @OA\Get(
+     *     path="/rahjoos/{rahjoo}/exercises/{exercise}/questions",
+     *     summary="دریافت سوال های رهجو",
+     *     description="",
+     *     tags={"رهجو"},
+     *     @OA\Parameter(
+     *         description="شناسه رهجو",
+     *         in="path",
+     *         name="rahjoo",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه تمرین",
+     *         in="path",
+     *         name="exercise",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="تمرین هایی که پاسخ داده شده اند. مقدار مهم نیست ولی 1بزارید",
+     *         in="query",
+     *         name="answered",
+     *         required=false,
+     *         @OA\Schema(type="string"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="تمرین هایی که پاسخ داده نشده اند. مقدار مهم نیست ولی 1بزارید",
+     *         in="query",
+     *         name="notAnswered",
+     *         required=false,
+     *         @OA\Schema(type="string"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent()
+     *     )
+     * )
+     */
+    public function questions(Request $request, $rahjoo,$exercise)
+    {
+        return $this->rahjooService->questions($request,$rahjoo,$exercise);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/rahjoos/{rahjoo}/exercises/{exercise}/questions/{question}",
+     *     summary="دریافت سوال رهجو",
+     *     description="",
+     *     tags={"رهجو"},
+     *     @OA\Parameter(
+     *         description="شناسه رهجو",
+     *         in="path",
+     *         name="rahjoo",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه تمرین",
+     *         in="path",
+     *         name="exercise",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه سوال",
+     *         in="path",
+     *         name="question",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="تمرین هایی که پاسخ داده شده اند. مقدار مهم نیست ولی 1بزارید",
+     *         in="query",
+     *         name="answered",
+     *         required=false,
+     *         @OA\Schema(type="string"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="تمرین هایی که پاسخ داده نشده اند. مقدار مهم نیست ولی 1بزارید",
+     *         in="query",
+     *         name="notAnswered",
+     *         required=false,
+     *         @OA\Schema(type="string"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent()
+     *     )
+     * )
+     */
+    public function question(Request $request, $rahjoo,$exercise,$question)
+    {
+        return $this->rahjooService->question($request,$rahjoo,$exercise,$question);
+    }
+
+    /**
      * Show a rahjoo.
      *
      * @OA\Get(

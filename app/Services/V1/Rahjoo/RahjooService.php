@@ -10,6 +10,7 @@ use App\Http\Resources\V1\IntelligencePackagePointRahjoo\IntelligencePackagePoin
 use App\Http\Resources\V1\PaginationResource;
 use App\Http\Resources\V1\Question\QuestionResource;
 use App\Http\Resources\V1\Rahjoo\RahjooResource;
+use App\Models\Exercise;
 use App\Models\Intelligence;
 use App\Models\IntelligencePackage;
 use App\Models\Package;
@@ -84,7 +85,7 @@ class RahjooService extends BaseService
             ->select(['id', 'user_id', 'rahyab_id', 'package_id', 'code'])
             ->lastExercise(true)
             ->whereNotNull('package_id')
-            ->with(['user:id,first_name,last_name,birthdate', 'package:id,title','rahyab:id,first_name,last_name'])
+            ->with(['user:id,first_name,last_name,birthdate', 'package:id,title', 'rahyab:id,first_name,last_name'])
             ->paginate($request->get('perPage', 10));
         $resource = PaginationResource::make($rahjoos)->additional(['itemsResource' => RahjooResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
@@ -101,7 +102,7 @@ class RahjooService extends BaseService
     {
         $rahjoo = $this->rahjooRepository->select(['id'])->findOrFailById($rahjoo);
         $exercises = $rahjoo->packageExercises()
-            ->withAggregate('questionAnswer AS latest_answer_at','question_answers.created_at')
+            ->withAggregate('questionAnswer AS latest_answer_at', 'question_answers.created_at')
             ->with(['intelligence:id,title'])
             ->whereHas('questions', function ($q) use ($request, $rahjoo) {
                 $q->whereHas('answerTypes', function ($q) use ($request, $rahjoo) {
@@ -120,6 +121,75 @@ class RahjooService extends BaseService
         $resource = PaginationResource::make($exercises)->additional(['itemsResource' => ExerciseResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('exercises', $resource)
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $rahjoo
+     * @param $exercise
+     * @return JsonResponse
+     */
+    public function questions(Request $request, $rahjoo, $exercise): JsonResponse
+    {
+        $rahjoo = $this->rahjooRepository->select(['id'])->findOrFailById($rahjoo);
+        $exercise = $rahjoo->packageExercises()
+            ->withAggregate('questionAnswer AS latest_answer_at', 'question_answers.created_at')
+            ->with(['intelligence:id,title'])
+            ->whereHas('questions', function ($q) use ($request, $rahjoo) {
+                $q->has('answerTypes');
+            })->findOrFail($exercise);
+        /** @var Exercise $exercise */
+        $questions = $exercise->questions()
+            ->withAggregate('latestAnswer', 'created_at')
+            ->withAggregate('questionDurationStart', 'start')
+            ->withWhereHas('answerTypes', function ($q) use ($request, $rahjoo) {
+                $q->with(['answer' => function ($q) use ($rahjoo) {
+                    $q->where('rahjoo_id', $rahjoo->id);
+                }])->when($request->filled('answered'), function ($q) use ($request, $rahjoo) {
+                    $q->whereHas('answer', function ($q) use ($request, $rahjoo) {
+                        $q->where('rahjoo_id', $rahjoo->id);
+                    });
+                })->when($request->filled('notAnswered'), function ($q) use ($request, $rahjoo) {
+                    $q->whereDoesntHave('answer', function ($q) use ($request, $rahjoo) {
+                        $q->where('rahjoo_id', $rahjoo->id);
+                    });
+                });
+            })->paginate();
+        $resource = PaginationResource::make($questions)->additional(['itemsResource' => QuestionResource::class]);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('exercise', new ExerciseResource($exercise))
+            ->addData('questions', $resource)
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $rahjoo
+     * @param $exercise
+     * @param $question
+     * @return JsonResponse
+     */
+    public function question(Request $request, $rahjoo, $exercise, $question): JsonResponse
+    {
+        $rahjoo = $this->rahjooRepository->select(['id'])->findOrFailById($rahjoo);
+        $exercise = $rahjoo->packageExercises()
+            ->withAggregate('questionAnswer AS latest_answer_at', 'question_answers.created_at')
+            ->with(['intelligence:id,title'])
+            ->whereHas('questions', function ($q) use ($request, $rahjoo) {
+                $q->has('answerTypes');
+            })->findOrFail($exercise);
+        $question = $exercise->questions()
+            ->withAggregate('latestAnswer', 'created_at')
+            ->withAggregate('questionDurationStart', 'start')
+            ->withWhereHas('answerTypes', function ($q) use ($request, $rahjoo) {
+                $q->with(['answer' => function ($q) use ($rahjoo) {
+                    $q->where('rahjoo_id', $rahjoo->id);
+                }]);
+            })->findOrFail($question);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('exercise', new ExerciseResource($exercise))
+            ->addData('questions', new QuestionResource($question))
             ->send();
     }
 
