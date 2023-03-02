@@ -398,8 +398,8 @@ class RahjooService extends BaseService
     public function updateQuestionPoints(Request $request, $rahjoo, $question): JsonResponse
     {
         $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])->findorFailById($rahjoo);
-        ApiResponse::authorize($request->user()->can('manageQuestionPoints', $rahjoo));
         $question = $this->rahjooRepository->query($rahjoo->questions())->findOrFailById($question);
+        ApiResponse::authorize($request->user()->can('manageQuestionPoints', [$rahjoo,$question]))
         ApiResponse::validate($request->all(), [
             'intelligence_point_id' => [
                 'required',
