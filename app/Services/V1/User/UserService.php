@@ -482,16 +482,20 @@ class UserService extends BaseService
             ->when($user, function ($q) use ($user) {
                 $q->when($user->hasRahyabRole(), function ($q) use ($user) {
                     /** @var Builder $q $q */
-                    $q->whereHas('user',function ($q)use ($user){
+                    $q->whereHas('user', function ($q) use ($user) {
                         $q->where('rahyab_id', $user->id);
                     });
                 })->when($user->hasRahnamaRole(), function ($q) use ($user) {
-                    $q->whereHas('pivotIntelligenceRahnama',function ($q)use ($user){
+                    $q->whereHas('pivotIntelligenceRahnama', function ($q) use ($user) {
                         $q->where('rahnama_id', $user->id);
                     });
                 });
             })->whereNotNull('package_id')
             ->count();
+        dd(Rahjoo::query()
+            ->whereHas('package', function ($q) {
+
+            })->count());
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('totalRahjoos', $totalRahjoos)
             ->send();
