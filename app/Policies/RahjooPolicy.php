@@ -67,7 +67,6 @@ class RahjooPolicy
      */
     public function manageQuestionPoints(User $user, Rahjoo $rahjoo, $question): bool
     {
-        dd(func_get_args());
         return ($user->isRahyab() && $rahjoo->rahyab_id == $user->id)
             || $rahjoo->pivotIntelligenceRahnama()
                 ->where('rahnama_id', $user->id)
