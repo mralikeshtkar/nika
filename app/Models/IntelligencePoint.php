@@ -60,6 +60,14 @@ class IntelligencePoint extends Model
         return $this->hasMany(QuestionPointRahjoo::class);
     }
 
+    /**
+     * @return HasMany
+     */
+    public function pivotQuestionPointRahjoo(): HasMany
+    {
+        return $this->hasMany(QuestionPointRahjoo::class,'intelligence_point_id');
+    }
+
     #endregion
 
     #region Scopes

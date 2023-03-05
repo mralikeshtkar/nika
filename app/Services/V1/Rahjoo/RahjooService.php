@@ -436,13 +436,13 @@ class RahjooService extends BaseService
         $question = $this->rahjooRepository->query($rahjoo->questions())
             ->with([
                 'points' => function ($q) {
-                    $q->withPointName();
-                },
-                'pivotRahjooPoints' => function ($q) use ($rahjoo) {
-                    $q->with([
-                        'intelligencePointName:intelligence_point_names.id,intelligence_point_names.name',
-                        'user:id,first_name,last_name,mobile',
-                    ])->where('rahjoo_id', $rahjoo->id);
+                    $q->withPointName()
+                        ->with(['pivotQuestionPointRahjoo' => function ($q) {
+                            $q->with([
+                                'intelligencePointName:intelligence_point_names.id,intelligence_point_names.name',
+                                'user:id,first_name,last_name,mobile',
+                            ])->whereColumn('question_point_rahjoo.question_id', 'questions.id');
+                        }]);
                 },
             ])->findOrFailById($question);
         return ApiResponse::message(trans("The information was received successfully"))
