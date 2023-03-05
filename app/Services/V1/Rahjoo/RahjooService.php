@@ -419,7 +419,7 @@ class RahjooService extends BaseService
         ApiResponse::validate($request->all(), [
             'point' => ['required', 'numeric', 'between:0,' . $point->pivot->max_point],
         ]);
-        $this->rahjooRepository->updateQuestionPoints($rahjoo, $question->id, $request->point);
+        $this->rahjooRepository->updateQuestionPoints($rahjoo,$point->id, $question->id, $request->point);
         return ApiResponse::message(trans("The information was register successfully"))->send();
     }
 

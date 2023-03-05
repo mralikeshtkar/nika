@@ -135,10 +135,12 @@ class RahjooRepository extends BaseRepository implements RahjooRepositoryInterfa
         $rahjoo->questionPoints()->attach($points);
     }
 
-    public function updateQuestionPoints($rahjoo, $question, $point)
+    public function updateQuestionPoints($rahjoo,$intelligence_point_id, $question, $point)
     {
         /** @var Rahjoo $rahjoo */
-        $rahjoo->questionPoints()->updateExistingPivot($question, ['point' => $point]);
+        $rahjoo->questionPoints()
+            ->wherePivot('intelligence_point_id',$intelligence_point_id)
+            ->updateExistingPivot($question, ['point' => $point]);
     }
 
     public function storeIntelligenceRahnama($rahjoo, $rahnama_id, $intelligence_id)
