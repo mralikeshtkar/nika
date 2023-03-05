@@ -435,6 +435,9 @@ class RahjooService extends BaseService
         $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])->findorFailById($rahjoo);
         $question = $this->rahjooRepository->query($rahjoo->questions())
             ->with([
+                'points',
+                'pivotExerciseIntelligencePackage',
+                'pivotExerciseIntelligencePackage.points',
                 'pivotRahjooPoints' => function ($q) use ($rahjoo) {
                     $q->with([
                         'intelligencePointName:intelligence_point_names.id,intelligence_point_names.name',

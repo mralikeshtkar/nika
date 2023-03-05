@@ -139,6 +139,14 @@ class Question extends Model
     /**
      * @return HasOneDeep
      */
+    public function pivotExerciseIntelligencePackage(): HasOneDeep
+    {
+        return $this->hasOneDeepFromRelations($this->exercise(),(new Exercise())->intelligencePackage());
+    }
+
+    /**
+     * @return HasOneDeep
+     */
     public function intelligencePackage(): HasOneDeep
     {
         return $this->hasOneDeep(IntelligencePackage::class, [Exercise::class], ['id', 'pivot_id'], ['exercise_id', 'intelligence_package_id']);
