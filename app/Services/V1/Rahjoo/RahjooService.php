@@ -436,13 +436,12 @@ class RahjooService extends BaseService
         /** @var Question $question */
         $question = $this->rahjooRepository->query($rahjoo->questions())->findOrFailById($question);
         $question->load([
-            'points' => function ($q) {
+            'points' => function ($q) use ($question, $rahjoo) {
                 $q->withPointName()
-                    ->with(['pivotQuestionPointRahjoo' => function ($q) {
-                        $q->with([
-                            'intelligencePointName:intelligence_point_names.id,intelligence_point_names.name',
-                            'user:id,first_name,last_name,mobile',
-                        ]);
+                    ->with(['pivotQuestionPointRahjoo' => function ($q) use ($question, $rahjoo) {
+                        $q->with(['user:id,first_name,last_name,mobile'])
+                            ->where('question_id', $question->id)
+                            ->where('rahjoo_id', $rahjoo->id);
                     }]);
             },
         ]);
