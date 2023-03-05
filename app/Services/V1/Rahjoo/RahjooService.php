@@ -438,12 +438,6 @@ class RahjooService extends BaseService
                 'points' => function ($q) {
                     $q->withPointName();
                 },
-                'pivotExerciseIntelligencePackage' => function ($q) {
-                    $q->select(['pivot_id', 'package_id', 'intelligence_id'])
-                        ->with(['points' => function ($q) {
-                            $q->withPointName();
-                        }]);
-                },
                 'pivotRahjooPoints' => function ($q) use ($rahjoo) {
                     $q->with([
                         'intelligencePointName:intelligence_point_names.id,intelligence_point_names.name',
