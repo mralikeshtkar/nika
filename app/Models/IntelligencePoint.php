@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class IntelligencePoint extends Model
 {
@@ -61,11 +62,11 @@ class IntelligencePoint extends Model
     }
 
     /**
-     * @return HasMany
+     * @return HasOne
      */
-    public function pivotQuestionPointRahjoo(): HasMany
+    public function pivotQuestionPointRahjoo(): HasOne
     {
-        return $this->hasMany(QuestionPointRahjoo::class,'intelligence_point_id');
+        return $this->hasOne(QuestionPointRahjoo::class,'intelligence_point_id');
     }
 
     #endregion
