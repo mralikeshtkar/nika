@@ -279,7 +279,7 @@ class RahjooService extends BaseService
         resolve(RahjooSupportRepositoryInterface::class)->updateOrCreate([
             'rahjoo_id' => $rahjoo->id,
             'support_id' => $request->support_id,
-        ],[
+        ], [
             'rahjoo_id' => $rahjoo->id,
             'support_id' => $request->support_id,
         ]);
@@ -435,9 +435,17 @@ class RahjooService extends BaseService
         $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])->findorFailById($rahjoo);
         $question = $this->rahjooRepository->query($rahjoo->questions())
             ->with([
-                'points',
-                'pivotExerciseIntelligencePackage',
-                'pivotExerciseIntelligencePackage.points',
+                'points' => function ($q) {
+                    $q->select(['id', 'intelligence_package_id', 'intelligence_point_name_id', 'max_point'])
+                        ->withPointName();
+                },
+                'pivotExerciseIntelligencePackage' => function ($q) {
+                    $q->select(['pivot_id', 'package_id', 'intelligence_id'])
+                        ->with(['points' => function ($q) {
+                            $q->select(['id', 'intelligence_package_id', 'intelligence_point_name_id', 'max_point'])
+                                ->withPointName();
+                        }]);
+                },
                 'pivotRahjooPoints' => function ($q) use ($rahjoo) {
                     $q->with([
                         'intelligencePointName:intelligence_point_names.id,intelligence_point_names.name',
