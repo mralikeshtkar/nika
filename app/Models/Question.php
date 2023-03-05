@@ -113,11 +113,11 @@ class Question extends Model
     }
 
     /**
-     * @return HasMany
+     * @return HasOne
      */
-    public function pivotRahjooPoints(): HasMany
+    public function pivotRahjooPoints(): HasOne
     {
-        return $this->hasMany(QuestionPointRahjoo::class, 'question_id');
+        return $this->hasOne(QuestionPointRahjoo::class, 'question_id');
     }
 
     /**
