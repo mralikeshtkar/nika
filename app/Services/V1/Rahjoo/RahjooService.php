@@ -433,18 +433,19 @@ class RahjooService extends BaseService
     {
         /** @var Rahjoo $rahjoo */
         $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])->findorFailById($rahjoo);
-        $question = $this->rahjooRepository->query($rahjoo->questions())
-            ->with([
-                'points' => function ($q) {
-                    $q->withPointName()
-                        ->with(['pivotQuestionPointRahjoo' => function ($q) {
-                            $q->with([
-                                'intelligencePointName:intelligence_point_names.id,intelligence_point_names.name',
-                                'user:id,first_name,last_name,mobile',
-                            ])->whereColumn('question_point_rahjoo.question_id', 'questions.id');
-                        }]);
-                },
-            ])->findOrFailById($question);
+        /** @var Question $question */
+        $question = $this->rahjooRepository->query($rahjoo->questions())->findOrFailById($question);
+        $question->load([
+            'points' => function ($q) {
+                $q->withPointName()
+                    ->with(['pivotQuestionPointRahjoo' => function ($q) {
+                        $q->with([
+                            'intelligencePointName:intelligence_point_names.id,intelligence_point_names.name',
+                            'user:id,first_name,last_name,mobile',
+                        ]);
+                    }]);
+            },
+        ]);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('question', new QuestionResource($question))
             ->send();
