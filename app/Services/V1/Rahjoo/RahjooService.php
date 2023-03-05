@@ -436,14 +436,12 @@ class RahjooService extends BaseService
         $question = $this->rahjooRepository->query($rahjoo->questions())
             ->with([
                 'points' => function ($q) {
-                    $q->select(['id', 'intelligence_package_id', 'intelligence_point_name_id', 'max_point'])
-                        ->withPointName();
+                    $q->withPointName();
                 },
                 'pivotExerciseIntelligencePackage' => function ($q) {
                     $q->select(['pivot_id', 'package_id', 'intelligence_id'])
                         ->with(['points' => function ($q) {
-                            $q->select(['id', 'intelligence_package_id', 'intelligence_point_name_id', 'max_point'])
-                                ->withPointName();
+                            $q->withPointName();
                         }]);
                 },
                 'pivotRahjooPoints' => function ($q) use ($rahjoo) {
