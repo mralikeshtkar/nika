@@ -577,9 +577,9 @@ class UserService extends BaseService
             /** @var Builder $q */
             $q->whereHas('questions', function ($q) {
                 /** @var Builder $q */
-                $q->whereHas('answerTypes', function ($q) {
+                $q->whereDoesntHave('answerTypes', function ($q) {
                     /** @var Builder $q */
-                    $q->whereDoesntHave('answer', function ($q) {
+                    $q->whereHas('answer', function ($q) {
                         /** @var Builder $q */
                         $q->whereColumn('question_answers.rahjoo_id', 'rahjoos.id');
                     });
