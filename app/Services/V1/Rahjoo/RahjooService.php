@@ -133,7 +133,7 @@ class RahjooService extends BaseService
      */
     public function questions(Request $request, $rahjoo, $exercise): JsonResponse
     {
-        $rahjoo = $this->rahjooRepository->select(['id'])->findOrFailById($rahjoo);
+        $rahjoo = $this->rahjooRepository->select(['id','package_id'])->findOrFailById($rahjoo);
         $exercise = $rahjoo->packageExercises()
             ->withAggregate('questionAnswer AS latest_answer_at', 'question_answers.created_at')
             ->with(['intelligence:id,title'])
@@ -173,7 +173,7 @@ class RahjooService extends BaseService
      */
     public function question(Request $request, $rahjoo, $exercise, $question): JsonResponse
     {
-        $rahjoo = $this->rahjooRepository->select(['id'])->findOrFailById($rahjoo);
+        $rahjoo = $this->rahjooRepository->select(['id','package_id'])->findOrFailById($rahjoo);
         $exercise = $rahjoo->packageExercises()
             ->withAggregate('questionAnswer AS latest_answer_at', 'question_answers.created_at')
             ->with(['intelligence:id,title'])
