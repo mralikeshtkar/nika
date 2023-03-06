@@ -137,6 +137,7 @@ class RahyabService extends BaseService
             })->paginate();
         $resource = PaginationResource::make($questions)->additional(['itemsResource' => QuestionResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('exercise', new ExerciseResource($exercise))
             ->addData('questions', $resource)
             ->send();
     }
