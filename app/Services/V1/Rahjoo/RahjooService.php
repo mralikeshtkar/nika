@@ -101,7 +101,7 @@ class RahjooService extends BaseService
      */
     public function exercises(Request $request, $rahjoo): JsonResponse
     {
-        $rahjoo = $this->rahjooRepository->select(['id'])->findOrFailById($rahjoo);
+        $rahjoo = $this->rahjooRepository->select(['id','package_id'])->findOrFailById($rahjoo);
         $exercises = $rahjoo->packageExercises()
             ->withAggregate('questionAnswer AS latest_answer_at', 'question_answers.created_at')
             ->with(['intelligence:id,title'])
