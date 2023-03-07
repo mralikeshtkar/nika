@@ -42,7 +42,7 @@ class QuestionDurationService extends BaseService
     {
         $rahjoo = $request->user()->rahjoo()->select(['id'])->first();
         abort_if(!$rahjoo, ApiResponse::error(trans("The rahjoo can start answering the questions"), Response::HTTP_BAD_REQUEST)->send());
-        $question = resolve(ExerciseRepositoryInterfaces::class)->select(['id'])->findOrFailById($question);
+        $question = resolve(QuestionDurationRepositoryInterface::class)->select(['id'])->findOrFailById($question);
         $this->questionDurationRepository->create([
             'rahjoo_id' => $rahjoo->id,
             'question_id' => $question->id,
