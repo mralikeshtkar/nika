@@ -146,10 +146,10 @@ class RahjooService extends BaseService
             ->withAggregate('questionDurationStart', 'start')
             ->withWhereHas('answerTypes', function ($q) use ($request, $rahjoo) {
                 $q->with(['answer' => function ($q) use ($rahjoo) {
-                    $q->where('rahjoo_id', $rahjoo->id);
+                    $q->with(['file'])->where('rahjoo_id', $rahjoo->id);
                 }])->when($request->filled('answered'), function ($q) use ($request, $rahjoo) {
                     $q->whereHas('answer', function ($q) use ($request, $rahjoo) {
-                        $q->where('rahjoo_id', $rahjoo->id);
+                        $q->with(['file'])->where('rahjoo_id', $rahjoo->id);
                     });
                 })->when($request->filled('notAnswered'), function ($q) use ($request, $rahjoo) {
                     $q->whereDoesntHave('answer', function ($q) use ($request, $rahjoo) {
@@ -188,7 +188,7 @@ class RahjooService extends BaseService
             }])
             ->withWhereHas('answerTypes', function ($q) use ($request, $rahjoo) {
                 $q->with(['answer' => function ($q) use ($rahjoo) {
-                    $q->where('rahjoo_id', $rahjoo->id);
+                    $q->with(['file'])->where('rahjoo_id', $rahjoo->id);
                 }]);
             })->findOrFail($question);
         return ApiResponse::message(trans("The information was received successfully"))
