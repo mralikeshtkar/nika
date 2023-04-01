@@ -21,7 +21,26 @@ class ApiSupportCommentController extends ApiBaseController
         $this->supportCommentService = $supportCommentService;
     }
 
-    
+    /**
+     * @OA\Get(
+     *     path="/support/{support}/comments",
+     *     summary="دریافت دیدگاه های پشتیبانی",
+     *     description="",
+     *     tags={"پشتیبان"},
+     *     @OA\Parameter(
+     *         description="شناسه پشتیبانی",
+     *         in="path",
+     *         name="support",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent()
+     *     )
+     * )
+     */
     public function index(Request $request, $rahjoo_support)
     {
         return $this->supportCommentService->index($request,$rahjoo_support);
