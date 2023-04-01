@@ -47,7 +47,7 @@ class SupportCommentService extends BaseService
         $rahjoo_support = resolve(RahjooSupportRepositoryInterface::class)->findOrFailById($rahjoo_support);
         ApiResponse::authorize($request->user()->can('storeComment', $rahjoo_support));
         ApiResponse::validate($request->all(), [
-            'text' => ['required', 'string'],
+            'body' => ['required', 'string'],
         ]);
         $this->supportCommentRepository->create([
             'user_id' => $request->user()->id,
