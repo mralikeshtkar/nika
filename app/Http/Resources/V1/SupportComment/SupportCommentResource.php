@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 
 class SupportCommentResource extends JsonResource
 {
+    private int $number = 0;
     /**
      * Transform the resource into an array.
      *
@@ -16,10 +17,11 @@ class SupportCommentResource extends JsonResource
      */
     public function toArray($request)
     {
+        $this->number += 1;
         return collect($this->resource->toArray())->when(array_key_exists('created_at',$this->resource->toArray()),function (Collection $collection){
             $collection->put('created_at',verta($this->resource->created_at)->formatJalaliDate());
         })->when($this->resource->relationLoaded('user'),function (Collection $collection){
             $collection->put('user',new UserResource($this->resource->user));
-        });
+        })->put('number',$this->number);
     }
 }
