@@ -24,6 +24,7 @@ use App\Models\RahjooParent;
 use App\Models\RahjooSupport;
 use App\Models\Role;
 use App\Models\Skill;
+use App\Models\SupportComment;
 use App\Models\User;
 use App\Policies\Comment\CommentPolicy;
 use App\Policies\DocumentGroup\DocumentGroupPolicy;
@@ -46,6 +47,7 @@ use App\Policies\RahjooPolicy;
 use App\Policies\RahjooSupport\RahjooSupportPolicy;
 use App\Policies\RolePolicy;
 use App\Policies\SkillPolicy;
+use App\Policies\SupportComment\SupportCommentPolicy;
 use App\Policies\UserPolicy;
 use App\Repositories\V1\Rahjoo\Eloquent\RahjooRepository;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -81,6 +83,7 @@ class AuthServiceProvider extends ServiceProvider
         Question::class => QuestionPolicy::class,
         Comment::class => CommentPolicy::class,
         RahjooSupport::class => RahjooSupportPolicy::class,
+        SupportComment::class => SupportCommentPolicy::class,
     ];
 
     /**

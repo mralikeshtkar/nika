@@ -21,8 +21,13 @@ class ApiSupportCommentController extends ApiBaseController
         $this->supportCommentService = $supportCommentService;
     }
 
-    public function store(Request $request, $rahjooSupport)
+    public function index(Request $request, $rahjoo_support)
     {
-        return $this->supportCommentService->store($request,$rahjooSupport);
+        return $this->supportCommentService->index($request,$rahjoo_support);
+    }
+
+    public function store(Request $request, $rahjoo_support)
+    {
+        return $this->supportCommentService->store($request,$rahjoo_support);
     }
 }
