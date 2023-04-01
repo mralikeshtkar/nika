@@ -84,7 +84,8 @@ class RahjooSupportService extends BaseService
      */
     public function update(Request $request, $rahjooSupport): JsonResponse
     {
-        $rahjooSupport = $this->rahjooSupportRepository->with(['support:id,first_name,last_name'])
+        $rahjooSupport = $this->rahjooSupportRepository->notCanceled()
+            ->with(['support:id,first_name,last_name'])
             ->findOrFailById($rahjooSupport);
         ApiResponse::authorize($request->user()->can('update', $rahjooSupport));
         ApiResponse::validate($request->all(), [
@@ -95,6 +96,27 @@ class RahjooSupportService extends BaseService
         ]);
         return ApiResponse::message(trans("The :attribute was successfully updated", ['attribute' => trans('RahjooSupport')]))
             ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $rahjooSupport
+     * @return JsonResponse
+     */
+    public function cancel(Request $request, $rahjooSupport): JsonResponse
+    {
+        $rahjooSupport = $this->rahjooSupportRepository->notCanceled()
+            ->with(['support:id,first_name,last_name'])
+            ->findOrFailById($rahjooSupport);
+        ApiResponse::authorize($request->user()->can('update', $rahjooSupport));
+        ApiResponse::validate($request->all(), [
+            'description' => ['nullable', 'string'],
+        ]);
+        $this->rahjooSupportRepository->update($rahjooSupport, [
+            'cancel_description' => $request->description,
+            'canceled_at' => now(),
+        ]);
+        return ApiResponse::message(trans("Mission accomplished"))->send();
     }
 
     #endregion

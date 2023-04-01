@@ -93,4 +93,49 @@ class ApiRahjooSupportController extends ApiBaseController
         return $this->rahjooSupportService->update($request, $rahjooSupport);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/rahjoo-supports/{rahjooSupport}/cancel",
+     *     summary="لغو  پشتیبانی رهجو",
+     *     description="",
+     *     tags={"پشتیبان"},
+     *     @OA\Parameter(
+     *         description="شناسه پشتیبانی رهجو",
+     *         in="path",
+     *         name="rahjooSupport",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"_method","description"},
+     *                 @OA\Property(
+     *                     property="_method",
+     *                     type="string",
+     *                     default="put",
+     *                     enum={"put"},
+     *                     description="این مقدار باید بصورت ثابت شود",
+     *                 ),
+     *                 @OA\Property(
+     *                     property="description",
+     *                     type="string",
+     *                     description="توضیحات"
+     *                 ),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function cancel(Request $request,$rahjooSupport)
+    {
+        return $this->rahjooSupportService->cancel($request, $rahjooSupport);
+    }
+
 }

@@ -28,6 +28,8 @@ return new class extends Migration {
             $table->string('step')->default(RahjooSupportStep::First);
             $table->string('pay_url')->nullable();
             $table->timestamp('pay_url_generated_at')->nullable();
+            $table->text('cancel_description',)->nullable();
+            $table->timestamp('canceled_at',)->nullable();
             $table->timestamps();
         });
     }
