@@ -36,4 +36,12 @@ class RahjooSupport extends Model
     {
         return $this->belongsTo(Rahjoo::class,'rahjoo_id','id');
     }
+
+    /**
+     * @return BelongsTo
+     */
+    public function support(): BelongsTo
+    {
+        return $this->belongsTo(User::class,'support_id','id');
+    }
 }

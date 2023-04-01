@@ -66,7 +66,7 @@ class RahjooSupportService extends BaseService
      */
     public function show(Request $request, $rahjooSupport): JsonResponse
     {
-        $rahjooSupport = $this->rahjooSupportRepository->with(['rahjoo'])
+        $rahjooSupport = $this->rahjooSupportRepository->with(['support:id,first_name,last_name'])
             ->findOrFailById($rahjooSupport);
         ApiResponse::authorize($request->user()->can('show', $rahjooSupport));
         return ApiResponse::message(trans("The information was received successfully"))
