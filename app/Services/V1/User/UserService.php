@@ -474,8 +474,8 @@ class UserService extends BaseService
             'mobile' => $request->filled('mobile') ? to_valid_mobile_number($request->mobile) : null,
         ]);
         ApiResponse::validate($request->all(), [
-            'background' => ['nullable', new EnumValue(UserBackground::class)],
-            'color' => ['nullable', new EnumValue(UserColor::class)],
+            'background' => ['nullable', 'string'],
+            'color' => ['nullable', 'string'],
             'first_name' => ['nullable', 'string'],
             'last_name' => ['nullable', 'string'],
             'father_name' => ['nullable', 'string'],
