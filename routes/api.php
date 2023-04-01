@@ -95,6 +95,7 @@ Route::prefix('v1')->group(function (Router $router) {
         /* Support */
         $router->group([], function (Router $router) {
             $router->get('rahjoo-supports/{rahjooSupport}', [V1ApiRahjooSupportController::class, 'show']);
+            $router->put('rahjoo-supports/{rahjooSupport}', [V1ApiRahjooSupportController::class, 'update']);
         });
 
         /* Rahyab */

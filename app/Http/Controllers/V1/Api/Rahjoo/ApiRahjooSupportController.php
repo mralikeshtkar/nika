@@ -48,4 +48,49 @@ class ApiRahjooSupportController extends ApiBaseController
         return $this->rahjooSupportService->show($request, $rahjooSupport);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/rahjoo-supports/{rahjooSupport}",
+     *     summary="بروزرسانی  پشتیبانی رهجو",
+     *     description="",
+     *     tags={"پشتیبان"},
+     *     @OA\Parameter(
+     *         description="شناسه پشتیبانی رهجو",
+     *         in="path",
+     *         name="rahjooSupport",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"_method","step"},
+     *                 @OA\Property(
+     *                     property="_method",
+     *                     type="string",
+     *                     default="put",
+     *                     enum={"put"},
+     *                     description="این مقدار باید بصورت ثابت شود",
+     *                 ),
+     *                 @OA\Property(
+     *                     property="step",
+     *                     type="string",
+     *                     description="میتواند first second third باشد"
+     *                 ),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function update(Request $request,$rahjooSupport)
+    {
+        return $this->rahjooSupportService->update($request, $rahjooSupport);
+    }
+
 }

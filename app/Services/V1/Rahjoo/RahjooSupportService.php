@@ -3,7 +3,9 @@
 namespace App\Services\V1\Rahjoo;
 
 use App\Enums\Question\QuestionAnswerType;
+use App\Enums\Rahjoo\RahjooSupportStep;
 use App\Enums\Role;
+use App\Http\Resources\V1\City\CityResource;
 use App\Http\Resources\V1\Comment\CommentResource;
 use App\Http\Resources\V1\Exercise\ExerciseResource;
 use App\Http\Resources\V1\IntelligencePackagePointRahjoo\IntelligencePackagePointRahjooResource;
@@ -30,6 +32,7 @@ use App\Repositories\V1\User\Interfaces\UserRepositoryInterface;
 use App\Responses\Api\ApiResponse;
 use App\Rules\UserHasRoleRule;
 use App\Services\V1\BaseService;
+use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -71,6 +74,26 @@ class RahjooSupportService extends BaseService
         ApiResponse::authorize($request->user()->can('show', $rahjooSupport));
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('rahjooSupport', new RahjooSupportResource($rahjooSupport))
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $rahjooSupport
+     * @return JsonResponse
+     */
+    public function update(Request $request, $rahjooSupport): JsonResponse
+    {
+        $rahjooSupport = $this->rahjooSupportRepository->with(['support:id,first_name,last_name'])
+            ->findOrFailById($rahjooSupport);
+        ApiResponse::authorize($request->user()->can('update', $rahjooSupport));
+        ApiResponse::validate($request->all(), [
+            'step' => ['required', new EnumValue(RahjooSupportStep::class)],
+        ]);
+        $this->rahjooSupportRepository->update($rahjooSupport, [
+            'step' => $request->step,
+        ]);
+        return ApiResponse::message(trans("The :attribute was successfully updated", ['attribute' => trans('RahjooSupport')]))
             ->send();
     }
 
