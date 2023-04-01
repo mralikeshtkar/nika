@@ -371,7 +371,7 @@ class ApiRahjooController extends ApiBaseController
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"_method","package_id"},
+     *                 required={"_method","support_id"},
      *                 @OA\Property(
      *                     property="_method",
      *                     type="string",
