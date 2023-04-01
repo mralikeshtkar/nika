@@ -11,6 +11,7 @@ class SupportComment extends Model
     protected $fillable=[
         'user_id',
         'rahjoo_support_id',
+        'step',
         'body',
     ];
 

@@ -24,6 +24,7 @@ return new class extends Migration {
                 ->on('rahjoo_supports')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
+            $table->string('step');
             $table->text('body');
             $table->timestamps();
         });

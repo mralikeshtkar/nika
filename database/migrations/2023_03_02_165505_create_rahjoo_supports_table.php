@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Rahjoo\RahjooSupportStep;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -24,6 +25,7 @@ return new class extends Migration {
                 ->on('rahjoos')
                 ->cascadeOnDelete()
                 ->cascadeOnDelete();
+            $table->string('step')->default(RahjooSupportStep::First);
             $table->string('pay_url')->nullable();
             $table->timestamp('pay_url_generated_at')->nullable();
             $table->timestamps();

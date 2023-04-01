@@ -11,6 +11,7 @@ class RahjooSupport extends Model
     protected $fillable = [
         'support_id',
         'rahjoo_id',
+        'step',
         'pay_url',
         'pay_url_generated_at',
     ];
