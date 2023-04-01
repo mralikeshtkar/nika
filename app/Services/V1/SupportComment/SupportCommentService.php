@@ -52,7 +52,8 @@ class SupportCommentService extends BaseService
         $this->supportCommentRepository->create([
             'user_id' => $request->user()->id,
             'rahjoo_support_id' => $rahjoo_support->id,
-            'text' => $request->user()->id,
+            'step' => $rahjoo_support->step,
+            'body' => $request->body,
         ]);
         return ApiResponse::message(trans("The :attribute was successfully registered", ['attribute' => trans('SupportComment')]), Response::HTTP_CREATED)
             ->send();

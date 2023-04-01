@@ -63,9 +63,9 @@ class ApiSupportCommentController extends ApiBaseController
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"text"},
+     *                 required={"body"},
      *                 @OA\Property(
-     *                     property="text",
+     *                     property="body",
      *                     type="string",
      *                     description="متن"
      *                 ),
