@@ -62,6 +62,8 @@ use App\Repositories\V1\Role\Eloquent\RoleRepository;
 use App\Repositories\V1\Role\Interfaces\RoleRepositoryInterface;
 use App\Repositories\V1\Skill\Eloquent\SkillRepository;
 use App\Repositories\V1\Skill\Interfaces\SkillRepositoryInterface;
+use App\Repositories\V1\SupportComment\Eloquent\SupportCommentRepository;
+use App\Repositories\V1\SupportComment\Interfaces\SupportCommentRepositoryInterface;
 use App\Repositories\V1\User\Eloquent\UserRepository;
 use App\Repositories\V1\User\Interfaces\UserRepositoryInterface;
 use App\Services\V1\Comment\CommentService;
@@ -125,5 +127,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(QuestionDurationRepositoryInterface::class, QuestionDurationRepository::class);
         $this->app->bind(CommentRepositoryInterface::class, CommentService::class);
         $this->app->bind(RahjooSupportRepositoryInterface::class, RahjooSupportRepository::class);
+        $this->app->bind(SupportCommentRepositoryInterface::class, SupportCommentRepository::class);
     }
 }
