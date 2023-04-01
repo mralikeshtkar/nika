@@ -84,7 +84,7 @@ Route::prefix('v1')->group(function (Router $router) {
 
         /* Support */
         $router->group([], function (Router $router) {
-            $router->get('support/rahjoos', [V1ApiSupportController::class, 'rahjoos']);
+            $router->get('support/{support}/rahjoos', [V1ApiSupportController::class, 'rahjoos']);
 
             $router->group([], function (Router $router) {
                 $router->get('support/{support}/comments', [V1ApiSupportCommentController::class, 'index']);

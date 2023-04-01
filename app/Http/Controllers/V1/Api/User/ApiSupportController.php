@@ -25,7 +25,7 @@ class ApiSupportController extends ApiBaseController
     /**
      * @OA\Get(
      *     path="/support/rahjoos",
-     *     summary="دریافت رهجوهای پشتیبان",
+     *     summary="دریافت رهجوهای پشتیبان ها",
      *     description="",
      *     tags={"پشتیبان"},
      *     @OA\Response(
@@ -38,10 +38,5 @@ class ApiSupportController extends ApiBaseController
     public function rahjoos(Request $request)
     {
         return $this->supportService->rahjoos($request);
-    }
-
-    public function rahjoo(Request $request,$rahjoo)
-    {
-        return $this->supportService->rahjoo($request,$rahjoo);
     }
 }
