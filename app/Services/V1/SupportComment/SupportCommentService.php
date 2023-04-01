@@ -36,14 +36,15 @@ class SupportCommentService extends BaseService
      */
     public function index(Request $request, $rahjoo_support): JsonResponse
     {
-        dd(RahjooSupportStep::asArray());
         /** @var RahjooSupport $rahjoo_support */
         $rahjoo_support = resolve(RahjooSupportRepositoryInterface::class)->findOrFailById($rahjoo_support);
         ApiResponse::authorize($request->user()->can('indexComment', $rahjoo_support));
         $comments = $rahjoo_support->comments()
-            ->select(['id','user_id','rahjoo_support_id','body','step','created_at'])
+            ->select(['id', 'user_id', 'rahjoo_support_id', 'body', 'step', 'created_at'])
             ->with(['user:id,first_name,last_name'])
-            ->latest()
+            ->when($request->filled('step') && in_array($request->step, RahjooSupportStep::asArray()), function ($q) use ($request) {
+                $q->where('step', $request->step);
+            })->latest()
             ->get();
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('comments', SupportCommentResource::collection($comments))
@@ -64,7 +65,7 @@ class SupportCommentService extends BaseService
             'body' => $request->body,
         ]);
         return ApiResponse::message(trans("The :attribute was successfully registered", ['attribute' => trans('SupportComment')]), Response::HTTP_CREATED)
-            ->addData('comment',new SupportCommentResource($comment))
+            ->addData('comment', new SupportCommentResource($comment))
             ->send();
     }
 }
