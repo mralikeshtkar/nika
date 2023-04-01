@@ -9,6 +9,7 @@ use App\Repositories\V1\Rahjoo\Interfaces\RahjooRepositoryInterface;
 use App\Repositories\V1\Rahjoo\Interfaces\RahjooSupportRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 
 class RahjooSupportRepository extends BaseRepository implements RahjooSupportRepositoryInterface
@@ -28,6 +29,15 @@ class RahjooSupportRepository extends BaseRepository implements RahjooSupportRep
     public function updateOrCreate(array $attributes, array $values): Model|Builder
     {
         return $this->model->updateOrCreate($attributes, $values);
+    }
+
+    /**
+     * @return $this
+     */
+    public function notCanceled(): static
+    {
+        $this->model->whereNull('canceled_at');
+        return $this;
     }
 
 }
