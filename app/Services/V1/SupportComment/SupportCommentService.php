@@ -35,6 +35,7 @@ class SupportCommentService extends BaseService
      */
     public function index(Request $request, $rahjoo_support): JsonResponse
     {
+        dd($request->all());
         /** @var RahjooSupport $rahjoo_support */
         $rahjoo_support = resolve(RahjooSupportRepositoryInterface::class)->findOrFailById($rahjoo_support);
         ApiResponse::authorize($request->user()->can('indexComment', $rahjoo_support));
