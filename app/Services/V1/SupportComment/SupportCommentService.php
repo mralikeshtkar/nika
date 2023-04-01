@@ -39,7 +39,7 @@ class SupportCommentService extends BaseService
         $rahjoo_support = resolve(RahjooSupportRepositoryInterface::class)->findOrFailById($rahjoo_support);
         ApiResponse::authorize($request->user()->can('indexComment', $rahjoo_support));
         $comments = $rahjoo_support->comments()
-            ->select(['id','user_id','rahjoo_support_id','text','step','created_at'])
+            ->select(['id','user_id','rahjoo_support_id','body','step','created_at'])
             ->with(['user:id,first_name,last_name'])
             ->latest()
             ->get();
