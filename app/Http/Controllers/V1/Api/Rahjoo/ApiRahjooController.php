@@ -95,7 +95,7 @@ class ApiRahjooController extends ApiBaseController
      *     path="/rahjoos/have-not-support",
      *     summary="رهجوهایی که پشتیبان ندارند",
      *     description="",
-     *     tags={"ادمین"},
+     *     tags={"رهجو"},
      *     @OA\Response(
      *         response=200,
      *         description="OK",
