@@ -30,7 +30,6 @@ class Rahjoo extends Model
         'rahyab_id',
         'agent_id',
         'package_id',
-        'support_id',
         'code',
         'school',
         'which_child_of_family',

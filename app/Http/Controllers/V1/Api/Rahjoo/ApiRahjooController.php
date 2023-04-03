@@ -92,6 +92,24 @@ class ApiRahjooController extends ApiBaseController
 
     /**
      * @OA\Get(
+     *     path="/rahjoos/have-not-support",
+     *     summary="رهجوهایی که پشتیبان ندارند",
+     *     description="",
+     *     tags={"ادمین"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent()
+     *     )
+     * )
+     */
+    public function haveNotSupport(Request $request)
+    {
+        return $this->rahjooService->haveNotSupport($request);
+    }
+
+    /**
+     * @OA\Get(
      *     path="/rahjoos/{rahjoo}/exercises",
      *     summary="دریافت تمرین های رهجو",
      *     description="",

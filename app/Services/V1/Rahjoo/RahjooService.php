@@ -96,6 +96,21 @@ class RahjooService extends BaseService
 
     /**
      * @param Request $request
+     * @return JsonResponse
+     */
+    public function haveNotSupport(Request $request): JsonResponse
+    {
+        $rahjoos = Rahjoo::query()
+            ->doesntHave('support')
+            ->paginate($request->get('perPage', 10));
+        $resource = PaginationResource::make($rahjoos)->additional(['itemsResource' => RahjooResource::class]);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('rahjoos', $resource)
+            ->send();
+    }
+
+    /**
+     * @param Request $request
      * @param $rahjoo
      * @return JsonResponse
      */
@@ -209,7 +224,7 @@ class RahjooService extends BaseService
         //ApiResponse::authorize($request->user()->can('show', Rahjoo::class));
         $rahjoo = $this->rahjooRepository->select([
             'id', 'user_id', 'rahyab_id', 'agent_id', 'package_id', 'code', 'school', 'which_child_of_family', 'disease_background',
-        ])->with(['package:id,title', 'user:id,first_name,last_name,mobile,birthdate', 'user.profile'])->findorFailById($rahjoo);
+        ])->with(['support','package:id,title', 'user:id,first_name,last_name,mobile,birthdate', 'user.profile'])->findorFailById($rahjoo);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('rahjoos', RahjooResource::make($rahjoo))
             ->send();

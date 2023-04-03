@@ -207,6 +207,7 @@ Route::prefix('v1')->group(function (Router $router) {
         $router->group([], function (Router $router) {
             $router->get('rahjoos', [V1ApiRahjooController::class, 'index']);
             $router->get('rahjoos/packages', [V1ApiRahjooController::class, 'packages']);
+            $router->get('rahjoos/have-not-support', [V1ApiRahjooController::class, 'haveNotSupport']);
             $router->get('rahjoos/{rahjoo}/exercises', [V1ApiRahjooController::class, 'exercises']);
             $router->get('rahjoos/{rahjoo}/exercises/{exercise}/questions', [V1ApiRahjooController::class, 'questions']);
             $router->get('rahjoos/{rahjoo}/exercises/{exercise}/questions/{question}', [V1ApiRahjooController::class, 'question']);
