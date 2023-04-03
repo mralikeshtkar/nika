@@ -9,8 +9,10 @@ use App\Repositories\V1\Rahjoo\Interfaces\RahjooRepositoryInterface;
 use App\Repositories\V1\User\Interfaces\UserRepositoryInterface;
 use App\Responses\Api\ApiResponse;
 use App\Services\V1\BaseService;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 
 class SupportService extends BaseService
 {
@@ -40,6 +42,9 @@ class SupportService extends BaseService
     public function rahjoos(Request $request): JsonResponse
     {
 //        ApiResponse::authorize($request->user()->isSupport());
+        Schema::create('rahjoos', function (Blueprint $table) {
+            $table->dropColumn('support_id');
+        });
         $rahjoos = resolve(RahjooRepositoryInterface::class)
             ->onlySupportRahjoos($request->user())
             ->withSupportIfIsSuperAdmin($request->user())
