@@ -39,7 +39,7 @@ class SupportService extends BaseService
      */
     public function rahjoos(Request $request): JsonResponse
     {
-        ApiResponse::authorize($request->user()->isSupport());
+//        ApiResponse::authorize($request->user()->isSupport());
         $rahjoos = resolve(RahjooRepositoryInterface::class)
             ->onlySupportRahjoos($request->user())
             ->withSupportIfIsSuperAdmin($request->user())
