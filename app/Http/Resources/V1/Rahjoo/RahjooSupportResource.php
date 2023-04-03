@@ -3,6 +3,7 @@
 namespace App\Http\Resources\V1\Rahjoo;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Collection;
 
 class RahjooSupportResource extends JsonResource
 {
@@ -14,6 +15,8 @@ class RahjooSupportResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return collect($this->resource)->when(array_key_exists('created_at',$this->resource->toArray()), function (Collection $collection) {
+            $collection->put('created_at', jalaliFormat($this->resource->created_at));
+        });
     }
 }
