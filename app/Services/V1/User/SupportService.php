@@ -43,6 +43,7 @@ class SupportService extends BaseService
     {
 //        ApiResponse::authorize($request->user()->isSupport());
         Schema::table('rahjoos', function (Blueprint $table) {
+            $table->dropForeign(['support_id']);
             $table->dropColumn('support_id');
         });
         $rahjoos = resolve(RahjooRepositoryInterface::class)
