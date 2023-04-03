@@ -24,10 +24,17 @@ class ApiSupportController extends ApiBaseController
 
     /**
      * @OA\Get(
-     *     path="/support/rahjoos",
+     *     path="/support/{support}/rahjoos",
      *     summary="دریافت رهجوهای پشتیبان ها",
      *     description="",
      *     tags={"پشتیبان"},
+     *     @OA\Parameter(
+     *         description="شناسه پشتیبانی",
+     *         in="path",
+     *         name="support",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="OK",
