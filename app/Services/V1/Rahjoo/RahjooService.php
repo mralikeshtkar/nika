@@ -101,6 +101,7 @@ class RahjooService extends BaseService
     public function haveNotSupport(Request $request): JsonResponse
     {
         $rahjoos = Rahjoo::query()
+            ->with('user:id,first_name,last_name')
             ->doesntHave('support')
             ->paginate($request->get('perPage', 10));
         $resource = PaginationResource::make($rahjoos)->additional(['itemsResource' => RahjooResource::class]);
