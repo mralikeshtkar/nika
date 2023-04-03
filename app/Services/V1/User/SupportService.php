@@ -42,7 +42,7 @@ class SupportService extends BaseService
     public function rahjoos(Request $request): JsonResponse
     {
 //        ApiResponse::authorize($request->user()->isSupport());
-        Schema::create('rahjoos', function (Blueprint $table) {
+        Schema::table('rahjoos', function (Blueprint $table) {
             $table->dropColumn('support_id');
         });
         $rahjoos = resolve(RahjooRepositoryInterface::class)
