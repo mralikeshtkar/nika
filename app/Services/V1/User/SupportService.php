@@ -42,10 +42,6 @@ class SupportService extends BaseService
     public function rahjoos(Request $request): JsonResponse
     {
 //        ApiResponse::authorize($request->user()->isSupport());
-        Schema::table('rahjoos', function (Blueprint $table) {
-            $table->dropForeign(['support_id']);
-            $table->dropColumn('support_id');
-        });
         $rahjoos = resolve(RahjooRepositoryInterface::class)
             ->onlySupportRahjoos($request->user())
             ->withSupportIfIsSuperAdmin($request->user())
