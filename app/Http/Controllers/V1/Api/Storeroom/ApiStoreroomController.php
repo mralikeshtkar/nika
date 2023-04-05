@@ -105,7 +105,7 @@ class ApiStoreroomController extends ApiBaseController
      *             @OA\Schema(
      *                 required={"quantity"},
      *                 @OA\Property(
-     *                     property="first_name",
+     *                     property="quantity",
      *                     type="string",
      *                     description="تعداد"
      *                 ),
