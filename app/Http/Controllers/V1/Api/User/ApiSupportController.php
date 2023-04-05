@@ -57,10 +57,10 @@ class ApiSupportController extends ApiBaseController
 
     /**
      * @OA\Get(
-     *     path="/support/{support}/rahjoos/{rahjoo}",
-     *     summary="دریافت رهجو پشتیبان",
+     *     path="/storerooms",
+     *     summary="لیست انبار بصورت صفحه بندی",
      *     description="",
-     *     tags={"پشتیبان"},
+     *     tags={"انبار"},
      *     @OA\Parameter(
      *         description="شناسه پشتیبانی",
      *         in="path",
