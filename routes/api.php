@@ -97,6 +97,8 @@ Route::prefix('v1')->group(function (Router $router) {
         /* Storeroom */
         $router->group([], function (Router $router) {
             $router->get('storerooms', [V1ApiStoreroomController::class, 'index']);
+            $router->get('storerooms/{package}', [V1ApiStoreroomController::class, 'show']);
+            $router->get('storerooms/{package}/update-quantity', [V1ApiStoreroomController::class, 'updateQuantity']);
         });
 
         /* Support */

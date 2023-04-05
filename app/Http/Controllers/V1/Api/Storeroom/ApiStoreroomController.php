@@ -43,9 +43,9 @@ class ApiStoreroomController extends ApiBaseController
      *         @OA\Schema(type="number"),
      *     ),
      *     @OA\Parameter(
-     *         description="نام",
+     *         description="عنوان",
      *         in="query",
-     *         name="name",
+     *         name="title",
      *         required=false,
      *         @OA\Schema(type="string"),
      *     ),
@@ -59,5 +59,68 @@ class ApiStoreroomController extends ApiBaseController
     public function index(Request $request)
     {
         return $this->storeroomService->index($request);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/storerooms/{package}",
+     *     summary="دریافت یک پکیج موجود در انبار",
+     *     description="",
+     *     tags={"انبار"},
+     *     @OA\Parameter(
+     *         description="شناسه پکیج",
+     *         in="path",
+     *         name="package",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent()
+     *     )
+     * )
+     */
+    public function show(Request $request, $package)
+    {
+        return $this->storeroomService->show($request,$package);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/storerooms/{package}/update-quantity",
+     *     summary="بروزرسانی تعداد موجودی",
+     *     description="",
+     *     tags={"انبار"},
+     *     @OA\Parameter(
+     *         description="شناسه پکیج",
+     *         in="path",
+     *         name="package",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"quantity"},
+     *                 @OA\Property(
+     *                     property="first_name",
+     *                     type="string",
+     *                     description="تعداد"
+     *                 ),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function updateQuantity(Request $request, $package)
+    {
+        return $this->storeroomService->updateQuantity($request,$package);
     }
 }
