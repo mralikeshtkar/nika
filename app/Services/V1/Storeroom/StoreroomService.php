@@ -31,7 +31,8 @@ class StoreroomService extends BaseService
      */
     public function index(Request $request): JsonResponse
     {
-        $storerooms = $this->packageRepository->paginate($request->get('perPage', 15));
+        $storerooms = $this->packageRepository->select(['id', 'title','description', 'quantity','created_at'])
+            ->paginate($request->get('perPage', 15));
         $resource = PaginationResource::make($storerooms)->additional(['itemsResource' => PackageResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('storerooms', $resource)
