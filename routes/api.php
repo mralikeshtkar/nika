@@ -93,6 +93,11 @@ Route::prefix('v1')->group(function (Router $router) {
             });
         });
 
+        /* Storeroom */
+        $router->group([], function (Router $router) {
+            $router->get('rahjoo-supports/{rahjooSupport}', [V1ApiRahjooSupportController::class, 'show']);
+        });
+
         /* Support */
         $router->group([], function (Router $router) {
             $router->get('rahjoo-supports/{rahjooSupport}', [V1ApiRahjooSupportController::class, 'show']);
