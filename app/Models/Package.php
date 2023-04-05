@@ -35,6 +35,7 @@ class Package extends Model
         'status',
         'age',
         'price',
+        'quantity',
         'is_completed',
         'description',
     ];

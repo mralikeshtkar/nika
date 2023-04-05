@@ -178,14 +178,11 @@ class RahjooRepository extends BaseRepository implements RahjooRepositoryInterfa
         return $rahjoo->update(['support_id' => $support_id]);
     }
 
-    public function onlySupportRahjoos($user): static
+    public function onlySupportRahjoos($support_id): static
     {
-        $this->model = $this->model->where(function ($q) use ($user) {
-            $q->when($user->hasSupportRole(), function ($q) use ($user) {
-                /** @var Builder $q */
-                $q->whereHas('support', function ($q) use ($user) {
-                    $q->where('support_id', $user->id);
-                });
+        $this->model = $this->model->where(function ($q) use ($support_id) {
+            $q->whereHas('support', function ($q) use ($support_id) {
+                $q->where('support_id', $support_id);
             })->has('support');
         });
         return $this;

@@ -24,6 +24,7 @@ return new class extends Migration {
             $table->unsignedTinyInteger('status')->default(PackageStatus::Active);
             $table->unsignedSmallInteger('age');
             $table->string('price');
+            $table->unsignedBigInteger('quantity')->default(0);
             $table->boolean('is_completed')->default(false);
             $table->text('description')->nullable();
             $table->timestamps();

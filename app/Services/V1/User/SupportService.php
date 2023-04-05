@@ -37,13 +37,14 @@ class SupportService extends BaseService
 
     /**
      * @param Request $request
+     * @param $support
      * @return JsonResponse
      */
-    public function rahjoos(Request $request): JsonResponse
+    public function rahjoos(Request $request,$support): JsonResponse
     {
 //        ApiResponse::authorize($request->user()->isSupport());
         $rahjoos = resolve(RahjooRepositoryInterface::class)
-            ->onlySupportRahjoos($request->user())
+            ->onlySupportRahjoos($support)
             ->withSupportIfIsSuperAdmin($request->user())
             ->filterSupportStep($request)
             ->with(['user:id,first_name,last_name,birthdate'])
@@ -51,6 +52,23 @@ class SupportService extends BaseService
         $resource = PaginationResource::make($rahjoos)->additional(['itemsResource' => RahjooResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('rahjoos', $resource)
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $support
+     * @param $rahjoo
+     * @return JsonResponse
+     */
+    public function rahjoo(Request $request, $support, $rahjoo): JsonResponse
+    {
+        $rahjoo = resolve(RahjooRepositoryInterface::class)
+            ->onlySupportRahjoos($support)
+            ->with(['user:id,first_name,last_name,birthdate','support', 'support.support:id,first_name,last_name'])
+            ->findOrFailById($rahjoo);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('rahjoos', new RahjooResource($rahjoo))
             ->send();
     }
 

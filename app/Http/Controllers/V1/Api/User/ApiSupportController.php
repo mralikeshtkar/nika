@@ -25,7 +25,7 @@ class ApiSupportController extends ApiBaseController
     /**
      * @OA\Get(
      *     path="/support/{support}/rahjoos",
-     *     summary="دریافت رهجوهای پشتیبان ها",
+     *     summary="دریافت رهجوهای پشتیبان",
      *     description="",
      *     tags={"پشتیبان"},
      *     @OA\Parameter(
@@ -50,8 +50,40 @@ class ApiSupportController extends ApiBaseController
      *     )
      * )
      */
-    public function rahjoos(Request $request)
+    public function rahjoos(Request $request,$support)
     {
-        return $this->supportService->rahjoos($request);
+        return $this->supportService->rahjoos($request,$support);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/support/{support}/rahjoos/{rahjoo}",
+     *     summary="دریافت رهجو پشتیبان",
+     *     description="",
+     *     tags={"پشتیبان"},
+     *     @OA\Parameter(
+     *         description="شناسه پشتیبانی",
+     *         in="path",
+     *         name="support",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه رهجو",
+     *         in="path",
+     *         name="rahjoo",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent()
+     *     )
+     * )
+     */
+    public function rahjoo(Request $request,$support,$rahjoo)
+    {
+        return $this->supportService->rahjoo($request,$support,$rahjoo);
     }
 }
