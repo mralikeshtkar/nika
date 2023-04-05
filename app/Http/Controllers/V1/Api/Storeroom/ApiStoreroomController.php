@@ -24,9 +24,9 @@ class ApiStoreroomController extends ApiBaseController
     /**
      * @OA\Get (
      *     path="/storerooms",
-     *     summary="لیست استان ها بصورت صفحه بندی",
+     *     summary="لیست انبار بصورت صفحه بندی",
      *     description="",
-     *     tags={"استان"},
+     *     tags={"انبار"},
      *     @OA\Parameter(
      *         description="شماره صفحه",
      *         in="query",
