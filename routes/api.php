@@ -33,6 +33,7 @@ use App\Http\Controllers\V1\Api\RahjooCourse\ApiRahjooCourseController as V1ApiR
 use App\Http\Controllers\V1\Api\RahjooParent\ApiRahjooParentController as V1ApiRahjooParentController;
 use App\Http\Controllers\V1\Api\Role\ApiRoleController as V1ApiRoleController;
 use App\Http\Controllers\V1\Api\Skill\ApiSkillController as V1ApiSkillController;
+use App\Http\Controllers\V1\Api\Storeroom\ApiStoreroomController as V1ApiStoreroomController;
 use App\Http\Controllers\V1\Api\User\ApiRahnamaController as V1ApiRahnamaController;
 use App\Http\Controllers\V1\Api\User\ApiRahyabController as V1ApiRahyabController;
 use App\Http\Controllers\V1\Api\User\ApiSupportController as V1ApiSupportController;
@@ -95,7 +96,7 @@ Route::prefix('v1')->group(function (Router $router) {
 
         /* Storeroom */
         $router->group([], function (Router $router) {
-            $router->get('rahjoo-supports/{rahjooSupport}', [V1ApiRahjooSupportController::class, 'show']);
+            $router->get('storerooms', [V1ApiStoreroomController::class, 'index']);
         });
 
         /* Support */
