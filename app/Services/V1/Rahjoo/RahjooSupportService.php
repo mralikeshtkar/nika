@@ -77,7 +77,7 @@ class RahjooSupportService extends BaseService
         $rahjooSupport = $this->rahjooSupportRepository->notCanceled()
             ->with(['support:id,first_name,last_name'])
             ->findOrFailById($rahjooSupport);
-        ApiResponse::authorize($request->user()->can('update', $rahjooSupport));
+        ApiResponse::authorize($request->user()->can('cancel', $rahjooSupport));
         ApiResponse::validate($request->all(), [
             'description' => ['nullable', 'string'],
         ]);
