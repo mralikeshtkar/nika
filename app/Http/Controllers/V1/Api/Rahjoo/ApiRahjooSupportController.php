@@ -168,9 +168,6 @@ class ApiRahjooSupportController extends ApiBaseController
      */
     public function changeStep(Request $request, $rahjooSupport)
     {
-        Schema::table('packages', function (Blueprint $table) {
-            $table->unsignedBigInteger('quantity')->default(0);
-        });
         return $this->rahjooSupportService->changeStep($request, $rahjooSupport);
     }
 
