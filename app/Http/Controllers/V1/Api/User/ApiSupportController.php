@@ -35,6 +35,14 @@ class ApiSupportController extends ApiBaseController
      *         required=true,
      *         @OA\Schema(type="number"),
      *     ),
+     *     @OA\Parameter(
+     *         description="گام",
+     *         in="query",
+     *         name="step",
+     *         description="میتواند first - second - third باشد",
+     *         required=false,
+     *         @OA\Schema(type="string"),
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="OK",

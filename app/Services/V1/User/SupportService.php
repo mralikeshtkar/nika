@@ -45,6 +45,7 @@ class SupportService extends BaseService
         $rahjoos = resolve(RahjooRepositoryInterface::class)
             ->onlySupportRahjoos($request->user())
             ->withSupportIfIsSuperAdmin($request->user())
+            ->filterSupportStep($request)
             ->with(['user:id,first_name,last_name,birthdate'])
             ->paginate($request->get('perPage', 10));
         $resource = PaginationResource::make($rahjoos)->additional(['itemsResource' => RahjooResource::class]);

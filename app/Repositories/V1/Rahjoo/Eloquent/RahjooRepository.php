@@ -2,6 +2,7 @@
 
 namespace App\Repositories\V1\Rahjoo\Eloquent;
 
+use App\Enums\Rahjoo\RahjooSupportStep;
 use App\Models\Rahjoo;
 use App\Repositories\V1\BaseRepository;
 use App\Repositories\V1\Rahjoo\Interfaces\RahjooRepositoryInterface;
@@ -135,12 +136,26 @@ class RahjooRepository extends BaseRepository implements RahjooRepositoryInterfa
         $rahjoo->questionPoints()->attach($points);
     }
 
-    public function updateQuestionPoints($rahjoo,$intelligence_point_id, $question, $point)
+    public function updateQuestionPoints($rahjoo, $intelligence_point_id, $question, $point)
     {
         /** @var Rahjoo $rahjoo */
         $rahjoo->questionPoints()
-            ->wherePivot('intelligence_point_id',$intelligence_point_id)
+            ->wherePivot('intelligence_point_id', $intelligence_point_id)
             ->updateExistingPivot($question, ['point' => $point]);
+    }
+
+    /**
+     * @param Request $request
+     * @return $this
+     */
+    public function filterSupportStep(Request $request): static
+    {
+        $this->model->when($request->filled('step') && in_array($request->step, RahjooSupportStep::asArray()), function ($q) use ($request) {
+            $q->whereHas('support', function ($q) use ($request) {
+                $q->where('step', $request->step);
+            });
+        });
+        return $this;
     }
 
     public function storeIntelligenceRahnama($rahjoo, $rahnama_id, $intelligence_id)
@@ -179,7 +194,7 @@ class RahjooRepository extends BaseRepository implements RahjooRepositoryInterfa
     public function withSupportIfIsSuperAdmin($user): static
     {
         $this->model = $this->model->when($user->isSuperAdmin(), function ($q) {
-            $q->with(['support','support.support:id,first_name,last_name']);
+            $q->with(['support', 'support.support:id,first_name,last_name']);
         });
         return $this;
     }

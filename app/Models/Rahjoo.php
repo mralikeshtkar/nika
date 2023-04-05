@@ -131,7 +131,8 @@ class Rahjoo extends Model
     public function support(): HasOne
     {
         return $this->hasOne(RahjooSupport::class, 'rahjoo_id')
-            ->latest();
+            ->latest()
+            ->whereNull('canceled_at');
     }
 
     /**
