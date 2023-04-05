@@ -96,7 +96,6 @@ class RahjooSupportService extends BaseService
     public function changeStep(Request $request, $rahjooSupport): JsonResponse
     {
         $rahjooSupport = $this->rahjooSupportRepository->notCanceled()
-            ->with(['support:id,first_name,last_name'])
             ->findOrFailById($rahjooSupport);
         ApiResponse::authorize($request->user()->can('chaneStep', $rahjooSupport));
         ApiResponse::validate($request->all(), [
@@ -106,6 +105,13 @@ class RahjooSupportService extends BaseService
             'step' => $request->step,
         ]);
         return ApiResponse::message(trans("Mission accomplished"))->send();
+    }
+
+    public function generatePayUrl(Request $request, $rahjooSupport)
+    {
+        $rahjooSupport = $this->rahjooSupportRepository->notCanceled()
+            ->findOrFailById($rahjooSupport);
+        dd("ok");
     }
 
     #endregion

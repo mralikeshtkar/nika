@@ -171,4 +171,9 @@ class ApiRahjooSupportController extends ApiBaseController
         return $this->rahjooSupportService->changeStep($request, $rahjooSupport);
     }
 
+    public function generatePayUrl(Request $request, $rahjooSupport)
+    {
+        return $this->rahjooSupportService->generatePayUrl($request, $rahjooSupport);
+    }
+
 }
