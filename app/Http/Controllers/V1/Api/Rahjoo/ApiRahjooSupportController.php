@@ -112,14 +112,7 @@ class ApiRahjooSupportController extends ApiBaseController
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"_method","description"},
-     *                 @OA\Property(
-     *                     property="_method",
-     *                     type="string",
-     *                     default="put",
-     *                     enum={"put"},
-     *                     description="این مقدار باید بصورت ثابت شود",
-     *                 ),
+     *                 required={"description"},
      *                 @OA\Property(
      *                     property="description",
      *                     type="string",
@@ -157,14 +150,7 @@ class ApiRahjooSupportController extends ApiBaseController
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"_method","step"},
-     *                 @OA\Property(
-     *                     property="_method",
-     *                     type="string",
-     *                     default="put",
-     *                     enum={"put"},
-     *                     description="این مقدار باید بصورت ثابت شود",
-     *                 ),
+     *                 required={"step"},
      *                 @OA\Property(
      *                     property="step",
      *                     type="string",
