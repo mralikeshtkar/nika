@@ -5,7 +5,9 @@ namespace App\Http\Controllers\V1\Api\Rahjoo;
 use App\Http\Controllers\V1\Api\ApiBaseController;
 use App\Services\V1\Rahjoo\RahjooService;
 use App\Services\V1\Rahjoo\RahjooSupportService;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use OpenApi\Annotations as OA;
 
 class ApiRahjooSupportController extends ApiBaseController
@@ -88,7 +90,7 @@ class ApiRahjooSupportController extends ApiBaseController
      *     ),
      * )
      */
-    public function update(Request $request,$rahjooSupport)
+    public function update(Request $request, $rahjooSupport)
     {
         return $this->rahjooSupportService->update($request, $rahjooSupport);
     }
@@ -133,9 +135,57 @@ class ApiRahjooSupportController extends ApiBaseController
      *     ),
      * )
      */
-    public function cancel(Request $request,$rahjooSupport)
+    public function cancel(Request $request, $rahjooSupport)
     {
         return $this->rahjooSupportService->cancel($request, $rahjooSupport);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/rahjoo-supports/{rahjooSupport}/change-step",
+     *     summary="تغییر مرحله  پشتیبانی رهجو",
+     *     description="",
+     *     tags={"پشتیبان"},
+     *     @OA\Parameter(
+     *         description="شناسه پشتیبانی رهجو",
+     *         in="path",
+     *         name="rahjooSupport",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"_method","step"},
+     *                 @OA\Property(
+     *                     property="_method",
+     *                     type="string",
+     *                     default="put",
+     *                     enum={"put"},
+     *                     description="این مقدار باید بصورت ثابت شود",
+     *                 ),
+     *                 @OA\Property(
+     *                     property="step",
+     *                     type="string",
+     *                     description="میتواند first - second - third باشد",
+     *                 ),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function changeStep(Request $request, $rahjooSupport)
+    {
+        Schema::table('packages', function (Blueprint $table) {
+            $table->unsignedBigInteger('quantity')->default(0);
+        });
+        return $this->rahjooSupportService->changeStep($request, $rahjooSupport);
     }
 
 }

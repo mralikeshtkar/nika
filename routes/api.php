@@ -98,6 +98,7 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->get('rahjoo-supports/{rahjooSupport}', [V1ApiRahjooSupportController::class, 'show']);
             $router->put('rahjoo-supports/{rahjooSupport}', [V1ApiRahjooSupportController::class, 'update']);
             $router->post('rahjoo-supports/{rahjooSupport}/cancel', [V1ApiRahjooSupportController::class, 'cancel']);
+            $router->post('rahjoo-supports/{rahjooSupport}/change-step', [V1ApiRahjooSupportController::class, 'changeStep']);
         });
 
         /* Rahyab */

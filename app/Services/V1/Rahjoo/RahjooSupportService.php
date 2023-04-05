@@ -88,6 +88,26 @@ class RahjooSupportService extends BaseService
         return ApiResponse::message(trans("Mission accomplished"))->send();
     }
 
+    /**
+     * @param Request $request
+     * @param $rahjooSupport
+     * @return JsonResponse
+     */
+    public function changeStep(Request $request, $rahjooSupport): JsonResponse
+    {
+        $rahjooSupport = $this->rahjooSupportRepository->notCanceled()
+            ->with(['support:id,first_name,last_name'])
+            ->findOrFailById($rahjooSupport);
+        ApiResponse::authorize($request->user()->can('chaneStep', $rahjooSupport));
+        ApiResponse::validate($request->all(), [
+            'step' => ['required', new EnumValue(RahjooSupportStep::class)],
+        ]);
+        $this->rahjooSupportRepository->update($rahjooSupport, [
+            'step' => $request->step,
+        ]);
+        return ApiResponse::message(trans("Mission accomplished"))->send();
+    }
+
     #endregion
 
 }

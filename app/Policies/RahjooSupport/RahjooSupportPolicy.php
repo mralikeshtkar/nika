@@ -26,6 +26,16 @@ class RahjooSupportPolicy
      * @param RahjooSupport $supportService
      * @return bool
      */
+    public function changeStep(User $user, RahjooSupport $supportService): bool
+    {
+        return $supportService->support_id == $user->id;
+    }
+
+    /**
+     * @param User $user
+     * @param RahjooSupport $supportService
+     * @return bool
+     */
     public function indexComment(User $user, RahjooSupport $supportService): bool
     {
         return $supportService->support_id == $user->id;
