@@ -9,6 +9,7 @@ use App\Http\Resources\V1\Rahjoo\RahjooSupportResource;
 use App\Models\Package;
 use App\Models\RahjooSupport;
 use App\Repositories\V1\Package\Interfaces\PackageRepositoryInterface;
+use App\Repositories\V1\Payment\Interfaces\PaymentRepositoryInterface;
 use App\Repositories\V1\Rahjoo\Interfaces\RahjooSupportRepositoryInterface;
 use App\Responses\Api\ApiResponse;
 use App\Services\V1\BaseService;
@@ -176,6 +177,9 @@ class RahjooSupportService extends BaseService
 
     public function verifyPayment(Request $request)
     {
+        $payment = resolve(PaymentRepositoryInterface::class)->statusPending()
+            ->findOrFailByInvoiceId($request->Authority);
+        dd($payment);
         try {
             dd(Payment::transactionId($request->invoice_id)->verify());
         } catch (InvalidPaymentException $e) {
