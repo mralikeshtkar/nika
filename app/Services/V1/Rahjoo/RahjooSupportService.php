@@ -10,6 +10,7 @@ use App\Repositories\V1\Rahjoo\Interfaces\RahjooSupportRepositoryInterface;
 use App\Responses\Api\ApiResponse;
 use App\Services\V1\BaseService;
 use BenSampo\Enum\Rules\EnumValue;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -130,9 +131,7 @@ class RahjooSupportService extends BaseService
         try {
             return DB::transaction(function () use ($request, $rahjooSupport, $package) {
                 $invoice = (new Invoice())->via(config('payment.default'))->amount($package->price);
-                $payment = Payment::purchase($invoice, function ($driver, $transactionId) {
-
-                })->pay();
+                $payment = Payment::purchase($invoice)->pay();
                 $package->payments()->create([
                     'owner_id' => $request->user()->id,
                     'rahjoo_support_id' => $rahjooSupport->id,
@@ -145,8 +144,7 @@ class RahjooSupportService extends BaseService
                     ->addData('payment', $payment->getAction())
                     ->send();
             });
-        } catch (\Exception $e) {
-            dd($e);
+        } catch (Exception $e) {
             return ApiResponse::error(trans('Internal server error'))->send();
         }
     }
