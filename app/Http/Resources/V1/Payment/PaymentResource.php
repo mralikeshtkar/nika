@@ -20,6 +20,8 @@ class PaymentResource extends JsonResource
             $collection->put('created_at', verta($this->resource->created_at)->formatJalaliDatetime());
         })->when(array_key_exists('status', $this->resource->getAttributes()), function (Collection $collection) {
             $collection->put('status', PaymentStatus::fromValue($this->resource->status)->description);
+        })->when(array_key_exists('gateway', $this->resource->getAttributes()), function (Collection $collection) {
+            $collection->put('gateway', trans(ucfirst($this->resource->gateway)));
         });
     }
 }
