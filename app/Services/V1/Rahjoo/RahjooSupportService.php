@@ -125,14 +125,13 @@ class RahjooSupportService extends BaseService
         if (!$package->hasQuantity()) {
             return ApiResponse::error(trans('There is not enough package stock'), Response::HTTP_BAD_REQUEST);
         }
-        $invoice = (new Invoice())->via(config('payment.default'))->amount($package->price);
-        dd(Payment::purchase($invoice, function ($driver, $transactionId) {
-            // Store transactionId in database.
-            // We need the transactionId to verify payment in the future.
-        })->pay()->toJson());
         try {
             return DB::transaction(function () use ($package) {
-
+                $invoice = (new Invoice())->via(config('payment.default'))->amount($package->price);
+                dd(Payment::purchase($invoice, function ($driver, $transactionId) {
+                    // Store transactionId in database.
+                    // We need the transactionId to verify payment in the future.
+                })->pay()->toJson());
             });
         } catch (\Exception $e) {
             return ApiResponse::error(trans('Internal server error'));
