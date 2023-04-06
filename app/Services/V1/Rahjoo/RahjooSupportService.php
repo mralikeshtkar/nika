@@ -124,6 +124,7 @@ class RahjooSupportService extends BaseService
         if (!$package->hasQuantity()) {
             return ApiResponse::error(trans('There is not enough package stock'), Response::HTTP_BAD_REQUEST);
         }
+        dd($invoice = (new Invoice())->amount($package->price));
         try {
             return DB::transaction(function () use ($package) {
                 $invoice = (new Invoice())->amount($package->price);
