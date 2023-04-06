@@ -180,14 +180,14 @@ class RahjooSupportService extends BaseService
     {
         $paymentRepository = resolve(PaymentRepositoryInterface::class);
         $payment = $paymentRepository->statusPending()
-            ->findOrFailByInvoiceId($request->Authority);
+            ->findOrFailByInvoiceId($request->get('Authority'));
         try {
-            return DB::transaction(function () use ($paymentRepository, $payment) {
+            return DB::transaction(function () use ($paymentRepository, $payment,$request) {
                 $receipt = Payment::amount($payment->amount)->transactionId($payment->invoice_id)->verify();
                 $paymentRepository->update($payment, [
                     'referenceId' => $receipt->getReferenceId(),
                     'date' => $receipt->getDate(),
-                    'status' => $receipt->Status == "OK" ? PaymentStatus::Success : PaymentStatus::Canceled,
+                    'status' => $request->get('Status') == "OK" ? PaymentStatus::Success : PaymentStatus::Canceled,
                 ]);
                 return redirect('/');
             });
