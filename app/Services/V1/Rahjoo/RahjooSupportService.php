@@ -131,7 +131,7 @@ class RahjooSupportService extends BaseService
                 dd(Payment::purchase($invoice,function($driver, $transactionId) {
                     // Store transactionId in database.
                     // We need the transactionId to verify payment in the future.
-                })->pay()->render());
+                })->pay()->toJson());
             });
         } catch (\Exception $e) {
             return ApiResponse::error(trans('Internal server error'));
