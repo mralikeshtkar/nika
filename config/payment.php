@@ -264,7 +264,7 @@ return [
 
             'mode' => 'sandbox', // can be normal, sandbox, zaringate
             'merchantId' => 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
-            'callbackUrl' => 'http://yoursite.com/path/to',
+            'callbackUrl' => 'https://api.rashtdev.ir/',
             'description' => 'payment using zarinpal',
         ],
         'zibal' => [

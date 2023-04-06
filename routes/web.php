@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\V1\Api\IntelligencePointName\ApiIntelligencePointNameController;
 use App\Http\Controllers\V1\Api\Media\ApiMediaController as V1ApiMediaController;
+use App\Http\Controllers\V1\Web\RahjooSupport\WebRahjooSupportController as V1WebRahjooSupportController;
 use App\Responses\Api\ApiResponse;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
@@ -23,9 +24,12 @@ Route::prefix('v1')->group(function (Router $router){
         ->middleware('signed')
         ->name('media.download');
 
+    $router->post('rahjoo-supports/{rahjooSupport}/payments/verify', [V1WebRahjooSupportController::class, 'verifyPayment']);
+
 });
 
 Route::get('/', function (\Illuminate\Http\Request $request) {
+    dd($request->all());
 //    $start=today()->subYears(10);
     $start=today()->subDays(10);
     $today=today();
