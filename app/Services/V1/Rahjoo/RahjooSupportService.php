@@ -176,12 +176,16 @@ class RahjooSupportService extends BaseService
             ->send();
     }
 
+    /**
+     * @throws Exception
+     */
     public function verifyPayment(Request $request)
     {
         $paymentRepository = resolve(PaymentRepositoryInterface::class);
         /*$payment = $paymentRepository->statusPending()
             ->findOrFailByInvoiceId($request->get('Authority'));*/
         try {
+            throw new Exception();
             return DB::transaction(function () use ($paymentRepository,$request) {
                 $receipt = Payment::transactionId($request->get('Authority'))->verify();
                 /*$paymentRepository->update($payment, [
