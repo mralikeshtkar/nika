@@ -176,27 +176,22 @@ class RahjooSupportService extends BaseService
             ->send();
     }
 
-    /**
-     * @throws Exception
-     */
     public function verifyPayment(Request $request)
     {
         $paymentRepository = resolve(PaymentRepositoryInterface::class);
-        /*$payment = $paymentRepository->statusPending()
-            ->findOrFailByInvoiceId($request->get('Authority'));*/
+        $payment = $paymentRepository->statusPending()
+            ->findOrFailByInvoiceId($request->get('Authority'));
         try {
-            throw new Exception();
-            return DB::transaction(function () use ($paymentRepository,$request) {
-                $receipt = Payment::transactionId($request->get('Authority'))->verify();
-                /*$paymentRepository->update($payment, [
+            return DB::transaction(function () use ($paymentRepository, $payment,$request) {
+                $receipt = Payment::amount($payment->amount)->transactionId($payment->invoice_id)->verify();
+                $paymentRepository->update($payment, [
                     'referenceId' => $receipt->getReferenceId(),
                     'date' => $receipt->getDate(),
                     'status' => $request->get('Status') == "OK" ? PaymentStatus::Success : PaymentStatus::Canceled,
-                ]);*/
+                ]);
                 return redirect('/');
             });
         } catch (InvalidPaymentException $e) {
-            dd("khata");
             abort(Response::HTTP_NOT_FOUND);
         }
     }
