@@ -2,6 +2,7 @@
 
 use App\Enums\AddressType;
 use App\Enums\Package\PackageStatus;
+use App\Enums\Payment\PaymentStatus;
 use App\Enums\Permission;
 use App\Enums\RahjooParent\RahjooParentGender;
 use App\Enums\Role;
@@ -40,5 +41,11 @@ return [
     PackageStatus::class => [
         PackageStatus::Active => "فعال",
         PackageStatus::Inactive => "غیرفعال",
+    ],
+    PaymentStatus::class => [
+        PaymentStatus::Pending => "در حال پرداخت",
+        PaymentStatus::Success => "موفق",
+        PaymentStatus::Fail => "ناموفق",
+        PaymentStatus::Canceled => "لغو شده",
     ],
 ];

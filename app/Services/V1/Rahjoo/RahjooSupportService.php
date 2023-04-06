@@ -3,8 +3,10 @@
 namespace App\Services\V1\Rahjoo;
 
 use App\Enums\Rahjoo\RahjooSupportStep;
+use App\Http\Resources\V1\Payment\PaymentResource;
 use App\Http\Resources\V1\Rahjoo\RahjooSupportResource;
 use App\Models\Package;
+use App\Models\RahjooSupport;
 use App\Repositories\V1\Package\Interfaces\PackageRepositoryInterface;
 use App\Repositories\V1\Rahjoo\Interfaces\RahjooSupportRepositoryInterface;
 use App\Responses\Api\ApiResponse;
@@ -147,6 +149,24 @@ class RahjooSupportService extends BaseService
         } catch (Exception $e) {
             return ApiResponse::error(trans('Internal server error'))->send();
         }
+    }
+
+    /**
+     * @param Request $request
+     * @param $rahjooSupport
+     * @return JsonResponse
+     */
+    public function payments(Request $request, $rahjooSupport): JsonResponse
+    {
+        /** @var RahjooSupport $rahjooSupport */
+        $rahjooSupport = $this->rahjooSupportRepository->notCanceled()
+            ->findOrFailById($rahjooSupport);
+        $payments = $rahjooSupport->payments()
+            ->latest()
+            ->get();
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('payments', PaymentResource::collection($payments))
+            ->send();
     }
 
     #endregion

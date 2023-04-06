@@ -2,9 +2,10 @@
 
 namespace App\Enums\Payment;
 
+use BenSampo\Enum\Contracts\LocalizedEnum;
 use BenSampo\Enum\Enum;
 
-class PaymentStatus extends Enum
+class PaymentStatus extends Enum implements LocalizedEnum
 {
     const Pending = "pending";
     const Canceled = "canceled";

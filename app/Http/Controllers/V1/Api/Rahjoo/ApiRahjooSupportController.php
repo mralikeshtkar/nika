@@ -171,9 +171,67 @@ class ApiRahjooSupportController extends ApiBaseController
         return $this->rahjooSupportService->changeStep($request, $rahjooSupport);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/rahjoo-supports/{rahjooSupport}/generate-pay-url",
+     *     summary="ایجاد لینک پرداخت",
+     *     description="",
+     *     tags={"پشتیبان"},
+     *     @OA\Parameter(
+     *         description="شناسه پشتیبانی رهجو",
+     *         in="path",
+     *         name="rahjooSupport",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"package_id"},
+     *                 @OA\Property(
+     *                     property="package_id",
+     *                     type="string",
+     *                     description="شناسه پکیج",
+     *                 ),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
     public function generatePayUrl(Request $request, $rahjooSupport)
     {
         return $this->rahjooSupportService->generatePayUrl($request, $rahjooSupport);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/rahjoo-supports/{rahjooSupport}/payments",
+     *     summary="دریافت پرداخت های پشتیبانی رهجو",
+     *     description="",
+     *     tags={"پشتیبان"},
+     *     @OA\Parameter(
+     *         description="شناسه پشتیبانی رهجو",
+     *         in="path",
+     *         name="rahjooSupport",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent()
+     *     )
+     * )
+     */
+    public function payments(Request $request, $rahjooSupport)
+    {
+        return $this->rahjooSupportService->payments($request, $rahjooSupport);
     }
 
 }

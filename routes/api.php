@@ -108,6 +108,7 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->post('rahjoo-supports/{rahjooSupport}/cancel', [V1ApiRahjooSupportController::class, 'cancel']);
             $router->post('rahjoo-supports/{rahjooSupport}/change-step', [V1ApiRahjooSupportController::class, 'changeStep']);
             $router->post('rahjoo-supports/{rahjooSupport}/generate-pay-url', [V1ApiRahjooSupportController::class, 'generatePayUrl']);
+            $router->post('rahjoo-supports/{rahjooSupport}/payments', [V1ApiRahjooSupportController::class, 'payments']);
         });
 
         /* Rahyab */

@@ -24,9 +24,17 @@ class RahjooSupport extends Model
     /**
      * @return HasMany
      */
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    /**
+     * @return HasMany
+     */
     public function comments(): HasMany
     {
-        return $this->hasMany(SupportComment::class,'rahjoo_support_id','id');
+        return $this->hasMany(SupportComment::class, 'rahjoo_support_id', 'id');
     }
 
     /**
@@ -34,7 +42,7 @@ class RahjooSupport extends Model
      */
     public function rahjoo(): BelongsTo
     {
-        return $this->belongsTo(Rahjoo::class,'rahjoo_id','id');
+        return $this->belongsTo(Rahjoo::class, 'rahjoo_id', 'id');
     }
 
     /**
@@ -42,6 +50,6 @@ class RahjooSupport extends Model
      */
     public function support(): BelongsTo
     {
-        return $this->belongsTo(User::class,'support_id','id');
+        return $this->belongsTo(User::class, 'support_id', 'id');
     }
 }
