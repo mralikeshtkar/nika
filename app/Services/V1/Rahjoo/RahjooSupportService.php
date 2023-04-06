@@ -2,6 +2,7 @@
 
 namespace App\Services\V1\Rahjoo;
 
+use App\Enums\Payment\PaymentStatus;
 use App\Enums\Rahjoo\RahjooSupportStep;
 use App\Http\Resources\V1\Payment\PaymentResource;
 use App\Http\Resources\V1\Rahjoo\RahjooSupportResource;
@@ -162,7 +163,10 @@ class RahjooSupportService extends BaseService
         $rahjooSupport = $this->rahjooSupportRepository->notCanceled()
             ->findOrFailById($rahjooSupport);
         $payments = $rahjooSupport->payments()
-            ->latest()
+            ->with('paymentable:id,title,price,description')
+            ->when($request->filled('status') && in_array($request->status, PaymentStatus::asArray()), function ($q) use ($request) {
+                $q->where('status', $request->status);
+            })->latest()
             ->get();
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('payments', PaymentResource::collection($payments))
