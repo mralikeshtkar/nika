@@ -120,7 +120,7 @@ class RahjooSupportService extends BaseService
             'package_id' => ['required', 'exists:' . Package::class . ',id'],
         ]);
         /** @var Package $package */
-        $package = resolve(PackageRepositoryInterface::class)->findOrFailById($request->package);
+        $package = resolve(PackageRepositoryInterface::class)->findOrFailById($request->package_id);
         if (!$package->hasQuantity()) {
             return ApiResponse::error(trans('There is not enough package stock'), Response::HTTP_BAD_REQUEST);
         }
