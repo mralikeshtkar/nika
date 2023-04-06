@@ -134,7 +134,7 @@ class RahjooSupportService extends BaseService
                     // We need the transactionId to verify payment in the future.
                 })->pay();
                 return ApiResponse::message(trans("Mission accomplished"))
-                    ->addData('payment',$payment)
+                    ->addData('payment',$payment['action'])
                     ->send();
             });
         } catch (\Exception $e) {
