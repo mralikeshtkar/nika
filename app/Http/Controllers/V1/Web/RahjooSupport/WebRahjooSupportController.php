@@ -21,8 +21,8 @@ class WebRahjooSupportController extends WebBaseController
         $this->rahjooSupportService = $rahjooSupportService;
     }
 
-    public function verifyPayment(Request $request, $rahjooSupport)
+    public function verifyPayment(Request $request)
     {
-        return $this->rahjooSupportService->verifyPayment($request, $rahjooSupport);
+        return $this->rahjooSupportService->verifyPayment($request);
     }
 }

@@ -174,14 +174,8 @@ class RahjooSupportService extends BaseService
             ->send();
     }
 
-    public function verifyPayment(Request $request, $rahjooSupport)
+    public function verifyPayment(Request $request)
     {
-        /** @var RahjooSupport $rahjooSupport */
-        $rahjooSupport = $this->rahjooSupportRepository->notCanceled()
-            ->findOrFailById($rahjooSupport);
-        ApiResponse::validate($request->all(), [
-            'invoice_id' => ['required', 'string'],
-        ]);
         try {
             dd(Payment::transactionId($request->invoice_id)->verify());
         } catch (InvalidPaymentException $e) {
