@@ -29,9 +29,11 @@ return new class extends Migration {
             $table->foreignId('paymentable_id');
             $table->string('paymentable_type');
             $table->string('invoice_id');
+            $table->string('referenceId');
             $table->string('amount');
             $table->string('gateway');
             $table->string('status')->default(PaymentStatus::Pending);
+            $table->timestamp('date')->nullable();
             $table->timestamps();
         });
     }

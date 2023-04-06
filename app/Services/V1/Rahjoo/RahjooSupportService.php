@@ -21,6 +21,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Shetabit\Multipay\Exceptions\InvalidPaymentException;
 use Shetabit\Multipay\Invoice;
+use Shetabit\Multipay\Receipt;
 use Shetabit\Multipay\RedirectionForm;
 use Shetabit\Payment\Facade\Payment;
 use Symfony\Component\HttpFoundation\Response;
@@ -177,10 +178,19 @@ class RahjooSupportService extends BaseService
 
     public function verifyPayment(Request $request)
     {
-        $payment = resolve(PaymentRepositoryInterface::class)->statusPending()
+        $paymentRepository = resolve(PaymentRepositoryInterface::class);
+        $payment = $paymentRepository->statusPending()
             ->findOrFailByInvoiceId($request->Authority);
         try {
-            dd(Payment::amount($payment->amount)->transactionId($payment->invoice_id)->verify());
+            return DB::transaction(function () use ($paymentRepository, $payment) {
+                $receipt = Payment::amount($payment->amount)->transactionId($payment->invoice_id)->verify();
+                $paymentRepository->update($payment, [
+                    'referenceId' => $receipt->getReferenceId(),
+                    'date' => $receipt->getDate(),
+                    'status' => $receipt->Status == "OK" ? PaymentStatus::Success : PaymentStatus::Canceled,
+                ]);
+                return redirect('/');
+            });
         } catch (InvalidPaymentException $e) {
             dd($e);
         }

@@ -15,9 +15,15 @@ class Payment extends Model
         'paymentable_id',
         'paymentable_type',
         'invoice_id',
+        'referenceId',
         'amount',
         'gateway',
         'status',
+        'date',
+    ];
+
+    protected $casts = [
+        'date' => 'datetime',
     ];
 
     #region Relations
