@@ -132,7 +132,7 @@ class RahjooSupportService extends BaseService
                 $payment = Payment::purchase($invoice, function ($driver, $transactionId) {
                     // Store transactionId in database.
                     // We need the transactionId to verify payment in the future.
-                })->pay()->toJson();
+                })->pay();
                 return ApiResponse::message(trans("Mission accomplished"))
                     ->addData('url',Arr::get($payment,'action'))
                     ->send();
