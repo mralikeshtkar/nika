@@ -146,7 +146,7 @@ class RahjooSupportService extends BaseService
                     ->send();
             });
         } catch (\Exception $e) {
-            return ApiResponse::error(trans('Internal server error'));
+            return ApiResponse::error(trans('Internal server error'))->send();
         }
     }
 
