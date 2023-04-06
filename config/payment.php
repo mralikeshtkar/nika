@@ -264,7 +264,7 @@ return [
 
             'mode' => 'sandbox', // can be normal, sandbox, zaringate
             'merchantId' => 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
-            'callbackUrl' => 'https://api.rashtdev.ir/rahjoo-supports/payments/verify/',
+            'callbackUrl' => 'https://api.rashtdev.ir/v1/rahjoo-supports/payments/verify/',
             'description' => 'payment using zarinpal',
         ],
         'zibal' => [
