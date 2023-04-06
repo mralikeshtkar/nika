@@ -132,10 +132,10 @@ class RahjooSupportService extends BaseService
                 $invoice = (new Invoice())->via(config('payment.default'))->amount($package->price);
                 $invoice_id = null;
                 /** @var RedirectionForm $payment */
-                $payment = Payment::purchase($invoice, function ($driver, $transactionId) use ($invoice_id) {
-                    $invoice_id = $transactionId;
-                });
-                dd($payment);
+                $payment = Payment::purchase($invoice, function ($driver, $transactionId) {
+                    dump($transactionId);
+                })->pay();
+                dd($invoice->getTransactionId());
                 return ApiResponse::message(trans("Mission accomplished"))
                     ->addData('payment', $payment->getAction())
                     ->send();
