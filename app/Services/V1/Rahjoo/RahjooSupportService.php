@@ -192,6 +192,7 @@ class RahjooSupportService extends BaseService
                 return redirect('/');
             });
         } catch (InvalidPaymentException $e) {
+            dd("khata");
             abort(Response::HTTP_NOT_FOUND);
         }
     }
