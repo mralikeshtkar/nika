@@ -14,6 +14,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Shetabit\Multipay\Invoice;
+use Shetabit\Payment\Facade\Payment;
 use Symfony\Component\HttpFoundation\Response;
 
 class RahjooSupportService extends BaseService
@@ -124,11 +125,13 @@ class RahjooSupportService extends BaseService
         if (!$package->hasQuantity()) {
             return ApiResponse::error(trans('There is not enough package stock'), Response::HTTP_BAD_REQUEST);
         }
-        dd($invoice = (new Invoice())->via(config('payment.default'))->amount($package->price));
         try {
             return DB::transaction(function () use ($package) {
-                $invoice = (new Invoice())->amount($package->price);
-                dd($invoice->getDriver());
+                $invoice = (new Invoice())->via(config('payment.default'))->amount($package->price);
+                dd(Payment::purchase($invoice,function($driver, $transactionId) {
+                    // Store transactionId in database.
+                    // We need the transactionId to verify payment in the future.
+                })->pay()->render());
             });
         } catch (\Exception $e) {
             return ApiResponse::error(trans('Internal server error'));
