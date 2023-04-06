@@ -242,4 +242,9 @@ class ApiRahjooSupportController extends ApiBaseController
         return $this->rahjooSupportService->payments($request, $rahjooSupport);
     }
 
+    public function verifyPayment(Request $request, $rahjooSupport)
+    {
+        return $this->rahjooSupportService->verifyPayment($request, $rahjooSupport);
+    }
+
 }

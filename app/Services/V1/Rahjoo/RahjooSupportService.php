@@ -18,6 +18,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Shetabit\Multipay\Exceptions\InvalidPaymentException;
 use Shetabit\Multipay\Invoice;
 use Shetabit\Multipay\RedirectionForm;
 use Shetabit\Payment\Facade\Payment;
@@ -171,6 +172,21 @@ class RahjooSupportService extends BaseService
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('payments', PaymentResource::collection($payments))
             ->send();
+    }
+
+    public function verifyPayment(Request $request, $rahjooSupport)
+    {
+        /** @var RahjooSupport $rahjooSupport */
+        $rahjooSupport = $this->rahjooSupportRepository->notCanceled()
+            ->findOrFailById($rahjooSupport);
+        ApiResponse::validate($request->all(), [
+            'invoice_id' => ['required', 'string'],
+        ]);
+        try {
+            dd(Payment::transactionId($request->invoice_id)->verify());
+        } catch (InvalidPaymentException $e) {
+            dd($e);
+        }
     }
 
     #endregion
