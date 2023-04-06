@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasOneDeep;
@@ -83,6 +84,14 @@ class Package extends Model
     #endregion
 
     #region Relations
+
+    /**
+     * @return MorphMany
+     */
+    public function payments(): MorphMany
+    {
+        return $this->morphMany(Payment::class, 'paymentable');
+    }
 
     /**
      * @return BelongsTo

@@ -25,7 +25,7 @@ return new class extends Migration {
                 ->on('rahjoo_supports')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
-            $table->string('url');
+            $table->string('action');
             $table->foreignId('paymentable_id');
             $table->string('paymentable_type');
             $table->string('invoice_id');
