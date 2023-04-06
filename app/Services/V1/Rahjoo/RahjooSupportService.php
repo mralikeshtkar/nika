@@ -129,7 +129,7 @@ class RahjooSupportService extends BaseService
         dd(Payment::purchase($invoice, function ($driver, $transactionId) {
             // Store transactionId in database.
             // We need the transactionId to verify payment in the future.
-        })->pay());
+        })->pay()->toJson());
         try {
             return DB::transaction(function () use ($package) {
 
