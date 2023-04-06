@@ -12,6 +12,7 @@ use App\Services\V1\BaseService;
 use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Shetabit\Multipay\Invoice;
 use Shetabit\Payment\Facade\Payment;
@@ -128,10 +129,14 @@ class RahjooSupportService extends BaseService
         try {
             return DB::transaction(function () use ($package) {
                 $invoice = (new Invoice())->via(config('payment.default'))->amount($package->price);
-                dd(Payment::purchase($invoice, function ($driver, $transactionId) {
+                $payment = Payment::purchase($invoice, function ($driver, $transactionId) {
                     // Store transactionId in database.
                     // We need the transactionId to verify payment in the future.
-                })->pay()->toJson());
+                })->pay()->render();
+                dd($payment);
+                return ApiResponse::message(trans("Mission accomplished"))
+                    ->addData('url',Arr::get($payment))
+                    ->send();
             });
         } catch (\Exception $e) {
             return ApiResponse::error(trans('Internal server error'));
