@@ -222,6 +222,14 @@ class ApiRahjooSupportController extends ApiBaseController
      *         required=true,
      *         @OA\Schema(type="number"),
      *     ),
+     *     @OA\Parameter(
+     *         description="وضعیت",
+     *         in="query",
+     *         name="step",
+     *         description="میتواند pending,canceled,success,fail باشد",
+     *         required=false,
+     *         @OA\Schema(type="string"),
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="OK",
