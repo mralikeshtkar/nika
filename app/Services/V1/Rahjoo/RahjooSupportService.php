@@ -179,9 +179,8 @@ class RahjooSupportService extends BaseService
     {
         $payment = resolve(PaymentRepositoryInterface::class)->statusPending()
             ->findOrFailByInvoiceId($request->Authority);
-        dd($payment);
         try {
-            dd(Payment::transactionId($request->invoice_id)->verify());
+            dd(Payment::amount($payment->amount)->transactionId($payment->invoice_id)->verify());
         } catch (InvalidPaymentException $e) {
             dd($e);
         }
