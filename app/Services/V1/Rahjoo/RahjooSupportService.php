@@ -133,9 +133,8 @@ class RahjooSupportService extends BaseService
                     // Store transactionId in database.
                     // We need the transactionId to verify payment in the future.
                 })->pay()->render();
-                dd($payment);
                 return ApiResponse::message(trans("Mission accomplished"))
-                    ->addData('url',Arr::get($payment))
+                    ->addData('url',Arr::get($payment,'action'))
                     ->send();
             });
         } catch (\Exception $e) {
