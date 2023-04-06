@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Shetabit\Multipay\Invoice;
+use Shetabit\Multipay\RedirectionForm;
 use Shetabit\Payment\Facade\Payment;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -129,12 +130,13 @@ class RahjooSupportService extends BaseService
         try {
             return DB::transaction(function () use ($package) {
                 $invoice = (new Invoice())->via(config('payment.default'))->amount($package->price);
+                /** @var RedirectionForm $payment */
                 $payment = Payment::purchase($invoice, function ($driver, $transactionId) {
                     // Store transactionId in database.
                     // We need the transactionId to verify payment in the future.
                 })->pay();
                 return ApiResponse::message(trans("Mission accomplished"))
-                    ->addData('payment',$payment['action'])
+                    ->addData('payment',$payment->getAction())
                     ->send();
             });
         } catch (\Exception $e) {
