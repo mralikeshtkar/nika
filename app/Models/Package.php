@@ -72,6 +72,14 @@ class Package extends Model
         return PackageStatus::fromValue(intval($this->staus))->is(PackageStatus::Inactive);
     }
 
+    /**
+     * @return bool
+     */
+    public function hasQuantity(): bool
+    {
+        return $this->quantity > 0;
+    }
+
     #endregion
 
     #region Relations
@@ -115,7 +123,7 @@ class Package extends Model
      */
     public function questions(): HasOneDeep
     {
-        return $this->hasOneDeepFromRelations($this->pivotIntelligences(), (new IntelligencePackage)->exercises(),(new Exercise())->questions());
+        return $this->hasOneDeepFromRelations($this->pivotIntelligences(), (new IntelligencePackage)->exercises(), (new Exercise())->questions());
     }
 
     /**

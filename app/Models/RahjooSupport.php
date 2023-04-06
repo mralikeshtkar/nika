@@ -13,14 +13,11 @@ class RahjooSupport extends Model
         'support_id',
         'rahjoo_id',
         'step',
-        'pay_url',
-        'pay_url_generated_at',
         'cancel_description',
         'canceled_at',
     ];
 
     protected $casts = [
-        'pay_url_generated_at' => 'datetime',
         'canceled_at' => 'datetime',
     ];
 

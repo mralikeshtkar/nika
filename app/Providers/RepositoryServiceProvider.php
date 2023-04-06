@@ -34,6 +34,8 @@ use App\Repositories\V1\Package\Eloquent\IntelligencePackageRepository;
 use App\Repositories\V1\Package\Eloquent\PackageRepository;
 use App\Repositories\V1\Package\Interfaces\IntelligencePackageRepositoryInterface;
 use App\Repositories\V1\Package\Interfaces\PackageRepositoryInterface;
+use App\Repositories\V1\Payment\Eloquent\PaymentRepository;
+use App\Repositories\V1\Payment\Interfaces\PaymentRepositoryInterface;
 use App\Repositories\V1\Permission\Eloquent\PermissionRepository;
 use App\Repositories\V1\Permission\Interfaces\PermissionRepositoryInterface;
 use App\Repositories\V1\Personnel\Eloquent\PersonnelRepository;
@@ -128,5 +130,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(CommentRepositoryInterface::class, CommentService::class);
         $this->app->bind(RahjooSupportRepositoryInterface::class, RahjooSupportRepository::class);
         $this->app->bind(SupportCommentRepositoryInterface::class, SupportCommentRepository::class);
+        $this->app->bind(PaymentRepositoryInterface::class, PaymentRepository::class);
     }
 }

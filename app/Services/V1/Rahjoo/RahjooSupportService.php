@@ -4,12 +4,17 @@ namespace App\Services\V1\Rahjoo;
 
 use App\Enums\Rahjoo\RahjooSupportStep;
 use App\Http\Resources\V1\Rahjoo\RahjooSupportResource;
+use App\Models\Package;
+use App\Repositories\V1\Package\Interfaces\PackageRepositoryInterface;
 use App\Repositories\V1\Rahjoo\Interfaces\RahjooSupportRepositoryInterface;
 use App\Responses\Api\ApiResponse;
 use App\Services\V1\BaseService;
 use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Shetabit\Multipay\Invoice;
+use Symfony\Component\HttpFoundation\Response;
 
 class RahjooSupportService extends BaseService
 {
@@ -111,7 +116,22 @@ class RahjooSupportService extends BaseService
     {
         $rahjooSupport = $this->rahjooSupportRepository->notCanceled()
             ->findOrFailById($rahjooSupport);
-        dd("ok");
+        ApiResponse::validate($request->all(), [
+            'package_id' => ['required', 'exists:' . Package::class . ',id'],
+        ]);
+        /** @var Package $package */
+        $package = resolve(PackageRepositoryInterface::class)->findOrFailById($request->package);
+        if (!$package->hasQuantity()) {
+            return ApiResponse::error(trans('There is not enough package stock'), Response::HTTP_BAD_REQUEST);
+        }
+        try {
+            return DB::transaction(function () use ($package) {
+                $invoice = (new Invoice())->amount($package->price);
+                dd($invoice->getDriver());
+            });
+        } catch (\Exception $e) {
+            return ApiResponse::error(trans('Internal server error'));
+        }
     }
 
     #endregion

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Package;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Schema;
@@ -31,6 +33,7 @@ class AppServiceProvider extends ServiceProvider
         $this->_jsonResources();
         $this->_requestMacros();
         $this->_URLForceScheme();
+        $this->_morphMaps();
     }
 
     /**
@@ -59,5 +62,15 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->environment('production')) {
             URL::forceScheme('https');
         }
+    }
+
+    /**
+     * @return void
+     */
+    private function _morphMaps(): void
+    {
+        Relation::morphMap([
+            'package' => Package::class,
+        ]);
     }
 }
