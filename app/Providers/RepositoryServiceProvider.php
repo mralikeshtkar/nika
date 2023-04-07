@@ -60,6 +60,8 @@ use App\Repositories\V1\RahjooCourse\Eloquent\RahjooCourseRepository;
 use App\Repositories\V1\RahjooCourse\Interfaces\RahjooCourseRepositoryInterface;
 use App\Repositories\V1\RahjooParent\Eloquent\RahjooParentRepository;
 use App\Repositories\V1\RahjooParent\Interfaces\RahjooParentRepositoryInterface;
+use App\Repositories\V1\RequestSupport\Eloquent\RequestSupportRepository;
+use App\Repositories\V1\RequestSupport\Interfaces\RequestSupportRepositoryInterface;
 use App\Repositories\V1\Role\Eloquent\RoleRepository;
 use App\Repositories\V1\Role\Interfaces\RoleRepositoryInterface;
 use App\Repositories\V1\Skill\Eloquent\SkillRepository;
@@ -131,5 +133,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(RahjooSupportRepositoryInterface::class, RahjooSupportRepository::class);
         $this->app->bind(SupportCommentRepositoryInterface::class, SupportCommentRepository::class);
         $this->app->bind(PaymentRepositoryInterface::class, PaymentRepository::class);
+        $this->app->bind(RequestSupportRepositoryInterface::class, RequestSupportRepository::class);
     }
 }

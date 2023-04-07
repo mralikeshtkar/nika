@@ -31,6 +31,7 @@ use App\Http\Controllers\V1\Api\Rahjoo\ApiRahjooSupportController as V1ApiRahjoo
 use App\Http\Controllers\V1\Api\Rahjoo\ApiSupportCommentController as V1ApiSupportCommentController;
 use App\Http\Controllers\V1\Api\RahjooCourse\ApiRahjooCourseController as V1ApiRahjooCourseController;
 use App\Http\Controllers\V1\Api\RahjooParent\ApiRahjooParentController as V1ApiRahjooParentController;
+use App\Http\Controllers\V1\Api\RequestSupport\ApiRequestSupportController as V1ApiRequestSupportController;
 use App\Http\Controllers\V1\Api\Role\ApiRoleController as V1ApiRoleController;
 use App\Http\Controllers\V1\Api\Skill\ApiSkillController as V1ApiSkillController;
 use App\Http\Controllers\V1\Api\Storeroom\ApiStoreroomController as V1ApiStoreroomController;
@@ -79,6 +80,11 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->put('users/{user}', [V1UserController::class, 'update']);
             $router->post('users/{user}/assign-role', [V1UserController::class, 'assignRole']);
         });
+    });
+
+    /* Request support */
+    $router->group([], function (Router $router) {
+        $router->post('request-supports', [V1ApiRequestSupportController::class, 'store']);
     });
 
     $router->middleware('auth:sanctum')->group(function (Router $router) {

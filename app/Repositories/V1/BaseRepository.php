@@ -156,4 +156,9 @@ class BaseRepository implements EloquentRepositoryInterface
         return $this->model->get();
     }
 
+    public function firstOrCreate($attributes,$values): Model|Relation|Builder
+    {
+        return $this->model->firstOrCreate($attributes,$values);
+    }
+
 }
