@@ -107,6 +107,13 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->post('storerooms/{package}/update-quantity', [V1ApiStoreroomController::class, 'updateQuantity']);
         });
 
+        /* Request support */
+        $router->group([], function (Router $router) {
+            $router->get('request-supports', [V1ApiRequestSupportController::class, 'index']);
+            $router->get('request-supports/{requestSupport}', [V1ApiRequestSupportController::class, 'show']);
+            $router->post('request-supports/{requestSupport}/confirm', [V1ApiRequestSupportController::class, 'confirm']);
+        });
+
         /* Support */
         $router->group([], function (Router $router) {
             $router->get('rahjoo-supports/{rahjooSupport}', [V1ApiRahjooSupportController::class, 'show']);

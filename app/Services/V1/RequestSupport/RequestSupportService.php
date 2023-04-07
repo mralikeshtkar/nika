@@ -2,6 +2,8 @@
 
 namespace App\Services\V1\RequestSupport;
 
+use App\Http\Resources\V1\PaginationResource;
+use App\Http\Resources\V1\RequestSupport\RequestSupportResource;
 use App\Models\User;
 use App\Repositories\V1\RequestSupport\Interfaces\RequestSupportRepositoryInterface;
 use App\Repositories\V1\User\Interfaces\UserRepositoryInterface;
@@ -9,6 +11,7 @@ use App\Responses\Api\ApiResponse;
 use App\Rules\MobileRule;
 use App\Services\V1\BaseService;
 use Hekmatinasser\Verta\Verta;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Throwable;
@@ -28,13 +31,25 @@ class RequestSupportService extends BaseService
         $this->requestSupportRepository = $requestSupportRepository;
     }
 
+    public function index(Request $request): JsonResponse
+    {
+        $request_supports = $this->requestSupportRepository->select(['id', 'user_id', 'conformer_id', 'created_at'])
+            ->with(['user:id,first_name,last_name,mobile,birthdate'])
+            ->filterPagination($request)
+            ->paginate($request->get('perPage', 15));
+        $resource = PaginationResource::make($request_supports)->additional(['itemsResource' => RequestSupportResource::class]);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('request_supports', $resource)
+            ->send();
+    }
+
     public function store(Request $request)
     {
         ApiResponse::validate($request->all(), [
             'mobile' => ['required', new MobileRule()],
             'first_name' => ['required', 'string'],
             'last_name' => ['required', 'string'],
-            'birthdate' => ['nullable', 'jdate:' . User::BIRTHDATE_VALIDATION_FORMAT],
+            'birthdate' => ['required', 'jdate:' . User::BIRTHDATE_VALIDATION_FORMAT],
         ]);
         $request->merge([
             'mobile' => to_valid_mobile_number($request->mobile),
@@ -61,5 +76,35 @@ class RequestSupportService extends BaseService
         } catch (Throwable $e) {
             return ApiResponse::error(trans('Internal server error'))->send();
         }
+    }
+
+    /**
+     * @param Request $request
+     * @param $requestSupport
+     * @return JsonResponse
+     */
+    public function show(Request $request, $requestSupport): JsonResponse
+    {
+        $request_support = $this->requestSupportRepository->select(['id', 'user_id', 'conformer_id', 'created_at'])
+            ->with(['user:id,first_name,last_name,mobile,birthdate', 'conformer:id,first_name,last_name'])
+            ->findOrFailById($requestSupport);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('request_support', $request_support)
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $requestSupport
+     * @return JsonResponse
+     */
+    public function confirm(Request $request, $requestSupport): JsonResponse
+    {
+        $requestSupport = $this->requestSupportRepository->notConfirmed()
+            ->findOrFailById($requestSupport);
+        $this->requestSupportRepository->update($requestSupport, [
+            'conformer_id' => $request->user()->id,
+        ]);
+        return ApiResponse::message(trans('Mission accomplished'))->send();
     }
 }
