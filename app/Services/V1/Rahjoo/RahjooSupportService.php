@@ -134,10 +134,10 @@ class RahjooSupportService extends BaseService
         if (!$package->hasQuantity()) {
             return ApiResponse::error(trans('There is not enough package stock'), Response::HTTP_BAD_REQUEST);
         }
+        dd($package);
         try {
             return DB::transaction(function () use ($request, $rahjooSupport, $package) {
-                $invoice = (new Invoice())->amount($package->price);
-                /** @var RedirectionForm $payment */
+                $invoice = (new Invoice())->via(config('payment.default'))->amount($package->price);
                 $payment = Payment::purchase($invoice)->pay();
                 $package->payments()->create([
                     'owner_id' => $request->user()->id,
@@ -145,7 +145,7 @@ class RahjooSupportService extends BaseService
                     'action' => $payment->getAction(),
                     'invoice_id' => $invoice->getTransactionId(),
                     'amount' => $package->price,
-                    'gateway' => "zarinpal",
+                    'gateway' => $invoice->getDriver(),
                 ]);
                 return ApiResponse::message(trans("Mission accomplished"))
                     ->addData('payment', $payment->getAction())
