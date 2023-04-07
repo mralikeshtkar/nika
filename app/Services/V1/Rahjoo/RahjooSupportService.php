@@ -136,7 +136,8 @@ class RahjooSupportService extends BaseService
         }
         try {
             return DB::transaction(function () use ($request, $rahjooSupport, $package) {
-                $invoice = (new Invoice())->via(config('payment.default'))->amount($package->price);
+                $invoice = (new Invoice())->amount($package->price);
+                /** @var RedirectionForm $payment */
                 $payment = Payment::purchase($invoice)->pay();
                 $package->payments()->create([
                     'owner_id' => $request->user()->id,
@@ -144,7 +145,7 @@ class RahjooSupportService extends BaseService
                     'action' => $payment->getAction(),
                     'invoice_id' => $invoice->getTransactionId(),
                     'amount' => $package->price,
-                    'gateway' => $invoice->getDriver(),
+                    'gateway' => "zarinpal",
                 ]);
                 return ApiResponse::message(trans("Mission accomplished"))
                     ->addData('payment', $payment->getAction())
