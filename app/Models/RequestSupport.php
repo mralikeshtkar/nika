@@ -38,7 +38,7 @@ class RequestSupport extends Model
 
     public function scopeOrderByIsNullConformerId(Builder $builder, $sort = "ASC")
     {
-        $builder->orderByRaw('ISNULL(conformer_id) ?',[$sort]);
+        $builder->orderByRaw('ISNULL(conformer_id) '.$sort);
     }
 
     #endregion
