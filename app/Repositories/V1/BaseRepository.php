@@ -118,6 +118,16 @@ class BaseRepository implements EloquentRepositoryInterface
     }
 
     /**
+     * @param $relations
+     * @return $this
+     */
+    public function withCount($relations): static
+    {
+        $this->model->withCount($relations);
+        return $this;
+    }
+
+    /**
      * @param string $column
      * @param $value
      * @return $this

@@ -52,6 +52,19 @@ class Rahjoo extends Model
 
     #region Relations
 
+    public function supports(): HasMany
+    {
+        return $this->hasMany(RahjooSupport::class);
+    }
+
+    /**
+     * @return HasManyDeep
+     */
+    public function payments(): HasManyDeep
+    {
+        return $this->hasManyDeepFromRelations($this->supports(), (new RahjooSupport())->payments());
+    }
+
     /**
      * @return BelongsTo
      */

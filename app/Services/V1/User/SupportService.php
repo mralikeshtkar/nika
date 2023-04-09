@@ -48,6 +48,9 @@ class SupportService extends BaseService
             ->withSupportIfIsSuperAdmin($request->user())
             ->filterSupportStep($request)
             ->with(['user:id,first_name,last_name,birthdate'])
+            ->withCount(['payments'=>function($q){
+                $q->success();
+            }])
             ->paginate($request->get('perPage', 10));
         $resource = PaginationResource::make($rahjoos)->additional(['itemsResource' => RahjooResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
