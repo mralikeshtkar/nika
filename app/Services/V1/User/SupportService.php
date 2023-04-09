@@ -12,6 +12,7 @@ use App\Services\V1\BaseService;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Schema;
 
 class SupportService extends BaseService
@@ -43,6 +44,7 @@ class SupportService extends BaseService
     public function rahjoos(Request $request,$support): JsonResponse
     {
 //        ApiResponse::authorize($request->user()->isSupport());
+        /** @var LengthAwarePaginator $rahjoos */
         $rahjoos = resolve(RahjooRepositoryInterface::class)
             ->onlySupportRahjoos($support)
             ->withSupportIfIsSuperAdmin($request->user())
@@ -51,7 +53,8 @@ class SupportService extends BaseService
             ->withCount(['payments'=>function($q){
                 $q->success();
             }])
-            ->paginate($request->get('perPage', 10));
+            ->paginate($request->get('perPage', 10))
+        ->setCollection(collect());
         $resource = PaginationResource::make($rahjoos)->additional(['itemsResource' => RahjooResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('rahjoos', $resource)
