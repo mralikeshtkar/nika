@@ -56,7 +56,7 @@ class SupportService extends BaseService
             }])
             ->paginate($request->get('perPage', 10));
         $items = $rahjoos->getCollection()->map(function ($item) {
-            dd(collect($item->toArray())->push('paid', (bool)$item->payments_count));
+            return collect($item->toArray())->put('paid', (bool)$item->payments_count);
         });
         $rahjoos = $rahjoos->setCollection($items);
         $resource = PaginationResource::make($rahjoos)->additional(['itemsResource' => RahjooResource::class]);
