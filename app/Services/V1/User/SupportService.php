@@ -5,6 +5,7 @@ namespace App\Services\V1\User;
 use App\Http\Resources\V1\PaginationResource;
 use App\Http\Resources\V1\Rahjoo\RahjooResource;
 use App\Models\Grade;
+use App\Models\Rahjoo;
 use App\Repositories\V1\Rahjoo\Interfaces\RahjooRepositoryInterface;
 use App\Repositories\V1\User\Interfaces\UserRepositoryInterface;
 use App\Responses\Api\ApiResponse;
@@ -55,9 +56,9 @@ class SupportService extends BaseService
             }])
             ->paginate($request->get('perPage', 10));
         $items = $rahjoos->getCollection()->map(function ($item) {
-            dd($item);
+            dd(collect($item->toArray())->push('paid', (bool)$item->payments_count));
         });
-        $rahjoos = $rahjoos->setCollection(collect());
+        $rahjoos = $rahjoos->setCollection($items);
         $resource = PaginationResource::make($rahjoos)->additional(['itemsResource' => RahjooResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('rahjoos', $resource)
