@@ -101,7 +101,7 @@ class RahjooService extends BaseService
     public function haveNotSupport(Request $request): JsonResponse
     {
         $rahjoos = Rahjoo::query()
-            ->with('user:id,first_name,last_name')
+            ->with(['user:id,first_name,last_name','requestSupport:id,user_id,conformer_id,created_at'])
             ->withCount(['payments' => function ($q) {
                 $q->success();
             }])->doesntHave('support')
