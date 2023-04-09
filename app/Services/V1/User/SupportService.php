@@ -56,7 +56,7 @@ class SupportService extends BaseService
             }])
             ->paginate($request->get('perPage', 10));
         $items = $rahjoos->getCollection()->map(function ($item) {
-            $item->paid = $item->payments_count;
+            $item->paid = (bool)$item->payments_count;
             return $item;
         });
         $rahjoos = $rahjoos->setCollection($items);
