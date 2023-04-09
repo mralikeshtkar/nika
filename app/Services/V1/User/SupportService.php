@@ -54,7 +54,9 @@ class SupportService extends BaseService
                 $q->success();
             }])
             ->paginate($request->get('perPage', 10))
-        ->setCollection(collect());
+        ->setCollection($rahjoos->setCollection()->map(function ($item){
+            dd($item);
+        }));
         $resource = PaginationResource::make($rahjoos)->additional(['itemsResource' => RahjooResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('rahjoos', $resource)
