@@ -102,8 +102,15 @@ class RahjooService extends BaseService
     {
         $rahjoos = Rahjoo::query()
             ->with('user:id,first_name,last_name')
-            ->doesntHave('support')
+            ->withCount(['payments' => function ($q) {
+                $q->success();
+            }])->doesntHave('support')
             ->paginate($request->get('perPage', 10));
+        $items = $rahjoos->getCollection()->map(function ($item) {
+            $item->paid = (bool)$item->payments_count;
+            return $item;
+        });
+        $rahjoos = $rahjoos->setCollection($items);
         $resource = PaginationResource::make($rahjoos)->additional(['itemsResource' => RahjooResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('rahjoos', $resource)
