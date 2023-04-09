@@ -50,7 +50,7 @@ class SupportService extends BaseService
             ->onlySupportRahjoos($support)
             ->withSupportIfIsSuperAdmin($request->user())
             ->filterSupportStep($request)
-            ->with(['user:id,first_name,last_name,birthdate'])
+            ->with(['user:id,first_name,last_name,birthdate','requestSupports:id,user_id,conformer_id,created_at'])
             ->withCount(['payments' => function ($q) {
                 $q->success();
             }])

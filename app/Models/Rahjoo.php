@@ -52,6 +52,18 @@ class Rahjoo extends Model
 
     #region Relations
 
+    /**
+     * @return HasOne
+     */
+    public function requestSupport():HasOne
+    {
+        return $this->hasOne(RequestSupport::class,'user_id','user_id')
+            ->orderByIsNullConformerId();
+    }
+
+    /**
+     * @return HasMany
+     */
     public function supports(): HasMany
     {
         return $this->hasMany(RahjooSupport::class);

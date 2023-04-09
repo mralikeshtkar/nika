@@ -28,6 +28,8 @@ class RahjooResource extends JsonResource
             $collection->put('answers', QuestionAnswerResource::collection($this->resource->answers));
         })->when($this->resource->relationLoaded('support'), function (Collection $collection) {
             $collection->put('support', new RahjooSupportResource($this->resource->support));
+        })->when($this->resource->relationLoaded('support'), function (Collection $collection) {
+            $collection->put('support', new RahjooSupportResource($this->resource->support));
         })->toArray();
     }
 }
