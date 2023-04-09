@@ -16,6 +16,7 @@ class RahjooResource extends JsonResource
      */
     public function toArray($request)
     {
+        dd($this->resource);
         return collect($this->resource)->when(array_key_exists('created_at',$this->resource->toArray()), function (Collection $collection) {
             $collection->put('created_at', jalaliFormat($this->resource->created_at));
         })->when($this->resource->relationLoaded('user'), function (Collection $collection) {
