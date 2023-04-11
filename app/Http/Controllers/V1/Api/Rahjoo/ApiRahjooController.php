@@ -247,6 +247,45 @@ class ApiRahjooController extends ApiBaseController
     }
 
     /**
+     * @OA\Get(
+     *     path="/rahjoos/{rahjoo}/exercises/{exercise}/questions/{question}",
+     *     summary="آیا رهجو تمرین را کامل حل کرده است یا خیر",
+     *     description="",
+     *     tags={"رهجو"},
+     *     @OA\Parameter(
+     *         description="شناسه رهجو",
+     *         in="path",
+     *         name="rahjoo",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه تمرین",
+     *         in="path",
+     *         name="exercise",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شناسه سوال",
+     *         in="path",
+     *         name="question",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent()
+     *     )
+     * )
+     */
+    public function questionIsCompleted(Request $request, $rahjoo,$exercise,$question)
+    {
+        return $this->rahjooService->questionIsCompleted($request,$rahjoo,$exercise,$question);
+    }
+
+    /**
      * Show a rahjoo.
      *
      * @OA\Get(

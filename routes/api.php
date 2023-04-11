@@ -236,6 +236,7 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->get('rahjoos/{rahjoo}/exercises', [V1ApiRahjooController::class, 'exercises']);
             $router->get('rahjoos/{rahjoo}/exercises/{exercise}/questions', [V1ApiRahjooController::class, 'questions']);
             $router->get('rahjoos/{rahjoo}/exercises/{exercise}/questions/{question}', [V1ApiRahjooController::class, 'question']);
+            $router->get('rahjoos/{rahjoo}/exercises/{exercise}/questions/{question}/is-completed', [V1ApiRahjooController::class, 'questionIsCompleted']);
             $router->get('rahjoos/{rahjoo}', [V1ApiRahjooController::class, 'show']);
             $router->post('rahjoos/{user}', [V1ApiRahjooController::class, 'store']);
             $router->delete('rahjoos/{rahjoo}', [V1ApiRahjooController::class, 'destroy']);

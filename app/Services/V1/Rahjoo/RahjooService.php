@@ -15,6 +15,7 @@ use App\Models\Intelligence;
 use App\Models\IntelligencePackage;
 use App\Models\Package;
 use App\Models\Question;
+use App\Models\QuestionAnswer;
 use App\Models\QuestionPointRahjoo;
 use App\Models\Rahjoo;
 use App\Models\User;
@@ -101,7 +102,7 @@ class RahjooService extends BaseService
     public function haveNotSupport(Request $request): JsonResponse
     {
         $rahjoos = Rahjoo::query()
-            ->with(['user:id,first_name,last_name','requestSupport:id,user_id,conformer_id,created_at'])
+            ->with(['user:id,first_name,last_name', 'requestSupport:id,user_id,conformer_id,created_at'])
             ->withCount(['payments' => function ($q) {
                 $q->success();
             }])->doesntHave('support')
@@ -124,7 +125,7 @@ class RahjooService extends BaseService
      */
     public function exercises(Request $request, $rahjoo): JsonResponse
     {
-        $rahjoo = $this->rahjooRepository->select(['id','package_id'])->findOrFailById($rahjoo);
+        $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])->findOrFailById($rahjoo);
         $exercises = $rahjoo->packageExercises()
             ->withAggregate('questionAnswer AS latest_answer_at', 'question_answers.created_at')
             ->with(['intelligence:id,title'])
@@ -156,7 +157,7 @@ class RahjooService extends BaseService
      */
     public function questions(Request $request, $rahjoo, $exercise): JsonResponse
     {
-        $rahjoo = $this->rahjooRepository->select(['id','package_id'])->findOrFailById($rahjoo);
+        $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])->findOrFailById($rahjoo);
         $exercise = $rahjoo->packageExercises()
             ->withAggregate('questionAnswer AS latest_answer_at', 'question_answers.created_at')
             ->with(['intelligence:id,title'])
@@ -196,7 +197,7 @@ class RahjooService extends BaseService
      */
     public function question(Request $request, $rahjoo, $exercise, $question): JsonResponse
     {
-        $rahjoo = $this->rahjooRepository->select(['id','package_id'])->findOrFailById($rahjoo);
+        $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])->findOrFailById($rahjoo);
         $exercise = $rahjoo->packageExercises()
             ->withAggregate('questionAnswer AS latest_answer_at', 'question_answers.created_at')
             ->with(['intelligence:id,title'])
@@ -221,6 +222,34 @@ class RahjooService extends BaseService
     }
 
     /**
+     * @param Request $request
+     * @param $exercise
+     * @param $rahjoo
+     * @param $question
+     * @return JsonResponse
+     */
+    public function questionIsCompleted(Request $request, $exercise, $rahjoo, $question): JsonResponse
+    {
+        $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])->findOrFailById($rahjoo);
+        $exercise = $rahjoo->packageExercises()
+            ->whereHas('questions', function ($q) use ($request) {
+                $q->has('answerTypes');
+            })->findOrFail($exercise);
+        $question = $exercise->questions()
+            ->withWhereHas('answerTypes', function ($q) use ($request, $rahjoo) {
+                $q->with(['answer' => function ($q) use ($rahjoo) {
+                    $q->with(['file'])->where('rahjoo_id', $rahjoo->id);
+                }]);
+            })->addSelect(['rahjoo_answers_count' => QuestionAnswer::query()->selectRaw('COUNT(*)')
+                ->where('question_answers.rahjoo_id', $rahjoo)
+                ->whereColumn('questions.id', '=', 'question_answers.question_id'),
+            ])->findOrFail($question);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('question', new QuestionResource($question))
+            ->send();
+    }
+
+    /**
      * Show a rahjoo.
      *
      * @param Request $request
@@ -232,7 +261,7 @@ class RahjooService extends BaseService
         //ApiResponse::authorize($request->user()->can('show', Rahjoo::class));
         $rahjoo = $this->rahjooRepository->select([
             'id', 'user_id', 'rahyab_id', 'agent_id', 'package_id', 'code', 'school', 'which_child_of_family', 'disease_background',
-        ])->with(['support','support.support:id,first_name,last_name','package:id,title', 'user:id,first_name,last_name,mobile,birthdate', 'user.profile'])->findorFailById($rahjoo);
+        ])->with(['support', 'support.support:id,first_name,last_name', 'package:id,title', 'user:id,first_name,last_name,mobile,birthdate', 'user.profile'])->findorFailById($rahjoo);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('rahjoos', RahjooResource::make($rahjoo))
             ->send();
@@ -445,7 +474,7 @@ class RahjooService extends BaseService
         ApiResponse::validate($request->all(), [
             'point' => ['required', 'numeric', 'between:0,' . $point->pivot->max_point],
         ]);
-        $this->rahjooRepository->updateQuestionPoints($rahjoo,$point->id, $question->id, $request->point);
+        $this->rahjooRepository->updateQuestionPoints($rahjoo, $point->id, $question->id, $request->point);
         return ApiResponse::message(trans("The information was register successfully"))->send();
     }
 
