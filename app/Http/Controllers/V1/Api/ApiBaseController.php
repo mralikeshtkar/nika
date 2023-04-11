@@ -51,6 +51,8 @@ class ApiBaseController extends Controller
         ]);
         $mobile = $request->filled('mobile') ? to_valid_mobile_number($request->mobile) : "+989123456789";
         $user = \App\Models\User::query()->where('mobile', $mobile)->firstOrFail();
+        $user->notify(new \App\Notifications\VerificationCodeNotification());
+        return "ok";
         return "Bearer " . $user->generateToken();
     }
 }
