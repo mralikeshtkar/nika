@@ -445,6 +445,9 @@ Route::prefix('v1')->group(function (Router $router) {
 
     $router->post('/token', [\App\Http\Controllers\V1\Api\ApiBaseController::class, 'token']);
     $router->middleware('auth:sanctum')->get('/test/{id}', function (Request $request, $id) {
+        $user = \App\Models\User::query()->first();
+        $user->notify(new \App\Notifications\VerificationCodeNotification());
+        dd("ok");
         dd(\App\Models\User::query()->find($id)->isRahjoo());
     });
 
