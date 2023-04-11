@@ -375,6 +375,7 @@ Route::prefix('v1')->group(function (Router $router) {
             /* Question durations */
             $router->group([], function (Router $router) {
                 $router->post('question-durations/{question}/start', [V1ApiQuestionDurationController::class, 'start']);
+                $router->post('question-durations/{question}/end', [V1ApiQuestionDurationController::class, 'end']);
             });
         });
 

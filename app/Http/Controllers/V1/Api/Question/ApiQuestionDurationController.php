@@ -46,4 +46,29 @@ class ApiQuestionDurationController extends ApiBaseController
     {
         return $this->questionDurationService->start($request,$question);
     }
+
+    /**
+     * @OA\Post(
+     *     path="/question-durations/{question}/end",
+     *     summary="ثبت زمان پایان پاسخ به سوال",
+     *     description="",
+     *     tags={"زمان پاسخ بهسوال"},
+     *     @OA\Parameter(
+     *         description="شناسه سوال",
+     *         in="path",
+     *         name="question",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function end(Request $request,$question)
+    {
+        return $this->questionDurationService->end($request,$question);
+    }
 }

@@ -52,6 +52,26 @@ class QuestionDurationService extends BaseService
         return ApiResponse::message(trans("Mission accomplished"))->send();
     }
 
+    /**
+     * @param Request $request
+     * @param $question
+     * @return JsonResponse
+     */
+    public function end(Request $request, $question): JsonResponse
+    {
+        $rahjoo = $request->user()->rahjoo()->select(['id'])->first();
+        $question = resolve(QuestionRepositoryInterface::class)->select(['id'])->findOrFailById($question);
+        $questionDuration = $this->questionDurationRepository->whereNull('end')
+            ->whereNotNull('start')->firstWhereOrFail([
+                'rahjoo_id' => $rahjoo->id,
+                'question_id' => $question->id,
+            ]);
+        $this->questionDurationRepository->update($questionDuration, [
+            'end' => now(),
+        ]);
+        return ApiResponse::message(trans("Mission accomplished"))->send();
+    }
+
     #endregion
 
 }

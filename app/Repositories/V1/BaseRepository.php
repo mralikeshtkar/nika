@@ -35,6 +35,16 @@ class BaseRepository implements EloquentRepositoryInterface
     }
 
     /**
+     * @param $column
+     * @return $this
+     */
+    public function whereNull($column): static
+    {
+        $this->model->whereNull($column);
+        return $this;
+    }
+
+    /**
      * @param $model
      * @param array $attributes
      * @return mixed|void
@@ -135,16 +145,6 @@ class BaseRepository implements EloquentRepositoryInterface
     public function where(string $column, $value): static
     {
         $this->model = $this->model->where($column,$value);
-        return $this;
-    }
-
-    /**
-     * @param string $column
-     * @return $this
-     */
-    public function whereNull(string $column): static
-    {
-        $this->model = $this->model->whereNull($column);
         return $this;
     }
 

@@ -17,6 +17,7 @@ class QuestionDuration extends Model
 
     protected $casts=[
         'start'=>'datetime',
+        'end'=>'datetime',
     ];
 
     #region Relations
