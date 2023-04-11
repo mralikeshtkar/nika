@@ -248,7 +248,7 @@ class ApiRahjooController extends ApiBaseController
 
     /**
      * @OA\Get(
-     *     path="/rahjoos/{rahjoo}/exercises/{exercise}/questions/{question}",
+     *     path="/rahjoos/{rahjoo}/exercises/{exercise}/questions/{question}/is-completed",
      *     summary="آیا رهجو تمرین را کامل حل کرده است یا خیر",
      *     description="",
      *     tags={"رهجو"},
