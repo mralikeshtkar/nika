@@ -228,7 +228,7 @@ class RahjooService extends BaseService
      * @param $question
      * @return JsonResponse
      */
-    public function questionIsCompleted(Request $request, $exercise, $rahjoo, $question): JsonResponse
+    public function questionIsCompleted(Request $request, $rahjoo,$exercise,$question): JsonResponse
     {
         $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])->findOrFailById($rahjoo);
         $exercise = $rahjoo->packageExercises()
