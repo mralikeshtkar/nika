@@ -13,8 +13,7 @@ class VerificationCodeNotification extends KavenegarBaseNotification
 {
     public function toKavenegar($notifiable)
     {
-        return (new KavenegarMessage())
-            ->to("09115059242")
-            ->verifyLookup('verify',['12345']);
+        return (new KavenegarMessage("سلام"))
+            ->to("09115059242");
     }
 }
