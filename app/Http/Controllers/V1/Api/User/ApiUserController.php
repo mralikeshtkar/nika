@@ -942,6 +942,11 @@ class ApiUserController extends ApiBaseController
         return $this->userService->update($request, $user);
     }
 
+    public function payments(Request $request, $user)
+    {
+        return $this->userService->payments($request, $user);
+    }
+
     /**
      * @OA\Post(
      *     path="/users/{id}/assign-role",

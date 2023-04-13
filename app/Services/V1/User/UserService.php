@@ -9,6 +9,7 @@ use App\Enums\User\UserColor;
 use App\Enums\UserStatus;
 use App\Exceptions\User\UserAccountIsInactiveException;
 use App\Http\Resources\V1\PaginationResource;
+use App\Http\Resources\V1\Payment\PaymentResource;
 use App\Http\Resources\V1\User\SingleUserResource;
 use App\Http\Resources\V1\User\UserResource;
 use App\Models\City;
@@ -19,6 +20,7 @@ use App\Models\RahjooParent;
 use App\Models\Role;
 use App\Models\User;
 use App\Repositories\V1\Media\Interfaces\MediaRepositoryInterface;
+use App\Repositories\V1\Payment\Interfaces\PaymentRepositoryInterface;
 use App\Repositories\V1\User\Interfaces\UserRepositoryInterface;
 use App\Responses\Api\ApiResponse;
 use App\Rules\MobileIsUniqueRule;
@@ -294,6 +296,7 @@ class UserService extends BaseService
             'mobile' => ['required', new MobileRule()],
         ]);
         $request->merge(['mobile' => to_valid_mobile_number($request->mobile)]);
+        /** @var User $user */
         $user = $this->userRepository->firstOrCreateByMobile($request->mobile);
         $this->_checkUserAccountIsNotInactive($user);
         if ($user->hasPassword()) {
@@ -303,6 +306,7 @@ class UserService extends BaseService
                 ->send();
         } else {
             $code = $this->_generateVerificationCode($user);
+            $user->notify(new \App\Notifications\VerificationCodeNotification());
             return ApiResponse::message(trans("Activation code sent successfully"))
                 ->addData('mobile', $user->mobile)
                 ->addData('code', $code)
@@ -496,6 +500,23 @@ class UserService extends BaseService
         $data = $this->_updateData($request);
         if ($data->count()) $this->userRepository->update($user, $data->toArray());
         return ApiResponse::message(trans("The :attribute was successfully updated", ['attribute' => trans('User')]))->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $user
+     * @return JsonResponse
+     */
+    public function payments(Request $request, $user): JsonResponse
+    {
+        $payments = resolve(PaymentRepositoryInterface::class)
+            ->with(['paymentable:id,title,price,description'])
+            ->latest()
+            ->paginate($request->get('perPage',15));
+        $resource = PaginationResource::make($payments)->additional(['itemsResource' => PaymentResource::class]);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('payments', $resource)
+            ->send();
     }
 
     /**

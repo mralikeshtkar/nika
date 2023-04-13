@@ -603,4 +603,30 @@ class ApiPackageController extends ApiBaseController
     {
         return $this->packageService->destroy($request, $package);
     }
+
+
+    /**
+     * @OA\Post (
+     *     path="/packages/{id}/buy",
+     *     summary="پکیج",
+     *     description="",
+     *     tags={"خرید پکیج"},
+     *     @OA\Parameter(
+     *         description="شناسه پکیج",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function buy(Request $request, $package)
+    {
+        return $this->packageService->buy($request, $package);
+    }
 }

@@ -21,6 +21,7 @@ return new class extends Migration {
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
             $table->foreignId('rahjoo_support_id')
+                ->nullable()
                 ->references('id')
                 ->on('rahjoo_supports')
                 ->cascadeOnDelete()

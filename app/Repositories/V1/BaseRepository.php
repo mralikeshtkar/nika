@@ -95,6 +95,15 @@ class BaseRepository implements EloquentRepositoryInterface
     }
 
     /**
+     * @return $this
+     */
+    public function latest(): static
+    {
+        $this->model->latest();
+        return $this;
+    }
+
+    /**
      * Add select columns.
      *
      * @param array $columns

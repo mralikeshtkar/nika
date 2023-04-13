@@ -15,6 +15,7 @@ use App\Repositories\V1\Media\Interfaces\MediaRepositoryInterface;
 use App\Repositories\V1\Package\Interfaces\PackageRepositoryInterface;
 use App\Responses\Api\ApiResponse;
 use App\Services\V1\BaseService;
+use App\Services\V1\Payment\PaymentService;
 use Awobaz\Compoships\Database\Eloquent\Relations\HasMany;
 use BenSampo\Enum\Rules\EnumKey;
 use Illuminate\Database\Eloquent\Builder;
@@ -23,6 +24,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Mockery\Exception;
+use Shetabit\Multipay\Invoice;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
@@ -364,6 +367,39 @@ class PackageService extends BaseService
         $package = $this->packageRepository->findOrFailById($package);
         $this->packageRepository->destroy($package);
         return ApiResponse::message(trans("The :attribute was successfully deleted", ['attribute' => trans('Package')]))->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $package
+     * @return mixed
+     */
+    public function buy(Request $request, $package): mixed
+    {
+        /** @var Package $package */
+        $package = $this->packageRepository->findOrFailById($package);
+        if (!$package->hasQuantity()) {
+            return ApiResponse::error(trans('There is not enough package stock'), Response::HTTP_BAD_REQUEST)
+                ->send();
+        }
+        try {
+            return DB::transaction(function () use ($request, $package) {
+                $invoice = (new Invoice())->via(config('payment.default'))->amount($package->price);
+                $payment = resolve(PaymentService::class)->generatePayment($invoice);
+                $package->payments()->create([
+                    'owner_id' => $request->user()->id,
+                    'action' => $payment->getAction(),
+                    'invoice_id' => $invoice->getTransactionId(),
+                    'amount' => $package->price,
+                    'gateway' => $invoice->getDriver(),
+                ]);
+                return ApiResponse::message(trans("Mission accomplished"))
+                    ->addData('payment', $payment->getAction())
+                    ->send();
+            });
+        } catch (Exception $e) {
+            return ApiResponse::error(trans('Internal server error'))->send();
+        }
     }
 
     #endregion

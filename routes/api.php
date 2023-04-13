@@ -78,6 +78,7 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->post('users', [V1UserController::class, 'store']);
             $router->get('users/rahjooInformation/{user?}', [V1UserController::class, 'rahjooInformation']);
             $router->put('users/{user}', [V1UserController::class, 'update']);
+            $router->get('users/{user}/payments', [V1UserController::class, 'payments']);
             $router->post('users/{user}/assign-role', [V1UserController::class, 'assignRole']);
         });
     });
@@ -311,6 +312,7 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->post('packages/{package}/exercise-priority-detach', [V1ApiPackageController::class, 'storeExercisePriority']);
             $router->delete('packages/{package}/exercise-priority-detach', [V1ApiPackageController::class, 'destroyExercisePriority']);
             $router->get('packages/{package}/exercises', [V1ApiPackageController::class, 'exercises']);
+            $router->post('packages/{package}/buy', [V1ApiPackageController::class, 'buy']);
 
             /* Package intelligences */
             $router->group([], function (Router $router) {
