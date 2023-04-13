@@ -109,6 +109,7 @@ Route::prefix('v1')->group(function (Router $router) {
         });
 
         /* Request support */
+        $router->group([], function (Router $router) {
             $router->get('request-supports', [V1ApiRequestSupportController::class, 'index']);
             $router->get('request-supports/{requestSupport}', [V1ApiRequestSupportController::class, 'show']);
             $router->post('request-supports/{requestSupport}/confirm', [V1ApiRequestSupportController::class, 'confirm']);
