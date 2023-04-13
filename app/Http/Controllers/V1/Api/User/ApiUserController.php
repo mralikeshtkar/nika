@@ -945,7 +945,7 @@ class ApiUserController extends ApiBaseController
     /**
      * @OA\Get (
      *     path="/users/{id}/payments",
-     *     summary="لیست نقش‌های کاربری همراه مجوزهایشان بصورت صفحه بندی",
+     *     summary="لیست پرداخت های کاربر بصورت صفحه بندی",
      *     description="",
      *     tags={"کاربر"},
      *     @OA\Parameter(
