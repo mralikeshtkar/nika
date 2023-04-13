@@ -21,8 +21,4 @@ class PaymentService
         $this->paymentRepository = $paymentRepository;
     }
 
-    public function generatePayment($invoice)
-    {
-        return Payment::purchase($invoice)->pay();
-    }
 }

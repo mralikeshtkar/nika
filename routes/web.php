@@ -24,8 +24,8 @@ Route::prefix('v1')->group(function (Router $router){
         ->middleware('signed')
         ->name('media.download');
 
-    $router->get('rahjoo-supports/payments/verify', [V1WebRahjooSupportController::class, 'verifyPayment']);
-
+    $router->get('rahjoo-supports/payments/verify', [V1WebRahjooSupportController::class, 'verifyPayment'])->name('rahjoo-support.verify-payment');
+    $router->get('users/payments/verify', [V1WebRahjooSupportController::class, 'verifyPayment'])->name('users.verify-payment');
 });
 
 Route::get('/', function (\Illuminate\Http\Request $request) {

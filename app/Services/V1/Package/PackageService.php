@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Mockery\Exception;
 use Shetabit\Multipay\Invoice;
+use Shetabit\Payment\Facade\Payment;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
@@ -385,7 +386,7 @@ class PackageService extends BaseService
         try {
             return DB::transaction(function () use ($request, $package) {
                 $invoice = (new Invoice())->via(config('payment.default'))->amount($package->price);
-                $payment = resolve(PaymentService::class)->generatePayment($invoice);
+                $payment = Payment::callbackUrl(route('users.verify-payment'))->purchase($invoice)->pay();
                 $package->payments()->create([
                     'owner_id' => $request->user()->id,
                     'action' => $payment->getAction(),

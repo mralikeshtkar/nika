@@ -3,6 +3,7 @@
 namespace App\Services\V1\User;
 
 use App\Enums\Media\MediaExtension;
+use App\Enums\Payment\PaymentStatus;
 use App\Enums\Role as RoleEnum;
 use App\Enums\User\UserBackground;
 use App\Enums\User\UserColor;
@@ -38,6 +39,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Shetabit\Multipay\Exceptions\InvalidPaymentException;
+use Shetabit\Payment\Facade\Payment;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
@@ -684,6 +687,26 @@ class UserService extends BaseService
             })->when($request->filled('color'), function (Collection $collection) use ($request) {
                 $collection->put('color', $request->color);
             });
+    }
+
+    public function verifyPayment(Request $request)
+    {
+        $paymentRepository = resolve(PaymentRepositoryInterface::class);
+        $payment = $paymentRepository->statusPending()
+            ->findOrFailByInvoiceId($request->get('Authority'));
+        try {
+            return DB::transaction(function () use ($paymentRepository, $payment,$request) {
+                $receipt = Payment::amount($payment->amount)->transactionId($payment->invoice_id)->verify();
+                $paymentRepository->update($payment, [
+                    'referenceId' => $receipt->getReferenceId(),
+                    'date' => $receipt->getDate(),
+                    'status' => $request->get('Status') == "OK" ? PaymentStatus::Success : PaymentStatus::Canceled,
+                ]);
+                return redirect('/');
+            });
+        } catch (InvalidPaymentException $e) {
+            abort(Response::HTTP_NOT_FOUND);
+        }
     }
 
 }
