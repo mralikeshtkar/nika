@@ -4,6 +4,7 @@ namespace App\Services\V1\Rahjoo;
 
 use App\Enums\Payment\PaymentStatus;
 use App\Enums\Rahjoo\RahjooSupportStep;
+use App\Events\Payment\PaymentWasSuccessful;
 use App\Http\Resources\V1\Payment\PaymentResource;
 use App\Http\Resources\V1\Rahjoo\RahjooSupportResource;
 use App\Models\Package;
@@ -191,6 +192,7 @@ class RahjooSupportService extends BaseService
                     'date' => $receipt->getDate(),
                     'status' => $request->get('Status') == "OK" ? PaymentStatus::Success : PaymentStatus::Canceled,
                 ]);
+                event(new PaymentWasSuccessful($payment));
                 return redirect('/');
             });
         } catch (InvalidPaymentException $e) {

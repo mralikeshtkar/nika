@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\Payment\PaymentWasSuccessful;
+use App\Listeners\Payment\AssigneUserPackage;
 use App\Models\Exercise;
 use App\Models\IntelligenceFeedback;
 use App\Models\IntelligencePoint;
@@ -29,6 +31,9 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        PaymentWasSuccessful::class => [
+            AssigneUserPackage::class,
         ],
     ];
 

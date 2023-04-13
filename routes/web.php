@@ -3,6 +3,7 @@
 use App\Http\Controllers\V1\Api\IntelligencePointName\ApiIntelligencePointNameController;
 use App\Http\Controllers\V1\Api\Media\ApiMediaController as V1ApiMediaController;
 use App\Http\Controllers\V1\Web\RahjooSupport\WebRahjooSupportController as V1WebRahjooSupportController;
+use App\Http\Controllers\V1\Web\WebUserController as V1WebUserController;
 use App\Responses\Api\ApiResponse;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
@@ -25,7 +26,7 @@ Route::prefix('v1')->group(function (Router $router){
         ->name('media.download');
 
     $router->get('rahjoo-supports/payments/verify', [V1WebRahjooSupportController::class, 'verifyPayment'])->name('rahjoo-support.verify-payment');
-    $router->get('users/payments/verify', [V1WebRahjooSupportController::class, 'verifyPayment'])->name('users.verify-payment');
+    $router->get('users/payments/verify', [V1WebUserController::class, 'verifyPayment'])->name('users.verify-payment');
 });
 
 Route::get('/', function (\Illuminate\Http\Request $request) {

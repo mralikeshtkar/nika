@@ -8,6 +8,7 @@ use App\Enums\Role as RoleEnum;
 use App\Enums\User\UserBackground;
 use App\Enums\User\UserColor;
 use App\Enums\UserStatus;
+use App\Events\Payment\PaymentWasSuccessful;
 use App\Exceptions\User\UserAccountIsInactiveException;
 use App\Http\Resources\V1\PaginationResource;
 use App\Http\Resources\V1\Payment\PaymentResource;
@@ -702,6 +703,7 @@ class UserService extends BaseService
                     'date' => $receipt->getDate(),
                     'status' => $request->get('Status') == "OK" ? PaymentStatus::Success : PaymentStatus::Canceled,
                 ]);
+                event(new PaymentWasSuccessful($payment));
                 return redirect('/');
             });
         } catch (InvalidPaymentException $e) {
