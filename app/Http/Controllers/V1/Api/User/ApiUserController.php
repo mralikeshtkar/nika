@@ -942,6 +942,49 @@ class ApiUserController extends ApiBaseController
         return $this->userService->update($request, $user);
     }
 
+    /**
+     * @OA\Get (
+     *     path="/users/{id}/payments",
+     *     summary="لیست نقش‌های کاربری همراه مجوزهایشان بصورت صفحه بندی",
+     *     description="",
+     *     tags={"کاربر"},
+     *     @OA\Parameter(
+     *         description="شناسه کاربر",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="شماره صفحه",
+     *         in="query",
+     *         name="page",
+     *         required=true,
+     *         example=1,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="تعداد نمایش در هر صفحه",
+     *         in="query",
+     *         name="perPage",
+     *         example=10,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="وضعیت",
+     *         in="query",
+     *         name="step",
+     *         description="میتواند pending,canceled,success,fail باشد",
+     *         required=false,
+     *         @OA\Schema(type="string"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
     public function payments(Request $request, $user)
     {
         return $this->userService->payments($request, $user);

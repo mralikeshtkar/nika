@@ -512,6 +512,7 @@ class UserService extends BaseService
         $payments = resolve(PaymentRepositoryInterface::class)
             ->with(['paymentable:id,title,price,description'])
             ->latest()
+            ->filterUserPagination($request)
             ->paginate($request->get('perPage',15));
         $resource = PaginationResource::make($payments)->additional(['itemsResource' => PaymentResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
