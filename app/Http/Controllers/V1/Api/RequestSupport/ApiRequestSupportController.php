@@ -62,7 +62,7 @@ class ApiRequestSupportController extends ApiBaseController
 
     /**
      * @OA\Post(
-     *     path="/requets-supports",
+     *     path="/request-supports",
      *     summary="ثبت درخواست پشتیبانی",
      *     description="",
      *     tags={"درخواست پشتیبانی"},
@@ -108,7 +108,7 @@ class ApiRequestSupportController extends ApiBaseController
 
     /**
      * @OA\Get (
-     *     path="/requets-supports/{requetSupport}",
+     *     path="/request-supports/{requetSupport}",
      *     summary="نمایش درخواست پشتیبانی",
      *     description="",
      *     tags={"درخواست پشتیبانی"},
@@ -133,7 +133,7 @@ class ApiRequestSupportController extends ApiBaseController
 
     /**
      * @OA\Post(
-     *     path="/requets-supports/{requetSupport}/confirm",
+     *     path="/request-supports/{requetSupport}/confirm",
      *     summary="تایید دیدن درخواست پشتیبانی",
      *     description="",
      *     tags={"درخواست پشتیبانی"},
