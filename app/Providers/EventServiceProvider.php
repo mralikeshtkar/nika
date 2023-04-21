@@ -34,6 +34,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         PaymentWasSuccessful::class => [
             AssigneUserPackage::class,
+            AssigneUserPackage::class,
         ],
     ];
 
