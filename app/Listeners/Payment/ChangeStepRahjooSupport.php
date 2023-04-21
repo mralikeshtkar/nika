@@ -3,6 +3,7 @@
 namespace App\Listeners\Payment;
 
 use App\Enums\Rahjoo\RahjooSupportStep;
+use App\Events\Payment\PaymentWasSuccessful;
 
 class ChangeStepRahjooSupport
 {
@@ -24,7 +25,7 @@ class ChangeStepRahjooSupport
      */
     public function handle($event)
     {
-        dd($event);
+        dd($event->payment);
         if ($event->payment->rahjooSupport){
             $event->payment->rahjooSupport->update([
                 'step' => RahjooSupportStep::Second,
