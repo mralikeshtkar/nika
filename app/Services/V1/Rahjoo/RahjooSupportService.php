@@ -140,7 +140,7 @@ class RahjooSupportService extends BaseService
         try {
             return DB::transaction(function () use ($request, $rahjooSupport, $package) {
                 $invoice = (new Invoice())->via(config('payment.default'))->amount($package->price);
-                $payment = Payment::callbackUrl(route('rahjoo-support.verify-payment'))->purchase($invoice)->pay();
+                $payment = Payment::callbackUrl(url('v1/rahjoo-supports/payments/verify'))->purchase($invoice)->pay();
                 $package->payments()->create([
                     'owner_id' => $request->user()->id,
                     'rahjoo_support_id' => $rahjooSupport->id,
