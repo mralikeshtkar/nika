@@ -10,7 +10,7 @@ return [
     | You can switch to a different driver at runtime.
     |
     */
-    'default' => 'zarinpal',
+    'default' => 'idpay',
 
     /*
     |--------------------------------------------------------------------------
@@ -97,7 +97,7 @@ return [
             'apiPaymentUrl' => 'https://idpay.ir/p/ws/',
             'apiSandboxPaymentUrl' => 'https://idpay.ir/p/ws-sandbox/',
             'apiVerificationUrl' => 'https://api.idpay.ir/v1.1/payment/verify',
-            'merchantId' => '',
+            'merchantId' => '51de5737-eeb3-4876-bef9-445c1ea052df',
             'callbackUrl' => 'http://yoursite.com/path/to',
             'description' => 'payment using idpay',
             'sandbox' => false, // set it to true for test environments
