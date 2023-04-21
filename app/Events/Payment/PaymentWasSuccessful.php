@@ -15,7 +15,7 @@ class PaymentWasSuccessful
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    private Payment $payment;
+    public Payment $payment;
 
     /**
      * Create a new event instance.
