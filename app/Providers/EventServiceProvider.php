@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Events\Payment\PaymentWasSuccessful;
 use App\Listeners\Payment\AssigneUserPackage;
+use App\Listeners\Payment\ChangeStepRahjooSupport;
 use App\Models\Exercise;
 use App\Models\IntelligenceFeedback;
 use App\Models\IntelligencePoint;
@@ -34,7 +35,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         PaymentWasSuccessful::class => [
             AssigneUserPackage::class,
-            AssigneUserPackage::class,
+            ChangeStepRahjooSupport::class,
         ],
     ];
 

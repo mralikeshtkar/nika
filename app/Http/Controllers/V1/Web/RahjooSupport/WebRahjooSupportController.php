@@ -23,7 +23,6 @@ class WebRahjooSupportController extends WebBaseController
 
     public function verifyPayment(Request $request)
     {
-        dd("ok",$request->all());
         return $this->rahjooSupportService->verifyPayment($request);
     }
 }
