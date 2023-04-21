@@ -24,6 +24,7 @@ class ChangeStepRahjooSupport
      */
     public function handle($event)
     {
+        dd($event,$event->payment);
         if ($event->payment->rahjooSupport){
             $event->payment->rahjooSupport->update([
                 'step' => RahjooSupportStep::Second,
