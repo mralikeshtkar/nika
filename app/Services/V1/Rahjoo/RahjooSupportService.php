@@ -193,7 +193,7 @@ class RahjooSupportService extends BaseService
                     'status' => $request->get('Status') == "OK" ? PaymentStatus::Success : PaymentStatus::Canceled,
                 ]);
                 event(new PaymentWasSuccessful($payment));
-                return redirect('/');
+                return redirect('http://192.168.1.104:8000/rahjoo/dashboard');
             });
         } catch (InvalidPaymentException $e) {
             abort(Response::HTTP_NOT_FOUND);
