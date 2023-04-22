@@ -29,6 +29,18 @@ class Payment extends Model
         'date' => 'datetime',
     ];
 
+    #region Methods
+
+    /**
+     * @return bool
+     */
+    public function isSuccess(): bool
+    {
+        return PaymentStatus::Success == $this->status;
+    }
+
+    #endregion
+
     #region Relations
 
     /**

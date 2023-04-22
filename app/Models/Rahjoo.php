@@ -96,9 +96,9 @@ class Rahjoo extends Model
         return $this->hasOneDeepFromRelations($this->supports(), (new RahjooSupport())->payments());
     }
 
-    public function unPaidPayment(): HasOneDeep
+    public function lastPayment(): HasOneDeep
     {
-        return $this->payment()->latest()->pending();
+        return $this->payment()->latest();
     }
 
     /**
