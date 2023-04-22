@@ -46,9 +46,18 @@ class OrderService extends BaseService
             ->send();
     }
 
-    public function show(Request $request, $order)
+    /**
+     * @param Request $request
+     * @param $order
+     * @return JsonResponse
+     */
+    public function show(Request $request, $order): JsonResponse
     {
-
+        $order = $this->orderRepository->with(['payment.paymentable'])
+            ->findOrFailById($order);
+        return ApiResponse::message(trans("The information was received successfully"))
+            ->addData('order', new OrderResource($order))
+            ->send();
     }
 
     /**

@@ -22,9 +22,8 @@ class OrderRepository extends BaseRepository implements OrderRepositoryInterface
      */
     public function filterPagination(Request $request): static
     {
-        dd(OrderStatus::asArray());
-        $this->model->when($request->filled('status'), function ($q) use ($request) {
-
+        $this->model->when($request->filled('status') && in_array($request->status, OrderStatus::asArray()), function ($q) use ($request) {
+            $q->where('status', $request->status);
         });
         return $this;
     }

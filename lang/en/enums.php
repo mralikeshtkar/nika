@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\AddressType;
+use App\Enums\Order\OrderStatus;
 use App\Enums\Package\PackageStatus;
 use App\Enums\Payment\PaymentStatus;
 use App\Enums\Permission;
@@ -42,5 +43,10 @@ return [
         PaymentStatus::Success => "Success",
         PaymentStatus::Fail => "Fail",
         PaymentStatus::Canceled => "Canceled",
+    ],
+    OrderStatus::class => [
+        OrderStatus::Preparation => "Preparation",
+        OrderStatus::Posted => "Posted",
+        OrderStatus::Delivered => "Delivered",
     ],
 ];

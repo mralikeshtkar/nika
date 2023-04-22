@@ -27,6 +27,27 @@ class ApiOrderController extends ApiBaseController
      *     summary="لیست سفارشات بصورت صفحه بندی",
      *     description="",
      *     tags={"سفارشات"},
+     *     @OA\Parameter(
+     *         description="شماره صفحه",
+     *         in="query",
+     *         name="page",
+     *         required=true,
+     *         example=1,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="تعداد نمایش در هر صفحه",
+     *         in="query",
+     *         name="perPage",
+     *         example=10,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="وضعیت: Preparation,Posted,Delivered",
+     *         in="query",
+     *         name="status",
+     *         @OA\Schema(type="string"),
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="عملیات با موفقیت انجام شد",
@@ -39,6 +60,26 @@ class ApiOrderController extends ApiBaseController
         return $this->orderService->index($request);
     }
 
+    /**
+     * @OA\Get (
+     *     path="/orders/{id}",
+     *     summary="نمایش اطلاعات یک سفارش",
+     *     description="",
+     *     tags={"سفارشات"},
+     *     @OA\Parameter(
+     *         description="شناسه کاربر",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات با موفقیت انجام شد",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
     public function show(Request $request, $order)
     {
         return $this->orderService->show($request);

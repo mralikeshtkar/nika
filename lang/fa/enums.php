@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\AddressType;
+use App\Enums\Order\OrderStatus;
 use App\Enums\Package\PackageStatus;
 use App\Enums\Payment\PaymentStatus;
 use App\Enums\Permission;
@@ -47,5 +48,10 @@ return [
         PaymentStatus::Success => "موفق",
         PaymentStatus::Fail => "ناموفق",
         PaymentStatus::Canceled => "لغو شده",
+    ],
+    OrderStatus::class => [
+        OrderStatus::Preparation => "در انتظار اماده سازی",
+        OrderStatus::Posted => "تحویل پست",
+        OrderStatus::Delivered => "تحویل داده شده",
     ],
 ];
