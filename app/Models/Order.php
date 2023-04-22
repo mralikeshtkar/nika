@@ -55,12 +55,9 @@ class Order extends Model
         return $this->belongsTo(Payment::class);
     }
 
-    /**
-     * @return HasOneDeep
-     */
-    public function rahjooUser(): HasOneDeep
+    public function rahjooUser()
     {
-        return $this->hasOneDeepFromRelations($this->rahjoo(),(new Rahjoo())->user());
+        return $this->hasOneThrough(User::class,Rahjoo::class);
     }
 
     #endregion
