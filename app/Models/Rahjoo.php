@@ -89,7 +89,7 @@ class Rahjoo extends Model
 
     public function unPaidPayment()
     {
-        return $this->payments()->take(1);
+        return $this->payments();
     }
 
     /**
