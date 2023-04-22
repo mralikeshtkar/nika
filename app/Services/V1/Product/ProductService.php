@@ -2,12 +2,14 @@
 
 namespace App\Services\V1\Product;
 
+use App\Enums\Product\ProductStatus;
 use App\Http\Resources\V1\PaginationResource;
 use App\Http\Resources\V1\Product\ProductResource;
 use App\Models\Product;
 use App\Repositories\V1\Product\Interfaces\ProductRepositoryInterface;
 use App\Responses\Api\ApiResponse;
 use App\Services\V1\BaseService;
+use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -84,13 +86,16 @@ class ProductService extends BaseService
             'title' => ['required', 'string', 'unique:' . Product::class . ',title'],
             'body' => ['required', 'string', 'unique:' . Product::class . ',body'],
             'quantity' => ['required', 'numeric', 'min:0'],
+            'status' => ['nullable', new EnumValue(ProductStatus::class)],
         ]);
-        $product = $this->productRepository->create([
+        $product = $this->productRepository->create(collect([
             'user_id' => $request->user()->id,
             'title' => $request->title,
             'body' => $request->body,
             'quantity' => $request->quantity,
-        ]);
+        ])->when($request->filled('status'), function (Collection $collection) use ($request) {
+            $collection->put('status', $request->status);
+        })->toArray());
         return ApiResponse::message(trans("The :attribute was successfully registered", ['attribute' => trans('Product')]), Response::HTTP_CREATED)
             ->addData('product', new ProductResource($product))
             ->send();
@@ -108,13 +113,16 @@ class ProductService extends BaseService
             'title' => ['nullable', 'string', 'unique:' . Product::class . ',title,' . $product->id],
             'body' => ['nullable', 'string', 'unique:' . Product::class . ',body,' . $product->id],
             'quantity' => ['nullable', 'numeric', 'min:0'],
+            'status' => ['nullable', new EnumValue(ProductStatus::class)],
         ]);
-        $this->productRepository->update($product,collect()->when($request->filled('quantity'), function (Collection $collection) use ($request) {
+        $this->productRepository->update($product, collect()->when($request->filled('quantity'), function (Collection $collection) use ($request) {
             $collection->put('quantity', $request->quantity);
         })->when($request->filled('title'), function (Collection $collection) use ($request) {
             $collection->put('title', $request->title);
         })->when($request->filled('body'), function (Collection $collection) use ($request) {
             $collection->put('body', $request->body);
+        })->when($request->filled('status'), function (Collection $collection) use ($request) {
+            $collection->put('status', $request->status);
         })->toArray());
         return ApiResponse::message(trans("The :attribute was successfully updated", ['attribute' => trans('Product')]))->send();
     }

@@ -15,6 +15,7 @@ class Product extends Model
         'title',
         'body',
         'quantity',
+        'status'
     ];
 
     #region Relations

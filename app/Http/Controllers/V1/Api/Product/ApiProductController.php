@@ -123,6 +123,11 @@ class ApiProductController extends ApiBaseController
      *                     type="string",
      *                     description="تعداد"
      *                 ),
+     *                 @OA\Property(
+     *                     property="status",
+     *                     type="string",
+     *                     description="وضعیت : Active, Inactive"
+     *                 ),
      *             )
      *         )
      *     ),
@@ -177,6 +182,11 @@ class ApiProductController extends ApiBaseController
      *                     property="quantity",
      *                     type="string",
      *                     description="تعداد"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="status",
+     *                     type="string",
+     *                     description="وضعیت : Active, Inactive"
      *                 ),
      *             )
      *         )

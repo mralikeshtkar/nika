@@ -6,6 +6,7 @@ use App\Enums\Order\OrderStatus;
 use App\Enums\Package\PackageStatus;
 use App\Enums\Payment\PaymentStatus;
 use App\Enums\Permission;
+use App\Enums\Product\ProductStatus;
 use App\Enums\RahjooParent\RahjooParentGender;
 use App\Enums\Role;
 use App\Enums\UserStatus;
@@ -58,5 +59,9 @@ return [
     DiscountStatus::class => [
         DiscountStatus::Active => "فعال",
         DiscountStatus::Inactive => "غیرفعال",
+    ],
+    ProductStatus::class => [
+        ProductStatus::Active => "فعال",
+        ProductStatus::Inactive => "غیرفعال",
     ],
 ];
