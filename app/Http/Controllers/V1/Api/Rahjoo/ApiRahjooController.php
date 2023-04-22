@@ -413,6 +413,44 @@ class ApiRahjooController extends ApiBaseController
 
     /**
      * @OA\Post(
+     *     path="/rahjoos/{id}/verify-order",
+     *     summary="فعالسازی سازی پکیج دریافت شده از سفارش",
+     *     description="",
+     *     tags={"رهجو"},
+     *     @OA\Parameter(
+     *         description="شناسه رهجو",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"code"},
+     *                 @OA\Property(
+     *                     property="code",
+     *                     type="number",
+     *                     description="کد فعالسازی"
+     *                 ),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function verifyOrder(Request $request, $rahjoo)
+    {
+        return $this->rahjooService->verifyOrder($request, $rahjoo);
+    }
+
+    /**
+     * @OA\Post(
      *     path="/rahjoos/{id}/assign-support",
      *     summary="ثبت پشتیبان برای رهجو",
      *     description="",

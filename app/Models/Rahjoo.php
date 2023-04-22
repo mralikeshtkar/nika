@@ -53,6 +53,14 @@ class Rahjoo extends Model
     #region Relations
 
     /**
+     * @return HasMany
+     */
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    /**
      * @return HasOne
      */
     public function requestSupport():HasOne

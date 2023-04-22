@@ -16,10 +16,12 @@ class Order extends Model
         'code',
         'tracking_code',
         'sent_at',
+        'is_used',
         'status',
     ];
 
     protected $casts = [
+        'is_used' => 'boolean',
         'sent_at' => 'datetime',
     ];
 
@@ -38,7 +40,7 @@ class Order extends Model
      */
     public function rahjooSupport(): BelongsTo
     {
-        return $this->belongsTo(RahjooSupport::class,'rahjoo_support_id');
+        return $this->belongsTo(RahjooSupport::class, 'rahjoo_support_id');
     }
 
     /**
@@ -47,6 +49,19 @@ class Order extends Model
     public function payment(): BelongsTo
     {
         return $this->belongsTo(Payment::class);
+    }
+
+    #endregion
+
+    #region Scopes
+
+    /**
+     * @param $q
+     * @return void
+     */
+    public function scopeNotUsed($q)
+    {
+        $q->where('is_used', false);
     }
 
     #endregion

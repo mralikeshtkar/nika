@@ -2,6 +2,7 @@
 
 namespace App\Services\V1\Rahjoo;
 
+use App\Enums\Order\OrderStatus;
 use App\Enums\Question\QuestionAnswerType;
 use App\Enums\Role;
 use App\Http\Resources\V1\Comment\CommentResource;
@@ -21,6 +22,7 @@ use App\Models\Rahjoo;
 use App\Models\User;
 use App\Repositories\V1\Exercise\Interfaces\ExerciseRepositoryInterfaces;
 use App\Repositories\V1\Intelligence\Interfaces\IntelligenceRepositoryInterface;
+use App\Repositories\V1\Order\Interfaces\OrderRepositoryInterface;
 use App\Repositories\V1\Package\Interfaces\IntelligencePackageRepositoryInterface;
 use App\Repositories\V1\Package\Interfaces\PackageRepositoryInterface;
 use App\Repositories\V1\Question\Interfaces\QuestionRepositoryInterface;
@@ -228,7 +230,7 @@ class RahjooService extends BaseService
      * @param $question
      * @return JsonResponse
      */
-    public function questionIsCompleted(Request $request, $rahjoo,$exercise,$question): JsonResponse
+    public function questionIsCompleted(Request $request, $rahjoo, $exercise, $question): JsonResponse
     {
         $rahjoo = $this->rahjooRepository->select(['id', 'package_id'])->findOrFailById($rahjoo);
         $exercise = $rahjoo->packageExercises()
@@ -318,6 +320,41 @@ class RahjooService extends BaseService
         abort_if($package->isInactive(), ApiResponse::error(trans("Package is inactive"), Response::HTTP_BAD_REQUEST)->send());
         $this->rahjooRepository->updatePackage($rahjoo, $package->id);
         return ApiResponse::message(trans("Mission accomplished"))->send();
+    }
+
+
+    /**
+     * @param Request $request
+     * @param $rahjoo
+     * @return JsonResponse
+     */
+    public function verifyOrder(Request $request, $rahjoo): JsonResponse
+    {
+        /** @var Rahjoo $rahjoo */
+        $rahjoo = $this->rahjooRepository->select(['id'])->findorFailById($rahjoo);
+        ApiResponse::validate($request->all(), [
+            'code' => ['required', 'numeric'],
+        ]);
+        $order = $rahjoo->orders()
+            ->where('code', $request->code)
+            ->where('status', OrderStatus::Posted)
+            ->notUsed()
+            ->first();
+        abort_if(!$order, ApiResponse::message(trans("Verification code is invalid"), Response::HTTP_BAD_REQUEST)->send());
+        try {
+            return DB::transaction(function () use ($request, $rahjoo, $order) {
+                $this->rahjooRepository->update($rahjoo, [
+                    'package_id' => $order->payment->paymentable->id,
+                ]);
+                resolve(OrderRepositoryInterface::class)->update($order, [
+                    'is_used' => true,
+                    'status' => OrderStatus::Delivered,
+                ]);
+                return ApiResponse::message(trans("Mission accomplished"))->send();
+            });
+        } catch (Throwable $e) {
+            return ApiResponse::message(trans("Internal server error"), Response::HTTP_INTERNAL_SERVER_ERROR)->send();
+        }
     }
 
     /**

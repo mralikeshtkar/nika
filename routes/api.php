@@ -251,6 +251,7 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->post('rahjoos/{user}', [V1ApiRahjooController::class, 'store']);
             $router->delete('rahjoos/{rahjoo}', [V1ApiRahjooController::class, 'destroy']);
             $router->patch('rahjoos/{rahjoo}/assign-package', [V1ApiRahjooController::class, 'assignPackage']);
+            $router->post('rahjoos/{rahjoo}/verify-order', [V1ApiRahjooController::class, 'verifyOrder']);
             $router->patch('rahjoos/{rahjoo}/assign-support', [V1ApiRahjooController::class, 'assignSupport']);
             $router->patch('rahjoos/{rahjoo}/assign-rahyab/{user}', [V1ApiRahjooController::class, 'assignRahyab']);
             $router->patch('rahjoos/{rahjoo}/assign-rahnama/{user}', [V1ApiRahjooController::class, 'assignRahnama']);

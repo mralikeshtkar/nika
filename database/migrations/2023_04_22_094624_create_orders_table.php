@@ -34,6 +34,7 @@ return new class extends Migration {
             $table->string('code');
             $table->string('tracking_code')->nullable();
             $table->timestamp('sent_at')->nullable();
+            $table->boolean('is_used')->default(false);
             $table->string('status')->default(OrderStatus::Preparation);
             $table->timestamps();
         });
