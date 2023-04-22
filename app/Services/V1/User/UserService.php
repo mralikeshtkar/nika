@@ -247,7 +247,7 @@ class UserService extends BaseService
         $user = collect($user)
             ->put('isPersonnel', $request->user()->isPersonnel())
             ->put('role', optional($request->user()->roles()->first())->name)
-            ->put('rahjoo.last_payment',"Salam")
+            ->put('rahjoo',collect($user->rahjoo)->put('last_payment',"salam"))
             ->toArray();
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('user', new SingleUserResource($user))
