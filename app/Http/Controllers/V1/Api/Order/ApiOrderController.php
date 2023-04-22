@@ -119,7 +119,13 @@ class ApiOrderController extends ApiBaseController
      *                     property="sent_at",
      *                     type="string",
      *                     description="تاریخ تولد بصورت شمسی با فرمت Y/m/d H:i:s "
-     *                 )
+     *                 ),
+     *                  @OA\Property(
+     *                      property="file",
+     *                      type="string",
+     *                      description="رسید پست",
+     *                      format="binary",
+     *                  ),
      *             )
      *         )
      *     ),
