@@ -109,7 +109,7 @@ class ProductService extends BaseService
             'body' => ['nullable', 'string', 'unique:' . Product::class . ',body,' . $product->id],
             'quantity' => ['nullable', 'numeric', 'min:0'],
         ]);
-        $this->productRepository->create(collect()->when($request->filled('quantity'), function (Collection $collection) use ($request) {
+        $this->productRepository->update($product,collect()->when($request->filled('quantity'), function (Collection $collection) use ($request) {
             $collection->put('quantity', $request->quantity);
         })->when($request->filled('title'), function (Collection $collection) use ($request) {
             $collection->put('title', $request->title);
