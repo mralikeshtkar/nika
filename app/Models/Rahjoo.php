@@ -75,15 +75,7 @@ class Rahjoo extends Model
      */
     public function supports(): HasMany
     {
-        return $this->hasMany(RahjooSupport::class,'rahjoo_id');
-    }
-
-    /**
-     * @return HasMany
-     */
-    public function canceledSupports(): HasMany
-    {
-        return $this->supports()->whereNotNull('canceled_at');
+        return $this->hasMany(RahjooSupport::class);
     }
 
     /**
@@ -186,8 +178,7 @@ class Rahjoo extends Model
     public function support(): HasOne
     {
         return $this->hasOne(RahjooSupport::class, 'rahjoo_id')
-            ->latest()
-            ->whereNull('canceled_at');
+            ->latest();
     }
 
     /**
