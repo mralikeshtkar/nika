@@ -62,6 +62,9 @@ class ProductService extends BaseService
     public function show(Request $request, $product): JsonResponse
     {
         $product = $this->productRepository->select(['id','title', 'body','quantity', 'created_at'])
+            ->withCount(['payments'=>function(){
+                
+            }])
             ->findOrFailById($product);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('product', new ProductResource($product))
