@@ -629,7 +629,7 @@ class ApiPackageController extends ApiBaseController
      *     ),
      *     @OA\RequestBody(
      *         @OA\MediaType(
-     *             mediaType="application/json",
+     *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 required={"discount"},
      *                 @OA\Property(
