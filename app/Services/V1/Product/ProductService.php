@@ -64,8 +64,7 @@ class ProductService extends BaseService
         $product = $this->productRepository->select(['id','title', 'body','quantity', 'created_at'])
             ->withCount(['payments'=>function($q){
                 $q->success();
-            }])
-            ->findOrFailById($product);
+            }])->findOrFailById($product);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('product', new ProductResource($product))
             ->send();

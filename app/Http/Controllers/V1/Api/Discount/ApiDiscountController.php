@@ -23,21 +23,21 @@ class ApiDiscountController extends ApiBaseController
 
     public function index(Request $request)
     {
-
+        return $this->discountService->index($request);
     }
 
     public function store(Request $request)
     {
-
+        return $this->discountService->store($request);
     }
 
-    public function update(Request $request,$discounr)
+    public function update(Request $request,$discount)
     {
-
+        return $this->discountService->update($request,$discount);
     }
 
-    public function destroy(Request $request)
+    public function destroy(Request $request,$discount)
     {
-
+        return $this->discountService->destroy($request,$discount);
     }
 }

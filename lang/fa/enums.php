@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\AddressType;
+use App\Enums\Discount\DiscountStatus;
 use App\Enums\Order\OrderStatus;
 use App\Enums\Package\PackageStatus;
 use App\Enums\Payment\PaymentStatus;
@@ -53,5 +54,9 @@ return [
         OrderStatus::Preparation => "در انتظار اماده سازی",
         OrderStatus::Posted => "تحویل پست",
         OrderStatus::Delivered => "تحویل داده شده",
+    ],
+    DiscountStatus::class => [
+        DiscountStatus::Active => "فعال",
+        DiscountStatus::Inactive => "غیرفعال",
     ],
 ];

@@ -55,6 +55,15 @@ class PackageRepository extends BaseRepository implements PackageRepositoryInter
     }
 
     /**
+     * @return $this
+     */
+    public function withProductTitle(): static
+    {
+        $this->model->withAggregate('product','title');
+        return $this;
+    }
+
+    /**
      * @param $package
      * @param $intelligences
      * @return mixed

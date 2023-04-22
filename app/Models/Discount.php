@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Discount extends Model
 {
+    const ENABLE_AT_VALIDATION_FORMAT = 'Y/m/d H:i:s';
+    const EXPIRE_AT_VALIDATION_FORMAT = 'Y/m/d H:i:s';
+
     protected $fillable = [
         'user_id',
         'code',
@@ -17,6 +20,10 @@ class Discount extends Model
         'expire_at',
         'usage_limitation',
         'status',
+    ];
+
+    protected $casts=[
+        'is_percent'=>'bool',
     ];
 
     #region Relations

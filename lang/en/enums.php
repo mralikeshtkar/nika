@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\AddressType;
+use App\Enums\Discount\DiscountStatus;
 use App\Enums\Order\OrderStatus;
 use App\Enums\Package\PackageStatus;
 use App\Enums\Payment\PaymentStatus;
@@ -48,5 +49,9 @@ return [
         OrderStatus::Preparation => "Preparation",
         OrderStatus::Posted => "Posted",
         OrderStatus::Delivered => "Delivered",
+    ],
+    DiscountStatus::class => [
+        DiscountStatus::Active => "Active",
+        DiscountStatus::Inactive => "Inactive",
     ],
 ];

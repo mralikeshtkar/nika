@@ -77,7 +77,9 @@ class PackageService extends BaseService
     public function show(Request $request, $package): JsonResponse
     {
         ApiResponse::authorize($request->user()->can('show', Package::class));
-        $package = $this->packageRepository->with(['video'])->findOrFailById($package);
+        $package = $this->packageRepository->with(['video'])
+            ->withProductTitle()
+            ->findOrFailById($package);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('package', new PackageResource($package))
             ->send();

@@ -117,6 +117,7 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->get('products/all', [V1ApiProductController::class, 'all']);
             $router->post('products', [V1ApiProductController::class, 'store']);
             $router->get('products/{product}', [V1ApiProductController::class, 'show']);
+            $router->get('products/{product}', [V1ApiProductController::class, 'show']);
             $router->put('products/{product}', [V1ApiProductController::class, 'update']);
         });
 
