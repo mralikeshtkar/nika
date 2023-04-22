@@ -2,6 +2,7 @@
 
 namespace App\Repositories\V1\Rahjoo\Eloquent;
 
+use App\Enums\Order\OrderStatus;
 use App\Enums\Rahjoo\RahjooSupportStep;
 use App\Models\Rahjoo;
 use App\Repositories\V1\BaseRepository;
@@ -153,6 +154,20 @@ class RahjooRepository extends BaseRepository implements RahjooRepositoryInterfa
         $this->model->when($request->filled('step') && in_array($request->step, RahjooSupportStep::asArray()), function ($q) use ($request) {
             $q->whereHas('support', function ($q) use ($request) {
                 $q->where('step', $request->step);
+            });
+        });
+        return $this;
+    }
+
+    /**
+     * @param Request $request
+     * @return $this
+     */
+    public function filterPreparation(Request $request): static
+    {
+        $this->model->when($request->filled('preparation'), function ($q) use ($request) {
+            $q->whereHas('orders', function ($q) use ($request) {
+                $q->preparation();
             });
         });
         return $this;

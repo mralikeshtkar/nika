@@ -44,12 +44,12 @@ class SupportService extends BaseService
      */
     public function rahjoos(Request $request, $support): JsonResponse
     {
-//        ApiResponse::authorize($request->user()->isSupport());
         /** @var LengthAwarePaginator $rahjoos */
         $rahjoos = resolve(RahjooRepositoryInterface::class)
             ->onlySupportRahjoos($support)
             ->withSupportIfIsSuperAdmin($request->user())
             ->filterSupportStep($request)
+            ->filterPreparation($request)
             ->with(['user:id,first_name,last_name,birthdate','requestSupport:id,user_id,conformer_id,created_at'])
             ->withCount(['payments' => function ($q) {
                 $q->success();

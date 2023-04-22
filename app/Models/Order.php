@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\Order\OrderStatus;
 use App\Traits\Media\HasMedia;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
@@ -86,6 +88,11 @@ class Order extends Model
     public function scopeNotUsed($q)
     {
         $q->where('is_used', false);
+    }
+
+    public function scopePreparation(Builder $builder)
+    {
+        $builder->where('status', OrderStatus::Preparation);
     }
 
     #endregion

@@ -43,6 +43,14 @@ class ApiSupportController extends ApiBaseController
      *         required=false,
      *         @OA\Schema(type="string"),
      *     ),
+     *     @OA\Parameter(
+     *         description="سفارش های در حال اماده سازی",
+     *         in="query",
+     *         name="preparation",
+     *         description="مقدار 1",
+     *         required=false,
+     *         @OA\Schema(type="string"),
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="OK",
