@@ -614,6 +614,39 @@ class ApiPackageController extends ApiBaseController
         return $this->packageService->destroy($request, $package);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/packages/{id}/check-discount",
+     *     summary="بررسی کد تخفیف",
+     *     description="بررسی کد تخفیف",
+     *     tags={"پکیج","تخفیف"},
+     *     @OA\Parameter(
+     *         description="شناسه پکیج",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 required={"discount"},
+     *                 @OA\Property(
+     *                     property="discount",
+     *                     type="string",
+     *                     description="کد تخفیف"
+     *                 ),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="ثبت با موفقیت انجام شد",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
     public function checkDiscount(Request $request,$package)
     {
         return $this->packageService->checkDiscount($request, $package);
