@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
+use Staudenmeir\EloquentHasManyDeep\HasOneDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Rahjoo extends Model
@@ -87,9 +88,17 @@ class Rahjoo extends Model
         return $this->hasManyDeepFromRelations($this->supports(), (new RahjooSupport())->payments());
     }
 
+    /**
+     * @return HasOneDeep
+     */
+    public function payment(): HasOneDeep
+    {
+        return $this->hasOneDeepFromRelations($this->supports(), (new RahjooSupport())->payments());
+    }
+
     public function unPaidPayment()
     {
-        return $this->payments();
+        return $this->payment();
     }
 
     /**
