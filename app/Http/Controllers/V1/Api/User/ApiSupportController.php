@@ -67,6 +67,14 @@ class ApiSupportController extends ApiBaseController
      *         required=false,
      *         @OA\Schema(type="string"),
      *     ),
+     *     @OA\Parameter(
+     *         description="لغو شده ها",
+     *         in="query",
+     *         name="canceled",
+     *         description="مقدار 1",
+     *         required=false,
+     *         @OA\Schema(type="string"),
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="OK",

@@ -53,8 +53,6 @@ class Rahjoo extends Model
 
     #region Relations
 
-
-
     /**
      * @return HasMany
      */

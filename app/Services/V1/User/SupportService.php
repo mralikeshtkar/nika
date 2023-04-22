@@ -52,6 +52,7 @@ class SupportService extends BaseService
             ->filterPreparation($request)
             ->filterPosted($request)
             ->filterDelivered($request)
+            ->filterCanceled($request,$support)
             ->with(['user:id,first_name,last_name,birthdate','requestSupport:id,user_id,conformer_id,created_at'])
             ->withCount(['payments' => function ($q) {
                 $q->success();

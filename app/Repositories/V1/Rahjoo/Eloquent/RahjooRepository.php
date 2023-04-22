@@ -181,7 +181,9 @@ class RahjooRepository extends BaseRepository implements RahjooRepositoryInterfa
     {
         $this->model->when($request->filled('posted'), function ($q) use ($request) {
             $q->whereHas('orders', function ($q) use ($request) {
-                $q->posted();
+                $q->posted()->orWhere(function ($q) {
+                    $q->delivered()->where('is_used', false);
+                });
             });
         });
         return $this;
@@ -195,7 +197,22 @@ class RahjooRepository extends BaseRepository implements RahjooRepositoryInterfa
     {
         $this->model->when($request->filled('delivered'), function ($q) use ($request) {
             $q->whereHas('orders', function ($q) use ($request) {
-                $q->delivered();
+                $q->delivered()->where('is_used', true);
+            });
+        });
+        return $this;
+    }
+
+    /**
+     * @param Request $request
+     * @param $support
+     * @return $this
+     */
+    public function filterCanceled(Request $request,$support): static
+    {
+        $this->model->when($request->filled('canceled'), function ($q) use ($request,$support) {
+            $q->whereHas('supports', function ($q) use ($request,$support) {
+                $q->canceled()->where('support_id', $support);
             });
         });
         return $this;
