@@ -243,12 +243,13 @@ class UserService extends BaseService
      */
     public function currentUser(Request $request): JsonResponse
     {
-        $user = $request->user()->load(['rahjoo','rahjoo.lastPayment:payments.id,payments.rahjoo_support_id,payments.action,payments.created_at']);
+        $user = $request->user()->load(['rahjoo', 'rahjoo.lastPayment:payments.id,payments.rahjoo_support_id,payments.action,payments.status,payments.created_at']);
         $user = collect($user)
             ->put('isPersonnel', $request->user()->isPersonnel())
             ->put('role', optional($request->user()->roles()->first())->name)
-            ->put('rahjoo',collect($user->rahjoo)->put('last_payment',"salam"))
-            ->toArray();
+            ->when($user->rahjoo, function (Collection $collection) use ($user) {
+                $collection->put('rahjoo', collect($user->rahjoo)->put('last_payment', $user->rahjoo->last_payment && $user->rahjoo->last_payment->isSuccess() ? null : $user->rahjoo->last_payment));
+            })->toArray();
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('user', new SingleUserResource($user))
             ->send();
@@ -517,7 +518,7 @@ class UserService extends BaseService
             ->with(['paymentable:id,title,price,description'])
             ->latest()
             ->filterUserPagination($request)
-            ->paginate($request->get('perPage',15));
+            ->paginate($request->get('perPage', 15));
         $resource = PaginationResource::make($payments)->additional(['itemsResource' => PaymentResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('payments', $resource)
@@ -575,18 +576,18 @@ class UserService extends BaseService
                     });
                 });
             })->whereHas('package', function ($q) {
-            /** @var Builder $q */
-            $q->whereHas('questions', function ($q) {
                 /** @var Builder $q */
-                $q->whereHas('answerTypes', function ($q) {
+                $q->whereHas('questions', function ($q) {
                     /** @var Builder $q */
-                    $q->whereHas('answer', function ($q) {
+                    $q->whereHas('answerTypes', function ($q) {
                         /** @var Builder $q */
-                        $q->whereColumn('question_answers.rahjoo_id', 'rahjoos.id');
+                        $q->whereHas('answer', function ($q) {
+                            /** @var Builder $q */
+                            $q->whereColumn('question_answers.rahjoo_id', 'rahjoos.id');
+                        });
                     });
                 });
-            });
-        })->count();
+            })->count();
         $notFinishedRahjoos = Rahjoo::query()
             ->when($user, function ($q) use ($user) {
                 $q->when($user->hasRahyabRole(), function ($q) use ($user) {
@@ -600,18 +601,18 @@ class UserService extends BaseService
                     });
                 });
             })->whereHas('package', function ($q) {
-            /** @var Builder $q */
-            $q->whereHas('questions', function ($q) {
                 /** @var Builder $q */
-                $q->whereDoesntHave('answerTypes', function ($q) {
+                $q->whereHas('questions', function ($q) {
                     /** @var Builder $q */
-                    $q->whereHas('answer', function ($q) {
+                    $q->whereDoesntHave('answerTypes', function ($q) {
                         /** @var Builder $q */
-                        $q->whereColumn('question_answers.rahjoo_id', 'rahjoos.id');
+                        $q->whereHas('answer', function ($q) {
+                            /** @var Builder $q */
+                            $q->whereColumn('question_answers.rahjoo_id', 'rahjoos.id');
+                        });
                     });
                 });
-            });
-        })->count();
+            })->count();
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('totalRahjoos', $totalRahjoos)
             ->addData('finishedRahjoos', $finishedRahjoos)
@@ -696,7 +697,7 @@ class UserService extends BaseService
         $payment = $paymentRepository->statusPending()
             ->findOrFailByInvoiceId($request->get('Authority'));
         try {
-            return DB::transaction(function () use ($paymentRepository, $payment,$request) {
+            return DB::transaction(function () use ($paymentRepository, $payment, $request) {
                 $receipt = Payment::amount($payment->amount)->transactionId($payment->invoice_id)->verify();
                 $paymentRepository->update($payment, [
                     'referenceId' => $receipt->getReferenceId(),
