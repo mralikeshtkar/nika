@@ -3,6 +3,7 @@
 namespace App\Http\Resources\V1\Order;
 
 use App\Enums\Order\OrderStatus;
+use App\Http\Resources\V1\Media\MediaResource;
 use App\Http\Resources\V1\Payment\PaymentResource;
 use App\Http\Resources\V1\Rahjoo\RahjooResource;
 use App\Http\Resources\V1\User\UserResource;
@@ -31,6 +32,8 @@ class OrderResource extends JsonResource
             $collection->put('rahjoo', new RahjooResource($this->resource->rahjoo));
         })->when($this->resource->relationLoaded('rahjooUser'), function (Collection $collection) {
             $collection->put('rahjoo_user', new UserResource($this->resource->rahjooUser));
+        })->when($this->resource->relationLoaded('receipt'), function (Collection $collection) {
+            $collection->put('receipt', new MediaResource($this->resource->receipt));
         });
     }
 }

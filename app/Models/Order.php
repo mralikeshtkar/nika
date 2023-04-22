@@ -2,17 +2,23 @@
 
 namespace App\Models;
 
+use App\Traits\Media\HasMedia;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Staudenmeir\EloquentHasManyDeep\HasOneDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Order extends Model
 {
-    use HasRelationships;
+    use HasRelationships, HasMedia;
 
     const SENT_AT_VALIDATION_FORMAT = 'Y/m/d';
+
+    const MEDIA_DIRECTORY_RECEIPTS = "receipts";
+
+    const MEDIA_COLLECTION_RECEIPT = "media collection receipt";
 
     protected $fillable = [
         'rahjoo_id',
@@ -37,7 +43,15 @@ class Order extends Model
      */
     public function rahjoo(): BelongsTo
     {
-        return $this->belongsTo(Rahjoo::class,'rahjoo_id');
+        return $this->belongsTo(Rahjoo::class, 'rahjoo_id');
+    }
+
+    /**
+     * @return MorphOne
+     */
+    public function receipt(): MorphOne
+    {
+        return $this->singleMedia()->where('collection', self::MEDIA_COLLECTION_RECEIPT);
     }
 
     /**
@@ -58,7 +72,7 @@ class Order extends Model
 
     public function rahjooUser(): HasOneThrough
     {
-        return $this->hasOneThrough(User::class,Rahjoo::class,'id','id','rahjoo_id','user_id');
+        return $this->hasOneThrough(User::class, Rahjoo::class, 'id', 'id', 'rahjoo_id', 'user_id');
     }
 
     #endregion

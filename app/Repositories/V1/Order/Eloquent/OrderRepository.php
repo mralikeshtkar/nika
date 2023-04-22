@@ -3,6 +3,7 @@
 namespace App\Repositories\V1\Order\Eloquent;
 
 use App\Enums\Order\OrderStatus;
+use App\Models\Media;
 use App\Models\Order;
 use App\Repositories\V1\BaseRepository;
 use App\Repositories\V1\Order\Interfaces\OrderRepositoryInterface;
@@ -26,5 +27,14 @@ class OrderRepository extends BaseRepository implements OrderRepositoryInterface
             $q->where('status', $request->status);
         });
         return $this;
+    }
+
+    public function uploadReceipt($order, $file)
+    {
+        if ($order->receipt) $order->receipt->delete();
+        return $order->setDisk(Media::MEDIA_PUBLIC_DISK)
+            ->setDirectory(Order::MEDIA_DIRECTORY_RECEIPTS)
+            ->setCollection(Order::MEDIA_COLLECTION_RECEIPT)
+            ->addMedia($file);
     }
 }

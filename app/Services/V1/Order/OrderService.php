@@ -2,6 +2,7 @@
 
 namespace App\Services\V1\Order;
 
+use App\Enums\Media\MediaExtension;
 use App\Http\Resources\V1\Order\OrderResource;
 use App\Http\Resources\V1\PaginationResource;
 use App\Models\Order;
@@ -37,8 +38,8 @@ class OrderService extends BaseService
     public function index(Request $request): JsonResponse
     {
         $orders = $this->orderRepository->latest()
-            ->with(['payment.paymentable','rahjooUser'=>function($q){
-                $q->select(['users.id','users.first_name','users.last_name','users.mobile','users.birthdate']);
+            ->with(['payment.paymentable', 'rahjooUser' => function ($q) {
+                $q->select(['users.id', 'users.first_name', 'users.last_name', 'users.mobile', 'users.birthdate']);
             }])
             ->filterPagination($request)
             ->paginate($request->get('perPage', 15));
@@ -55,8 +56,9 @@ class OrderService extends BaseService
      */
     public function show(Request $request, $order): JsonResponse
     {
-        $order = $this->orderRepository->with(['payment.paymentable'])
-            ->findOrFailById($order);
+        $order = $this->orderRepository->with(['payment.paymentable','receipt','rahjooUser' => function ($q) {
+            $q->select(['users.id', 'users.first_name', 'users.last_name', 'users.mobile', 'users.birthdate']);
+        }])->findOrFailById($order);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('order', new OrderResource($order))
             ->send();
@@ -73,6 +75,7 @@ class OrderService extends BaseService
         ApiResponse::validate($request->all(), [
             'tracking_code' => ['required', 'numeric'],
             'sent_at' => ['required', 'jdate:' . Order::SENT_AT_VALIDATION_FORMAT],
+            'file' => ['nullable', 'file', 'mimes:' . implode(",", MediaExtension::getExtensions(MediaExtension::Image))],
         ]);
         try {
             return DB::transaction(function () use ($order, $request) {
@@ -83,6 +86,7 @@ class OrderService extends BaseService
                     'tracking_code' => $request->tracking_code,
                     'sent_at' => $request->sent_at,
                 ]);
+                $this->orderRepository->uploadReceipt($order,$request->file('file'));
                 return ApiResponse::message(trans("The information was register successfully"))
                     ->addData('order', new OrderResource($order))
                     ->send();
