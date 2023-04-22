@@ -38,7 +38,7 @@ class OrderService extends BaseService
     {
         $orders = $this->orderRepository->latest()
             ->with(['payment.paymentable','rahjooUser'=>function($q){
-                $q->select(['users.id','users.first_name','users.last_name']);
+                $q->select(['users.id','users.first_name','users.last_name','users.mobile','users.birthdate']);
             }])
             ->filterPagination($request)
             ->paginate($request->get('perPage', 15));
