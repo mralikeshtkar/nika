@@ -57,7 +57,7 @@ class Order extends Model
 
     public function rahjooUser()
     {
-        return $this->hasOneThrough(User::class,Rahjoo::class);
+        return $this->hasOneThrough(User::class,Rahjoo::class,'id','id','rahjoo_id','user_id');
     }
 
     #endregion
