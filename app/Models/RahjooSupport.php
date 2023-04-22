@@ -64,6 +64,6 @@ class RahjooSupport extends Model
 
     public function scopeCanceled(Builder $builder)
     {
-        $builder->whereNull('canceled_at');
+        $builder->whereNotNull('canceled_at');
     }
 }
