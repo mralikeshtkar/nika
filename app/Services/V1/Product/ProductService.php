@@ -35,6 +35,7 @@ class ProductService extends BaseService
     public function index(Request $request): JsonResponse
     {
         $products = $this->productRepository->select(['id','title', 'body','quantity', 'created_at'])
+            ->withPackageTitle()
             ->paginate($request->get('perPage', 15));
         $resource = PaginationResource::make($products)->additional(['itemsResource' => ProductResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
@@ -48,7 +49,9 @@ class ProductService extends BaseService
      */
     public function all(Request $request): JsonResponse
     {
-        $products = $this->productRepository->select(['id','title', 'body','quantity', 'created_at'])->get();
+        $products = $this->productRepository->select(['id','title', 'body','quantity', 'created_at'])
+            ->withPackageTitle()
+            ->get();
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('products', ProductResource::collection($products))
             ->send();
@@ -62,6 +65,7 @@ class ProductService extends BaseService
     public function show(Request $request, $product): JsonResponse
     {
         $product = $this->productRepository->select(['id','title', 'body','quantity', 'created_at'])
+            ->withPackageTitle()
             ->withCount(['payments'=>function($q){
                 $q->success();
             }])->findOrFailById($product);

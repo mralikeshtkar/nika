@@ -190,6 +190,7 @@ Route::prefix('v1')->group(function (Router $router) {
         $router->group([], function (Router $router) {
             $router->get('discounts', [V1ApiDiscountController::class, 'index']);
             $router->post('discounts', [V1ApiDiscountController::class, 'store']);
+            $router->get('discounts/{discount}', [V1ApiDiscountController::class, 'show']);
             $router->put('discounts/{discount}', [V1ApiDiscountController::class, 'update']);
             $router->delete('discounts/{discount}', [V1ApiDiscountController::class, 'destroy']);
         });
