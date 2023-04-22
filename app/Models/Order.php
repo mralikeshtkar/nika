@@ -36,7 +36,7 @@ class Order extends Model
      */
     public function rahjoo(): BelongsTo
     {
-        return $this->belongsTo(Rahjoo::class);
+        return $this->belongsTo(Rahjoo::class,'rahjoo_id');
     }
 
     /**
