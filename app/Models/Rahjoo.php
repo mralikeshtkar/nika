@@ -52,6 +52,8 @@ class Rahjoo extends Model
 
     #region Relations
 
+
+
     /**
      * @return HasMany
      */
@@ -63,9 +65,9 @@ class Rahjoo extends Model
     /**
      * @return HasOne
      */
-    public function requestSupport():HasOne
+    public function requestSupport(): HasOne
     {
-        return $this->hasOne(RequestSupport::class,'user_id','user_id')
+        return $this->hasOne(RequestSupport::class, 'user_id', 'user_id')
             ->orderByIsNullConformerId();
     }
 
@@ -83,6 +85,11 @@ class Rahjoo extends Model
     public function payments(): HasManyDeep
     {
         return $this->hasManyDeepFromRelations($this->supports(), (new RahjooSupport())->payments());
+    }
+
+    public function unPaidPayment()
+    {
+        return $this->payments()->take(1);
     }
 
     /**

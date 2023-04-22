@@ -44,7 +44,7 @@ class Payment extends Model
      */
     public function rahjooSupport(): BelongsTo
     {
-        return $this->belongsTo(RahjooSupport::class,'rahjoo_support_id');
+        return $this->belongsTo(RahjooSupport::class, 'rahjoo_support_id');
     }
 
     #endregion
@@ -60,6 +60,11 @@ class Payment extends Model
         $builder->where('status', PaymentStatus::Success)
             ->whereNotNull('date')
             ->whereNotNull('referenceId');
+    }
+
+    public function scopePending(Builder $builder)
+    {
+        $builder->where('status', PaymentStatus::Pending);
     }
 
     #endregion

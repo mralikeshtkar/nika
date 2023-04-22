@@ -243,7 +243,7 @@ class UserService extends BaseService
      */
     public function currentUser(Request $request): JsonResponse
     {
-        $user = $request->user()->load('rahjoo')
+        $user = $request->user()->load(['rahjoo.unPaidPayment'])
             ->only(['id', 'background', 'color', 'first_name', 'last_name', 'mobile', 'birthdate', 'rahjoo']);
         $user = collect($user)
             ->put('isPersonnel', $request->user()->isPersonnel())
