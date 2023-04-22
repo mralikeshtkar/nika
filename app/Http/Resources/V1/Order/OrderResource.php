@@ -30,7 +30,7 @@ class OrderResource extends JsonResource
         })->when($this->resource->relationLoaded('rahjoo'), function (Collection $collection) {
             $collection->put('rahjoo', new RahjooResource($this->resource->rahjoo));
         })->when($this->resource->relationLoaded('rahjooUser'), function (Collection $collection) {
-            $collection->put('rahjooUser', new UserResource($this->resource->rahjoo));
+            $collection->put('rahjoo_user', new UserResource($this->resource->rahjooUser));
         });
     }
 }
