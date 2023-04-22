@@ -244,10 +244,10 @@ class UserService extends BaseService
     public function currentUser(Request $request): JsonResponse
     {
         $user = $request->user()->load(['rahjoo','rahjoo.lastPayment:payments.id,payments.rahjoo_support_id,payments.action,payments.created_at']);
-        $user->rahjoo->last_payment="salam";
         $user = collect($user)
             ->put('isPersonnel', $request->user()->isPersonnel())
             ->put('role', optional($request->user()->roles()->first())->name)
+            ->put('rahjoo.last_payment',"Salam")
             ->toArray();
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('user', new SingleUserResource($user))
