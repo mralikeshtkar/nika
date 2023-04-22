@@ -1,6 +1,7 @@
 <?php
 
 return [
+
     /*
     |--------------------------------------------------------------------------
     | Default Driver
@@ -10,7 +11,7 @@ return [
     | You can switch to a different driver at runtime.
     |
     */
-    'default' => 'zarinpal',
+    'default' => 'idpay',
 
     /*
     |--------------------------------------------------------------------------
@@ -100,7 +101,7 @@ return [
             'merchantId' => '51de5737-eeb3-4876-bef9-445c1ea052df',
             'callbackUrl' => 'http://yoursite.com/path/to',
             'description' => 'payment using idpay',
-            'sandbox' => false, // set it to true for test environments
+            'sandbox' => true, // set it to true for test environments
         ],
         'irankish' => [
             'apiPurchaseUrl' => 'https://ikc.shaparak.ir/api/v3/tokenization/make',
