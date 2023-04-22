@@ -147,7 +147,7 @@ class RahjooSupportService extends BaseService
                 $rahjooSupport->orders()->create([
                     'rahjoo_id' => $rahjooSupport->rahjoo_id,
                     'payment_id' => $payment->id,
-                    'code' => IdGenerator::generate(['table' => (new Order())->getTable(), 'field' => 'code', 'length' => 6, 'prefix' => rand(1, 9)]),
+                    'code' => IdGenerator::generate(['table' => (new Order())->getTable(), 'field' => 'code', 'length' => 6, 'prefix' => 'NK']),
                 ]);
                 return ApiResponse::message(trans("Mission accomplished"))->send();
             });
