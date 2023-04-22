@@ -51,6 +51,22 @@ class ApiSupportController extends ApiBaseController
      *         required=false,
      *         @OA\Schema(type="string"),
      *     ),
+     *     @OA\Parameter(
+     *         description="سفارش های که به پست تحویل داده شده اند",
+     *         in="query",
+     *         name="posted",
+     *         description="مقدار 1",
+     *         required=false,
+     *         @OA\Schema(type="string"),
+     *     ),
+     *     @OA\Parameter(
+     *         description="سفارش های که به خریدار تحویل داده شده است",
+     *         in="query",
+     *         name="delivered",
+     *         description="مقدار 1",
+     *         required=false,
+     *         @OA\Schema(type="string"),
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="OK",

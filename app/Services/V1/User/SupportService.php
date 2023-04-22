@@ -50,6 +50,8 @@ class SupportService extends BaseService
             ->withSupportIfIsSuperAdmin($request->user())
             ->filterSupportStep($request)
             ->filterPreparation($request)
+            ->filterPosted($request)
+            ->filterDelivered($request)
             ->with(['user:id,first_name,last_name,birthdate','requestSupport:id,user_id,conformer_id,created_at'])
             ->withCount(['payments' => function ($q) {
                 $q->success();

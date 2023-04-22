@@ -173,6 +173,34 @@ class RahjooRepository extends BaseRepository implements RahjooRepositoryInterfa
         return $this;
     }
 
+    /**
+     * @param Request $request
+     * @return $this
+     */
+    public function filterPosted(Request $request): static
+    {
+        $this->model->when($request->filled('posted'), function ($q) use ($request) {
+            $q->whereHas('orders', function ($q) use ($request) {
+                $q->posted();
+            });
+        });
+        return $this;
+    }
+
+    /**
+     * @param Request $request
+     * @return $this
+     */
+    public function filterDelivered(Request $request): static
+    {
+        $this->model->when($request->filled('delivered'), function ($q) use ($request) {
+            $q->whereHas('orders', function ($q) use ($request) {
+                $q->delivered();
+            });
+        });
+        return $this;
+    }
+
     public function storeIntelligenceRahnama($rahjoo, $rahnama_id, $intelligence_id)
     {
         /** @var Rahjoo $rahjoo */

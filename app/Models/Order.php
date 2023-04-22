@@ -95,5 +95,15 @@ class Order extends Model
         $builder->where('status', OrderStatus::Preparation);
     }
 
+    public function scopePosted(Builder $builder)
+    {
+        $builder->where('status', OrderStatus::Posted);
+    }
+
+    public function scopeDelivered(Builder $builder)
+    {
+        $builder->where('status', OrderStatus::Delivered);
+    }
+
     #endregion
 }
