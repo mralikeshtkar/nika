@@ -155,7 +155,7 @@ class ApiProductController extends ApiBaseController
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"_method","title,"body","quantity"},
+     *                 required={"_method","quantity"},
      *                 @OA\Property(
      *                     property="_method",
      *                     type="string",
