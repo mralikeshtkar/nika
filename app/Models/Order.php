@@ -4,9 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Staudenmeir\EloquentHasManyDeep\HasOneDeep;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Order extends Model
 {
+    use HasRelationships;
+
     const SENT_AT_VALIDATION_FORMAT = 'Y/m/d H:i:s';
 
     protected $fillable = [
@@ -49,6 +53,14 @@ class Order extends Model
     public function payment(): BelongsTo
     {
         return $this->belongsTo(Payment::class);
+    }
+
+    /**
+     * @return HasOneDeep
+     */
+    public function rahjooUser(): HasOneDeep
+    {
+        return $this->hasOneDeepFromRelations($this->rahjoo(),(new Rahjoo())->user());
     }
 
     #endregion

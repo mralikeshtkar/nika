@@ -5,6 +5,7 @@ namespace App\Http\Resources\V1\Order;
 use App\Enums\Order\OrderStatus;
 use App\Http\Resources\V1\Payment\PaymentResource;
 use App\Http\Resources\V1\Rahjoo\RahjooResource;
+use App\Http\Resources\V1\User\UserResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;
 
@@ -28,6 +29,8 @@ class OrderResource extends JsonResource
             $collection->put('payment', new PaymentResource($this->resource->payment));
         })->when($this->resource->relationLoaded('rahjoo'), function (Collection $collection) {
             $collection->put('rahjoo', new RahjooResource($this->resource->rahjoo));
+        })->when($this->resource->relationLoaded('rahjooUser'), function (Collection $collection) {
+            $collection->put('rahjooUser', new UserResource($this->resource->rahjoo));
         });
     }
 }
