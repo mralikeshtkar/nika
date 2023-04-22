@@ -107,7 +107,7 @@ class ApiProductController extends ApiBaseController
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"quantity"},
+     *                 required={"title","body","quantity"},
      *                 @OA\Property(
      *                     property="title",
      *                     type="string",
