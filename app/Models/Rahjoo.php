@@ -79,6 +79,14 @@ class Rahjoo extends Model
     }
 
     /**
+     * @return HasMany
+     */
+    public function canceledSupports(): HasMany
+    {
+        return $this->supports()->whereNotNull('canceled_at');
+    }
+
+    /**
      * @return HasManyDeep
      */
     public function payments(): HasManyDeep

@@ -210,7 +210,7 @@ class RahjooRepository extends BaseRepository implements RahjooRepositoryInterfa
      */
     public function filterCanceled(Request $request, $support): static
     {
-        $this->model->withCount('supports');
+        $this->model->withCount('canceledSupports');
         return $this;
     }
 
