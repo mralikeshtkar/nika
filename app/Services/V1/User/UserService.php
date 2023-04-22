@@ -244,7 +244,7 @@ class UserService extends BaseService
     public function currentUser(Request $request): JsonResponse
     {
         $user = $request->user()->load(['rahjoo','rahjoo.lastPayment:payments.id,payments.rahjoo_support_id,payments.action,payments.created_at']);
-        $user->rahjoo->lastPayment="salam";
+        $user->rahjoo->last_payment="salam";
         $user = collect($user)
             ->put('isPersonnel', $request->user()->isPersonnel())
             ->put('role', optional($request->user()->roles()->first())->name)
