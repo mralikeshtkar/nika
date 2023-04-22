@@ -75,7 +75,7 @@ class Rahjoo extends Model
      */
     public function supports(): HasMany
     {
-        return $this->hasMany(RahjooSupport::class);
+        return $this->hasMany(RahjooSupport::class,'rahjoo_id');
     }
 
     /**
