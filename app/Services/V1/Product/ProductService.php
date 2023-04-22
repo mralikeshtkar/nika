@@ -10,6 +10,7 @@ use App\Responses\Api\ApiResponse;
 use App\Services\V1\BaseService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProductService extends BaseService
@@ -74,11 +75,15 @@ class ProductService extends BaseService
     public function store(Request $request): JsonResponse
     {
         ApiResponse::validate($request->all(), [
+            'title' => ['required', 'string', 'unique:' . Product::class . ',title'],
             'body' => ['required', 'string', 'unique:' . Product::class . ',body'],
+            'quantity' => ['required', 'numeric', 'min:0'],
         ]);
         $product = $this->productRepository->create([
             'user_id' => $request->user()->id,
+            'title' => $request->title,
             'body' => $request->body,
+            'quantity' => $request->quantity,
         ]);
         return ApiResponse::message(trans("The :attribute was successfully registered", ['attribute' => trans('Product')]), Response::HTTP_CREATED)
             ->addData('product', new ProductResource($product))
@@ -94,11 +99,17 @@ class ProductService extends BaseService
     {
         $product = $this->productRepository->findOrFailById($product);
         ApiResponse::validate($request->all(), [
+            'title' => ['required', 'string', 'unique:' . Product::class . ',title,' . $product->id],
             'body' => ['required', 'string', 'unique:' . Product::class . ',body,' . $product->id],
+            'quantity' => ['required', 'numeric', 'min:0'],
         ]);
-        $this->productRepository->create([
-            'body' => $request->body,
-        ]);
+        $this->productRepository->create(collect([
+            'quantity' => $request->quantity,
+        ])->when($request->filled('title'), function (Collection $collection) use ($request) {
+            $collection->put('title', $request->title);
+        })->when($request->filled('body'), function (Collection $collection) use ($request) {
+            $collection->put('body', $request->body);
+        })->toArray());
         return ApiResponse::message(trans("The :attribute was successfully updated", ['attribute' => trans('Product')]))->send();
     }
 }

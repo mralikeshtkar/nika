@@ -19,7 +19,9 @@ return new class extends Migration {
                 ->on('users')
                 ->cascadeOnDelete()
                 ->cascadeOnDelete();
+            $table->string('title');
             $table->text('body');
+            $table->bigInteger('quantity')->default(0);
             $table->timestamps();
         });
     }

@@ -107,11 +107,21 @@ class ApiProductController extends ApiBaseController
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"body"},
+     *                 required={"title,"body","quantity"},
+     *                 @OA\Property(
+     *                     property="title",
+     *                     type="string",
+     *                     description="عنوان"
+     *                 ),
      *                 @OA\Property(
      *                     property="body",
      *                     type="string",
      *                     description="متن"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="quantity",
+     *                     type="string",
+     *                     description="تعداد"
      *                 ),
      *             )
      *         )
@@ -145,7 +155,7 @@ class ApiProductController extends ApiBaseController
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"_method","body"},
+     *                 required={"_method","title,"body","quantity"},
      *                 @OA\Property(
      *                     property="_method",
      *                     type="string",
@@ -154,9 +164,19 @@ class ApiProductController extends ApiBaseController
      *                     description="این مقدار باید بصورت ثابت شود",
      *                 ),
      *                 @OA\Property(
+     *                     property="title",
+     *                     type="string",
+     *                     description="عنوان"
+     *                 ),
+     *                 @OA\Property(
      *                     property="body",
      *                     type="string",
      *                     description="متن"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="quantity",
+     *                     type="string",
+     *                     description="تعداد"
      *                 ),
      *             )
      *         )

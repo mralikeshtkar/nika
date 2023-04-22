@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Staudenmeir\EloquentHasManyDeep\HasOneDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
@@ -11,7 +12,7 @@ class Order extends Model
 {
     use HasRelationships;
 
-    const SENT_AT_VALIDATION_FORMAT = 'Y/m/d H:i:s';
+    const SENT_AT_VALIDATION_FORMAT = 'Y/m/d';
 
     protected $fillable = [
         'rahjoo_id',
@@ -55,7 +56,7 @@ class Order extends Model
         return $this->belongsTo(Payment::class);
     }
 
-    public function rahjooUser()
+    public function rahjooUser(): HasOneThrough
     {
         return $this->hasOneThrough(User::class,Rahjoo::class,'id','id','rahjoo_id','user_id');
     }
