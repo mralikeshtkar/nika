@@ -12,6 +12,7 @@ use App\Models\ExercisePriorityPackage;
 use App\Models\Intelligence;
 use App\Models\Package;
 use App\Models\Product;
+use App\Repositories\V1\Discount\Interfaces\DiscountRepositoryInterface;
 use App\Repositories\V1\Media\Interfaces\MediaRepositoryInterface;
 use App\Repositories\V1\Package\Interfaces\PackageRepositoryInterface;
 use App\Responses\Api\ApiResponse;
@@ -104,7 +105,7 @@ class PackageService extends BaseService
             'video' => ['nullable', 'file', 'mimes:' . implode(",", MediaExtension::getExtensions(MediaExtension::Video))],
             'intelligences' => ['nullable', 'array'],
             'intelligences.*' => ['exists:' . Intelligence::class . ',id'],
-            'product_id' => ['nullable','exists:' . Product::class . ',id'],
+            'product_id' => ['nullable', 'exists:' . Product::class . ',id'],
         ]);
         $request->merge(['status' => $request->filled('status') ? PackageStatus::coerce($request->status) : null,]);
         try {
@@ -174,7 +175,7 @@ class PackageService extends BaseService
             'description' => ['nullable', 'string'],
             'intelligences' => ['nullable', 'array'],
             'intelligences.*' => ['exists:' . Intelligence::class . ',id'],
-            'product_id' => ['nullable','exists:' . Product::class . ',id'],
+            'product_id' => ['nullable', 'exists:' . Product::class . ',id'],
         ]);
         $request->merge([
             'status' => $request->filled('status') ? PackageStatus::coerce($request->status) : null,
@@ -382,24 +383,56 @@ class PackageService extends BaseService
     /**
      * @param Request $request
      * @param $package
+     * @return JsonResponse
+     */
+    public function checkDiscount(Request $request, $package): JsonResponse
+    {
+        $package = $this->packageRepository->findOrFailById($package);
+        ApiResponse::validate($request->all(), [
+            'code' => ['required', 'string'],
+        ]);
+        $discount = resolve(DiscountRepositoryInterface::class)->findByCode($request->code);
+        abort_if(!$discount, ApiResponse::error(trans("Discount code is invalid"))->send());
+        return ApiResponse::message(trans("Mission accomplished"))
+            ->addData('final_price', $discount->calculateFinalPrice($package->price))
+            ->send();
+    }
+
+    /**
+     * @param Request $request
+     * @param $package
      * @return mixed
      */
     public function buy(Request $request, $package): mixed
     {
         /** @var Package $package */
         $package = $this->packageRepository->findOrFailById($package);
+        ApiResponse::validate($request->all(), [
+            'code' => ['nullable', 'string'],
+        ]);
+        $discount = resolve(DiscountRepositoryInterface::class)->findByCode($request->code);
         try {
-            return DB::transaction(function () use ($request, $package) {
-                $invoice = (new Invoice())->via(config('payment.default'))->amount($package->price);
+            return DB::transaction(function () use ($request, $package, $discount) {
+                $final_price = $discount->calculateFinalPrice($package->price);
+                $invoice = (new Invoice())->via(config('payment.default'))->amount($final_price);
                 $payment = Payment::callbackUrl(route('users.verify-payment'))->purchase($invoice)->pay();
-                $package->payments()->create([
+                $package->payments()->create(collect([
                     'owner_id' => $request->user()->id,
                     'product_id' => $package->product_id,
                     'action' => $payment->getAction(),
                     'invoice_id' => $invoice->getTransactionId(),
-                    'amount' => $package->price,
+                    'amount' => $final_price,
+                    'price' => $package->price,
                     'gateway' => $invoice->getDriver(),
-                ]);
+                ])->when($discount, function (Collection $collection) use ($discount, $package, $final_price) {
+                    $collection->put('discount', [
+                        'user_id' => $discount->user_id,
+                        'code' => $discount->code,
+                        'is_percent' => $discount->is_percent,
+                        'amount' => $discount->amount,
+                        'discount_amount' => $package->price - $final_price,
+                    ]);
+                })->toArray());
                 return ApiResponse::message(trans("Mission accomplished"))
                     ->addData('payment', $payment->getAction())
                     ->send();

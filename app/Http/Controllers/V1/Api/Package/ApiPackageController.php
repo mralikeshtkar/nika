@@ -614,6 +614,10 @@ class ApiPackageController extends ApiBaseController
         return $this->packageService->destroy($request, $package);
     }
 
+    public function checkDiscount(Request $request,$package)
+    {
+        return $this->packageService->checkDiscount($request, $package);
+    }
 
     /**
      * @OA\Post (

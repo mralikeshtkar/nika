@@ -333,6 +333,7 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->get('packages/{package}', [V1ApiPackageController::class, 'show']);
             $router->put('packages/{package}', [V1ApiPackageController::class, 'update']);
             $router->delete('packages/{package}', [V1ApiPackageController::class, 'destroy']);
+            $router->post('packages/{package}/check-discount', [V1ApiPackageController::class, 'checkDiscount']);
             $router->post('packages/{package}/upload-video', [V1ApiPackageController::class, 'uploadVideo']);
             $router->put('packages/{package}/completed', [V1ApiPackageController::class, 'completed']);
             $router->put('packages/{package}/uncompleted', [V1ApiPackageController::class, 'uncompleted']);
