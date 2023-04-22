@@ -34,7 +34,7 @@ class ProductService extends BaseService
      */
     public function index(Request $request): JsonResponse
     {
-        $products = $this->productRepository->select(['id','title', 'body','quantity', 'created_at'])
+        $products = $this->productRepository->select(['id', 'title', 'body', 'quantity', 'created_at'])
             ->withPackageTitle()
             ->paginate($request->get('perPage', 15));
         $resource = PaginationResource::make($products)->additional(['itemsResource' => ProductResource::class]);
@@ -49,7 +49,7 @@ class ProductService extends BaseService
      */
     public function all(Request $request): JsonResponse
     {
-        $products = $this->productRepository->select(['id','title', 'body','quantity', 'created_at'])
+        $products = $this->productRepository->select(['id', 'title', 'body', 'quantity', 'created_at'])
             ->withPackageTitle()
             ->get();
         return ApiResponse::message(trans("The information was received successfully"))
@@ -64,9 +64,9 @@ class ProductService extends BaseService
      */
     public function show(Request $request, $product): JsonResponse
     {
-        $product = $this->productRepository->select(['id','title', 'body','quantity', 'created_at'])
+        $product = $this->productRepository->select(['id', 'title', 'body', 'quantity', 'created_at'])
             ->withPackageTitle()
-            ->withCount(['payments'=>function($q){
+            ->withCount(['payments' => function ($q) {
                 $q->success();
             }])->findOrFailById($product);
         return ApiResponse::message(trans("The information was received successfully"))
@@ -105,13 +105,13 @@ class ProductService extends BaseService
     {
         $product = $this->productRepository->findOrFailById($product);
         ApiResponse::validate($request->all(), [
-            'title' => ['required', 'string', 'unique:' . Product::class . ',title,' . $product->id],
-            'body' => ['required', 'string', 'unique:' . Product::class . ',body,' . $product->id],
-            'quantity' => ['required', 'numeric', 'min:0'],
+            'title' => ['nullable', 'string', 'unique:' . Product::class . ',title,' . $product->id],
+            'body' => ['nullable', 'string', 'unique:' . Product::class . ',body,' . $product->id],
+            'quantity' => ['nullable', 'numeric', 'min:0'],
         ]);
-        $this->productRepository->create(collect([
-            'quantity' => $request->quantity,
-        ])->when($request->filled('title'), function (Collection $collection) use ($request) {
+        $this->productRepository->create(collect()->when($request->filled('quantity'), function (Collection $collection) use ($request) {
+            $collection->put('quantity', $request->quantity);
+        })->when($request->filled('title'), function (Collection $collection) use ($request) {
             $collection->put('title', $request->title);
         })->when($request->filled('body'), function (Collection $collection) use ($request) {
             $collection->put('body', $request->body);
