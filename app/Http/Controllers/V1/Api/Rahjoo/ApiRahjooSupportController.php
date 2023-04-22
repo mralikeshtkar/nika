@@ -173,6 +173,31 @@ class ApiRahjooSupportController extends ApiBaseController
 
     /**
      * @OA\Post(
+     *     path="/rahjoo-supports/{rahjooSupport}/information-completed",
+     *     summary="پایان مرحله دو صدا زده میشود",
+     *     description="",
+     *     tags={"پشتیبان"},
+     *     @OA\Parameter(
+     *         description="شناسه پشتیبانی رهجو",
+     *         in="path",
+     *         name="rahjooSupport",
+     *         required=true,
+     *         @OA\Schema(type="number"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
+    public function informationCompleted(Request $request, $rahjooSupport)
+    {
+        return $this->rahjooSupportService->informationCompleted($request, $rahjooSupport);
+    }
+
+    /**
+     * @OA\Post(
      *     path="/rahjoo-supports/{rahjooSupport}/generate-pay-url",
      *     summary="ایجاد لینک پرداخت",
      *     description="",

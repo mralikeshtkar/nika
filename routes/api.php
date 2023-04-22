@@ -15,6 +15,7 @@ use App\Http\Controllers\V1\Api\IntelligencePointName\ApiIntelligencePointNameCo
 use App\Http\Controllers\V1\Api\Job\ApiJobController as V1ApiJobController;
 use App\Http\Controllers\V1\Api\Major\ApiMajorController as V1ApiMajorController;
 use App\Http\Controllers\V1\Api\Media\ApiMediaController as V1ApiMediaController;
+use App\Http\Controllers\V1\Api\Order\ApiOrderController as V1ApiOrderController;
 use App\Http\Controllers\V1\Api\Package\ApiPackageController as V1ApiPackageController;
 use App\Http\Controllers\V1\Api\Package\ApiIntelligencePackageController as V1ApiIntelligencePackageController;
 use App\Http\Controllers\V1\Api\Permission\ApiPermissionController as V1ApiPermissionController;
@@ -101,6 +102,13 @@ Route::prefix('v1')->group(function (Router $router) {
             });
         });
 
+        /* Order */
+        $router->group([], function (Router $router) {
+            $router->get('orders', [V1ApiOrderController::class, 'index']);
+            $router->get('orders/{order}', [V1ApiOrderController::class, 'show']);
+            $router->put('orders/{order}', [V1ApiOrderController::class, 'update']);
+        });
+
         /* Storeroom */
         $router->group([], function (Router $router) {
             $router->get('storerooms', [V1ApiStoreroomController::class, 'index']);
@@ -121,6 +129,7 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->put('rahjoo-supports/{rahjooSupport}', [V1ApiRahjooSupportController::class, 'update']);
             $router->post('rahjoo-supports/{rahjooSupport}/cancel', [V1ApiRahjooSupportController::class, 'cancel']);
             $router->post('rahjoo-supports/{rahjooSupport}/change-step', [V1ApiRahjooSupportController::class, 'changeStep']);
+            $router->post('rahjoo-supports/{rahjooSupport}/information-completed', [V1ApiRahjooSupportController::class, 'information-completed']);
             $router->post('rahjoo-supports/{rahjooSupport}/generate-pay-url', [V1ApiRahjooSupportController::class, 'generatePayUrl']);
             $router->get('rahjoo-supports/{rahjooSupport}/payments', [V1ApiRahjooSupportController::class, 'payments']);
         });

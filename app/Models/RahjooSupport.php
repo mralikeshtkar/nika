@@ -52,4 +52,12 @@ class RahjooSupport extends Model
     {
         return $this->belongsTo(User::class, 'support_id', 'id');
     }
+
+    /**
+     * @return HasMany
+     */
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
 }

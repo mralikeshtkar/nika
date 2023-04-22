@@ -30,6 +30,8 @@ use App\Repositories\V1\Major\Eloquent\MajorRepository;
 use App\Repositories\V1\Major\Interfaces\MajorRepositoryInterface;
 use App\Repositories\V1\Media\Eloquent\MediaRepository;
 use App\Repositories\V1\Media\Interfaces\MediaRepositoryInterface;
+use App\Repositories\V1\Order\Eloquent\OrderRepository;
+use App\Repositories\V1\Order\Interfaces\OrderRepositoryInterface;
 use App\Repositories\V1\Package\Eloquent\IntelligencePackageRepository;
 use App\Repositories\V1\Package\Eloquent\PackageRepository;
 use App\Repositories\V1\Package\Interfaces\IntelligencePackageRepositoryInterface;
@@ -134,5 +136,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(SupportCommentRepositoryInterface::class, SupportCommentRepository::class);
         $this->app->bind(PaymentRepositoryInterface::class, PaymentRepository::class);
         $this->app->bind(RequestSupportRepositoryInterface::class, RequestSupportRepository::class);
+        $this->app->bind(OrderRepositoryInterface::class, OrderRepository::class);
     }
 }

@@ -7,6 +7,7 @@ use App\Enums\Rahjoo\RahjooSupportStep;
 use App\Events\Payment\PaymentWasSuccessful;
 use App\Http\Resources\V1\Payment\PaymentResource;
 use App\Http\Resources\V1\Rahjoo\RahjooSupportResource;
+use App\Models\Order;
 use App\Models\Package;
 use App\Models\RahjooSupport;
 use App\Repositories\V1\Package\Interfaces\PackageRepositoryInterface;
@@ -17,6 +18,7 @@ use App\Services\V1\BaseService;
 use App\Services\V1\Payment\PaymentService;
 use BenSampo\Enum\Rules\EnumValue;
 use Exception;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -27,6 +29,7 @@ use Shetabit\Multipay\Receipt;
 use Shetabit\Multipay\RedirectionForm;
 use Shetabit\Payment\Facade\Payment;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class RahjooSupportService extends BaseService
 {
@@ -124,6 +127,36 @@ class RahjooSupportService extends BaseService
         return ApiResponse::message(trans("Mission accomplished"))->send();
     }
 
+    public function informationCompleted(Request $request, $rahjooSupport)
+    {
+        /** @var RahjooSupport $rahjooSupport */
+        $rahjooSupport = $this->rahjooSupportRepository->notCanceled()
+            ->findOrFailById($rahjooSupport);
+        $payment = $rahjooSupport->payments()
+            ->latest()
+            ->success()
+            ->first();
+        if (!$payment) {
+            return ApiResponse::error(trans('Payment has not been made'))->send();
+        }
+        try {
+            return DB::transaction(function () use ($request, $rahjooSupport, $payment) {
+                $this->rahjooSupportRepository->update($rahjooSupport, [
+                    'step' => RahjooSupportStep::Third,
+                ]);
+                $rahjooSupport->orders()->create([
+                    'rahjoo_id' => $rahjooSupport->rahjoo_id,
+                    'payment_id' => $payment->id,
+                    'code' => IdGenerator::generate(['table' => (new Order())->getTable(), 'field' => 'code', 'length' => 6, 'prefix' => rand(1, 9)]),
+                ]);
+                return ApiResponse::message(trans("Mission accomplished"))->send();
+            });
+        } catch (Throwable $e) {
+            return ApiResponse::error(trans('Internal server error'))->send();
+        }
+
+    }
+
     public function generatePayUrl(Request $request, $rahjooSupport)
     {
         $rahjooSupport = $this->rahjooSupportRepository->notCanceled()
@@ -185,7 +218,7 @@ class RahjooSupportService extends BaseService
         $payment = $paymentRepository->statusPending()
             ->findOrFailByInvoiceId($request->get('Authority'));
         try {
-            return DB::transaction(function () use ($paymentRepository, $payment,$request) {
+            return DB::transaction(function () use ($paymentRepository, $payment, $request) {
                 $receipt = Payment::amount($payment->amount)->transactionId($payment->invoice_id)->verify();
                 $paymentRepository->update($payment, [
                     'referenceId' => $receipt->getReferenceId(),
