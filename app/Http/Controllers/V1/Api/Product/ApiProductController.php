@@ -97,7 +97,42 @@ class ApiProductController extends ApiBaseController
         return $this->productService->show($request,$product);
     }
 
-    
+    /**
+     * @OA\Post(
+     *     path="/products",
+     *     summary="ثبت محصول",
+     *     description="",
+     *     tags={"محصول"},
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"quantity"},
+     *                 @OA\Property(
+     *                     property="title",
+     *                     type="string",
+     *                     description="عنوان"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="body",
+     *                     type="string",
+     *                     description="متن"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="quantity",
+     *                     type="string",
+     *                     description="تعداد"
+     *                 ),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="عملیات موفق",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+     */
     public function store(Request $request)
     {
         return $this->productService->store($request);
