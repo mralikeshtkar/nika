@@ -208,11 +208,13 @@ class RahjooRepository extends BaseRepository implements RahjooRepositoryInterfa
      * @param $support
      * @return $this
      */
-    public function filterCanceled(Request $request,$support): static
+    public function filterCanceled(Request $request, $support): static
     {
-        $this->model->when($request->filled('canceled'), function ($q) use ($request,$support) {
-            $q->whereHas('supports', function ($q) use ($request,$support) {
-                $q->whereNotNull('canceled_at');
+        $this->model->when($request->filled('canceled'), function ($q) use ($request, $support) {
+            $q->where(function ($q) use ($request, $support) {
+                $q->whereHas('supports', function ($q) use ($request, $support) {
+                    $q->whereNotNull('canceled_at');
+                });
             });
         });
         return $this;
