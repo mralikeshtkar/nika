@@ -14,6 +14,7 @@ class Payment extends Model
     protected $fillable = [
         'owner_id',
         'rahjoo_support_id',
+        'product_id',
         'action',
         'paymentable_id',
         'paymentable_type',

@@ -9,6 +9,8 @@ use App\Repositories\V1\BaseRepository;
 use App\Repositories\V1\City\Eloquent\CityRepository;
 use App\Repositories\V1\City\Interfaces\CityRepositoryInterface;
 use App\Repositories\V1\Comment\Interfaces\CommentRepositoryInterface;
+use App\Repositories\V1\Discount\Eloquent\DiscountRepository;
+use App\Repositories\V1\Discount\Interfaces\DiscountRepositoryInterface;
 use App\Repositories\V1\DocumentGroup\Eloquent\DocumentGroupRepository;
 use App\Repositories\V1\DocumentGroup\Interfaces\DocumentGroupRepositoryInterface;
 use App\Repositories\V1\EloquentRepositoryInterface;
@@ -140,5 +142,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(RequestSupportRepositoryInterface::class, RequestSupportRepository::class);
         $this->app->bind(OrderRepositoryInterface::class, OrderRepository::class);
         $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
+        $this->app->bind(DiscountRepositoryInterface::class, DiscountRepository::class);
     }
 }

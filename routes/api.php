@@ -4,6 +4,7 @@ use App\Http\Controllers\V1\Api\Address\ApiAddressController as V1ApiAddressCont
 use App\Http\Controllers\V1\Api\ApiUploadFileController;
 use App\Http\Controllers\V1\Api\City\ApiCityController as V1ApiCityController;
 use App\Http\Controllers\V1\Api\Comment\ApiCommentController as V1ApiCommentController;
+use App\Http\Controllers\V1\Api\Discount\ApiDiscountController as V1ApiDiscountController;
 use App\Http\Controllers\V1\Api\DocumentGroup\ApiDocumentGroupController as V1ApiDocumentGroupController;
 use App\Http\Controllers\V1\Api\Exercise\ApiExerciseController as V1ApiExerciseController;
 use App\Http\Controllers\V1\Api\Grade\ApiGradeController as V1ApiGradeController;
@@ -182,6 +183,14 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->get('provinces/{province}', [V1ProvinceController::class, 'show']);
             $router->put('provinces/{province}', [V1ProvinceController::class, 'update']);
             $router->delete('provinces/{province}', [V1ProvinceController::class, 'destroy']);
+        });
+
+        /* Discount */
+        $router->group([], function (Router $router) {
+            $router->get('discounts', [V1ApiDiscountController::class, 'index']);
+            $router->post('discounts', [V1ApiDiscountController::class, 'store']);
+            $router->put('discounts/{discount}', [V1ApiDiscountController::class, 'update']);
+            $router->delete('discounts/{discount}', [V1ApiDiscountController::class, 'destroy']);
         });
 
         /* Cities */

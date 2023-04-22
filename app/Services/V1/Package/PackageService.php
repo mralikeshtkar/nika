@@ -392,6 +392,7 @@ class PackageService extends BaseService
                 $payment = Payment::callbackUrl(route('users.verify-payment'))->purchase($invoice)->pay();
                 $package->payments()->create([
                     'owner_id' => $request->user()->id,
+                    'product_id' => $package->product_id,
                     'action' => $payment->getAction(),
                     'invoice_id' => $invoice->getTransactionId(),
                     'amount' => $package->price,

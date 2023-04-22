@@ -173,6 +173,7 @@ class RahjooSupportService extends BaseService
                 $package->payments()->create([
                     'owner_id' => $request->user()->id,
                     'rahjoo_support_id' => $rahjooSupport->id,
+                    'product_id' => $package->product_id,
                     'action' => $payment->getAction(),
                     'invoice_id' => $invoice->getTransactionId(),
                     'amount' => $package->price,
