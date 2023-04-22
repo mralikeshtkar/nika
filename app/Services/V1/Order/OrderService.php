@@ -37,7 +37,9 @@ class OrderService extends BaseService
     public function index(Request $request): JsonResponse
     {
         $orders = $this->orderRepository->latest()
-            ->with(['payment.paymentable','rahjooUser:id,first_name,last_name'])
+            ->with(['payment.paymentable','rahjooUser'=>function($q){
+                $q->select(['users.id','users.first_name','users.last_name']);
+            }])
             ->filterPagination($request)
             ->paginate($request->get('perPage', 15));
         $resource = PaginationResource::make($orders)->additional(['itemsResource' => OrderResource::class]);
