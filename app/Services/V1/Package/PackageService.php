@@ -11,6 +11,7 @@ use App\Models\Exercise;
 use App\Models\ExercisePriorityPackage;
 use App\Models\Intelligence;
 use App\Models\Package;
+use App\Models\Product;
 use App\Repositories\V1\Media\Interfaces\MediaRepositoryInterface;
 use App\Repositories\V1\Package\Interfaces\PackageRepositoryInterface;
 use App\Responses\Api\ApiResponse;
@@ -101,6 +102,7 @@ class PackageService extends BaseService
             'video' => ['nullable', 'file', 'mimes:' . implode(",", MediaExtension::getExtensions(MediaExtension::Video))],
             'intelligences' => ['nullable', 'array'],
             'intelligences.*' => ['exists:' . Intelligence::class . ',id'],
+            'product_id' => ['nullable','exists:' . Product::class . ',id'],
         ]);
         $request->merge(['status' => $request->filled('status') ? PackageStatus::coerce($request->status) : null,]);
         try {
@@ -115,6 +117,8 @@ class PackageService extends BaseService
                     $collection->put('status', $request->status->value);
                 })->when($request->filled('is_completed'), function (Collection $collection) use ($request) {
                     $collection->put('is_completed', $request->is_completed);
+                })->when($request->filled('product_id'), function (Collection $collection) use ($request) {
+                    $collection->put('product_id', $request->product_id);
                 })->toArray());
                 $this->packageRepository->uploadVideo($package, $request->video);
                 $package = $this->packageRepository->with(['video'])->findOrFailById($package->id);
@@ -168,6 +172,7 @@ class PackageService extends BaseService
             'description' => ['nullable', 'string'],
             'intelligences' => ['nullable', 'array'],
             'intelligences.*' => ['exists:' . Intelligence::class . ',id'],
+            'product_id' => ['nullable','exists:' . Product::class . ',id'],
         ]);
         $request->merge([
             'status' => $request->filled('status') ? PackageStatus::coerce($request->status) : null,
@@ -184,6 +189,8 @@ class PackageService extends BaseService
                 $collection->put('status', $request->status->value);
             })->when($request->filled('is_completed'), function (Collection $collection) use ($request) {
                 $collection->put('is_completed', $request->is_completed);
+            })->when($request->filled('product_id'), function (Collection $collection) use ($request) {
+                $collection->put('product_id', $request->product_id);
             })->toArray());
             $package = $this->packageRepository->with(['video'])->findOrFailById($package->id);
             if ($request->filled('intelligences'))
@@ -379,10 +386,6 @@ class PackageService extends BaseService
     {
         /** @var Package $package */
         $package = $this->packageRepository->findOrFailById($package);
-        if (!$package->hasQuantity()) {
-            return ApiResponse::error(trans('There is not enough package stock'), Response::HTTP_BAD_REQUEST)
-                ->send();
-        }
         try {
             return DB::transaction(function () use ($request, $package) {
                 $invoice = (new Invoice())->via(config('payment.default'))->amount($package->price);

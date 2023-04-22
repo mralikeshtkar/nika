@@ -145,6 +145,11 @@ class ApiPackageController extends ApiBaseController
      *                     type="string",
      *                     description="توضیحات"
      *                 ),
+     *                 @OA\Property(
+     *                     property="product_id",
+     *                     type="string",
+     *                     description="شناسه محصول"
+     *                 ),
      *                  @OA\Property(
      *                     property="intelligences[]",
      *                     type="array",
@@ -265,6 +270,11 @@ class ApiPackageController extends ApiBaseController
      *                     property="description",
      *                     type="string",
      *                     description="توضیحات"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="product_id",
+     *                     type="string",
+     *                     description="شناسه محصول"
      *                 ),
      *                  @OA\Property(
      *                     property="intelligences[]",

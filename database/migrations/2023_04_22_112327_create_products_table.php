@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\Package\PackageStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,20 +12,14 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('packages', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')
                 ->references('id')
                 ->on('users')
-                ->cascadeOnUpdate()
+                ->cascadeOnDelete()
                 ->cascadeOnDelete();
-            $table->string('title');
-            $table->unsignedTinyInteger('status')->default(PackageStatus::Active);
-            $table->unsignedSmallInteger('age');
-            $table->string('price');
-            $table->bigInteger('quantity')->default(0);
-            $table->boolean('is_completed')->default(false);
-            $table->text('description')->nullable();
+            $table->text('body');
             $table->timestamps();
         });
     }
@@ -38,6 +31,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('packages');
+        Schema::dropIfExists('products');
     }
 };

@@ -82,7 +82,7 @@ class ApiOrderController extends ApiBaseController
      */
     public function show(Request $request, $order)
     {
-        return $this->orderService->show($request);
+        return $this->orderService->show($request,$order);
     }
 
     /**

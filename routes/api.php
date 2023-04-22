@@ -20,6 +20,7 @@ use App\Http\Controllers\V1\Api\Package\ApiPackageController as V1ApiPackageCont
 use App\Http\Controllers\V1\Api\Package\ApiIntelligencePackageController as V1ApiIntelligencePackageController;
 use App\Http\Controllers\V1\Api\Permission\ApiPermissionController as V1ApiPermissionController;
 use App\Http\Controllers\V1\Api\Personnel\ApiPersonnelController as V1ApiPersonnelController;
+use App\Http\Controllers\V1\Api\Product\ApiProductController as V1ApiProductController;
 use App\Http\Controllers\V1\Api\Province\ApiProvinceController as V1ProvinceController;
 use App\Http\Controllers\V1\Api\PsychologicalQuestion\ApiPsychologicalQuestionController as V1ApiPsychologicalQuestionController;
 use App\Http\Controllers\V1\Api\Question\ApiQuestionAnswerController as V1ApiQuestionAnswerController;
@@ -107,6 +108,15 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->get('orders', [V1ApiOrderController::class, 'index']);
             $router->get('orders/{order}', [V1ApiOrderController::class, 'show']);
             $router->put('orders/{order}', [V1ApiOrderController::class, 'update']);
+        });
+
+        /* Product */
+        $router->group([], function (Router $router) {
+            $router->get('products', [V1ApiProductController::class, 'index']);
+            $router->get('products/all', [V1ApiProductController::class, 'all']);
+            $router->post('products', [V1ApiProductController::class, 'store']);
+            $router->get('products/{product}', [V1ApiProductController::class, 'show']);
+            $router->put('products/{product}', [V1ApiProductController::class, 'update']);
         });
 
         /* Storeroom */

@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Events\Payment\PaymentWasSuccessful;
-use App\Listeners\Payment\AssigneUserPackage;
+use App\Listeners\ChangeQuantityPackage;
 use App\Listeners\Payment\ChangeStepRahjooSupport;
 use App\Models\Exercise;
 use App\Models\IntelligenceFeedback;
@@ -20,7 +20,6 @@ use App\Observers\V1\User\UserObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -34,7 +33,7 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         PaymentWasSuccessful::class => [
-            AssigneUserPackage::class,
+            ChangeQuantityPackage::class,
             ChangeStepRahjooSupport::class,
         ],
     ];

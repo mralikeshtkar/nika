@@ -42,6 +42,8 @@ use App\Repositories\V1\Permission\Eloquent\PermissionRepository;
 use App\Repositories\V1\Permission\Interfaces\PermissionRepositoryInterface;
 use App\Repositories\V1\Personnel\Eloquent\PersonnelRepository;
 use App\Repositories\V1\Personnel\Interfaces\PersonnelRepositoryInterface;
+use App\Repositories\V1\Product\Eloquent\ProductRepository;
+use App\Repositories\V1\Product\Interfaces\ProductRepositoryInterface;
 use App\Repositories\V1\Province\Eloquent\ProvinceRepository;
 use App\Repositories\V1\Province\Interfaces\ProvinceRepositoryInterface;
 use App\Repositories\V1\PsychologicalQuestion\Eloquent\PsychologicalQuestionRepository;
@@ -137,5 +139,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(PaymentRepositoryInterface::class, PaymentRepository::class);
         $this->app->bind(RequestSupportRepositoryInterface::class, RequestSupportRepository::class);
         $this->app->bind(OrderRepositoryInterface::class, OrderRepository::class);
+        $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
     }
 }

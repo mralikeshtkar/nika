@@ -32,6 +32,7 @@ class Package extends Model
      */
     protected $fillable = [
         'user_id',
+        'product_id',
         'title',
         'status',
         'age',
@@ -84,6 +85,14 @@ class Package extends Model
     #endregion
 
     #region Relations
+
+    /**
+     * @return BelongsTo
+     */
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class,'product_id');
+    }
 
     /**
      * @return MorphMany
