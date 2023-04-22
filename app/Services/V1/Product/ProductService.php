@@ -51,8 +51,9 @@ class ProductService extends BaseService
      */
     public function all(Request $request): JsonResponse
     {
-        $products = $this->productRepository->select(['id', 'title', 'body', 'quantity', 'created_at'])
+        $products = $this->productRepository->select(['id', 'title', 'body','status', 'quantity', 'created_at'])
             ->withPackageTitle()
+            ->filterStatus($request)
             ->get();
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('products', ProductResource::collection($products))
@@ -66,7 +67,7 @@ class ProductService extends BaseService
      */
     public function show(Request $request, $product): JsonResponse
     {
-        $product = $this->productRepository->select(['id', 'title', 'body', 'quantity', 'created_at'])
+        $product = $this->productRepository->select(['id', 'title', 'body', 'quantity','status', 'created_at'])
             ->withPackageTitle()
             ->withCount(['payments' => function ($q) {
                 $q->success();

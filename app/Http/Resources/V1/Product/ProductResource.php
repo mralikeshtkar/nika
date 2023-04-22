@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\V1\Product;
 
+use App\Enums\Product\ProductStatus;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;
 
@@ -17,6 +18,8 @@ class ProductResource extends JsonResource
     {
         return collect($this->resource)->when(array_key_exists('created_at', $this->resource->getAttributes()), function (Collection $collection) {
             $collection->put('created_at', verta($this->resource->created_at)->formatJalaliDate());
+        })->when(array_key_exists('status', $this->resource->getAttributes()), function (Collection $collection) {
+            $collection->put('translated_status', ProductStatus::getDescription($this->resource->status));
         });
     }
 }

@@ -60,6 +60,12 @@ class ApiProductController extends ApiBaseController
      *     summary="دریافت لیست محصولات",
      *     description="",
      *     tags={"محصول"},
+     *     @OA\Parameter(
+     *         description="وضعیت : active,inactive",
+     *         in="query",
+     *         name="status",
+     *         @OA\Schema(type="string"),
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="عملیات موفق",
