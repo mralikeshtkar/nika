@@ -79,9 +79,7 @@ class OrderService extends BaseService
         ]);
         try {
             return DB::transaction(function () use ($order, $request) {
-                $request->merge([
-                    'sent_at' => Verta::parseFormat(Order::SENT_AT_VALIDATION_FORMAT, $request->sent_at)->datetime()
-                ]);
+                dd(Verta::parseFormat(Order::SENT_AT_VALIDATION_FORMAT, $request->sent_at)->datetime());
                 $this->orderRepository->update($order, [
                     'tracking_code' => $request->tracking_code,
                     'sent_at' => $request->sent_at,
