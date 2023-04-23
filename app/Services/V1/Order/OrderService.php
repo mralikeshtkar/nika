@@ -83,7 +83,6 @@ class OrderService extends BaseService
                     'tracking_code' => $request->tracking_code,
                     'sent_at' => Verta::parseFormat(Order::SENT_AT_VALIDATION_FORMAT, $request->sent_at)->datetime(),
                 ]);
-                dd("ok");
                 if ($request->hasFile('file'))
                     $this->orderRepository->uploadReceipt($order, $request->file('file'));
                 return ApiResponse::message(trans("The information was register successfully"))
