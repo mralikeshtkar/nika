@@ -23,7 +23,7 @@ class OrderResource extends JsonResource
         return collect($this->resource)->when(array_key_exists('created_at', $this->resource->getAttributes()), function (Collection $collection) {
             $collection->put('created_at', verta($this->resource->created_at)->formatJalaliDatetime());
         })->when(array_key_exists('sent_at', $this->resource->getAttributes()), function (Collection $collection) {
-            $collection->put('sent_at', verta($this->resource->sent_at)->formatJalaliDatetime());
+            $collection->put('sent_at', verta($this->resource->sent_at)->formatJalaliDate());
         })->when(array_key_exists('status', $this->resource->getAttributes()), function (Collection $collection) {
             $collection->put('translated_status', OrderStatus::getDescription($this->resource->status));
         })->when($this->resource->relationLoaded('payment'), function (Collection $collection) {

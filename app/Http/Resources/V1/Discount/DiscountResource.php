@@ -21,9 +21,9 @@ class DiscountResource extends JsonResource
         })->when(array_key_exists('status', $this->resource->getAttributes()), function (Collection $collection) {
             $collection->put('translated_status', DiscountStatus::getDescription($this->resource->status));
         })->when(array_key_exists('enable_at', $this->resource->getAttributes()) && !is_null($this->resource->enable_at), function (Collection $collection) {
-            $collection->put('enable_at', verta($this->resource->enable_at)->formatJalaliDatetime());
+            $collection->put('enable_at', verta($this->resource->enable_at)->formatJalaliDate());
         })->when(array_key_exists('expire_at', $this->resource->getAttributes()) && !is_null($this->resource->expire_at), function (Collection $collection) {
-            $collection->put('expire_at', verta($this->resource->enable_at)->formatJalaliDatetime());
+            $collection->put('expire_at', verta($this->resource->enable_at)->formatJalaliDate());
         });
     }
 }

@@ -10,8 +10,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Discount extends Model
 {
-    const ENABLE_AT_VALIDATION_FORMAT = 'Y/m/d H:i:s';
-    const EXPIRE_AT_VALIDATION_FORMAT = 'Y/m/d H:i:s';
+    const ENABLE_AT_VALIDATION_FORMAT = 'Y/m/d';
+    const EXPIRE_AT_VALIDATION_FORMAT = 'Y/m/d';
 
     protected $fillable = [
         'user_id',

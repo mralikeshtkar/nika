@@ -81,7 +81,7 @@ class OrderService extends BaseService
             return DB::transaction(function () use ($order, $request) {
                 $this->orderRepository->update($order, [
                     'tracking_code' => $request->tracking_code,
-                    'sent_at' => Verta::parseFormat(Order::SENT_AT_VALIDATION_FORMAT, $request->sent_at)->datetime(),
+                    'sent_at' => Verta::parseFormat(Order::SENT_AT_VALIDATION_FORMAT, $request->sent_at)->startDay()->datetime(),
                 ]);
                 if ($request->hasFile('file'))
                     $this->orderRepository->uploadReceipt($order, $request->file('file'));
