@@ -86,6 +86,7 @@ class OrderService extends BaseService
                     'tracking_code' => $request->tracking_code,
                     'sent_at' => $request->sent_at,
                 ]);
+                if ($request->hasFile('file'))
                 $this->orderRepository->uploadReceipt($order,$request->file('file'));
                 return ApiResponse::message(trans("The information was register successfully"))
                     ->addData('order', new OrderResource($order))
