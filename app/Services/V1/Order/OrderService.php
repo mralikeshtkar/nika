@@ -94,7 +94,7 @@ class OrderService extends BaseService
             });
         } catch (Throwable $e) {
             return ApiResponse::error(trans("Internal server error"))
-                ->addError('error'.$e->getMessage())
+                ->addError('error',$e->getMessage())
                 ->send();
         }
     }
