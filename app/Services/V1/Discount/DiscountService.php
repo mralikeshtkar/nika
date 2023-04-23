@@ -85,10 +85,7 @@ class DiscountService extends \App\Services\V1\BaseService
         ApiResponse::validate($request->all(), [
             'code' => ['required', 'string', 'unique:' . Discount::class . ',code'],
             'is_percent' => ['nullable', 'boolean'],
-            'amount' => collect(['required', 'numeric', 'min:1'])
-                ->when($request->filled('is_percent') && $request->is_percent, function (Collection $collection) {
-                    $collection->put('max', '100');
-                })->toArray(),
+            'amount' => ['required'],
             'enable_at' => ['nullable', 'jdate:' . Discount::ENABLE_AT_VALIDATION_FORMAT],
             'expire_at' => ['nullable', 'jdate:' . Discount::EXPIRE_AT_VALIDATION_FORMAT],
             'usage_limitation' => ['nullable', 'numeric', 'min:1'],
