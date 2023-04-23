@@ -137,9 +137,9 @@ class DiscountService extends \App\Services\V1\BaseService
             })->when($request->filled('amount'), function (Collection $collection) use ($request) {
                 $collection->put('amount', $request->amount);
             })->when($request->filled('enable_at'), function (Collection $collection) use ($request) {
-                $collection->put('enable_at', Verta::parseFormat(Discount::ENABLE_AT_VALIDATION_FORMAT, $request->enable_at)->datetime());
+                $collection->put('enable_at', Verta::parseFormat(Discount::ENABLE_AT_VALIDATION_FORMAT, $request->enable_at)->startDay()->datetime());
             })->when($request->filled('expire_at'), function (Collection $collection) use ($request) {
-                $collection->put('expire_at', Verta::parseFormat(Discount::EXPIRE_AT_VALIDATION_FORMAT, $request->expire_at)->datetime());
+                $collection->put('expire_at', Verta::parseFormat(Discount::EXPIRE_AT_VALIDATION_FORMAT, $request->expire_at)->startDay()->datetime());
             })->when($request->filled('usage_limitation'), function (Collection $collection) use ($request) {
                 $collection->put('usage_limitation', $request->usage_limitation);
             })->when($request->filled('is_percent'), function (Collection $collection) use ($request) {
