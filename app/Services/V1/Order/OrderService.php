@@ -56,7 +56,7 @@ class OrderService extends BaseService
      */
     public function show(Request $request, $order): JsonResponse
     {
-        $order = $this->orderRepository->with(['payment.paymentable','receipt','rahjooUser' => function ($q) {
+        $order = $this->orderRepository->with(['payment.paymentable', 'receipt', 'rahjooUser' => function ($q) {
             $q->select(['users.id', 'users.first_name', 'users.last_name', 'users.mobile', 'users.birthdate']);
         }])->findOrFailById($order);
         return ApiResponse::message(trans("The information was received successfully"))
@@ -87,13 +87,15 @@ class OrderService extends BaseService
                     'sent_at' => $request->sent_at,
                 ]);
                 if ($request->hasFile('file'))
-                $this->orderRepository->uploadReceipt($order,$request->file('file'));
+                    $this->orderRepository->uploadReceipt($order, $request->file('file'));
                 return ApiResponse::message(trans("The information was register successfully"))
                     ->addData('order', new OrderResource($order))
                     ->send();
             });
         } catch (Throwable $e) {
-            return ApiResponse::error(trans("Internal server error"))->send();
+            return ApiResponse::error(trans("Internal server error"))
+                ->addError('error'.$e->getMessage())
+                ->send();
         }
     }
 }
