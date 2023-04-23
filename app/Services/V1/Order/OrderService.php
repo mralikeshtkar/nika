@@ -56,7 +56,7 @@ class OrderService extends BaseService
      */
     public function show(Request $request, $order): JsonResponse
     {
-        $order = $this->orderRepository->with(['payment.paymentable','rahjooUser' => function ($q) {
+        $order = $this->orderRepository->with(['payment.paymentable','receipt','rahjooUser' => function ($q) {
             $q->select(['users.id', 'users.first_name', 'users.last_name', 'users.mobile', 'users.birthdate']);
         }])->findOrFailById($order);
         return ApiResponse::message(trans("The information was received successfully"))

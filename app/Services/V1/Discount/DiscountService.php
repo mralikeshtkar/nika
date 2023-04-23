@@ -124,7 +124,7 @@ class DiscountService extends \App\Services\V1\BaseService
             'is_percent' => ['nullable', 'boolean'],
             'amount' => collect(['nullable', 'numeric', 'min:1'])
                 ->when($request->filled('is_percent') && $request->is_percent, function (Collection $collection) {
-                    $collection->put('max', '100');
+                    $collection->push('max:100');
                 })->toArray(),
             'enable_at' => ['nullable', 'jdate:' . Discount::ENABLE_AT_VALIDATION_FORMAT],
             'expire_at' => ['nullable', 'jdate:' . Discount::EXPIRE_AT_VALIDATION_FORMAT],
