@@ -631,9 +631,9 @@ class ApiPackageController extends ApiBaseController
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"discount"},
+     *                 required={"code"},
      *                 @OA\Property(
-     *                     property="discount",
+     *                     property="code",
      *                     type="string",
      *                     description="کد تخفیف"
      *                 ),

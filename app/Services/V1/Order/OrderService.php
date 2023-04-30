@@ -3,16 +3,19 @@
 namespace App\Services\V1\Order;
 
 use App\Enums\Media\MediaExtension;
+use App\Enums\Order\OrderStatus;
 use App\Http\Resources\V1\Order\OrderResource;
 use App\Http\Resources\V1\PaginationResource;
 use App\Models\Order;
 use App\Repositories\V1\Order\Interfaces\OrderRepositoryInterface;
 use App\Responses\Api\ApiResponse;
 use App\Services\V1\BaseService;
+use BenSampo\Enum\Rules\EnumValue;
 use Exception;
 use Hekmatinasser\Verta\Verta;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
@@ -75,14 +78,17 @@ class OrderService extends BaseService
         ApiResponse::validate($request->all(), [
             'tracking_code' => ['required', 'numeric'],
             'sent_at' => ['required', 'jdate:' . Order::SENT_AT_VALIDATION_FORMAT],
+            'status' => ['nullable', new EnumValue(OrderStatus::class)],
             'file' => ['nullable', 'file', 'mimes:' . implode(",", MediaExtension::getExtensions(MediaExtension::Image))],
         ]);
         try {
             return DB::transaction(function () use ($order, $request) {
-                $this->orderRepository->update($order, [
+                $this->orderRepository->update($order, collect([
                     'tracking_code' => $request->tracking_code,
                     'sent_at' => Verta::parseFormat(Order::SENT_AT_VALIDATION_FORMAT, $request->sent_at)->startDay()->datetime(),
-                ]);
+                ])->when($request->filled('status'), function (Collection $collection) use ($request) {
+                    $collection->put('status', $request->status);
+                })->toArray());
                 if ($request->hasFile('file'))
                     $this->orderRepository->uploadReceipt($order, $request->file('file'));
                 return ApiResponse::message(trans("The information was register successfully"))
@@ -91,7 +97,7 @@ class OrderService extends BaseService
             });
         } catch (Throwable $e) {
             return ApiResponse::error(trans("Internal server error"))
-                ->addError('error',$e->getMessage())
+                ->addError('error', $e->getMessage())
                 ->send();
         }
     }

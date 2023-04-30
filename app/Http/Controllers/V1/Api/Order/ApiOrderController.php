@@ -120,6 +120,11 @@ class ApiOrderController extends ApiBaseController
      *                     type="string",
      *                     description="تاریخ تولد بصورت شمسی با فرمت Y/m/d H:i:s "
      *                 ),
+     *                 @OA\Property(
+     *                     property="status",
+     *                     type="string",
+     *                     description="میتواند preparation, posted, delivered باشد"
+     *                 ),
      *                  @OA\Property(
      *                      property="file",
      *                      type="string",
