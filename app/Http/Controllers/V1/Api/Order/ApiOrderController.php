@@ -48,6 +48,12 @@ class ApiOrderController extends ApiBaseController
      *         name="status",
      *         @OA\Schema(type="string"),
      *     ),
+     *     @OA\Parameter(
+     *         description="شناسه رهجو",
+     *         in="query",
+     *         name="rahjoo_id",
+     *         @OA\Schema(type="string"),
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="عملیات با موفقیت انجام شد",

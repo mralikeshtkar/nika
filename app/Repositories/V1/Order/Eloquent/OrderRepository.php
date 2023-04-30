@@ -25,6 +25,8 @@ class OrderRepository extends BaseRepository implements OrderRepositoryInterface
     {
         $this->model->when($request->filled('status') && in_array(strtolower($request->status), OrderStatus::asArray()), function ($q) use ($request) {
             $q->where('status', strtolower($request->status));
+        })->when($request->filled('rahjoo_id'),function ($q)use ($request){
+            $q->where('rahjoo_id',$request->rahjoo_id);
         });
         return $this;
     }
