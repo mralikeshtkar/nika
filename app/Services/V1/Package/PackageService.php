@@ -413,7 +413,7 @@ class PackageService extends BaseService
         $discount = resolve(DiscountRepositoryInterface::class)->findByCode($request->code);
         try {
             return DB::transaction(function () use ($request, $package, $discount) {
-                $final_price = $discount->calculateFinalPrice($package->price);
+                $final_price = $discount ? $discount->calculateFinalPrice($package->price) : $package->price;
                 $invoice = (new Invoice())->via(config('payment.default'))->amount($final_price);
                 $payment = Payment::callbackUrl(route('users.verify-payment'))->purchase($invoice)->pay();
                 $package->payments()->create(collect([
