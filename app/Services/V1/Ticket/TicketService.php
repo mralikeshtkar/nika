@@ -43,7 +43,7 @@ class TicketService extends BaseService
             ->filterPagination($request)
             ->paginate($request->get('perPage',15));
         $tickets->setCollection($tickets->getCollection()->transform(function($item){
-            $item->foo = "bar";
+            $item->is_answered = $item->user_id != $item->last_reply_user_id;
             return $item;
         }));
         $resource = PaginationResource::make($tickets)->additional(['itemsResource' => TicketResource::class]);
