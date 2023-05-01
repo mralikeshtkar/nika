@@ -340,7 +340,7 @@ class RahjooService extends BaseService
         /** @var Rahjoo $rahjoo */
         $rahjoo = $this->rahjooRepository->select(['id'])->findorFailById($rahjoo);
         ApiResponse::validate($request->all(), [
-            'code' => ['required', 'numeric'],
+            'code' => ['required', 'string'],
         ]);
         $order = $rahjoo->orders()
             ->where('code', $request->code)

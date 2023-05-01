@@ -431,7 +431,7 @@ class ApiRahjooController extends ApiBaseController
      *                 required={"code"},
      *                 @OA\Property(
      *                     property="code",
-     *                     type="number",
+     *                     type="string",
      *                     description="کد فعالسازی"
      *                 ),
      *             )
