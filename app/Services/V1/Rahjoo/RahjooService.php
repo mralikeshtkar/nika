@@ -347,7 +347,6 @@ class RahjooService extends BaseService
 //            ->where('status', OrderStatus::Delivered)
             ->notUsed()
             ->first();
-        dd($order);
         abort_if(!$order, ApiResponse::message(trans("Verification code is invalid"), Response::HTTP_BAD_REQUEST)->send());
         try {
             return DB::transaction(function () use ($request, $rahjoo, $order) {
