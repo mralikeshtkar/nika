@@ -342,6 +342,7 @@ class RahjooService extends BaseService
         ApiResponse::validate($request->all(), [
             'code' => ['required', 'string'],
         ]);
+        dd($rahjoo->orders);
         $order = $rahjoo->orders()
             ->where(DB::raw('lower(code)'),  strtolower($request->code))
             ->where('status', OrderStatus::Posted)
