@@ -343,7 +343,7 @@ class RahjooService extends BaseService
             'code' => ['required', 'string'],
         ]);
         $order = $rahjoo->orders()
-            ->where(DB::raw('lower(code)'),'like', '%'.strtolower($request->code).'%')
+            ->where(DB::raw('lower(code)'),  strtolower($request->code))
             ->where('status', OrderStatus::Posted)
             ->notUsed()
             ->first();
