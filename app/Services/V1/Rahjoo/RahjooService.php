@@ -344,7 +344,7 @@ class RahjooService extends BaseService
         ]);
         $order = $rahjoo->orders()
             ->where(DB::raw('lower(code)'),  strtolower($request->code))
-            ->where('status', OrderStatus::Posted)
+            ->where('status', OrderStatus::Delivered)
             ->notUsed()
             ->first();
         dd($order);
