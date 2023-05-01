@@ -40,7 +40,10 @@ class TicketService extends BaseService
     {
         $tickets = $this->ticketRepository->with(['user:id,first_name,last_name,mobile'])
             ->filterPagination($request)
-            ->paginate($request->get('perPage',15));
+            ->paginate($request->get('perPage', 15))
+            ->map(function ($item) {
+                return $item;
+            });
         $resource = PaginationResource::make($tickets)->additional(['itemsResource' => TicketResource::class]);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('tickets', $resource)
