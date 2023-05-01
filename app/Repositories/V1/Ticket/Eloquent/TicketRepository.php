@@ -31,4 +31,10 @@ class TicketRepository extends BaseRepository implements TicketRepositoryInterfa
         });
         return $this;
     }
+
+    public function withLastReplyUserId(): static
+    {
+        $this->model->withAggregate('lastReply','user_id');
+        return $this;
+    }
 }

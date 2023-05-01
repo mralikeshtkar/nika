@@ -39,6 +39,7 @@ class TicketService extends BaseService
     public function index(Request $request): JsonResponse
     {
         $tickets = $this->ticketRepository->with(['user:id,first_name,last_name,mobile'])
+            ->withLastReplyUserId()
             ->filterPagination($request)
             ->paginate($request->get('perPage',15));
         $tickets->setCollection($tickets->getCollection()->transform(function($item){
