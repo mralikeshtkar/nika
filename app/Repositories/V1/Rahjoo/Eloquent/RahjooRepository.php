@@ -165,7 +165,7 @@ class RahjooRepository extends BaseRepository implements RahjooRepositoryInterfa
      */
     public function filterPreparation(Request $request): static
     {
-        $this->model->when($request->filled('preparation') && in_array(strtolower($request->preparation), OrderStatus::asArray()), function ($q) use ($request) {
+        $this->model->when($request->filled('preparation'), function ($q) use ($request) {
             $q->whereHas('orders', function ($q) use ($request) {
                 $q->preparation();
             });
@@ -179,7 +179,7 @@ class RahjooRepository extends BaseRepository implements RahjooRepositoryInterfa
      */
     public function filterPosted(Request $request): static
     {
-        $this->model->when($request->filled('posted') && in_array(strtolower($request->posted), OrderStatus::asArray()), function ($q) use ($request) {
+        $this->model->when($request->filled('posted'), function ($q) use ($request) {
             $q->whereHas('orders', function ($q) use ($request) {
                 $q->posted()->orWhere(function ($q) {
                     $q->delivered()->where('is_used', false);
@@ -195,7 +195,7 @@ class RahjooRepository extends BaseRepository implements RahjooRepositoryInterfa
      */
     public function filterDelivered(Request $request): static
     {
-        $this->model->when($request->filled('delivered') && in_array(strtolower($request->delivered), OrderStatus::asArray()), function ($q) use ($request) {
+        $this->model->when($request->filled('delivered'), function ($q) use ($request) {
             $q->whereHas('orders', function ($q) use ($request) {
                 $q->delivered()->where('is_used', true);
             });
@@ -210,7 +210,7 @@ class RahjooRepository extends BaseRepository implements RahjooRepositoryInterfa
      */
     public function filterCanceled(Request $request, $support): static
     {
-        $this->model->when($request->filled('canceled') && in_array(strtolower($request->canceled), OrderStatus::asArray()), function ($q) use ($request, $support) {
+        $this->model->when($request->filled('canceled'), function ($q) use ($request, $support) {
             $q->whereHas('supports', function ($q) use ($request, $support) {
                 $q->canceled();
             });
