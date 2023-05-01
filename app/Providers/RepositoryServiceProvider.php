@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\RahjooSupport;
 use App\Repositories\V1\Address\Eloquent\AddressRepository;
 use App\Repositories\V1\Address\Interfaces\AddressRepositoryInterface;
 use App\Repositories\V1\BaseRepository;
@@ -74,6 +73,10 @@ use App\Repositories\V1\Skill\Eloquent\SkillRepository;
 use App\Repositories\V1\Skill\Interfaces\SkillRepositoryInterface;
 use App\Repositories\V1\SupportComment\Eloquent\SupportCommentRepository;
 use App\Repositories\V1\SupportComment\Interfaces\SupportCommentRepositoryInterface;
+use App\Repositories\V1\Ticket\Eloquent\TicketReplyRepository;
+use App\Repositories\V1\Ticket\Eloquent\TicketRepository;
+use App\Repositories\V1\Ticket\Interfaces\TicketReplyRepositoryInterface;
+use App\Repositories\V1\Ticket\Interfaces\TicketRepositoryInterface;
 use App\Repositories\V1\User\Eloquent\UserRepository;
 use App\Repositories\V1\User\Interfaces\UserRepositoryInterface;
 use App\Services\V1\Comment\CommentService;
@@ -143,5 +146,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(OrderRepositoryInterface::class, OrderRepository::class);
         $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
         $this->app->bind(DiscountRepositoryInterface::class, DiscountRepository::class);
+        $this->app->bind(TicketRepositoryInterface::class, TicketRepository::class);
+        $this->app->bind(TicketReplyRepositoryInterface::class, TicketReplyRepository::class);
     }
 }

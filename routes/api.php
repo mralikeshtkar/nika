@@ -38,6 +38,8 @@ use App\Http\Controllers\V1\Api\RequestSupport\ApiRequestSupportController as V1
 use App\Http\Controllers\V1\Api\Role\ApiRoleController as V1ApiRoleController;
 use App\Http\Controllers\V1\Api\Skill\ApiSkillController as V1ApiSkillController;
 use App\Http\Controllers\V1\Api\Storeroom\ApiStoreroomController as V1ApiStoreroomController;
+use App\Http\Controllers\V1\Api\Ticket\ApiTicketController as V1ApiTicketController;
+use App\Http\Controllers\V1\Api\Ticket\ApiTicketReplyController as V1ApiTicketReplyController;
 use App\Http\Controllers\V1\Api\User\ApiRahnamaController as V1ApiRahnamaController;
 use App\Http\Controllers\V1\Api\User\ApiRahyabController as V1ApiRahyabController;
 use App\Http\Controllers\V1\Api\User\ApiSupportController as V1ApiSupportController;
@@ -109,6 +111,16 @@ Route::prefix('v1')->group(function (Router $router) {
             $router->get('orders', [V1ApiOrderController::class, 'index']);
             $router->get('orders/{order}', [V1ApiOrderController::class, 'show']);
             $router->put('orders/{order}', [V1ApiOrderController::class, 'update']);
+        });
+
+        /* Ticket */
+        $router->group([], function (Router $router) {
+            $router->post('tickets', [V1ApiTicketController::class, 'index']);
+            $router->post('tickets', [V1ApiTicketController::class, 'store']);
+            $router->get('tickets/{ticket}', [V1ApiTicketController::class, 'show']);
+            $router->put('tickets/{ticket}', [V1ApiTicketController::class, 'update']);
+            $router->post('tickets/{ticket}/replies', [V1ApiTicketReplyController::class, 'store']);
+            $router->put('tickets/{ticket}/replies/{reply}', [V1ApiTicketReplyController::class, 'update']);
         });
 
         /* Product */

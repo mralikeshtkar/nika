@@ -11,6 +11,8 @@
     "Zarinpal": "زرین پال",
     "Province": "استان",
     "City": "شهر",
+    "Ticket": "تیکت",
+    "TicketReply": "پاسخ تیکت",
     "Address": "آدرس",
     "Job": "شغل",
     "Comment": "نظر",
@@ -71,5 +73,6 @@
     "The rahjoo can start answering the questions": "رهجو می تواند پاسخ به تمرین را آغاز کند",
     "Payment has not been made": "پرداخت انجام نشده است",
     "Discount code is invalid": "کد تخفیف معتبر نمیباشد",
+    "To register the answer, the ticket must be open": "برای ثبت پاسخ باید تیکت باز باشد",
     "Package is inactive": "پکیج غیرفعال است"
 }

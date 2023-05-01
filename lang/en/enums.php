@@ -9,6 +9,7 @@ use App\Enums\Permission;
 use App\Enums\Product\ProductStatus;
 use App\Enums\RahjooParent\RahjooParentGender;
 use App\Enums\Role;
+use App\Enums\Ticket\TicketStatus;
 
 return [
     Role::class => [
@@ -58,5 +59,10 @@ return [
     ProductStatus::class => [
         ProductStatus::Active => "Active",
         ProductStatus::Inactive => "Inactive",
+    ],
+    TicketStatus::class => [
+        TicketStatus::Open => "Open",
+        TicketStatus::Close => "Close",
+        TicketStatus::Canceled => "Canceled",
     ],
 ];
