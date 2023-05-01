@@ -90,7 +90,7 @@ class TicketService extends BaseService
     public function show(Request $request, $ticket): JsonResponse
     {
         $ticket = $this->ticketRepository->with(['user:id,first_name,last_name,mobile', 'replies' => function ($q) {
-            $q->select(['id', 'user_id', 'body', 'created_at'])->with('user:id,first_name,last_name,mobile');
+            $q->select(['id', 'user_id','ticket_id', 'body', 'created_at'])->with('user:id,first_name,last_name,mobile');
         }])->findOrFailById($ticket);
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('ticket', new TicketResource($ticket))
