@@ -115,7 +115,7 @@ Route::prefix('v1')->group(function (Router $router) {
 
         /* Ticket */
         $router->group([], function (Router $router) {
-            $router->post('tickets', [V1ApiTicketController::class, 'index']);
+            $router->get('tickets', [V1ApiTicketController::class, 'index']);
             $router->post('tickets', [V1ApiTicketController::class, 'store']);
             $router->get('tickets/{ticket}', [V1ApiTicketController::class, 'show']);
             $router->put('tickets/{ticket}', [V1ApiTicketController::class, 'update']);
