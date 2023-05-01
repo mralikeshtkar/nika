@@ -342,12 +342,12 @@ class RahjooService extends BaseService
         ApiResponse::validate($request->all(), [
             'code' => ['required', 'string'],
         ]);
-        dd($rahjoo->orders);
         $order = $rahjoo->orders()
             ->where(DB::raw('lower(code)'),  strtolower($request->code))
             ->where('status', OrderStatus::Posted)
             ->notUsed()
             ->first();
+        dd($order);
         abort_if(!$order, ApiResponse::message(trans("Verification code is invalid"), Response::HTTP_BAD_REQUEST)->send());
         try {
             return DB::transaction(function () use ($request, $rahjoo, $order) {
