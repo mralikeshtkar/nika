@@ -60,9 +60,6 @@ class AppServiceProvider extends ServiceProvider
     private function _URLForceScheme(): void
     {
         if ($this->app->environment('production')) {
-            $this->app->bind('path.public', function() {
-                return base_path().'/../public_html';
-            });
             URL::forceScheme('https');
         }
     }
