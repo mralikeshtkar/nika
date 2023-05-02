@@ -243,12 +243,18 @@ class UserService extends BaseService
      */
     public function currentUser(Request $request): JsonResponse
     {
-        $user = $request->user()->load(['rahjoo', 'rahjoo.lastPayment:payments.id,payments.rahjoo_support_id,payments.action,payments.status,payments.created_at']);
+        $user = $request->user()->load([
+            'rahjoo',
+            'rahjoo.lastPayment:payments.id,payments.rahjoo_support_id,payments.action,payments.status,payments.created_at',
+            'rahjoo.order' => function ($q) {
+                $q->latest()->notUsed();
+            }]);
         $user = collect($user)
             ->put('isPersonnel', $request->user()->isPersonnel())
             ->put('role', optional($request->user()->roles()->first())->name)
             ->when($user->rahjoo, function (Collection $collection) use ($user) {
-                $collection->put('rahjoo', collect($user->rahjoo)->put('last_payment', $user->rahjoo->last_payment && $user->rahjoo->last_payment->isSuccess() ? null : $user->rahjoo->last_payment));
+                $collection->put('rahjoo', collect($user->rahjoo)
+                    ->put('last_payment', $user->rahjoo->last_payment && $user->rahjoo->last_payment->isSuccess() ? null : $user->rahjoo->last_payment));
             })->toArray();
         return ApiResponse::message(trans("The information was received successfully"))
             ->addData('user', new SingleUserResource($user))

@@ -61,6 +61,11 @@ class Rahjoo extends Model
         return $this->hasMany(Order::class);
     }
 
+    public function order(): HasOne
+    {
+        return $this->hasOne(Order::class);
+    }
+
     /**
      * @return HasOne
      */
