@@ -28,9 +28,9 @@ class DatabaseSeeder extends Seeder
         //$this->_truncateTables();
 
         $this->call([
-//            PermissionSeeder::class,
+            PermissionSeeder::class,
             UserSeeder::class,
-//            ProvinceSeeder::class,
+            ProvinceSeeder::class,
 //            GradeSeeder::class,
 //            IntelligenceSeeder::class,
 //            PackageSeeder::class,
