@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        //$this->_truncateTables();
+        $this->_truncateTables();
 
         $this->call([
             PermissionSeeder::class,
