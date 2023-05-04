@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
     public function run()
     {
         file_put_contents(storage_path('logs/laravel.log'),'');
-        $this->_generateToken('+989123456789');
+//        $this->_generateToken('+989123456789');
         $this->_createSuperAdmin('+989123456789');
         $this->_createPersonnel();
         $this->_createRahjoo();
